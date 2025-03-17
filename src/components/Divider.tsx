@@ -10,6 +10,7 @@ const Divider = (props: DividerProps) => {
   return (
     <div className={`
       w-[1px] 
+      h-[1px]
       ${(horizontal ?? false) ? 'w-full' : 'h-full '}
       bg-gray-200
     `}

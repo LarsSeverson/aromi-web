@@ -3,7 +3,8 @@ export default {
   content: ['./src/**'],
   theme: {
     fontFamily: {
-      sans: ['Palanquin', 'sans-serif']
+      p: ['Palanquin', 'sans-serif'],
+      pd: ['Palanquin Dark', 'sans-serif']
     },
     extend: {
       colors: {
