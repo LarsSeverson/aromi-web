@@ -2348,7 +2348,7 @@
     content-type "^1.0.5"
     tslib "^2.6.2"
 
-"@tanstack/react-virtual@^3.8.1":
+"@tanstack/react-virtual@^3.13.4", "@tanstack/react-virtual@^3.8.1":
   version "3.13.4"
   resolved "https://registry.yarnpkg.com/@tanstack/react-virtual/-/react-virtual-3.13.4.tgz#1188d4e452c8c7569cf42d0f605018ed67941e5c"
   integrity sha512-jPWC3BXvVLHsMX67NEHpJaZ+/FySoNxFfBEiF4GBc1+/nVwdRm+UcSCYnKP3pXQr0eEsDpXi/PQZhNfJNopH0g==

@@ -6,7 +6,6 @@ import { relayStylePagination } from '@/common/pagination'
 
 export interface UseClientReturn {
   client: ApolloClient<NormalizedCacheObject>
-
   refresh: () => Promise<void>
   reset: () => void
 }

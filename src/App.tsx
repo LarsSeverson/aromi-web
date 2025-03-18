@@ -3,7 +3,7 @@ import './styles/output.css'
 import { BrowserRouter } from 'react-router'
 import { ClientProvider } from './contexts/providers/ClientProvider'
 import { AuthProvider } from './contexts/providers/AuthProvider'
-import { AppRoutes } from './routes/AppRoutes'
+import AppRoutes from './routes/AppRoutes'
 
 const App = () => {
   return (

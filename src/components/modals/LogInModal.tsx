@@ -1,32 +1,60 @@
-import React, { useCallback, useRef, useState } from 'react'
+import React, { useState } from 'react'
 import Modal, { type ModalProps } from './Modal'
 import AromiLogo from '../common/AromiLogo'
-import InputField, { type InputFieldHandle } from '../InputField'
 import TextButton from '../TextButton'
 import ButtonText from '../ButtonText'
 import Divider from '../Divider'
+import Form from '../common/Form'
+import { useAuthContext } from '@/contexts/AuthContext'
+import { AuthErrorCode } from '@/common/auth-errors'
 
 export interface LogInModalProps extends ModalProps {}
 
 const LogInModal = (props: LogInModalProps) => {
+  const { validateEmail, userLogIn } = useAuthContext()
   const { ...rest } = props
 
-  const emailRef = useRef<InputFieldHandle>(null)
-  const passwordRef = useRef(null)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
 
-  const [loading, setLoading] = useState(true)
+  const handleLoginSubmit = async (values: Map<string, string>): Promise<void> => {
+    setError('')
 
-  const handleLoginSubmit = useCallback((e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
+    const email = values.get('email')
+    const password = values.get('password')
 
-    if (emailRef.current?.validate() === false) return
+    if (email == null || password == null) return
 
     setLoading(true)
-    if (emailRef.current == null) return
-    if (passwordRef.current == null) return
-
+    const { success, error } = await userLogIn(email, password)
     setLoading(false)
-  }, [])
+
+    if (success) {
+      window.location.reload()
+      return
+    }
+
+    if (error != null) {
+      if (error.code === AuthErrorCode.SIGN_UP_INCOMPLETE) {
+        //
+      }
+
+      setError(error.message)
+    }
+  }
+
+  const validateEmailFn = (email: string): string | null => {
+    if (email.length === 0) return 'Please enter your email address'
+    if (!validateEmail(email)) return 'Please enter a valid email address'
+
+    return null
+  }
+
+  const validatePasswordFn = (password: string): string | null => {
+    if (password.length === 0) return 'Please enter your password'
+
+    return null
+  }
 
   return (
     <Modal
@@ -38,44 +66,40 @@ const LogInModal = (props: LogInModalProps) => {
           <h1 className='text-4xl font-pd'>Welcome to aromi</h1>
         </div>
 
-        <form
-          className='w-full'
-          noValidate
-          onSubmit={handleLoginSubmit}
-        >
-          <div className='flex flex-col w-full'>
-            <InputField
-              ref={emailRef}
+        <div className='w-full flex flex-col gap-3'>
+          {error.length > 0 && (
+            <div className='text-center text-red-500'>
+              {error}
+            </div>
+          )}
+          <Form
+            className='w-full flex flex-col gap-3'
+            onSubmit={(values) => { void handleLoginSubmit(values) }}
+          >
+            <Form.Input
+              name='email'
               label='Email'
               type='email'
-              required
-              invalidMessage='Please enter a valid email address'
+              validate={validateEmailFn}
             />
-            <div className='flex flex-col gap-3 mb-3'>
-              <InputField
-                ref={passwordRef}
-                label='Password'
-                type='password'
-                required
-                invalidMessage='Please enter a password'
-              />
-              <TextButton
-                text='forgot password?'
-                style={{ marginLeft: 'auto' }}
-              />
-            </div>
-          </div>
-
-          <ButtonText
-            type='submit'
-            text='Log in'
-            loading={loading}
-            className=' bg-sinopia hover:bg-sinopia text-white w-full active:scale-[0.99]'
-          />
-        </form>
-        <div
-          className='w-full flex flex-col gap-2'
-        >
+            <Form.Input
+              name='password'
+              label='Password'
+              type='password'
+              validate={validatePasswordFn}
+            />
+            <TextButton
+              text='forgot password?'
+              className='font-pd'
+              style={{ marginLeft: 'auto' }}
+            />
+            <Form.Submit
+              component={ButtonText}
+              text='Log in'
+              loading={loading}
+              className=' bg-sinopia hover:bg-sinopia text-white w-full active:scale-[0.99]'
+            />
+          </Form>
           <div className='flex flex-row items-center gap-5 px-5'>
             <Divider horizontal />
             <p>or</p>

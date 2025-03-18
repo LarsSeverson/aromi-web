@@ -1,7 +1,8 @@
 import type { CodegenConfig } from '@graphql-codegen/cli'
+import 'dotenv/config'
 
 export const config: CodegenConfig = {
-  schema: import.meta.env.VITE_API_ENDPOINT_DEV,
+  schema: process.env.VITE_API_ENDPOINT_DEV,
   documents: ['src/**/*.tsx'],
   generates: {
     './src/generated/': {

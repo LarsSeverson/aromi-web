@@ -15,11 +15,11 @@ const ButtonText = (props: ButtonTextProps) => {
     `
       items-center 
       justify-center 
-      px-[15px] 
+      px-[15px]
       py-[10px] 
-      rounded-[20px] 
-    bg-gray-200 
-    hover:bg-gray-200
+      rounded-[21px] 
+      bg-gray-200 
+      hover:bg-gray-200
       hover:brightness-90
     `,
     className
@@ -30,7 +30,7 @@ const ButtonText = (props: ButtonTextProps) => {
       className={combinedClass}
       {...rest}
     >
-      <p className='font-p text-[17px] mt-[-4px]' style={{ opacity: (loading ?? false) ? '0' : '1' }}>
+      <p className='font-p text-[16px] mt-[-4px]' style={{ opacity: (loading ?? false) ? '0' : '1' }}>
         {text}
       </p>
       {(loading ?? false) && <Spinner />}

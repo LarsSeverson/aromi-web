@@ -22,7 +22,7 @@ const TextButton = (props: TextButtonProps) => {
       className)}
       {...rest}
     >
-      <span className='font-p text-[16px] mt-[-4px] hover:underline'>
+      <span className='font-p font-semibold opacity-95 text-[16px] mt-[-4px] hover:underline'>
         {text}
       </span>
     </BouncyButton>
