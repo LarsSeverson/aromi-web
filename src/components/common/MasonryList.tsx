@@ -1,24 +1,35 @@
 import { useVirtualizer } from '@tanstack/react-virtual'
-import React from 'react'
+import React, { useEffect } from 'react'
 
 export interface MasonryListProps<T> extends React.HTMLAttributes<HTMLDivElement> {
   items: T[]
 
-  gap?: number | undefined
   containerWidth: number
+  gap?: number | undefined
   scrollRef: React.RefObject<HTMLDivElement | null>
+  scrollThreshold?: number | undefined
 
   onRenderItem: (item: T, index: number) => React.ReactNode
+  onEndReached?: () => void
 }
 
 export const MasonryList = <T, >(props: MasonryListProps<T>) => {
-  const { items, containerWidth, gap = 10, scrollRef, onRenderItem, ...rest } = props
+  const {
+    items,
+    containerWidth,
+    gap = 10,
+    scrollRef,
+    scrollThreshold = 1000,
+    onRenderItem,
+    onEndReached,
+    ...rest
+  } = props
 
-  const itemWidth = 200
-  const itemHeight = 320
-  const colCount = Math.floor(containerWidth / (itemWidth + gap))
+  const itemWidth = 250
+  const itemHeight = 400
+  const colCount = Math.max(1, Math.floor(containerWidth / (itemWidth + gap)))
   const effectiveWidth = colCount <= 0 ? itemWidth : (containerWidth - (colCount - 1) * gap) / colCount
-  const rowCount = colCount > 0 ? Math.ceil(items.length / colCount) : 0
+  const rowCount = Math.ceil(items.length / colCount)
 
   const rowVirtualizer = useVirtualizer({
     count: rowCount,
@@ -26,6 +37,21 @@ export const MasonryList = <T, >(props: MasonryListProps<T>) => {
     estimateSize: () => itemHeight + gap,
     overscan: 5
   })
+
+  useEffect(() => {
+    const container = scrollRef.current
+    if (container == null) return
+
+    const handleScroll = () => {
+      const { scrollTop, scrollHeight, clientHeight } = container
+      if (scrollHeight - scrollTop - clientHeight <= scrollThreshold) {
+        onEndReached?.()
+      }
+    }
+
+    container.addEventListener('scroll', handleScroll)
+    return () => { container.removeEventListener('scroll', handleScroll) }
+  }, [onEndReached, scrollRef, scrollThreshold])
 
   return (
     <div
@@ -53,7 +79,7 @@ export const MasonryList = <T, >(props: MasonryListProps<T>) => {
                 width: effectiveWidth,
                 height: itemHeight
               }}
-              className='overflow-hidden transition-all ease-in-out'
+              className='overflow-hidden'
             >
               {onRenderItem(item, startIndex + colIndex)}
             </div>

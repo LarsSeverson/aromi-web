@@ -1,14 +1,18 @@
 import React from 'react'
+import logo from '@/assets/aromi.svg'
 import community from '@/assets/community.svg'
 import home from '@/assets/home.svg'
 import profile from '@/assets/profile.svg'
 import search from '@/assets/search.svg'
 import dislike from '@/assets/dislike.svg'
+import dislikeFill from '@/assets/dislike-fill.svg'
 import like from '@/assets/like.svg'
+import likeFill from '@/assets/like-fill.svg'
 import { ReactSVG } from 'react-svg'
 
 export interface IconProps extends React.HTMLAttributes<HTMLDivElement> {
   size?: number | undefined
+  color?: string | undefined
 }
 
 export const CommunityIcon = (props: IconProps) => {
@@ -64,13 +68,39 @@ export const SearchIcon = (props: IconProps) => {
 }
 
 export const DislikeIcon = (props: IconProps) => {
-  const { size = 16 } = props
+  const { size = 16, color, ...rest } = props
   return (
-    <div {...props}>
+    <div
+      {...rest}
+      style={{ color: color ?? '' }}
+    >
       <ReactSVG
         src={dislike}
         beforeInjection={(svg) => {
           svg.setAttribute('style', `width: ${size}px; height: ${size}px`)
+          svg.querySelectorAll('path').forEach((path) => {
+            path.setAttribute('fill', 'currentColor')
+          })
+        }}
+      />
+    </div>
+  )
+}
+
+export const FillDislikeIcon = (props: IconProps) => {
+  const { size = 16, color, ...rest } = props
+  return (
+    <div
+      {...rest}
+      style={{ color: color ?? '' }}
+    >
+      <ReactSVG
+        src={dislikeFill}
+        beforeInjection={(svg) => {
+          svg.setAttribute('style', `width: ${size}px; height: ${size}px`)
+          svg.querySelectorAll('path').forEach((path) => {
+            path.setAttribute('fill', 'currentColor')
+          })
         }}
       />
     </div>
@@ -78,15 +108,56 @@ export const DislikeIcon = (props: IconProps) => {
 }
 
 export const LikeIcon = (props: IconProps) => {
-  const { size = 16, ...rest } = props
+  const { size = 16, color, ...rest } = props
+  return (
+    <div
+      {...rest}
+      style={{ color: color ?? '' }}
+    >
+      <ReactSVG
+        src={like}
+        beforeInjection={(svg) => {
+          svg.setAttribute('style', `width: ${size}px; height: ${size}px;`)
+          svg.querySelectorAll('path').forEach((path) => {
+            path.setAttribute('fill', 'currentColor')
+          })
+        }}
+      />
+    </div>
+  )
+}
+
+export const FillLikeIcon = (props: IconProps) => {
+  const { size = 16, color, ...rest } = props
+  return (
+    <div
+      {...rest}
+      style={{ color: color ?? '' }}
+    >
+      <ReactSVG
+        src={likeFill}
+        beforeInjection={(svg) => {
+          svg.setAttribute('style', `width: ${size}px; height: ${size}px;`)
+          svg.querySelectorAll('path').forEach((path) => {
+            path.setAttribute('fill', 'currentColor')
+          })
+        }}
+      />
+    </div>
+  )
+}
+
+export const Logo = (props: IconProps) => {
+  const { size = 24, ...rest } = props
+
   return (
     <div
       {...rest}
     >
       <ReactSVG
-        src={like}
+        src={logo}
         beforeInjection={(svg) => {
-          svg.setAttribute('style', `width: ${size}px; height: ${size}px; overflow-visible`)
+          svg.setAttribute('style', `width: ${size}px; height: ${size}px;`)
         }}
       />
     </div>

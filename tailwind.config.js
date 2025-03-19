@@ -46,6 +46,7 @@ export default {
         khaki: '#BBA594',
         dun: '#C9B7A9',
         som: '#769ae3',
+        heart: '#e20020'
       }
     },
   },

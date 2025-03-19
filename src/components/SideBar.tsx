@@ -1,7 +1,6 @@
 import React from 'react'
 import BouncyButton from './BouncyButton'
-import AromiLogo from './common/AromiLogo'
-import { CommunityIcon, HomeIcon, ProfileIcon, SearchIcon } from './common/Icons'
+import { CommunityIcon, HomeIcon, Logo, ProfileIcon, SearchIcon } from './common/Icons'
 import { useLocation, useNavigate } from 'react-router'
 import SideBarButton from './SideBarButton'
 
@@ -24,7 +23,7 @@ const SideBar = () => {
         className='aspect-square'
         onClick={() => { handleSideBarButtonPress('/home') }}
       >
-        <AromiLogo />
+        <Logo />
       </BouncyButton>
       <SideBarButton
         active={active('home') || active('/')}

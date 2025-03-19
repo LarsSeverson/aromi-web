@@ -18,9 +18,6 @@ const ButtonText = (props: ButtonTextProps) => {
       px-[15px]
       py-[10px] 
       rounded-[21px] 
-      bg-gray-200 
-      hover:bg-gray-200
-      hover:brightness-90
     `,
     className
   )

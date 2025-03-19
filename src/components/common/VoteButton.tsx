@@ -1,9 +1,8 @@
 import React, { useMemo, useState, useCallback } from 'react'
-import { FaRegHeart } from 'react-icons/fa6'
 import BouncyButton from '../BouncyButton'
 import Divider from '../Divider'
 import clsx from 'clsx'
-import { DislikeIcon, LikeIcon } from './Icons'
+import { DislikeIcon, FillDislikeIcon, FillLikeIcon, LikeIcon } from './Icons'
 
 export interface VoteButtonProps extends React.HTMLAttributes<HTMLDivElement> {
   votes: number
@@ -18,7 +17,6 @@ export interface VoteButtonProps extends React.HTMLAttributes<HTMLDivElement> {
 export const VoteButton = (props: VoteButtonProps) => {
   const {
     votes,
-    size = 14,
     myVote = null,
     onRenderForIcon,
     onRenderAgainstIcon,
@@ -28,8 +26,15 @@ export const VoteButton = (props: VoteButtonProps) => {
   } = props
 
   const [curVote, setCurVote] = useState<boolean | null>(myVote)
-  const forActive = curVote === true
-  const againstActive = curVote === false
+
+  const formatVotes = (num: number): string => {
+    if (num >= 1000) {
+      const formatted = (num / 1000).toFixed(1)
+      return formatted.endsWith('.0') ? formatted.slice(0, -2) + 'k' : formatted + 'k'
+    }
+
+    return num.toString()
+  }
 
   const curVotes = useMemo(() => {
     const getVoteValue = (vote: boolean | null) => vote === true ? 1 : vote === false ? -1 : 0
@@ -51,29 +56,43 @@ export const VoteButton = (props: VoteButtonProps) => {
 
   return (
     <div
-      className={clsx(`
-        flex 
-        flex-row
-        rounded-full
-        bg-white
-      `,
-      className)}
+      className={clsx(
+        'flex flex-row rounded-full border-[1px]',
+        curVote == null ? 'bg-white border-gray-200' : curVote ? 'bg-sinopia border-sinopia' : 'bg-som border-som',
+        className)}
       {...rest}
     >
       <BouncyButton
-        className='px-0 py-0 rounded-full aspect-square'
+        className={clsx(
+          'px-0 py-0 rounded-full aspect-square',
+          'hover:backdrop-brightness-95',
+          curVote !== null ? 'text-white' : 'hover:text-sinopia'
+        )}
         style={{ width: '2rem' }}
+        onClick={onFor}
       >
-        <LikeIcon />
+        {curVote === true ? <FillLikeIcon /> : <LikeIcon />}
       </BouncyButton>
-      <div className='py-2'>
+      <p
+        className={clsx(
+          'font-semibold text-sm flex items-center',
+          curVote !== null ? 'text-white' : ''
+        )}
+      >
+        {formatVotes(curVotes)}
+      </p>
+      <div className='py-2 pl-2'>
         <Divider />
       </div>
       <BouncyButton
-        className='px-0 rounded-full aspect-square'
+        className={clsx(
+          'px-0 rounded-full aspect-square',
+          curVote !== null ? 'text-white' : 'hover:text-som'
+        )}
         style={{ width: '2rem' }}
+        onClick={onAgainst}
       >
-        <DislikeIcon />
+        {curVote === false ? <FillDislikeIcon /> : <DislikeIcon />}
       </BouncyButton>
     </div>
   )

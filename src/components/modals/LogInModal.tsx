@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 import Modal, { type ModalProps } from './Modal'
-import AromiLogo from '../common/AromiLogo'
 import TextButton from '../TextButton'
 import ButtonText from '../ButtonText'
 import Divider from '../Divider'
 import Form from '../common/Form'
 import { useAuthContext } from '@/contexts/AuthContext'
 import { AuthErrorCode } from '@/common/auth-errors'
+import { Logo } from '../common/Icons'
 
 export interface LogInModalProps extends ModalProps {}
 
@@ -62,7 +62,7 @@ const LogInModal = (props: LogInModalProps) => {
     >
       <div className='flex flex-col justify-center items-center gap-10 mx-20 mb-8'>
         <div className='gap-4 flex flex-col justify-center items-center'>
-          <AromiLogo size={50} />
+          <Logo size={50} />
           <h1 className='text-4xl font-pd'>Welcome to aromi</h1>
         </div>
 
