@@ -4,13 +4,13 @@ import { graphql } from '../generated'
 import { type SuggestedFragrancesQuery, type SuggestedFragrancesQueryVariables } from '../generated/graphql'
 import { flattenConnection, type FlattenType, type PaginatedQueryHookReturn } from '../common/util-types'
 
-const FRAGRANCES_LIMIT = 16
+const FRAGRANCES_LIMIT = 20
 
 const SUGGESTED_FRAGRANCES_QUERY = graphql(/* GraphQL */ `
   query SuggestedFragrances(
     $input: QueryInput = { 
       pagination: { 
-        first: 16
+        first: 20
       }
     }
     $imagesInput: QueryInput = { 

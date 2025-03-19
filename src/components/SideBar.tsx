@@ -1,7 +1,7 @@
 import React from 'react'
 import BouncyButton from './BouncyButton'
 import AromiLogo from './common/AromiLogo'
-import { CommunityIcon, HomeIcon, ProfileIcon, SearchIcon } from './common/CommunityIcon'
+import { CommunityIcon, HomeIcon, ProfileIcon, SearchIcon } from './common/Icons'
 import { useLocation, useNavigate } from 'react-router'
 import SideBarButton from './SideBarButton'
 
@@ -19,7 +19,7 @@ const SideBar = () => {
   }
 
   return (
-    <div className='flex flex-col p-3 gap-7'>
+    <div className='flex flex-col p-3 gap-7 relative'>
       <BouncyButton
         className='aspect-square'
         onClick={() => { handleSideBarButtonPress('/home') }}

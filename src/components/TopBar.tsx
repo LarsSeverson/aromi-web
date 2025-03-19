@@ -1,22 +1,16 @@
 import React, { useState } from 'react'
 import BouncyButton from './BouncyButton'
-import { useNavigate } from 'react-router'
 import ButtonText from './ButtonText'
 import { useAuthContext } from '@/contexts/AuthContext'
 import { AuthState } from '@/hooks/useAuth'
 import LogInModal from './modals/LogInModal'
 
 const TopBar = () => {
-  const navigate = useNavigate()
   const { userInfo } = useAuthContext()
   const authenticated = userInfo.state === AuthState.AUTHENTICATED
 
   const [logInOpen, setLogInOpen] = useState(false)
   const [, setSignUpOpen] = useState(false)
-
-  const gotoProfile = () => {
-    void navigate('/profile')
-  }
 
   const handleLogInPress = () => {
     setLogInOpen(true)
@@ -45,7 +39,6 @@ const TopBar = () => {
         : (
           <BouncyButton
             className='aspect-square rounded-full bg-gray-200 p-4'
-            onClick={gotoProfile}
           />
           )}
       <LogInModal

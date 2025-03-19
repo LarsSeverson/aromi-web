@@ -229,7 +229,9 @@ const useAuth = (): UseAuthReturn => {
       setInitialized(true)
     }
 
-    void (!initialized && init())
+    if (!initialized) {
+      void init()
+    }
   }, [initialized, userGetInfo])
 
   return {

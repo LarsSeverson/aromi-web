@@ -1,28 +1,27 @@
+import { FragrancePreviewCard } from '@/components/common/fragrance/FragrancePreviewCard'
 import { MasonryList } from '@/components/common/MasonryList'
-import { ResizeContainer } from '@/components/common/ResizeContainer'
-import useSuggestedFragrances from '@/hooks/useSuggestedFragances'
-import React, { useCallback, useState } from 'react'
+import { useMainLayoutContext } from '@/contexts/MainLayoutContext'
+import { useScrollState } from '@/hooks/useScrollState'
+import useSuggestedFragrances, { type SuggestedFragrancesFragrance } from '@/hooks/useSuggestedFragances'
+import React, { useCallback } from 'react'
 
 export const Home = () => {
+  const { mainContentRect, mainContentRef } = useMainLayoutContext()
   const { data } = useSuggestedFragrances()
+  useScrollState(mainContentRef, 'homeScrollPos')
 
-  const [containerWidth, setContainerWidth] = useState(0)
-
-  const handleResize = useCallback((rect: DOMRect) => {
-    setContainerWidth(rect.width)
+  const onRenderFragrance = useCallback((item: SuggestedFragrancesFragrance) => {
+    return (
+      <FragrancePreviewCard fragrance={item} />
+    )
   }, [])
 
   return (
-    <ResizeContainer
-      onResize={handleResize}
-      className='h-full'
-    >
-      <MasonryList
-        items={data}
-        gap={10}
-        containerWidth={containerWidth}
-      />
-    </ResizeContainer>
-
+    <MasonryList
+      items={data}
+      containerWidth={mainContentRect?.width}
+      scrollRef={mainContentRef}
+      onRenderItem={onRenderFragrance}
+    />
   )
 }

@@ -2,6 +2,8 @@ import BouncyButton from '@/components/BouncyButton'
 import { type FragranceImage, type Fragrance } from '@/generated/graphql'
 import clsx from 'clsx'
 import React, { useCallback } from 'react'
+import { Link } from 'react-router'
+import { VoteButton } from '../VoteButton'
 
 export type CardFragrancePreview = Omit<Pick<Fragrance, 'id' | 'name' | 'brand' | 'votes'>, 'images'> & {
   images: FragranceImage[]
@@ -22,18 +24,38 @@ export const FragrancePreviewCard = (props: FragrancePreviewCardProps) => {
 
   return (
     <div
-      className={clsx('bg-black h-full w-full', className)}
+      className={clsx('flex flex-col', 'h-full')}
       {...rest}
     >
-      <BouncyButton className='h-full rounded-md px-0 py-0'>
+      <Link
+        to='/'
+        className='flex-1 bg-gray-200 rounded-2xl px-0 py-0 relative'
+      >
         {}
-      </BouncyButton>
-      {/* <div>
-        <div>
-          <p>{fragrance.name}</p>
+        <VoteButton
+          votes={0}
+          className='absolute'
+          style={{ right: 10, bottom: 10 }}
+        />
+      </Link>
+      <div className='px-1 pt-2 pb-4'>
+        <div
+          className='flex flex-row'
+        >
+          <Link
+            to='/'
+            className='flex-1 truncate font-semibold text-sm'
+          >
+            {fragrance.name}
+          </Link>
         </div>
-        <p>{fragrance.brand}</p>
-      </div> */}
+        <Link
+          to='/'
+          className='truncate text-sm'
+        >
+          {fragrance.brand}
+        </Link>
+      </div>
     </div>
   )
 }
