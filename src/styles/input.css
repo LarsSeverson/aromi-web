@@ -4,3 +4,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+:root {
+  scrollbar-gutter: stable;
+}

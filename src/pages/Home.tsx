@@ -1,27 +1,13 @@
-import { FragrancePreviewCard } from '@/components/common/fragrance/FragrancePreviewCard'
-import { MasonryList } from '@/components/common/MasonryList'
+import { HomeSuggestedSection } from '@/components/HomeSuggestedSection'
 import { useMainLayoutContext } from '@/contexts/MainLayoutContext'
 import { useScrollState } from '@/hooks/useScrollState'
-import useSuggestedFragrances, { type SuggestedFragrancesFragrance } from '@/hooks/useSuggestedFragances'
-import React, { useCallback } from 'react'
+import React from 'react'
 
 export const Home = () => {
-  const { mainContentRect, mainContentRef } = useMainLayoutContext()
-  const { data } = useSuggestedFragrances()
-  useScrollState(mainContentRef, 'homeScrollPos')
-
-  const onRenderFragrance = useCallback((item: SuggestedFragrancesFragrance) => {
-    return (
-      <FragrancePreviewCard fragrance={item} />
-    )
-  }, [])
+  const { mainScrollRef } = useMainLayoutContext()
+  useScrollState(mainScrollRef, 'homeScrollPos')
 
   return (
-    <MasonryList
-      items={data}
-      containerWidth={mainContentRect?.width}
-      scrollRef={mainContentRef}
-      onRenderItem={onRenderFragrance}
-    />
+    <HomeSuggestedSection />
   )
 }

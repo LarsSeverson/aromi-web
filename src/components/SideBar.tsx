@@ -18,34 +18,40 @@ const SideBar = () => {
   }
 
   return (
-    <div className='flex flex-col p-3 gap-7 relative'>
-      <BouncyButton
-        className='aspect-square'
-        onClick={() => { handleSideBarButtonPress('/home') }}
+    <nav
+      className='box-border fixed h-screen w-[72px] bg-white z-50 flex flex-row border-r-[1px]'
+    >
+      <div
+        className='flex flex-col p-3 gap-7 relative'
       >
-        <Logo />
-      </BouncyButton>
-      <SideBarButton
-        active={active('home') || active('/')}
-        Icon={<HomeIcon />}
-        onClick={() => { handleSideBarButtonPress('/home') }}
-      />
-      <SideBarButton
-        active={active('search')}
-        Icon={<SearchIcon />}
-        onClick={() => { handleSideBarButtonPress('/search') }}
-      />
-      <SideBarButton
-        active={active('community')}
-        Icon={<CommunityIcon />}
-        onClick={() => { handleSideBarButtonPress('/community') }}
-      />
-      <SideBarButton
-        active={active('profile')}
-        Icon={<ProfileIcon />}
-        onClick={() => { handleSideBarButtonPress('/profile') }}
-      />
-    </div>
+        <BouncyButton
+          className='aspect-square'
+          onClick={() => { handleSideBarButtonPress('/home') }}
+        >
+          <Logo />
+        </BouncyButton>
+        <SideBarButton
+          active={active('home') || active('/')}
+          Icon={<HomeIcon />}
+          onClick={() => { handleSideBarButtonPress('/home') }}
+        />
+        <SideBarButton
+          active={active('search')}
+          Icon={<SearchIcon />}
+          onClick={() => { handleSideBarButtonPress('/search') }}
+        />
+        <SideBarButton
+          active={active('community')}
+          Icon={<CommunityIcon />}
+          onClick={() => { handleSideBarButtonPress('/community') }}
+        />
+        <SideBarButton
+          active={active('profile')}
+          Icon={<ProfileIcon />}
+          onClick={() => { handleSideBarButtonPress('/profile') }}
+        />
+      </div>
+    </nav>
   )
 }
 

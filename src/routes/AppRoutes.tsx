@@ -1,5 +1,6 @@
 import { useAuthContext } from '@/contexts/AuthContext'
 import MainLayout from '@/layouts/MainLayout'
+import { Fragrance } from '@/pages/Fragrance'
 import { Home } from '@/pages/Home'
 import Search from '@/pages/Search'
 import React from 'react'
@@ -18,6 +19,8 @@ const AppRoutes = () => {
         <Route path='search' element={<Search />} />
         <Route path='community' element={<Search />} />
         <Route path='profile' element={<Search />} />
+
+        <Route path='fragrance/:id' element={<Fragrance />} />
       </Route>
     </Routes>
   )

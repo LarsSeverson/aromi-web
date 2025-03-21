@@ -4,8 +4,12 @@ import ButtonText from './ButtonText'
 import { useAuthContext } from '@/contexts/AuthContext'
 import { AuthState } from '@/hooks/useAuth'
 import LogInModal from './modals/LogInModal'
+import clsx from 'clsx'
 
-const TopBar = () => {
+export interface TopBarProps extends React.HTMLAttributes<HTMLDivElement> {}
+
+const TopBar = (props: TopBarProps) => {
+  const { className, ...rest } = props
   const { userInfo } = useAuthContext()
   const authenticated = userInfo.state === AuthState.AUTHENTICATED
 
@@ -21,7 +25,13 @@ const TopBar = () => {
   }
 
   return (
-    <div className='p-3 flex flex-row justify-end'>
+    <div
+      className={clsx(
+        'p-3 flex flex-row justify-end',
+        className
+      )}
+      {...rest}
+    >
       {!authenticated
         ? (
           <div className='ml-auto flex flex-row gap-2'>

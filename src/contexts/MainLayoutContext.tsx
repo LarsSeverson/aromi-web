@@ -2,7 +2,7 @@ import React, { createContext, useContext } from 'react'
 
 export interface MainLayoutContextProps {
   mainContentRect: DOMRect
-  mainContentRef: React.RefObject<HTMLDivElement | null>
+  mainScrollRef: React.RefObject<HTMLDivElement | null>
 }
 
 export const MainLayoutContext = createContext<MainLayoutContextProps | null>(null)

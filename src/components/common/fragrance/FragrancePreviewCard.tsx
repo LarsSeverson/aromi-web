@@ -5,6 +5,8 @@ import { Link } from 'react-router'
 import { VoteButton } from '../VoteButton'
 import fallbackImage from '@/assets/fall-back-fi.svg'
 import ButtonText from '@/components/ButtonText'
+import BouncyButton from '@/components/BouncyButton'
+import { HiDotsHorizontal } from 'react-icons/hi'
 
 export type CardFragrancePreview = Omit<Pick<Fragrance, 'id' | 'name' | 'brand' | 'votes'>, 'images'> & {
   images: FragranceImage[]
@@ -12,11 +14,12 @@ export type CardFragrancePreview = Omit<Pick<Fragrance, 'id' | 'name' | 'brand' 
 
 export interface FragrancePreviewCardProps extends React.HTMLAttributes<HTMLDivElement> {
   fragrance: CardFragrancePreview
+  navigateTo?: string | undefined
   onFragranceVote?: (myVote: boolean | null) => void
 }
 
 export const FragrancePreviewCard = (props: FragrancePreviewCardProps) => {
-  const { fragrance, onFragranceVote, className, ...rest } = props
+  const { fragrance, navigateTo, onFragranceVote, className, ...rest } = props
   const votes = fragrance.votes.likes - fragrance.votes.dislikes
 
   // const handleVote = useCallback((myVote: boolean | null) => {
@@ -29,7 +32,7 @@ export const FragrancePreviewCard = (props: FragrancePreviewCardProps) => {
       {...rest}
     >
       <Link
-        to='/'
+        to={navigateTo ?? ''}
         className='group flex-1 flex rounded-2xl px-0 py-0 relative overflow-hidden'
       >
         <div
@@ -48,12 +51,20 @@ export const FragrancePreviewCard = (props: FragrancePreviewCardProps) => {
           <div className='absolute bg-black opacity-[.04] top-0 right-0 left-0 bottom-0' />
         </div>
         <div
-          className='hidden group-hover:inline absolute top-3 right-3'
+          className='hidden group-hover:inline absolute w-full h-full'
         >
           <ButtonText
             text='Save'
-            className='bg-sinopia text-white'
+            className='bg-sinopia text-white right-3 top-3'
+            style={{ position: 'absolute' }}
           />
+
+          <BouncyButton
+            className='rounded-full px-2 py-2 bg-white border-[1px] left-3 bottom-3'
+            style={{ position: 'absolute' }}
+          >
+            <HiDotsHorizontal />
+          </BouncyButton>
         </div>
         <VoteButton
           votes={votes}

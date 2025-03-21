@@ -7,7 +7,7 @@ export interface MasonryListProps<T> extends React.HTMLAttributes<HTMLDivElement
   containerWidth: number
   gap?: number | undefined
   scrollRef: React.RefObject<HTMLDivElement | null>
-  scrollThreshold?: number | undefined
+  onEndReachedThreshold?: number | undefined
 
   onRenderItem: (item: T, index: number) => React.ReactNode
   onEndReached?: () => void
@@ -19,7 +19,7 @@ export const MasonryList = <T, >(props: MasonryListProps<T>) => {
     containerWidth,
     gap = 10,
     scrollRef,
-    scrollThreshold = 1000,
+    onEndReachedThreshold = 1000,
     onRenderItem,
     onEndReached,
     ...rest
@@ -44,14 +44,14 @@ export const MasonryList = <T, >(props: MasonryListProps<T>) => {
 
     const handleScroll = () => {
       const { scrollTop, scrollHeight, clientHeight } = container
-      if (scrollHeight - scrollTop - clientHeight <= scrollThreshold) {
+      if (scrollHeight - scrollTop - clientHeight <= onEndReachedThreshold) {
         onEndReached?.()
       }
     }
 
     container.addEventListener('scroll', handleScroll)
     return () => { container.removeEventListener('scroll', handleScroll) }
-  }, [onEndReached, scrollRef, scrollThreshold])
+  }, [onEndReached, scrollRef, onEndReachedThreshold])
 
   return (
     <div

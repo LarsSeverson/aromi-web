@@ -1,6 +1,5 @@
 import React, { useRef, useState } from 'react'
 import SideBar from '../components/SideBar'
-import Divider from '@/components/Divider'
 import { Outlet } from 'react-router'
 import TopBar from '@/components/TopBar'
 import { ResizeContainer } from '@/components/common/ResizeContainer'
@@ -8,39 +7,43 @@ import MainLayoutProvider from '@/contexts/MainLayoutContext'
 
 const MainLayout = () => {
   const [mainContentRect, setMainContextRect] = useState<DOMRect>(new DOMRect())
-  const mainContentRef = useRef<HTMLDivElement>(null)
+  const mainScrollRef = useRef<HTMLDivElement>(null)
 
   return (
     <div
+      ref={mainScrollRef}
       className='
         flex
         flex-row
-        w-screen
-        h-screen
+        overflow-auto
       '
     >
       <SideBar />
-      <Divider />
       <div
         className='
+          flex-1
           flex
           flex-col
-          flex-1
+          pl-[72px]
+          pt-[72px]
+          relative
+          min-h-screen
         '
       >
-        <TopBar />
+        <TopBar
+          className='fixed top-0 right-0 left-[72px] z-50 bg-white'
+        />
+
         <div
-          ref={mainContentRef}
-          className='overflow-auto p-5'
-          style={{ scrollbarGutter: 'stable' }}
+          className='p-5 h-full'
         >
           <ResizeContainer
             onResize={setMainContextRect}
+            className='h-full'
           >
-
             <MainLayoutProvider
               mainContentRect={mainContentRect}
-              mainContentRef={mainContentRef}
+              mainScrollRef={mainScrollRef}
             >
               <Outlet />
             </MainLayoutProvider>
