@@ -5,7 +5,7 @@ import { useMainLayoutContext } from '@/contexts/MainLayoutContext'
 import { FragrancePreviewCard } from './common/fragrance/FragrancePreviewCard'
 
 export const HomeSuggestedSection = () => {
-  const { mainContentRect, mainScrollRef } = useMainLayoutContext()
+  const { mainContentRect } = useMainLayoutContext()
   const { data } = useSuggestedFragrances()
 
   const onRenderFragrance = useCallback((item: SuggestedFragrancesFragrance) => {
@@ -25,7 +25,6 @@ export const HomeSuggestedSection = () => {
       <MasonryList
         items={data}
         containerWidth={mainContentRect.width}
-        scrollRef={mainScrollRef}
         onRenderItem={onRenderFragrance}
       />
     </div>

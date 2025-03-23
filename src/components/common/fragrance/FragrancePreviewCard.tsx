@@ -1,12 +1,12 @@
 import { type FragranceImage, type Fragrance } from '@/generated/graphql'
 import clsx from 'clsx'
 import React from 'react'
-import { Link } from 'react-router'
 import { VoteButton } from '../VoteButton'
 import fallbackImage from '@/assets/fall-back-fi.svg'
 import ButtonText from '@/components/ButtonText'
 import BouncyButton from '@/components/BouncyButton'
 import { HiDotsHorizontal } from 'react-icons/hi'
+import { Link } from '@tanstack/react-router'
 
 export type CardFragrancePreview = Omit<Pick<Fragrance, 'id' | 'name' | 'brand' | 'votes'>, 'images'> & {
   images: FragranceImage[]

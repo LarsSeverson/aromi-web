@@ -1,4 +1,4 @@
-import { useVirtualizer } from '@tanstack/react-virtual'
+import { useWindowVirtualizer } from '@tanstack/react-virtual'
 import React, { useEffect } from 'react'
 
 export interface MasonryListProps<T> extends React.HTMLAttributes<HTMLDivElement> {
@@ -6,7 +6,6 @@ export interface MasonryListProps<T> extends React.HTMLAttributes<HTMLDivElement
 
   containerWidth: number
   gap?: number | undefined
-  scrollRef: React.RefObject<HTMLDivElement | null>
   onEndReachedThreshold?: number | undefined
 
   onRenderItem: (item: T, index: number) => React.ReactNode
@@ -18,8 +17,7 @@ export const MasonryList = <T, >(props: MasonryListProps<T>) => {
     items,
     containerWidth,
     gap = 10,
-    scrollRef,
-    onEndReachedThreshold = 1000,
+    onEndReachedThreshold = 300,
     onRenderItem,
     onEndReached,
     ...rest
@@ -31,27 +29,23 @@ export const MasonryList = <T, >(props: MasonryListProps<T>) => {
   const effectiveWidth = colCount <= 0 ? itemWidth : (containerWidth - (colCount - 1) * gap) / colCount
   const rowCount = Math.ceil(items.length / colCount)
 
-  const rowVirtualizer = useVirtualizer({
+  const rowVirtualizer = useWindowVirtualizer({
     count: rowCount,
-    getScrollElement: () => scrollRef.current,
     estimateSize: () => itemHeight + gap,
     overscan: 5
   })
 
   useEffect(() => {
-    const container = scrollRef.current
-    if (container == null) return
-
     const handleScroll = () => {
-      const { scrollTop, scrollHeight, clientHeight } = container
+      const { scrollTop, scrollHeight, clientHeight } = document.documentElement
       if (scrollHeight - scrollTop - clientHeight <= onEndReachedThreshold) {
         onEndReached?.()
       }
     }
 
-    container.addEventListener('scroll', handleScroll)
-    return () => { container.removeEventListener('scroll', handleScroll) }
-  }, [onEndReached, scrollRef, onEndReachedThreshold])
+    window.addEventListener('scroll', handleScroll)
+    return () => { window.removeEventListener('scroll', handleScroll) }
+  }, [onEndReached, onEndReachedThreshold])
 
   return (
     <div

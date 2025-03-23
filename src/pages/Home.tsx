@@ -1,13 +1,20 @@
 import { HomeSuggestedSection } from '@/components/HomeSuggestedSection'
-import { useMainLayoutContext } from '@/contexts/MainLayoutContext'
-import { useScrollState } from '@/hooks/useScrollState'
+import { mainLayoutRoute } from '@/layouts/MainLayout'
+import { createRoute } from '@tanstack/react-router'
 import React from 'react'
 
-export const Home = () => {
-  const { mainScrollRef } = useMainLayoutContext()
-  useScrollState(mainScrollRef, 'homeScrollPos')
+export const homeRoute = createRoute({
+  getParentRoute: () => mainLayoutRoute,
+  path: '/home',
+  component: () => <Home />
+})
 
+export const Home = () => {
   return (
     <HomeSuggestedSection />
   )
 }
+
+export default Home
+
+homeRoute.addChildren([])

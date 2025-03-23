@@ -12,18 +12,25 @@ export interface FragranceImageCarouselProps extends HTMLAttributes<HTMLDivEleme
 export const FragranceImageCarousel = (props: FragranceImageCarouselProps) => {
   const { images, className, ...rest } = props
   const [curImage, setCurImage] = useState(0)
+  const [dimensions, setDimensions] = useState<{ width: number, height: number } | null>(null)
   const empty = images.length === 0
+
+  const handleImageLoad = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    if (dimensions === null) {
+      setDimensions({ width: e.currentTarget.clientWidth, height: e.currentTarget.clientHeight })
+    }
+  }
 
   return (
     <div
-      className='flex flex-row h-full w-full items-center group'
+      className='flex flex-row h-full w-full items-center group relative'
     >
-
       <div
         className={clsx(
-          'flex-1 w-full h-full relative',
+          'w-full relative',
           className
         )}
+        style={dimensions !== null ? { aspectRatio: `${dimensions.width} / ${dimensions.height}` } : {}}
         {...rest}
       >
         <div
@@ -54,15 +61,15 @@ export const FragranceImageCarousel = (props: FragranceImageCarouselProps) => {
         </div>
         <img
           src={empty ? fallback : images.at(curImage)?.url ?? fallback}
+          onLoad={handleImageLoad}
           onError={({ currentTarget }) => {
             currentTarget.onerror = null
             currentTarget.src = fallback
           }}
-          className='h-full object-contain absolute'
+          className='object-contain w-full h-full'
         />
-        <div className='absolute bg-black opacity-[.04] top-0 right-0 left-0 bottom-0' />
       </div>
-
+      <div className='absolute bg-black opacity-[.04] top-0 right-0 left-0 bottom-0' />
     </div>
   )
 }

@@ -1,7 +1,8 @@
 import React, { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { Amplify } from 'aws-amplify'
-import App from './App.tsx'
+import { createRouter, RouterProvider } from '@tanstack/react-router'
+import { rootRoute } from '@/routes/__root'
 
 Amplify.configure({
   Auth: {
@@ -15,11 +16,24 @@ Amplify.configure({
   }
 })
 
+const router = createRouter({
+  routeTree: rootRoute,
+  scrollRestoration: true
+})
+
+declare module '@tanstack/react-router' {
+  export interface Register {
+    router: typeof router
+  }
+}
+
 const root = document.getElementById('root')
 if (root != null) {
   createRoot(root).render(
     <StrictMode>
-      <App />
+      <RouterProvider
+        router={router}
+      />
     </StrictMode>
   )
 } else {

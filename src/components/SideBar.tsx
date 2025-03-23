@@ -1,16 +1,11 @@
 import React from 'react'
 import BouncyButton from './BouncyButton'
 import { CommunityIcon, HomeIcon, Logo, ProfileIcon, SearchIcon } from './common/Icons'
-import { useLocation, useNavigate } from 'react-router'
 import SideBarButton from './SideBarButton'
+import { useLocation } from '@tanstack/react-router'
 
 const SideBar = () => {
-  const navigate = useNavigate()
   const location = useLocation()
-
-  const handleSideBarButtonPress = (route: string) => {
-    void navigate(route)
-  }
 
   const active = (route: string): boolean => {
     if (route === '/' && location.pathname === '/') return true
@@ -26,29 +21,24 @@ const SideBar = () => {
       >
         <BouncyButton
           className='aspect-square'
-          onClick={() => { handleSideBarButtonPress('/home') }}
         >
           <Logo />
         </BouncyButton>
         <SideBarButton
           active={active('home') || active('/')}
           Icon={<HomeIcon />}
-          onClick={() => { handleSideBarButtonPress('/home') }}
         />
         <SideBarButton
           active={active('search')}
           Icon={<SearchIcon />}
-          onClick={() => { handleSideBarButtonPress('/search') }}
         />
         <SideBarButton
           active={active('community')}
           Icon={<CommunityIcon />}
-          onClick={() => { handleSideBarButtonPress('/community') }}
         />
         <SideBarButton
           active={active('profile')}
           Icon={<ProfileIcon />}
-          onClick={() => { handleSideBarButtonPress('/profile') }}
         />
       </div>
     </nav>

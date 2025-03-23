@@ -1,21 +1,27 @@
-import React, { useRef, useState } from 'react'
+import React, { useState } from 'react'
 import SideBar from '../components/SideBar'
-import { Outlet } from 'react-router'
 import TopBar from '@/components/TopBar'
 import { ResizeContainer } from '@/components/common/ResizeContainer'
 import MainLayoutProvider from '@/contexts/MainLayoutContext'
+import { createRoute, Outlet } from '@tanstack/react-router'
+import { rootRoute } from '@/routes/__root'
+import { homeRoute } from '@/pages/Home'
+import { fragranceRoute } from '@/pages/Fragrance'
+
+export const mainLayoutRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/',
+  component: () => <MainLayout />
+})
 
 const MainLayout = () => {
-  const [mainContentRect, setMainContextRect] = useState<DOMRect>(new DOMRect())
-  const mainScrollRef = useRef<HTMLDivElement>(null)
+  const [mainContentRect, setMainContextRect] = useState(new DOMRect())
 
   return (
     <div
-      ref={mainScrollRef}
       className='
         flex
         flex-row
-        overflow-auto
       '
     >
       <SideBar />
@@ -27,7 +33,8 @@ const MainLayout = () => {
           pl-[72px]
           pt-[72px]
           relative
-          min-h-screen
+          h-full
+          w-full
         '
       >
         <TopBar
@@ -43,7 +50,6 @@ const MainLayout = () => {
           >
             <MainLayoutProvider
               mainContentRect={mainContentRect}
-              mainScrollRef={mainScrollRef}
             >
               <Outlet />
             </MainLayoutProvider>
@@ -55,3 +61,5 @@ const MainLayout = () => {
 }
 
 export default MainLayout
+
+mainLayoutRoute.addChildren([homeRoute, fragranceRoute])
