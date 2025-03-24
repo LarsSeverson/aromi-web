@@ -11,7 +11,7 @@ const FRAGRANCE_REVIEWS_QUERY = graphql(/* GraphQL */ `
     $fragranceId: Int!
     $reviewsInput: QueryInput = {
       pagination: {
-        first: 20
+        first: 20 
         sort: {
           by: votes
         }

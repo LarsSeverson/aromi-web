@@ -15,6 +15,7 @@ export interface MidScaleBarProps extends React.HTMLAttributes<HTMLDivElement> {
   greaterColor?: string
   lessLabel?: string
   greaterLabel?: string
+  barClassName?: string
 
   Icon?: React.ReactNode
 }
@@ -29,6 +30,7 @@ const MidScaleBar = (props: MidScaleBarProps) => {
     greaterLabel,
     Icon,
     className,
+    barClassName,
     ...rest
   } = props
 
@@ -53,7 +55,10 @@ const MidScaleBar = (props: MidScaleBarProps) => {
         {label}
       </h6>
       <div
-        className='w-full rounded-full h-4 overflow-hidden flex flex-row bg-gray-100'
+        className={clsx(
+          'w-full rounded-full h-4 overflow-hidden flex flex-row bg-gray-100',
+          barClassName
+        )}
       >
         <div
           className='flex-1 flex flex-row-reverse'

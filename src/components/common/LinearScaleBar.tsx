@@ -4,10 +4,11 @@ import React from 'react'
 export interface LinearScaleBarProps extends React.HTMLAttributes<HTMLDivElement> {
   value: number
   color?: string
+  trackColor?: string
 }
 
 const LinearScaleBar = (props: LinearScaleBarProps) => {
-  const { value, color = 'black', ...rest } = props
+  const { value, color = 'black', trackColor, className, style, ...rest } = props
 
   if (value > 100.0 || value < 0.0) {
     return null
@@ -15,12 +16,16 @@ const LinearScaleBar = (props: LinearScaleBarProps) => {
 
   return (
     <div
+      className={clsx(
+        'rounded-full h-4 overflow-hidden flex flex-row flex-1',
+        className
+      )}
       {...rest}
-      className='bg-transparent rounded-full h-4 overflow-hidden flex flex-row flex-1'
+      style={{ ...style, backgroundColor: trackColor }}
     >
       <div
         className={clsx(
-          'h-full rounded-full'
+          'h-full rounded-full min-w-6'
         )}
         style={{ backgroundColor: color, width: `${value}%` }}
       />

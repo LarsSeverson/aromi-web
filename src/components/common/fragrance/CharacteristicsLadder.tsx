@@ -29,7 +29,7 @@ export const CharacteristicsLadder = (props: CharacteristicsLadderProps) => {
   return (
     <div
       className={clsx(
-        'flex flex-col gap-10',
+        'flex flex-col gap-10 max-w-xl',
         className
       )}
       {...rest}

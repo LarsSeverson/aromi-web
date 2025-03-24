@@ -33,13 +33,19 @@ export const VoteButton = (props: VoteButtonProps) => {
     return votes - getVoteValue(myVote) + getVoteValue(curVote)
   }, [votes, myVote, curVote])
 
-  const onFor = useCallback(() => {
+  const onFor = useCallback((e: React.SyntheticEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+
     const newVote = (curVote ?? false) ? null : true
     setCurVote(newVote)
     onVote?.(newVote)
   }, [curVote, onVote])
 
-  const onAgainst = useCallback(() => {
+  const onAgainst = useCallback((e: React.SyntheticEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+
     const newVote = curVote === false ? null : false
     setCurVote(newVote)
     onVote?.(newVote)
@@ -70,7 +76,7 @@ export const VoteButton = (props: VoteButtonProps) => {
           curVote !== null ? 'text-white' : ''
         )}
       >
-        {formatVoteTypeNumber(curVotes)}
+        {curVotes === 0 ? 'vote' : formatVoteTypeNumber(curVotes)}
       </p>
       <div className='py-2 pl-2'>
         <Divider />

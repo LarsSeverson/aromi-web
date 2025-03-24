@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { formatVoteTypeNumber } from '@/common/string-utils'
 import BouncyButton from '@/components/BouncyButton'
 import ButtonText from '@/components/ButtonText'
@@ -21,6 +21,11 @@ import { CharacteristicsLadder } from '@/components/common/fragrance/Characteris
 import FragranceCategory from '@/components/common/fragrance/FragranceCategory'
 import { createRoute } from '@tanstack/react-router'
 import { mainLayoutRoute } from '@/layouts/MainLayout'
+import useFragranceReviews from '@/hooks/useFragranceReviews'
+import { ReviewsSummary } from '@/components/common/fragrance/ReviewsSummary'
+import Divider from '@/components/Divider'
+import { ReviewsList } from '@/components/common/fragrance/ReviewsList'
+import clsx from 'clsx'
 
 export const fragranceRoute = createRoute({
   getParentRoute: () => mainLayoutRoute,
@@ -37,6 +42,12 @@ export const Fragrance = () => {
   const { data: traits } = useFragranceTraits(fragranceId)
   const { data: accords } = useFragranceAccords(fragranceId, 8)
   const { data: notes } = useFragranceNotes(fragranceId, { includeTop: true, includeMiddle: true, includeBase: true })
+  const { data: reviews } = useFragranceReviews(fragranceId)
+
+  const [curReviewPage, setCurReviewPage] = useState(0)
+
+  const testRev = Array(21).fill(reviews).flat()
+  const totalPages = Math.ceil(testRev.length / 4)
 
   const layers = [
     { layer: NoteLayer.Top, notes: notes.top },
@@ -147,7 +158,38 @@ export const Fragrance = () => {
           </div>
         </FragranceCategory>
         <FragranceCategory title='Reviews'>
-          {}
+          <div className='w-full flex flex-col items-center'>
+            <ReviewsSummary
+              rating={info.rating}
+              reviewCount={info.reviewsCount}
+              reviewDistribution={info.reviewDistribution}
+              className='w-full max-w-4xl'
+            />
+            <Divider
+              horizontal
+              className='mt-5'
+            />
+            <ReviewsList
+              reviews={testRev}
+              currentPage={curReviewPage}
+              reviewsPerPage={4}
+            />
+            <nav className='flex flex-row gap-2'>
+              {Array.from({ length: totalPages }).map((_, index) => (
+                <BouncyButton
+                  key={index}
+                  className={clsx(
+                    'aspect-square rounded-full bg-gray-200 text-sm font-semibold text-center outline outline-2 outline-offset-0 hover:outline-sinopia',
+                    curReviewPage === index && 'outline-black',
+                    !(curReviewPage === index) && 'outline-none'
+                  )}
+                  onClick={() => { setCurReviewPage(index) }}
+                >
+                  {index + 1}
+                </BouncyButton>
+              ))}
+            </nav>
+          </div>
         </FragranceCategory>
       </div>
     </div>

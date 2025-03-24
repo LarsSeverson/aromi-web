@@ -21,12 +21,20 @@ const FRAGRANCE_INFO_QUERY = graphql(/* GraphQL */ `
         dislikes
         myVote
       }
+
+      reviewDistribution {
+        one
+        two
+        three
+        four
+        five
+      }
     }
   }
 `)
 
 export type FlattenedFragranceInfoQuery = NonNullable<FragranceInfoQuery['fragrance']>
-export type FragranceInfo = Pick<FlattenedFragranceInfoQuery, 'id' | 'brand' | 'name' | 'rating' | 'reviewsCount' | 'votes'>
+export type FragranceInfo = Pick<FlattenedFragranceInfoQuery, 'id' | 'brand' | 'name' | 'rating' | 'reviewsCount' | 'votes' | 'reviewDistribution'>
 
 const EMPTY_FRAGRANCE: FragranceInfo = {
   id: -1,
@@ -40,6 +48,13 @@ const EMPTY_FRAGRANCE: FragranceInfo = {
     likes: 0,
     dislikes: 0,
     myVote: undefined
+  },
+  reviewDistribution: {
+    one: 0,
+    two: 0,
+    three: 0,
+    four: 0,
+    five: 0
   }
 }
 

@@ -11,8 +11,10 @@ export const AuthProvider = (props: AuthProviderProps) => {
   const auth = useAuth()
 
   return (
-    <AuthContext.Provider value={auth}>
-      {children}
+    <AuthContext.Provider
+      value={auth}
+    >
+      {auth.initialized ? children : null}
     </AuthContext.Provider>
   )
 }

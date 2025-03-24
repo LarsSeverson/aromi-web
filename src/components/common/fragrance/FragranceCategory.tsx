@@ -32,7 +32,7 @@ const FragranceCategory = (props: FragranceCategoryProps) => {
       {...rest}
     >
       <div
-        className='flex flex-row justify-between items-center'
+        className='flex flex-row justify-between items-center mb-4'
       >
         <h2
           className='font-pd text-xl'
