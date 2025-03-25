@@ -6,7 +6,7 @@ export interface BouncyButtonProps extends React.ButtonHTMLAttributes<HTMLButton
 }
 
 const BouncyButton = (props: BouncyButtonProps) => {
-  const { children, className, ...rest } = props
+  const { children, disabled, className, ...rest } = props
 
   return (
     <button
@@ -14,8 +14,10 @@ const BouncyButton = (props: BouncyButtonProps) => {
       className={clsx(
         'transition-transform active:scale-95 backdrop-brightness-100 hover:backdrop-brightness-90 p-3 flex justify-center items-center select-none relative',
         className,
-        ((className?.includes('rounded')) ?? false) ? '' : 'rounded-lg'
+        ((className?.includes('rounded')) ?? false) ? '' : 'rounded-lg',
+        (disabled ?? false) && 'opacity-40 cursor-not-allowed'
       )}
+      disabled={disabled}
       {...rest}
     >
       {children}

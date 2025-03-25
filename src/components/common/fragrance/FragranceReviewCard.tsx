@@ -3,7 +3,7 @@ import { type FragranceReview } from '@/generated/graphql'
 import { Colors } from '@/styles/Colors'
 import React from 'react'
 import { HiDotsHorizontal } from 'react-icons/hi'
-import logo from '@/assets/aromi.svg'
+import empty from '@/assets/avatar-empty.svg'
 import { formatDate } from '@/common/string-utils'
 import { VoteButton } from '../VoteButton'
 import RatingStars from '../RatingStars'
@@ -32,7 +32,7 @@ export const FragranceReviewCard = (props: FragranceReviewCardProps) => {
         <img
           className='rounded-full min-w-16 w-16 aspect-square overflow-hidden object-cover'
           style={{ backgroundColor: Colors.empty }}
-          src={logo}
+          src={empty}
         />
         <div className='flex flex-col gap-2'>
           <div className='flex flex-row gap-3 self-start items-center w-full min-w-0'>
@@ -50,14 +50,16 @@ export const FragranceReviewCard = (props: FragranceReviewCardProps) => {
           />
         </div>
         <BouncyButton
-          className='rounded-full mb-auto ml-auto'
+          className='aspect-square rounded-full mb-auto ml-auto px-2'
         >
           <HiDotsHorizontal
             size={22}
           />
         </BouncyButton>
       </div>
-      <p>
+      <p
+        className='px-5'
+      >
         {text}
       </p>
       <VoteButton

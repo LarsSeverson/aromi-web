@@ -25,7 +25,7 @@ import useFragranceReviews from '@/hooks/useFragranceReviews'
 import { ReviewsSummary } from '@/components/common/fragrance/ReviewsSummary'
 import Divider from '@/components/Divider'
 import { ReviewsList } from '@/components/common/fragrance/ReviewsList'
-import clsx from 'clsx'
+import { PageNav } from '@/components/common/PageNav'
 
 export const fragranceRoute = createRoute({
   getParentRoute: () => mainLayoutRoute,
@@ -46,8 +46,9 @@ export const Fragrance = () => {
 
   const [curReviewPage, setCurReviewPage] = useState(0)
 
-  const testRev = Array(21).fill(reviews).flat()
-  const totalPages = Math.ceil(testRev.length / 4)
+  // const testRev = Array(10).fill(reviews).flat()
+  // const totalPages = Math.ceil(testRev.length / 4)
+  const totalPages = Math.ceil(reviews.length / 4)
 
   const layers = [
     { layer: NoteLayer.Top, notes: notes.top },
@@ -88,7 +89,7 @@ export const Fragrance = () => {
               />
               <div className='flex flex-row items-center'>
                 <BouncyButton
-                  className='px-0 py-0 hover:backdrop-brightness-100'
+                  className='px-0 py-0 hover:backdrop-brightness-105'
                 >
                   <RatingStars
                     rating={info.rating}
@@ -170,25 +171,16 @@ export const Fragrance = () => {
               className='mt-5'
             />
             <ReviewsList
-              reviews={testRev}
+              reviews={reviews}
               currentPage={curReviewPage}
               reviewsPerPage={4}
             />
-            <nav className='flex flex-row gap-2'>
-              {Array.from({ length: totalPages }).map((_, index) => (
-                <BouncyButton
-                  key={index}
-                  className={clsx(
-                    'aspect-square rounded-full bg-gray-200 text-sm font-semibold text-center outline outline-2 outline-offset-0 hover:outline-sinopia',
-                    curReviewPage === index && 'outline-black',
-                    !(curReviewPage === index) && 'outline-none'
-                  )}
-                  onClick={() => { setCurReviewPage(index) }}
-                >
-                  {index + 1}
-                </BouncyButton>
-              ))}
-            </nav>
+            <PageNav
+              totalPages={totalPages}
+              curPage={curReviewPage}
+              onPageChange={setCurReviewPage}
+              className='mr-auto my-8'
+            />
           </div>
         </FragranceCategory>
       </div>
