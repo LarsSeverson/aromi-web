@@ -14,7 +14,7 @@ export const PageNav = (props: PageNavProps) => {
   const { totalPages, curPage, pagesShown = 5, onPageChange, className, ...rest } = props
 
   const btnClassName = clsx(
-    'px-[11px] aspect-square rounded-full text-sm font-semibold',
+    'px-[9px] aspect-square rounded-full text-sm font-semibold',
     'bg-gray-200 outline outline-2 outline-offset-0 outline-none hover:outline-sinopia'
   )
 

@@ -1,11 +1,11 @@
-import { HomeSuggestedSection } from '@/components/HomeSuggestedSection'
-import { mainLayoutRoute } from '@/layouts/MainLayout'
-import { createRoute } from '@tanstack/react-router'
 import React from 'react'
+import { HomeSuggestedSection } from '@/components/HomeSuggestedSection'
+import { rootRoute } from '@/routes/__root'
+import { createRoute } from '@tanstack/react-router'
 
 export const homeRoute = createRoute({
-  getParentRoute: () => mainLayoutRoute,
-  path: '/home',
+  getParentRoute: () => rootRoute,
+  path: '/',
   component: () => <Home />
 })
 

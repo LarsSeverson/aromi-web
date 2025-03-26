@@ -4,7 +4,7 @@ import RatingStars from '../RatingStars'
 import { Colors } from '@/styles/Colors'
 import LinearScaleBar from '../LinearScaleBar'
 import clsx from 'clsx'
-import { formatVoteTypeNumber } from '@/common/string-utils'
+import { formatNumber } from '@/common/string-utils'
 
 export interface ReviewSummaryProps extends React.HTMLAttributes<HTMLDivElement> {
   rating: number
@@ -44,7 +44,7 @@ export const ReviewsSummary = (props: ReviewSummaryProps) => {
         <p
           className='font-pd opacity-60'
         >
-          {formatVoteTypeNumber(reviewCount)} {reviewCount === 1 ? 'review' : 'reviews'}
+          {formatNumber(reviewCount)} {reviewCount === 1 ? 'review' : 'reviews'}
         </p>
       </div>
       <div className='flex-[3] flex flex-col items-start min-w-48'>

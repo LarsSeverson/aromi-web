@@ -3,7 +3,7 @@ import BouncyButton from '../BouncyButton'
 import Divider from '../Divider'
 import clsx from 'clsx'
 import { DislikeIcon, FillDislikeIcon, FillLikeIcon, LikeIcon } from './Icons'
-import { formatVoteTypeNumber } from '@/common/string-utils'
+import { formatNumber } from '@/common/string-utils'
 
 export interface VoteButtonProps extends React.HTMLAttributes<HTMLDivElement> {
   votes: number
@@ -76,7 +76,7 @@ export const VoteButton = (props: VoteButtonProps) => {
           curVote !== null ? 'text-white' : ''
         )}
       >
-        {curVotes === 0 ? 'vote' : formatVoteTypeNumber(curVotes)}
+        {curVotes === 0 ? 'vote' : formatNumber(curVotes)}
       </p>
       <div className='py-2 pl-2'>
         <Divider />

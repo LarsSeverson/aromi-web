@@ -3,16 +3,7 @@ import SideBar from '../components/SideBar'
 import TopBar from '@/components/TopBar'
 import { ResizeContainer } from '@/components/common/ResizeContainer'
 import MainLayoutProvider from '@/contexts/MainLayoutContext'
-import { createRoute, Outlet } from '@tanstack/react-router'
-import { rootRoute } from '@/routes/__root'
-import { homeRoute } from '@/pages/Home'
-import { fragranceRoute } from '@/pages/Fragrance'
-
-export const mainLayoutRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: '/',
-  component: () => <MainLayout />
-})
+import { Outlet } from '@tanstack/react-router'
 
 const MainLayout = () => {
   const [mainContentRect, setMainContextRect] = useState(new DOMRect())
@@ -61,5 +52,3 @@ const MainLayout = () => {
 }
 
 export default MainLayout
-
-mainLayoutRoute.addChildren([homeRoute, fragranceRoute])

@@ -5,6 +5,7 @@ import { useAuthContext } from '@/contexts/AuthContext'
 import { AuthState } from '@/hooks/useAuth'
 import LogInModal from './modals/LogInModal'
 import clsx from 'clsx'
+import emptyAvatar from '@/assets/avatar-empty.svg'
 
 export interface TopBarProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -48,8 +49,13 @@ const TopBar = (props: TopBarProps) => {
           )
         : (
           <BouncyButton
-            className='aspect-square rounded-full bg-gray-200 p-4'
-          />
+            className='aspect-square rounded-full bg-gray-200 px-0 py-0 w-10'
+          >
+            <img
+              src={emptyAvatar}
+              className='object-cover w-full'
+            />
+          </BouncyButton>
           )}
       <LogInModal
         open={logInOpen}

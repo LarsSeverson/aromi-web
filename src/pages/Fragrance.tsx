@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { formatVoteTypeNumber } from '@/common/string-utils'
+import { formatNumber } from '@/common/string-utils'
 import BouncyButton from '@/components/BouncyButton'
 import ButtonText from '@/components/ButtonText'
 import { FragranceImageCarousel } from '@/components/common/fragrance/FragranceImageCarousel'
@@ -20,15 +20,15 @@ import { NoteLayer } from '@/generated/graphql'
 import { CharacteristicsLadder } from '@/components/common/fragrance/CharacteristicsLadder'
 import FragranceCategory from '@/components/common/fragrance/FragranceCategory'
 import { createRoute } from '@tanstack/react-router'
-import { mainLayoutRoute } from '@/layouts/MainLayout'
 import useFragranceReviews from '@/hooks/useFragranceReviews'
 import { ReviewsSummary } from '@/components/common/fragrance/ReviewsSummary'
 import Divider from '@/components/Divider'
 import { ReviewsList } from '@/components/common/fragrance/ReviewsList'
 import { PageNav } from '@/components/common/PageNav'
+import { rootRoute } from '@/routes/__root'
 
 export const fragranceRoute = createRoute({
-  getParentRoute: () => mainLayoutRoute,
+  getParentRoute: () => rootRoute,
   path: '/fragrance/$id',
   component: () => <Fragrance />
 })
@@ -97,7 +97,7 @@ export const Fragrance = () => {
                   />
                 </BouncyButton>
                 <p className='font-p text-lg mb-[3px]'>
-                  ({formatVoteTypeNumber(info.reviewsCount)})
+                  ({formatNumber(info.reviewsCount)})
                 </p>
               </div>
             </div>
