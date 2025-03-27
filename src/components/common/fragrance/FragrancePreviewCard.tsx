@@ -7,6 +7,7 @@ import ButtonText from '@/components/ButtonText'
 import BouncyButton from '@/components/BouncyButton'
 import { HiDotsHorizontal } from 'react-icons/hi'
 import { Link } from '@tanstack/react-router'
+import { Overlay } from '../Overlay'
 
 export type CardFragrancePreview = Omit<Pick<Fragrance, 'id' | 'name' | 'brand' | 'votes'>, 'images'> & {
   images: FragranceImage[]
@@ -48,7 +49,7 @@ export const FragrancePreviewCard = (props: FragrancePreviewCardProps) => {
               currentTarget.src = fallbackImage
             }}
           />
-          <div className='absolute bg-black opacity-[.04] top-0 right-0 left-0 bottom-0' />
+          <Overlay />
         </div>
         <div
           className='hidden group-hover:inline absolute w-full h-full'

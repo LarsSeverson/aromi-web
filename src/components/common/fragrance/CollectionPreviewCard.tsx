@@ -1,6 +1,11 @@
 import { type FlattenType } from '@/common/util-types'
 import { type FragranceCollection } from '@/generated/graphql'
+import collectionImage from '@/assets/collection.svg'
+import emptyFragranceImage from '@/assets/fall-back-fi.svg'
+import clsx from 'clsx'
 import React from 'react'
+import { Overlay } from '../Overlay'
+import { Link } from '@tanstack/react-router'
 
 type FlattenedCollection = FlattenType<FragranceCollection>
 type PartialUser = Pick<FlattenedCollection['user'], 'username'>
@@ -10,20 +15,59 @@ export type CardCollectionPreview = Pick<FlattenedCollection, 'name'> & { user: 
 
 export interface CollectionPreviewCardProps {
   collection: CardCollectionPreview
+  navigateTo?: string | undefined
 }
 
 export const CollectionPreviewCard = (props: CollectionPreviewCardProps) => {
-  const { collection } = props
+  const { collection, navigateTo } = props
   const { name, items } = collection
+  const itemsShown = items.slice(0, Math.min(items.length, 4))
 
   return (
-    <div className='w-full h-full flex flex-col'>
-      <div className='flex-1 grid grid-cols-2 rounded-3xl overflow-hidden'>
-        <div className='row-span-2 bg-gray-200' />
-        <div className='bg-gray-500' />
-        <div className='bg-gray-800' />
-      </div>
-      {name}
+    <div className='w-full h-full'>
+      <Link
+        to={navigateTo ?? ''}
+        className='w-full h-full flex flex-col gap-2'
+      >
+        <div
+          className={clsx(
+            'flex-1 rounded-2xl overflow-hidden grid relative',
+            itemsShown.length === 1 && 'grid-cols-1 grid-rows-1',
+            itemsShown.length !== 1 && 'grid-cols-2 grid-rows-2'
+          )}
+        >
+          {itemsShown.map((item, index) => (
+            <img
+              key={index}
+              className={clsx(
+                'w-full h-full object-cover',
+                itemsShown.length === 2 && 'row-span-2',
+                (itemsShown.length === 3 && index === 0) && 'row-span-2'
+              )}
+              src={item.fragrance.images.at(0)?.url ?? emptyFragranceImage}
+            />
+          ))}
+          {itemsShown.length === 0 && (
+            <img
+              src={collectionImage}
+              className='w-full h-full row-span-2 col-span-2'
+            />
+          )}
+          <Overlay />
+        </div>
+        <div>
+          <h4
+            className='font-pd text-xl truncate'
+          >
+            {name}
+          </h4>
+          <p
+            className='text-xs font-normal mt-1'
+          >
+            {items.length} {items.length === 1 ? 'Fragrance' : 'Fragrances'}
+          </p>
+        </div>
+      </Link>
     </div>
   )
 }

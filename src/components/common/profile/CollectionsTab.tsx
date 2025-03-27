@@ -24,8 +24,10 @@ export const CollectionsTab = (props: CollectionsTabProps) => {
   const { id, username } = user
   const { headline, body } = emptyCollectionText(myCollections, username)
 
-  const { data: collections } = useUserCollections(id)
+  const { data: collections, loading } = useUserCollections(id)
   const empty = collections.length === 0
+
+  if (loading) return null
 
   return (
     <div
@@ -49,8 +51,8 @@ export const CollectionsTab = (props: CollectionsTabProps) => {
       <MasonryList
         items={collections}
         containerWidth={containerWidth}
-        itemHeight={250}
-        itemWidth={300}
+        itemHeight={300}
+        itemWidth={350}
         onRenderItem={(collection) => <CollectionPreviewCard collection={collection} />}
       />
     </div>
