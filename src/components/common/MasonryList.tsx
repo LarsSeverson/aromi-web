@@ -5,6 +5,9 @@ export interface MasonryListProps<T> extends React.HTMLAttributes<HTMLDivElement
   items: T[]
 
   containerWidth: number
+  itemWidth?: number | undefined
+  itemHeight?: number | undefined
+  scale?: number | undefined
   gap?: number | undefined
   onEndReachedThreshold?: number | undefined
 
@@ -16,23 +19,28 @@ export const MasonryList = <T, >(props: MasonryListProps<T>) => {
   const {
     items,
     containerWidth,
+    itemWidth = 250,
+    itemHeight = 400,
     gap = 10,
+    scale = 0.8,
     onEndReachedThreshold = 300,
     onRenderItem,
     onEndReached,
     ...rest
   } = props
 
-  const itemWidth = 250
-  const itemHeight = 400
-  const colCount = Math.max(1, Math.floor(containerWidth / (itemWidth + gap)))
-  const effectiveWidth = colCount <= 0 ? itemWidth : (containerWidth - (colCount - 1) * gap) / colCount
+  const minItemWidth = itemWidth * scale
+  const ratio = itemHeight / itemWidth
+  const colCount = Math.max(1, Math.floor(containerWidth / (minItemWidth + gap)))
   const rowCount = Math.ceil(items.length / colCount)
+  const effectiveWidth = (containerWidth - (colCount - 1) * gap) / colCount
+  const effectiveHeight = effectiveWidth * ratio
 
   const rowVirtualizer = useWindowVirtualizer({
     count: rowCount,
-    estimateSize: () => itemHeight + gap,
-    overscan: 5
+    estimateSize: () => effectiveHeight,
+    overscan: 5,
+    gap
   })
 
   useEffect(() => {
@@ -46,6 +54,10 @@ export const MasonryList = <T, >(props: MasonryListProps<T>) => {
     window.addEventListener('scroll', handleScroll)
     return () => { window.removeEventListener('scroll', handleScroll) }
   }, [onEndReached, onEndReachedThreshold])
+
+  useEffect(() => {
+    rowVirtualizer.measure()
+  }, [effectiveHeight, rowVirtualizer])
 
   return (
     <div
@@ -64,14 +76,14 @@ export const MasonryList = <T, >(props: MasonryListProps<T>) => {
 
           return (
             <div
-              key={colIndex}
+              key={`${rowIndex}-${colIndex}`}
               style={{
                 position: 'absolute',
                 top: 0,
                 left: 0,
                 transform: `translateX(${x}px) translateY(${y}px)`,
                 width: effectiveWidth,
-                height: itemHeight
+                height: effectiveHeight
               }}
               className='overflow-hidden'
             >

@@ -768,6 +768,10 @@ video {
   z-index: 50;
 }
 
+.row-span-2{
+  grid-row: span 2 / span 2;
+}
+
 .m-10{
   margin: 2.5rem;
 }
@@ -948,6 +952,10 @@ video {
 
 .mt-\[-4px\]{
   margin-top: -4px;
+}
+
+.mt-16{
+  margin-top: 4rem;
 }
 
 .box-border{
@@ -1530,6 +1538,10 @@ video {
           appearance: none;
 }
 
+.grid-cols-2{
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
 .flex-row{
   flex-direction: row;
 }
@@ -1656,6 +1668,24 @@ video {
   --tw-space-x-reverse: 0;
   margin-right: calc(0.25rem * var(--tw-space-x-reverse));
   margin-left: calc(0.25rem * calc(1 - var(--tw-space-x-reverse)));
+}
+
+.space-y-10 > :not([hidden]) ~ :not([hidden]){
+  --tw-space-y-reverse: 0;
+  margin-top: calc(2.5rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(2.5rem * var(--tw-space-y-reverse));
+}
+
+.space-y-5 > :not([hidden]) ~ :not([hidden]){
+  --tw-space-y-reverse: 0;
+  margin-top: calc(1.25rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(1.25rem * var(--tw-space-y-reverse));
+}
+
+.space-y-12 > :not([hidden]) ~ :not([hidden]){
+  --tw-space-y-reverse: 0;
+  margin-top: calc(3rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(3rem * var(--tw-space-y-reverse));
 }
 
 .divide-dashed > :not([hidden]) ~ :not([hidden]){
@@ -2056,6 +2086,11 @@ video {
 .bg-white{
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+}
+
+.bg-gray-800{
+  --tw-bg-opacity: 1;
+  background-color: rgb(31 41 55 / var(--tw-bg-opacity, 1));
 }
 
 .bg-gradient-to-r{

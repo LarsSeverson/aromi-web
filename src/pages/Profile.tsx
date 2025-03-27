@@ -4,9 +4,12 @@ import { createRoute } from '@tanstack/react-router'
 import emptyAvatar from '@/assets/avatar-empty.svg'
 import React, { useState } from 'react'
 import Divider from '@/components/Divider'
-import { Tab, TabGroup, TabList } from '@headlessui/react'
+import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react'
 import clsx from 'clsx'
 import { formatNumber } from '@/common/string-utils'
+import { CollectionsTab } from '@/components/common/profile/CollectionsTab'
+import { useAuthContext } from '@/contexts/AuthContext'
+import { useMainLayoutContext } from '@/contexts/MainLayoutContext'
 
 export const profileRoute = createRoute({
   path: '/user/$id',
@@ -16,7 +19,12 @@ export const profileRoute = createRoute({
 
 export const Profile = () => {
   const { id } = profileRoute.useParams()
+  const { userInfo: currentUserInfo } = useAuthContext()
+  const { mainContentRect } = useMainLayoutContext()
+
   const userId = Number(id)
+  const currentUserId = currentUserInfo.user?.id
+  const myProfile = userId === currentUserId
 
   const { data: info } = useUserInfo(userId)
 
@@ -70,20 +78,25 @@ export const Profile = () => {
             </p>
           </div>
         </div>
-        <div
-          className='w-full'
-        >
+      </div>
+      <div
+        className='w-full'
+      >
+        <div className='flex items-center justify-center mt-5'>
           <Divider
             horizontal
+            className='max-w-2xl'
           />
-          <TabGroup
-            selectedIndex={selectedTab}
-            onChange={setSelectedTab}
-            className='flex justify-center'
+        </div>
+        <TabGroup
+          selectedIndex={selectedTab}
+          onChange={setSelectedTab}
+          className='w-full'
+        >
+          <TabList
+            className='flex w-full items-center justify-center'
           >
-            <TabList
-              className='flex min-w-fit max-w-sm w-full'
-            >
+            <div className='flex min-w-fit max-w-md w-full'>
               <Tab
                 className={clsx(
                   'flex-1 py-2.5 font-medium hover:bg-empty relative flex flex-col focus:outline-none'
@@ -111,12 +124,23 @@ export const Profile = () => {
               >
                 Reviews
                 {selectedTab === 2 && (
-                  <div className='min-w-fit border-2 border-black rounded-full w-1/3 absolute bottom-[-6px] place-self-center' />
+                  <div className='border-2 border-black rounded-full w-1/3 absolute bottom-[-6px] place-self-center' />
                 )}
               </Tab>
-            </TabList>
-          </TabGroup>
-        </div>
+            </div>
+          </TabList>
+          <TabPanels
+            className='mt-16'
+          >
+            <TabPanel>
+              <CollectionsTab
+                user={info}
+                myCollections={myProfile}
+                containerWidth={mainContentRect.width}
+              />
+            </TabPanel>
+          </TabPanels>
+        </TabGroup>
       </div>
     </div>
   )
