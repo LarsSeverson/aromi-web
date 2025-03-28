@@ -10,6 +10,7 @@ import { formatNumber } from '@/common/string-utils'
 import { CollectionsTab } from '@/components/common/profile/CollectionsTab'
 import { useAuthContext } from '@/contexts/AuthContext'
 import { useMainLayoutContext } from '@/contexts/MainLayoutContext'
+import { LikesTab } from '@/components/common/profile/LikesTab'
 
 export const profileRoute = createRoute({
   path: '/user/$id',
@@ -94,7 +95,7 @@ export const Profile = () => {
           className='w-full'
         >
           <TabList
-            className='flex w-full items-center justify-center'
+            className='flex w-full items-center justify-center sticky top-16 z-20 bg-white'
           >
             <div className='flex min-w-fit max-w-md w-full'>
               <Tab
@@ -136,6 +137,13 @@ export const Profile = () => {
               <CollectionsTab
                 user={info}
                 myCollections={myProfile}
+                containerWidth={mainContentRect.width}
+              />
+            </TabPanel>
+            <TabPanel>
+              <LikesTab
+                user={info}
+                myLikes={myProfile}
                 containerWidth={mainContentRect.width}
               />
             </TabPanel>

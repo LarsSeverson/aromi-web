@@ -28,12 +28,14 @@ export const FragrancePreviewCard = (props: FragrancePreviewCardProps) => {
   // }, [onFragranceVote])
 
   return (
-    <div
-      className={clsx('flex flex-col', 'h-full')}
+    <Link
+      to={navigateTo ?? `/fragrance/${fragrance.id}`}
+      className={clsx(
+        'group flex flex-col h-full'
+      )}
       {...rest}
     >
-      <Link
-        to={navigateTo ?? ''}
+      <div
         className='group flex-1 flex rounded-2xl px-0 py-0 relative overflow-hidden'
       >
         <div
@@ -71,8 +73,8 @@ export const FragrancePreviewCard = (props: FragrancePreviewCardProps) => {
           votes={votes}
           className='absolute bottom-3 right-3 bottom'
         />
-      </Link>
-      <div className='px-1 pt-2 pb-4'>
+      </div>
+      <div className='px-1 pt-2'>
         <div
           className='flex flex-row'
         >
@@ -90,6 +92,6 @@ export const FragrancePreviewCard = (props: FragrancePreviewCardProps) => {
           {fragrance.brand}
         </Link>
       </div>
-    </div>
+    </Link>
   )
 }

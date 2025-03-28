@@ -21,7 +21,7 @@ export const MasonryList = <T, >(props: MasonryListProps<T>) => {
     containerWidth,
     itemWidth = 250,
     itemHeight = 400,
-    gap = 10,
+    gap = 15,
     scale = 0.8,
     onEndReachedThreshold = 300,
     onRenderItem,

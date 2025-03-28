@@ -15,10 +15,10 @@ export const ReviewsList = (props: ReviewsListProps) => {
 
   return (
     <div className='w-full'>
-      {reviews.slice(start, end).map((review, index) => (
+      {reviews.slice(start, end).map((review) => (
         <FragranceReviewCard
-          key={`${review.id}-${index}`}
-          review={{ ...review, review: (index + start).toString() }}
+          key={review.id}
+          review={review}
           className='mt-10'
         />
       ))}
