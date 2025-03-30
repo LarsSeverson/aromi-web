@@ -14,7 +14,7 @@ export const AuthProvider = (props: AuthProviderProps) => {
     <AuthContext.Provider
       value={auth}
     >
-      {auth.initialized ? children : null}
+      {children}
     </AuthContext.Provider>
   )
 }

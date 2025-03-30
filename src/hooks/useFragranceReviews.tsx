@@ -30,7 +30,6 @@ const FRAGRANCE_REVIEWS_QUERY = graphql(/* GraphQL */ `
             dCreated
             dModified
             dDeleted
-            author 
             myVote
           }
         }

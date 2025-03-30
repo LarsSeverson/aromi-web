@@ -7,7 +7,7 @@ import { formatNumber } from '@/common/string-utils'
 
 export interface VoteButtonProps extends React.HTMLAttributes<HTMLDivElement> {
   votes: number
-  myVote?: boolean | undefined
+  myVote?: boolean | null | undefined
 
   onRenderForIcon?: (active: boolean) => React.ReactNode
   onRenderAgainstIcon?: (active: boolean) => React.ReactNode

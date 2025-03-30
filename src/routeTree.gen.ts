@@ -11,37 +11,156 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as IndexImport } from './routes/index'
+import { Route as UserIdImport } from './routes/user/$id'
+import { Route as UserIdIndexImport } from './routes/user/$id/index'
+import { Route as UserIdReviewsImport } from './routes/user/$id/reviews'
+import { Route as UserIdLikesImport } from './routes/user/$id/likes'
 
 // Create/Update Routes
+
+const IndexRoute = IndexImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const UserIdRoute = UserIdImport.update({
+  id: '/user/$id',
+  path: '/user/$id',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const UserIdIndexRoute = UserIdIndexImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => UserIdRoute,
+} as any)
+
+const UserIdReviewsRoute = UserIdReviewsImport.update({
+  id: '/reviews',
+  path: '/reviews',
+  getParentRoute: () => UserIdRoute,
+} as any)
+
+const UserIdLikesRoute = UserIdLikesImport.update({
+  id: '/likes',
+  path: '/likes',
+  getParentRoute: () => UserIdRoute,
+} as any)
 
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
-  interface FileRoutesByPath {}
+  interface FileRoutesByPath {
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/user/$id': {
+      id: '/user/$id'
+      path: '/user/$id'
+      fullPath: '/user/$id'
+      preLoaderRoute: typeof UserIdImport
+      parentRoute: typeof rootRoute
+    }
+    '/user/$id/likes': {
+      id: '/user/$id/likes'
+      path: '/likes'
+      fullPath: '/user/$id/likes'
+      preLoaderRoute: typeof UserIdLikesImport
+      parentRoute: typeof UserIdImport
+    }
+    '/user/$id/reviews': {
+      id: '/user/$id/reviews'
+      path: '/reviews'
+      fullPath: '/user/$id/reviews'
+      preLoaderRoute: typeof UserIdReviewsImport
+      parentRoute: typeof UserIdImport
+    }
+    '/user/$id/': {
+      id: '/user/$id/'
+      path: '/'
+      fullPath: '/user/$id/'
+      preLoaderRoute: typeof UserIdIndexImport
+      parentRoute: typeof UserIdImport
+    }
+  }
 }
 
 // Create and export the route tree
 
-export interface FileRoutesByFullPath {}
+interface UserIdRouteChildren {
+  UserIdLikesRoute: typeof UserIdLikesRoute
+  UserIdReviewsRoute: typeof UserIdReviewsRoute
+  UserIdIndexRoute: typeof UserIdIndexRoute
+}
 
-export interface FileRoutesByTo {}
+const UserIdRouteChildren: UserIdRouteChildren = {
+  UserIdLikesRoute: UserIdLikesRoute,
+  UserIdReviewsRoute: UserIdReviewsRoute,
+  UserIdIndexRoute: UserIdIndexRoute,
+}
+
+const UserIdRouteWithChildren =
+  UserIdRoute._addFileChildren(UserIdRouteChildren)
+
+export interface FileRoutesByFullPath {
+  '/': typeof IndexRoute
+  '/user/$id': typeof UserIdRouteWithChildren
+  '/user/$id/likes': typeof UserIdLikesRoute
+  '/user/$id/reviews': typeof UserIdReviewsRoute
+  '/user/$id/': typeof UserIdIndexRoute
+}
+
+export interface FileRoutesByTo {
+  '/': typeof IndexRoute
+  '/user/$id/likes': typeof UserIdLikesRoute
+  '/user/$id/reviews': typeof UserIdReviewsRoute
+  '/user/$id': typeof UserIdIndexRoute
+}
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
+  '/': typeof IndexRoute
+  '/user/$id': typeof UserIdRouteWithChildren
+  '/user/$id/likes': typeof UserIdLikesRoute
+  '/user/$id/reviews': typeof UserIdReviewsRoute
+  '/user/$id/': typeof UserIdIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: never
+  fullPaths:
+    | '/'
+    | '/user/$id'
+    | '/user/$id/likes'
+    | '/user/$id/reviews'
+    | '/user/$id/'
   fileRoutesByTo: FileRoutesByTo
-  to: never
-  id: '__root__'
+  to: '/' | '/user/$id/likes' | '/user/$id/reviews' | '/user/$id'
+  id:
+    | '__root__'
+    | '/'
+    | '/user/$id'
+    | '/user/$id/likes'
+    | '/user/$id/reviews'
+    | '/user/$id/'
   fileRoutesById: FileRoutesById
 }
 
-export interface RootRouteChildren {}
+export interface RootRouteChildren {
+  IndexRoute: typeof IndexRoute
+  UserIdRoute: typeof UserIdRouteWithChildren
+}
 
-const rootRouteChildren: RootRouteChildren = {}
+const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
+  UserIdRoute: UserIdRouteWithChildren,
+}
 
 export const routeTree = rootRoute
   ._addFileChildren(rootRouteChildren)
@@ -52,7 +171,33 @@ export const routeTree = rootRoute
   "routes": {
     "__root__": {
       "filePath": "__root.tsx",
-      "children": []
+      "children": [
+        "/",
+        "/user/$id"
+      ]
+    },
+    "/": {
+      "filePath": "index.tsx"
+    },
+    "/user/$id": {
+      "filePath": "user/$id.tsx",
+      "children": [
+        "/user/$id/likes",
+        "/user/$id/reviews",
+        "/user/$id/"
+      ]
+    },
+    "/user/$id/likes": {
+      "filePath": "user/$id/likes.tsx",
+      "parent": "/user/$id"
+    },
+    "/user/$id/reviews": {
+      "filePath": "user/$id/reviews.tsx",
+      "parent": "/user/$id"
+    },
+    "/user/$id/": {
+      "filePath": "user/$id/index.tsx",
+      "parent": "/user/$id"
     }
   }
 }

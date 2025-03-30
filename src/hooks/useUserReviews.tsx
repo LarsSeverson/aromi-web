@@ -14,6 +14,11 @@ const USER_REVIEWS_QUERY = graphql(/* GraphQL */`
         first: 20 
       }
     }
+    $imagesInput: QueryInput = {
+      pagination: {
+        first: 1
+      }
+    }
   ) {
     user(id: $userId) {
       id
@@ -27,12 +32,28 @@ const USER_REVIEWS_QUERY = graphql(/* GraphQL */`
         edges {
           node {
             id
-            author
             rating
             review
             votes
             dCreated
             dModified
+            myVote
+            user {
+              username
+            }
+            fragrance {
+              id
+              brand
+              name
+              images(input: $imagesInput) {
+                edges {
+                  node {
+                    id
+                    url
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -75,26 +96,7 @@ const useUserReviews = (userId: number, limit: number = REVIEWS_LIMIT): Paginate
       }
     }
 
-    void fetchMore({
-      variables: newVariables,
-      updateQuery: (prev, { fetchMoreResult }) => {
-        const c1 = prev.user
-        const c2 = fetchMoreResult.user
-
-        if (c1 == null) return fetchMoreResult
-        if (c2 == null) return prev
-
-        return {
-          user: {
-            ...c1,
-            reviews: {
-              edges: c1.reviews.edges.concat(c2.reviews.edges),
-              pageInfo: c2.reviews.pageInfo
-            }
-          }
-        }
-      }
-    })
+    void fetchMore({ variables: newVariables })
   }, [data, variables, fetchMore])
 
   const refresh = useCallback(() => {
@@ -102,14 +104,20 @@ const useUserReviews = (userId: number, limit: number = REVIEWS_LIMIT): Paginate
   }, [variables, refetch])
 
   const reviews = useMemo<FlattenedUserReviews>(() =>
-    flattenConnection(data?.user?.reviews),
+    flattenConnection(data?.user?.reviews).map(review => ({
+      ...review,
+      fragrance: {
+        ...review.fragrance,
+        images: flattenConnection(review.fragrance.images)
+      }
+    })),
   [data?.user?.reviews])
 
   return {
     data: reviews,
     pageInfo: data?.user?.reviews.pageInfo,
-    error,
     loading,
+    error,
 
     getMore,
     refresh

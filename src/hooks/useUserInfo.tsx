@@ -4,7 +4,7 @@ import { type UserInfoQuery, type UserInfoQueryVariables } from '../generated/gr
 import { useQuery } from '@apollo/client'
 import { INVALID_ID, type QueryHookReturn } from '../common/util-types'
 
-const USER_INFO_QUERY = graphql(/* GraphQL */`
+export const USER_INFO_QUERY = graphql(/* GraphQL */`
   query UserInfo(
     $userId: Int!
   ) {

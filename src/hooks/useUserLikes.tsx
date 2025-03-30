@@ -91,26 +91,7 @@ const useUserLikes = (userId: number, limit: number = LIKES_LIMIT): PaginatedQue
       }
     }
 
-    void fetchMore({
-      variables: newVariables,
-      updateQuery: (prev, { fetchMoreResult }) => {
-        const c1 = prev.user
-        const c2 = fetchMoreResult.user
-
-        if (c1 == null) return fetchMoreResult
-        if (c2 == null) return prev
-
-        return {
-          user: {
-            ...c1,
-            likes: {
-              edges: c1.likes.edges.concat(c2.likes.edges),
-              pageInfo: c2.likes.pageInfo
-            }
-          }
-        }
-      }
-    })
+    void fetchMore({ variables: newVariables })
   }, [data, variables, fetchMore])
 
   const refresh = useCallback(() => {

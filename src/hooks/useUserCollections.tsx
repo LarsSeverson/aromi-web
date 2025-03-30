@@ -103,26 +103,7 @@ const useUserCollections = (userId: number, limit: number = COLLECTIONS_LIMIT): 
       }
     }
 
-    void fetchMore({
-      variables: newVariables,
-      updateQuery: (prev, { fetchMoreResult }) => {
-        const c1 = prev.user
-        const c2 = fetchMoreResult.user
-
-        if (c1 == null) return fetchMoreResult
-        if (c2 == null) return prev
-
-        return {
-          user: {
-            ...c1,
-            collections: {
-              edges: c1.collections.edges.concat(c2.collections.edges),
-              pageInfo: c2.collections.pageInfo
-            }
-          }
-        }
-      }
-    })
+    void fetchMore({ variables: newVariables })
   }, [data, variables, fetchMore])
 
   const refresh = useCallback(() => {
@@ -145,8 +126,8 @@ const useUserCollections = (userId: number, limit: number = COLLECTIONS_LIMIT): 
   return {
     data: collections,
     pageInfo: data?.user?.collections.pageInfo,
-    error,
     loading,
+    error,
 
     getMore,
     refresh

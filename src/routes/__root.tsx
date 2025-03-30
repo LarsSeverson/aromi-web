@@ -1,13 +1,17 @@
-import React from 'react'
-import App from '@/App'
-import { createRootRoute } from '@tanstack/react-router'
-import { homeRoute } from '@/pages/Home'
-import { searchRoute } from '@/pages/Search'
-import { fragranceRoute } from '@/pages/Fragrance'
-import { profileRoute } from '@/pages/Profile'
+import type useAuth from '@/hooks/useAuth'
+import { type useClient } from '@/hooks/useClient'
+import MainLayout from '@/layouts/MainLayout'
+import { createRootRouteWithContext } from '@tanstack/react-router'
 
-export const rootRoute = createRootRoute({
-  component: () => <App />
+interface RouterContext {
+  auth: ReturnType<typeof useAuth> | undefined
+  client: ReturnType<typeof useClient> | undefined
+}
+
+export const Route = createRootRouteWithContext<RouterContext>()({
+  component: MainLayout,
+  beforeLoad: async ({ context }) => {
+    if (context.auth?.userInfo.user != null) return
+    return await context.auth?.userGetInfo()
+  }
 })
-
-rootRoute.addChildren([homeRoute, searchRoute, profileRoute, fragranceRoute])

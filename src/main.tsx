@@ -1,8 +1,11 @@
 import React, { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { Amplify } from 'aws-amplify'
-import { createRouter, RouterProvider } from '@tanstack/react-router'
-import { rootRoute } from '@/routes/__root'
+import { createRouter } from '@tanstack/react-router'
+import { routeTree } from './routeTree.gen'
+import App from './App'
+import { ClientProvider } from './contexts/providers/ClientProvider'
+import { AuthProvider } from './contexts/providers/AuthProvider'
 
 Amplify.configure({
   Auth: {
@@ -16,9 +19,13 @@ Amplify.configure({
   }
 })
 
-const router = createRouter({
-  routeTree: rootRoute,
-  scrollRestoration: true
+export const router = createRouter({
+  routeTree,
+  scrollRestoration: true,
+  context: {
+    auth: undefined,
+    client: undefined
+  }
 })
 
 declare module '@tanstack/react-router' {
@@ -31,9 +38,11 @@ const root = document.getElementById('root')
 if (root != null) {
   createRoot(root).render(
     <StrictMode>
-      <RouterProvider
-        router={router}
-      />
+      <ClientProvider>
+        <AuthProvider>
+          <App />
+        </AuthProvider>
+      </ClientProvider>
     </StrictMode>
   )
 } else {

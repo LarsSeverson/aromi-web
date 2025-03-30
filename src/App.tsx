@@ -1,16 +1,19 @@
 import React from 'react'
 import './styles/output.css'
-import { ClientProvider } from './contexts/providers/ClientProvider'
-import { AuthProvider } from './contexts/providers/AuthProvider'
-import MainLayout from './layouts/MainLayout'
+import { useAuthContext } from './contexts/AuthContext'
+import { useClientContext } from './contexts/ClientContext'
+import { RouterProvider } from '@tanstack/react-router'
+import { router } from './main'
 
 const App = () => {
+  const auth = useAuthContext()
+  const client = useClientContext()
+
   return (
-    <ClientProvider>
-      <AuthProvider>
-        <MainLayout />
-      </AuthProvider>
-    </ClientProvider>
+    <RouterProvider
+      router={router}
+      context={{ auth, client }}
+    />
   )
 }
 

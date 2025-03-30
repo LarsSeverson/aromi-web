@@ -19,19 +19,11 @@ import useFragranceNotes from '@/hooks/useFragranceNotes'
 import { NoteLayer } from '@/generated/graphql'
 import { CharacteristicsLadder } from '@/components/common/fragrance/CharacteristicsLadder'
 import FragranceCategory from '@/components/common/fragrance/FragranceCategory'
-import { createRoute } from '@tanstack/react-router'
 import useFragranceReviews from '@/hooks/useFragranceReviews'
 import { ReviewsSummary } from '@/components/common/fragrance/ReviewsSummary'
 import Divider from '@/components/Divider'
 import { ReviewsList } from '@/components/common/fragrance/ReviewsList'
 import { PageNav } from '@/components/common/PageNav'
-import { rootRoute } from '@/routes/__root'
-
-export const fragranceRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: '/fragrance/$id',
-  component: () => <Fragrance />
-})
 
 export const Fragrance = () => {
   const { id } = fragranceRoute.useParams()

@@ -17,8 +17,9 @@ export interface FragranceReviewCardProps extends React.HTMLAttributes<HTMLDivEl
 }
 
 export const FragranceReviewCard = (props: FragranceReviewCardProps) => {
-  const { review, className, ...rest } = props
-  const { dCreated, author, rating, review: text, votes } = review
+  const { review, onVote, className, ...rest } = props
+  const { user, rating, review: text, votes, myVote, dCreated } = review
+  const { username } = user
 
   return (
     <div
@@ -28,18 +29,34 @@ export const FragranceReviewCard = (props: FragranceReviewCardProps) => {
       )}
       {...rest}
     >
-      <div className='flex flex-row gap-5'>
+      <div
+        className='flex flex-row gap-5'
+      >
         <img
+          src={empty}
           className='rounded-full min-w-16 w-16 aspect-square overflow-hidden object-cover'
           style={{ backgroundColor: Colors.empty }}
-          src={empty}
         />
-        <div className='flex flex-col gap-2'>
-          <div className='flex flex-row gap-3 self-start items-center w-full min-w-0'>
-            <p className='truncate'>
-              <span className='font-pd text-xl'>{author}</span>
+        <div
+          className='flex flex-col gap-2'
+        >
+          <div
+            className='flex flex-row gap-3 self-start items-center w-full min-w-0'
+          >
+            <p
+              className='truncate'
+            >
+              <span
+                className='font-pd text-xl'
+              >
+                {username}
+              </span>
               <span> • </span>
-              <span className='text-xs'>{formatDate(dCreated)}</span>
+              <span
+                className='text-xs'
+              >
+                {formatDate(dCreated)}
+              </span>
             </p>
           </div>
           <RatingStars
@@ -64,7 +81,9 @@ export const FragranceReviewCard = (props: FragranceReviewCardProps) => {
       </p>
       <VoteButton
         votes={votes}
+        myVote={myVote}
         className='mr-auto'
+        onVote={onVote}
       />
     </div>
   )

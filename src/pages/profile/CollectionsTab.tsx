@@ -1,8 +1,8 @@
+import { CollectionPreviewCard } from '@/components/common/fragrance/CollectionPreviewCard'
+import { MasonryList } from '@/components/common/MasonryList'
 import { type User } from '@/generated/graphql'
 import useUserCollections from '@/hooks/useUserCollections'
 import React from 'react'
-import { MasonryList } from '../MasonryList'
-import { CollectionPreviewCard } from '../fragrance/CollectionPreviewCard'
 
 export type CollectionsUser = Pick<User, 'id' | 'username'>
 
@@ -27,8 +27,6 @@ export const CollectionsTab = (props: CollectionsTabProps) => {
   const { data: collections, loading } = useUserCollections(id)
   const empty = collections.length === 0
 
-  const test = Array(40).fill(collections).flat()
-
   if (loading) return null
 
   return (
@@ -51,7 +49,7 @@ export const CollectionsTab = (props: CollectionsTabProps) => {
       )}
 
       <MasonryList
-        items={test}
+        items={collections}
         containerWidth={containerWidth}
         itemHeight={300}
         itemWidth={350}

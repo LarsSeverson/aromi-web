@@ -71,6 +71,7 @@ export const FragrancePreviewCard = (props: FragrancePreviewCardProps) => {
         </div>
         <VoteButton
           votes={votes}
+          myVote={fragrance.votes.myVote}
           className='absolute bottom-3 right-3 bottom'
         />
       </div>
@@ -78,19 +79,17 @@ export const FragrancePreviewCard = (props: FragrancePreviewCardProps) => {
         <div
           className='flex flex-row'
         >
-          <Link
-            to='/'
+          <h5
             className='flex-1 truncate font-semibold text-sm'
           >
             {fragrance.name}
-          </Link>
+          </h5>
         </div>
-        <Link
-          to='/'
+        <h6
           className='truncate text-sm'
         >
           {fragrance.brand}
-        </Link>
+        </h6>
       </div>
     </Link>
   )

@@ -1,5 +1,5 @@
 import { type AuthError, confirmResetPassword, confirmSignUp, getCurrentUser, resendSignUpCode, resetPassword, signIn, signInWithRedirect, signOut, signUp } from 'aws-amplify/auth'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { AromiAuthError, AuthErrorCode, toConfirmSignUpError, toResendSignUpError, toLogInError, toSignUpError, toGetUserInfoError, toConfirmResetPasswordError, toResetPasswordError, toSocialSignInError } from '../common/auth-errors'
 import { useClientContext } from '../contexts/ClientContext'
 import { type User } from '../generated/graphql'
@@ -23,7 +23,6 @@ export interface AuthUserInfo {
 
 export interface UseAuthReturn {
   userInfo: AuthUserInfo
-  initialized: boolean
 
   userGetInfo: () => Promise<AuthOutput<AuthUserInfo>>
   socialSignIn: (provider: 'Google' | 'Apple') => Promise<AuthOutput>
@@ -46,7 +45,6 @@ const useAuth = (): UseAuthReturn => {
   const { upsertUser } = useUpsertUser()
 
   const [userInfo, setUserInfo] = useState<AuthUserInfo>({ user: null, state: AuthState.UNAUTHENTICATED })
-  const [initialized, setInitialized] = useState(false)
 
   const userGetInfo = useCallback(async (): Promise<AuthOutput<AuthUserInfo>> => {
     const err = new AromiAuthError('Something went wrong getting this user', AuthErrorCode.USER_NOT_FOUND)
@@ -223,20 +221,8 @@ const useAuth = (): UseAuthReturn => {
     }
   }, [])
 
-  useEffect(() => {
-    const init = async () => {
-      await userGetInfo()
-      setInitialized(true)
-    }
-
-    if (!initialized) {
-      void init()
-    }
-  }, [initialized, userGetInfo])
-
   return {
     userInfo,
-    initialized,
 
     userGetInfo,
     socialSignIn,

@@ -1,8 +1,8 @@
+import { FragrancePreviewCard } from '@/components/common/fragrance/FragrancePreviewCard'
+import { MasonryList } from '@/components/common/MasonryList'
 import { type User } from '@/generated/graphql'
 import useUserLikes from '@/hooks/useUserLikes'
 import React from 'react'
-import { MasonryList } from '../MasonryList'
-import { FragrancePreviewCard } from '../fragrance/FragrancePreviewCard'
 
 export type LikesUser = Pick<User, 'id' | 'username'>
 
