@@ -4,13 +4,13 @@ import React from 'react'
 
 export type CardNotePreview = Pick<FragranceNote, 'id' | 'layer' | 'noteId' | 'name' | 'votes' | 'myVote'>
 
-export interface NotesPreviewCardProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface NotePreviewCardProps extends React.HTMLAttributes<HTMLDivElement> {
   note: CardNotePreview
   showVotes?: boolean | undefined
   headingClass?: string | undefined
 }
 
-const NotePreviewCard = (props: NotesPreviewCardProps) => {
+const NotePreviewCard = (props: NotePreviewCardProps) => {
   const {
     note,
     showVotes,

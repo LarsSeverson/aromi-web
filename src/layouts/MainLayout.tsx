@@ -13,6 +13,7 @@ const MainLayout = () => {
       className='
         flex
         flex-row
+        h-screen
       '
     >
       <SideBar />

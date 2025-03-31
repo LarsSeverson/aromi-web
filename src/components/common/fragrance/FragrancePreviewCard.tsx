@@ -6,21 +6,22 @@ import fallbackImage from '@/assets/fall-back-fi.svg'
 import ButtonText from '@/components/ButtonText'
 import BouncyButton from '@/components/BouncyButton'
 import { HiDotsHorizontal } from 'react-icons/hi'
-import { Link } from '@tanstack/react-router'
+import { Link, type LinkProps } from '@tanstack/react-router'
 import { Overlay } from '../Overlay'
 
 export type CardFragrancePreview = Omit<Pick<Fragrance, 'id' | 'name' | 'brand' | 'votes'>, 'images'> & {
   images: FragranceImage[]
 }
 
-export interface FragrancePreviewCardProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface FragrancePreviewCardProps extends LinkProps {
   fragrance: CardFragrancePreview
   navigateTo?: string | undefined
+  className?: string | undefined
   onFragranceVote?: (myVote: boolean | null) => void
 }
 
 export const FragrancePreviewCard = (props: FragrancePreviewCardProps) => {
-  const { fragrance, navigateTo, onFragranceVote, className, ...rest } = props
+  const { fragrance, navigateTo, onFragranceVote, className, to, params, ...rest } = props
   const votes = fragrance.votes.likes - fragrance.votes.dislikes
 
   // const handleVote = useCallback((myVote: boolean | null) => {
@@ -29,7 +30,8 @@ export const FragrancePreviewCard = (props: FragrancePreviewCardProps) => {
 
   return (
     <Link
-      to={navigateTo ?? `/fragrance/${fragrance.id}`}
+      to={to ?? '/fragrance/$id'}
+      params={params ?? { id: String(fragrance.id) }}
       className={clsx(
         'group flex flex-col h-full'
       )}

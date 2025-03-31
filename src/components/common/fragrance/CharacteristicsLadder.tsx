@@ -2,6 +2,7 @@ import { type FragranceTrait } from '@/generated/graphql'
 import React from 'react'
 import clsx from 'clsx'
 import MidScaleBar from '../MidScaleBar'
+import gender from '@/assets/gender.svg'
 import longevity from '@/assets/longevity.svg'
 import sillage from '@/assets/sillage.svg'
 import complexity from '@/assets/complexity.svg'
@@ -9,18 +10,19 @@ import balance from '@/assets/balance.svg'
 import allure from '@/assets/allure.svg'
 import { Icon } from '../Icon'
 
-export type MainCharacteristic = Pick<FragranceTrait, 'id' | 'value' | 'trait' | 'myVote'>
+export type LadderCharacteristic = Pick<FragranceTrait, 'id' | 'value' | 'trait' | 'myVote'>
 
-export interface MainCharacteristics {
-  longevity: MainCharacteristic
-  sillage: MainCharacteristic
-  complexity: MainCharacteristic
-  balance: MainCharacteristic
-  allure: MainCharacteristic
+export interface LadderCharacteristics {
+  gender: LadderCharacteristic
+  longevity: LadderCharacteristic
+  sillage: LadderCharacteristic
+  complexity: LadderCharacteristic
+  balance: LadderCharacteristic
+  allure: LadderCharacteristic
 }
 
 export interface CharacteristicsLadderProps extends React.HTMLAttributes<HTMLDivElement> {
-  characteristics: MainCharacteristics
+  characteristics: LadderCharacteristics
 }
 
 export const CharacteristicsLadder = (props: CharacteristicsLadderProps) => {
@@ -34,6 +36,13 @@ export const CharacteristicsLadder = (props: CharacteristicsLadderProps) => {
       )}
       {...rest}
     >
+      <MidScaleBar
+        value={characteristics.gender.value}
+        label='gender'
+        lessLabel='feminine'
+        greaterLabel='masculine'
+        Icon={<Icon src={gender} size={28} />}
+      />
       <MidScaleBar
         value={characteristics.longevity.value}
         label='longevity'

@@ -8,7 +8,7 @@ export interface FragranceCategoryProps extends React.HTMLAttributes<HTMLDivElem
   showSeeAll?: boolean | undefined
   children?: React.ReactNode
   onCategoryPressed?: () => void
-  onSeeAll?: () => void
+  onSeeAll?: (open: boolean) => void
 }
 
 const FragranceCategory = (props: FragranceCategoryProps) => {
@@ -26,7 +26,7 @@ const FragranceCategory = (props: FragranceCategoryProps) => {
   return (
     <div
       className={clsx(
-        'px-5 py-2',
+        'py-2',
         className
       )}
       {...rest}
@@ -39,7 +39,12 @@ const FragranceCategory = (props: FragranceCategoryProps) => {
         >
           {title}
         </h2>
-        {(showSeeAll ?? false) && <TextButton text='see all' />}
+        {(showSeeAll ?? false) && (
+          <TextButton
+            text='see all'
+            onClick={() => { onSeeAll?.(true) }}
+          />
+        )}
       </div>
 
       {children}

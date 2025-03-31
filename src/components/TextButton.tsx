@@ -18,6 +18,7 @@ const TextButton = (props: TextButtonProps) => {
         rounded-none
         bg-transparent 
         hover:bg-transparent
+        hover:backdrop-brightness-200
       `,
       className)}
       {...rest}

@@ -31,6 +31,10 @@ const FRAGRANCE_REVIEWS_QUERY = graphql(/* GraphQL */ `
             dModified
             dDeleted
             myVote
+            user {
+              id
+              username
+            }
           }
         }
         pageInfo {

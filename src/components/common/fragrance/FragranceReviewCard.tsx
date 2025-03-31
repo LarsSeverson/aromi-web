@@ -1,5 +1,5 @@
 import BouncyButton from '@/components/BouncyButton'
-import { type FragranceReview } from '@/generated/graphql'
+import { type User, type FragranceReview } from '@/generated/graphql'
 import { Colors } from '@/styles/Colors'
 import React from 'react'
 import { HiDotsHorizontal } from 'react-icons/hi'
@@ -9,7 +9,8 @@ import { VoteButton } from '../VoteButton'
 import RatingStars from '../RatingStars'
 import clsx from 'clsx'
 
-export type CardFragranceReview = FragranceReview
+type CardFragranceReviewUsaer = Pick<User, 'id' | 'username'>
+export type CardFragranceReview = Omit<FragranceReview, 'fragrance' | 'user'> & { user: CardFragranceReviewUsaer }
 
 export interface FragranceReviewCardProps extends React.HTMLAttributes<HTMLDivElement> {
   review: CardFragranceReview
@@ -24,7 +25,7 @@ export const FragranceReviewCard = (props: FragranceReviewCardProps) => {
   return (
     <div
       className={clsx(
-        'flex flex-col w-full gap-5',
+        'flex flex-col w-full gap-5 p-5',
         className
       )}
       {...rest}
@@ -74,11 +75,13 @@ export const FragranceReviewCard = (props: FragranceReviewCardProps) => {
           />
         </BouncyButton>
       </div>
-      <p
-        className='px-5'
-      >
-        {text}
-      </p>
+      {text.length > 0 && (
+        <p
+          className='px-5'
+        >
+          {text}
+        </p>
+      )}
       <VoteButton
         votes={votes}
         myVote={myVote}

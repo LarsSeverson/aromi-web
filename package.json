@@ -14,7 +14,7 @@
   "dependencies": {
     "@apollo/client": "^3.13.4",
     "@headlessui/react": "^2.2.0",
-    "@tanstack/react-router": "1.112.12",
+    "@tanstack/react-router": "^1.114.29",
     "@tanstack/react-virtual": "^3.13.4",
     "aws-amplify": "6.13.2",
     "clsx": "^2.1.1",

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link, Outlet } from '@tanstack/react-router'
+import { Link, Outlet, useLocation } from '@tanstack/react-router'
 import emptyAvatar from '@/assets/avatar-empty.svg'
 import Divider from '@/components/Divider'
 import clsx from 'clsx'
@@ -15,6 +15,8 @@ export interface ProfilePageProps {
 export const ProfilePage = (props: ProfilePageProps) => {
   const { user } = props
   const { username, followers, following } = user
+  const pathname = useLocation({ select: (location) => location.pathname })
+  const activeTab = pathname.match(/\/(likes|reviews)$/)?.[1] ?? '/'
 
   return (
     <div
@@ -76,7 +78,7 @@ export const ProfilePage = (props: ProfilePageProps) => {
           className='w-full'
         >
           <nav
-            className='flex w-full items-center justify-center sticky top-16 z-20 bg-white'
+            className='flex w-full items-center justify-center sticky top-16 z-20 bg-white pb-1'
           >
             <div className='flex min-w-fit max-w-md w-full'>
               <Link
@@ -85,6 +87,7 @@ export const ProfilePage = (props: ProfilePageProps) => {
                 className={clsx('flex-1 py-2.5 font-medium hover:bg-empty relative flex flex-col focus:outline-none text-center')}
               >
                 Collections
+                {activeTab === '/' && <div className='border-2 border-black rounded-full w-1/3 absolute bottom-[-6px] place-self-center' />}
               </Link>
               <Link
                 from='/user/$id'
@@ -92,6 +95,7 @@ export const ProfilePage = (props: ProfilePageProps) => {
                 className={clsx('flex-1 py-2.5 font-medium hover:bg-empty relative flex flex-col focus:outline-none text-center')}
               >
                 Likes
+                {activeTab === 'likes' && <div className='border-2 border-black rounded-full w-1/3 absolute bottom-[-6px] place-self-center' />}
               </Link>
               <Link
                 from='/user/$id'
@@ -99,6 +103,7 @@ export const ProfilePage = (props: ProfilePageProps) => {
                 className={clsx('flex-1 py-2.5 font-medium hover:bg-empty relative flex flex-col focus:outline-none text-center')}
               >
                 Reviews
+                {activeTab === 'reviews' && <div className='border-2 border-black rounded-full w-1/3 absolute bottom-[-6px] place-self-center' />}
               </Link>
             </div>
           </nav>

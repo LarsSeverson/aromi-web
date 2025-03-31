@@ -4,7 +4,7 @@ import { graphql } from '../generated'
 import { INVALID_ID, type QueryHookReturn } from '../common/util-types'
 import { type FragranceInfoQuery } from '../generated/graphql'
 
-const FRAGRANCE_INFO_QUERY = graphql(/* GraphQL */ `
+export const FRAGRANCE_INFO_QUERY = graphql(/* GraphQL */ `
   query FragranceInfo(
     $fragranceId: Int!
   ) {

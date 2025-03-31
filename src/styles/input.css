@@ -5,11 +5,7 @@
 @tailwind components;
 @tailwind utilities;
 
-
-:root {
-  scrollbar-gutter: stable;
-}
-
 body {
   overflow-y: scroll;
+  scrollbar-gutter: stable;
 }

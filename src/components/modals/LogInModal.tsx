@@ -59,6 +59,7 @@ const LogInModal = (props: LogInModalProps) => {
   return (
     <Modal
       {...rest}
+      className='p-3'
     >
       <div className='flex flex-col justify-center items-center gap-10 mx-20 mb-8'>
         <div className='gap-4 flex flex-col justify-center items-center'>

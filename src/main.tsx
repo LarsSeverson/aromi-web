@@ -21,7 +21,6 @@ Amplify.configure({
 
 export const router = createRouter({
   routeTree,
-  scrollRestoration: true,
   context: {
     auth: undefined,
     client: undefined
