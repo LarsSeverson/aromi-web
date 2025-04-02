@@ -14,7 +14,7 @@ import NotesPyramid from '@/components/common/fragrance/NotesPyramid'
 import useFragranceNotes from '@/hooks/useFragranceNotes'
 import { type Fragrance, NoteLayer, type User } from '@/generated/graphql'
 import { CharacteristicsLadder } from '@/components/common/fragrance/CharacteristicsLadder'
-import FragranceCategory from '@/components/common/fragrance/FragranceCategory'
+import PageCategory from '@/components/common/PageCategory'
 import useFragranceReviews from '@/hooks/useFragranceReviews'
 import { ReviewsSummary } from '@/components/common/fragrance/ReviewsSummary'
 import Divider from '@/components/Divider'
@@ -22,6 +22,9 @@ import { ReviewsList } from '@/components/common/fragrance/ReviewsList'
 import { PageNav } from '@/components/common/PageNav'
 import { useMyReview } from '@/hooks/useMyReview'
 import MyReviewCard from '@/components/common/MyReviewCard'
+import { Colors } from '@/styles/Colors'
+import InteractableRatingStars from '@/components/common/InteractableRatingStars'
+import { useNavigate } from '@tanstack/react-router'
 
 export type FragrancePageUser = Pick<User, 'username' | 'id'>
 export type FragrancePageFragrance = Pick<Fragrance, 'id' | 'brand' | 'name' | 'rating' | 'reviewsCount' | 'reviewDistribution' | 'votes'>
@@ -31,9 +34,10 @@ export interface FragrancePageProps {
 }
 
 export const FragrancePage = (props: FragrancePageProps) => {
-  const { fragrance: info, user } = props
+  const { fragrance: info } = props
   const { id: fragranceId } = info
 
+  const navigate = useNavigate()
   const { data: images } = useFragranceImages(fragranceId, 5)
   const { data: traits } = useFragranceTraits(fragranceId)
   const { data: accords } = useFragranceAccords(fragranceId, 10)
@@ -105,21 +109,21 @@ export const FragrancePage = (props: FragrancePageProps) => {
               className='flex flex-col gap-7 overflow-auto'
             >
               <div className='flex flex-col gap-3'>
-                <FragranceCategory
+                <PageCategory
                   title='Accords'
                 >
                   <AccordsLadder
                     accords={accords}
                     maxVote={accords.at(0)?.votes ?? 0}
                   />
-                </FragranceCategory>
+                </PageCategory>
               </div>
             </div>
           </div>
         </div>
       </div>
       <div className='w-full flex flex-col max-w-6xl min-w-44 mt-7 px-5'>
-        <FragranceCategory
+        <PageCategory
           title='Characteristics'
         >
           <div className='w-full flex flex-col items-center'>
@@ -128,8 +132,8 @@ export const FragrancePage = (props: FragrancePageProps) => {
               className='w-full max-w-4xl'
             />
           </div>
-        </FragranceCategory>
-        <FragranceCategory
+        </PageCategory>
+        <PageCategory
           title='Notes'
         >
           <div className='w-full flex flex-col items-center'>
@@ -138,24 +142,43 @@ export const FragrancePage = (props: FragrancePageProps) => {
               className='mx-5 w-full max-w-4xl'
             />
           </div>
-        </FragranceCategory>
-        <FragranceCategory
-          title={myReview != null ? 'My review' : 'Write a review'}
-        >
-          <div className='w-full flex justify-center'>
-            <div className='w-full max-w-4xl'>
-              <MyReviewCard
-                myReview={myReview}
-                user={user}
-              />
+        </PageCategory>
+        {myReview != null && (
+          <PageCategory
+            title='My review'
+          >
+            <div className='w-full flex justify-center'>
+              <div className='w-full max-w-4xl'>
+                <MyReviewCard
+                  myReview={myReview}
+                />
+              </div>
             </div>
-          </div>
-        </FragranceCategory>
-        <FragranceCategory
+          </PageCategory>
+        )}
+        <PageCategory
           title='Reviews'
         >
           <div className='w-full flex flex-col items-center'>
             <div className='max-w-4xl w-full'>
+              {myReview == null && (
+                <InteractableRatingStars
+                  rating={0}
+                  size={42}
+                  emptyColor={Colors.empty2}
+                  filledColor={Colors.sinopia}
+                  className='mb-5'
+                  onStarClick={(rating) => {
+                    void navigate({
+                      from: '/fragrance/$id',
+                      to: 'review',
+                      search: {
+                        rating
+                      }
+                    })
+                  }}
+                />
+              )}
               <ReviewsSummary
                 rating={info.rating}
                 reviewCount={info.reviewsCount}
@@ -180,7 +203,7 @@ export const FragrancePage = (props: FragrancePageProps) => {
               />
             </div>
           </div>
-        </FragranceCategory>
+        </PageCategory>
       </div>
     </div>
   )

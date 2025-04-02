@@ -9,9 +9,5 @@ interface RouterContext {
 }
 
 export const Route = createRootRouteWithContext<RouterContext>()({
-  component: MainLayout,
-  beforeLoad: async ({ context }) => {
-    if (context.auth?.userInfo.user != null) return
-    return await context.auth?.userGetInfo()
-  }
+  component: MainLayout
 })

@@ -48,7 +48,10 @@ export default {
         som: '#769ae3',
         heart: '#e20020',
         empty: '#f0f0f0'
-      }
+      },
+      boxShadow: {
+        symmetrical: '0 0 10px rgba(0, 0, 0, 0.15)',
+      },
     },
   },
   plugins: [],

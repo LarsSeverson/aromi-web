@@ -41,7 +41,6 @@ export interface UseAuthReturn {
 
 const useAuth = (): UseAuthReturn => {
   const { refresh } = useClientContext()
-
   const { upsertUser } = useUpsertUser()
 
   const [userInfo, setUserInfo] = useState<AuthUserInfo>({ user: null, state: AuthState.UNAUTHENTICATED })

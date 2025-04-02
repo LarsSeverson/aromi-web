@@ -2,7 +2,7 @@ import TextButton from '@/components/TextButton'
 import clsx from 'clsx'
 import React from 'react'
 
-export interface FragranceCategoryProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface PageCategoryProps extends React.HTMLAttributes<HTMLDivElement> {
   title: string
   expandText?: string | undefined
   showSeeAll?: boolean | undefined
@@ -11,7 +11,7 @@ export interface FragranceCategoryProps extends React.HTMLAttributes<HTMLDivElem
   onSeeAll?: (open: boolean) => void
 }
 
-const FragranceCategory = (props: FragranceCategoryProps) => {
+const PageCategory = (props: PageCategoryProps) => {
   const {
     title,
     expandText,
@@ -62,4 +62,4 @@ const FragranceCategory = (props: FragranceCategoryProps) => {
   )
 }
 
-export default FragranceCategory
+export default PageCategory

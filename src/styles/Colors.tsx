@@ -39,5 +39,6 @@ export const Colors = {
   som: '#769ae3',
   heart: '#e20020',
 
-  empty: '#f0f0f0'
+  empty: '#f0f0f0',
+  empty2: '#e5e7eb'
 }

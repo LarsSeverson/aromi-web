@@ -12,6 +12,7 @@ export interface TopBarProps extends React.HTMLAttributes<HTMLDivElement> {}
 const TopBar = (props: TopBarProps) => {
   const { className, ...rest } = props
   const { userInfo } = useAuthContext()
+
   const authenticated = userInfo.state === AuthState.AUTHENTICATED
 
   const [logInOpen, setLogInOpen] = useState(false)

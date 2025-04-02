@@ -1,7 +1,7 @@
-import { Link } from '@tanstack/react-router'
 import clsx from 'clsx'
 import React, { useCallback, useState } from 'react'
 import { FaStar, FaRegStar } from 'react-icons/fa'
+import BouncyButton from '../BouncyButton'
 
 export const ratingMap = {
   0: 'Select your rating',
@@ -12,29 +12,27 @@ export const ratingMap = {
   5: 'Excellent'
 }
 
-export interface RatingStarsProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface InteractableRatingStarsProps extends React.HTMLAttributes<HTMLDivElement> {
   rating: number
   size?: number
   filledColor?: string
   emptyColor?: string
-  interactable?: boolean
-  to?: string
+  onStarClick?: (rating: number) => void
 }
 
-const RatingStars = (props: RatingStarsProps) => {
+const InteractableRatingStars = (props: InteractableRatingStarsProps) => {
   const {
     rating,
     size = 15,
     filledColor = 'black',
     emptyColor = 'black',
-    interactable = false,
-    to,
+    onStarClick,
     className,
     ...rest
   } = props
 
   const [hoveredRating, setHoveredRating] = useState<number | null>(null)
-  const effectiveRating = interactable && hoveredRating !== null ? hoveredRating : rating
+  const effectiveRating = hoveredRating ?? rating
 
   const transformFillPercentage = useCallback((percentage: number): number => {
     const center = 50
@@ -56,18 +54,14 @@ const RatingStars = (props: RatingStarsProps) => {
     const width = fillPercentage === 100 ? fillPercentage : transformFillPercentage(fillPercentage)
 
     return (
-      <Link
+      <BouncyButton
         key={index}
-        to={to ?? '.'}
-        search={{
-          rating: startNumber
-        }}
         className={clsx(
-          'relative',
-          interactable && 'cursor-pointer'
+          'relative px-0 py-0 hover:backdrop-opacity-0'
         )}
         style={{ width: size, height: size, marginRight: 2 }}
-        onMouseEnter={interactable ? () => { setHoveredRating(startNumber) } : undefined}
+        onMouseEnter={() => { setHoveredRating(startNumber) }}
+        onClick={() => { onStarClick?.(startNumber) }}
       >
         <FaRegStar
           size={size}
@@ -82,15 +76,15 @@ const RatingStars = (props: RatingStarsProps) => {
             color={filledColor}
           />
         </div>
-      </Link>
+      </BouncyButton>
     )
   })
 
   return (
     <div
       className={clsx(
-        className,
-        interactable && 'flex flex-col items-center gap-3'
+        'flex flex-col items-center gap-3',
+        className
       )}
       {...rest}
     >
@@ -98,17 +92,16 @@ const RatingStars = (props: RatingStarsProps) => {
         className={clsx(
           'flex'
         )}
-        onMouseLeave={interactable ? () => { setHoveredRating(null) } : undefined}
+        onMouseLeave={() => { setHoveredRating(null) }}
       >
         {stars}
       </div>
-      {interactable && (
-        <p className='font-medium opacity-50'>
-          {ratingMap[effectiveRating as keyof typeof ratingMap] ?? ratingMap[0]}
-        </p>
-      )}
+
+      <p className='font-medium opacity-50'>
+        {ratingMap[effectiveRating as keyof typeof ratingMap] ?? ratingMap[0]}
+      </p>
     </div>
   )
 }
 
-export default RatingStars
+export default InteractableRatingStars
