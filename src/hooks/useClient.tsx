@@ -31,6 +31,18 @@ export const useClient = (): UseClientReturn => {
           fields: {
             fragrances: relayStylePagination()
           }
+        },
+        Fragrance: {
+          fields: {
+            notes: {
+              merge (existing = {}, incoming) {
+                return { ...existing, ...incoming }
+              }
+            }
+          }
+        },
+        FragranceNote: {
+          keyFields: ['id', 'layer']
         }
       }
     })

@@ -13,6 +13,7 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as IndexImport } from './routes/index'
 import { Route as UserIdImport } from './routes/user/$id'
+import { Route as FragranceIdImport } from './routes/fragrance/$id'
 import { Route as UserIdIndexImport } from './routes/user/$id/index'
 import { Route as FragranceIdIndexImport } from './routes/fragrance/$id/index'
 import { Route as UserIdReviewsImport } from './routes/user/$id/reviews'
@@ -33,6 +34,12 @@ const UserIdRoute = UserIdImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const FragranceIdRoute = FragranceIdImport.update({
+  id: '/fragrance/$id',
+  path: '/fragrance/$id',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const UserIdIndexRoute = UserIdIndexImport.update({
   id: '/',
   path: '/',
@@ -40,9 +47,9 @@ const UserIdIndexRoute = UserIdIndexImport.update({
 } as any)
 
 const FragranceIdIndexRoute = FragranceIdIndexImport.update({
-  id: '/fragrance/$id/',
-  path: '/fragrance/$id/',
-  getParentRoute: () => rootRoute,
+  id: '/',
+  path: '/',
+  getParentRoute: () => FragranceIdRoute,
 } as any)
 
 const UserIdReviewsRoute = UserIdReviewsImport.update({
@@ -58,9 +65,9 @@ const UserIdLikesRoute = UserIdLikesImport.update({
 } as any)
 
 const FragranceIdReviewRoute = FragranceIdReviewImport.update({
-  id: '/fragrance/$id/review',
-  path: '/fragrance/$id/review',
-  getParentRoute: () => rootRoute,
+  id: '/review',
+  path: '/review',
+  getParentRoute: () => FragranceIdRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -74,6 +81,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
+    '/fragrance/$id': {
+      id: '/fragrance/$id'
+      path: '/fragrance/$id'
+      fullPath: '/fragrance/$id'
+      preLoaderRoute: typeof FragranceIdImport
+      parentRoute: typeof rootRoute
+    }
     '/user/$id': {
       id: '/user/$id'
       path: '/user/$id'
@@ -83,10 +97,10 @@ declare module '@tanstack/react-router' {
     }
     '/fragrance/$id/review': {
       id: '/fragrance/$id/review'
-      path: '/fragrance/$id/review'
+      path: '/review'
       fullPath: '/fragrance/$id/review'
       preLoaderRoute: typeof FragranceIdReviewImport
-      parentRoute: typeof rootRoute
+      parentRoute: typeof FragranceIdImport
     }
     '/user/$id/likes': {
       id: '/user/$id/likes'
@@ -104,10 +118,10 @@ declare module '@tanstack/react-router' {
     }
     '/fragrance/$id/': {
       id: '/fragrance/$id/'
-      path: '/fragrance/$id'
-      fullPath: '/fragrance/$id'
+      path: '/'
+      fullPath: '/fragrance/$id/'
       preLoaderRoute: typeof FragranceIdIndexImport
-      parentRoute: typeof rootRoute
+      parentRoute: typeof FragranceIdImport
     }
     '/user/$id/': {
       id: '/user/$id/'
@@ -120,6 +134,20 @@ declare module '@tanstack/react-router' {
 }
 
 // Create and export the route tree
+
+interface FragranceIdRouteChildren {
+  FragranceIdReviewRoute: typeof FragranceIdReviewRoute
+  FragranceIdIndexRoute: typeof FragranceIdIndexRoute
+}
+
+const FragranceIdRouteChildren: FragranceIdRouteChildren = {
+  FragranceIdReviewRoute: FragranceIdReviewRoute,
+  FragranceIdIndexRoute: FragranceIdIndexRoute,
+}
+
+const FragranceIdRouteWithChildren = FragranceIdRoute._addFileChildren(
+  FragranceIdRouteChildren,
+)
 
 interface UserIdRouteChildren {
   UserIdLikesRoute: typeof UserIdLikesRoute
@@ -138,11 +166,12 @@ const UserIdRouteWithChildren =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/fragrance/$id': typeof FragranceIdRouteWithChildren
   '/user/$id': typeof UserIdRouteWithChildren
   '/fragrance/$id/review': typeof FragranceIdReviewRoute
   '/user/$id/likes': typeof UserIdLikesRoute
   '/user/$id/reviews': typeof UserIdReviewsRoute
-  '/fragrance/$id': typeof FragranceIdIndexRoute
+  '/fragrance/$id/': typeof FragranceIdIndexRoute
   '/user/$id/': typeof UserIdIndexRoute
 }
 
@@ -158,6 +187,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/fragrance/$id': typeof FragranceIdRouteWithChildren
   '/user/$id': typeof UserIdRouteWithChildren
   '/fragrance/$id/review': typeof FragranceIdReviewRoute
   '/user/$id/likes': typeof UserIdLikesRoute
@@ -170,11 +200,12 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/fragrance/$id'
     | '/user/$id'
     | '/fragrance/$id/review'
     | '/user/$id/likes'
     | '/user/$id/reviews'
-    | '/fragrance/$id'
+    | '/fragrance/$id/'
     | '/user/$id/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -187,6 +218,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/fragrance/$id'
     | '/user/$id'
     | '/fragrance/$id/review'
     | '/user/$id/likes'
@@ -198,16 +230,14 @@ export interface FileRouteTypes {
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  FragranceIdRoute: typeof FragranceIdRouteWithChildren
   UserIdRoute: typeof UserIdRouteWithChildren
-  FragranceIdReviewRoute: typeof FragranceIdReviewRoute
-  FragranceIdIndexRoute: typeof FragranceIdIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  FragranceIdRoute: FragranceIdRouteWithChildren,
   UserIdRoute: UserIdRouteWithChildren,
-  FragranceIdReviewRoute: FragranceIdReviewRoute,
-  FragranceIdIndexRoute: FragranceIdIndexRoute,
 }
 
 export const routeTree = rootRoute
@@ -221,13 +251,19 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/user/$id",
-        "/fragrance/$id/review",
-        "/fragrance/$id/"
+        "/fragrance/$id",
+        "/user/$id"
       ]
     },
     "/": {
       "filePath": "index.tsx"
+    },
+    "/fragrance/$id": {
+      "filePath": "fragrance/$id.tsx",
+      "children": [
+        "/fragrance/$id/review",
+        "/fragrance/$id/"
+      ]
     },
     "/user/$id": {
       "filePath": "user/$id.tsx",
@@ -238,7 +274,8 @@ export const routeTree = rootRoute
       ]
     },
     "/fragrance/$id/review": {
-      "filePath": "fragrance/$id/review.tsx"
+      "filePath": "fragrance/$id/review.tsx",
+      "parent": "/fragrance/$id"
     },
     "/user/$id/likes": {
       "filePath": "user/$id/likes.tsx",
@@ -249,7 +286,8 @@ export const routeTree = rootRoute
       "parent": "/user/$id"
     },
     "/fragrance/$id/": {
-      "filePath": "fragrance/$id/index.tsx"
+      "filePath": "fragrance/$id/index.tsx",
+      "parent": "/fragrance/$id"
     },
     "/user/$id/": {
       "filePath": "user/$id/index.tsx",

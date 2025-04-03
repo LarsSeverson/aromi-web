@@ -52,6 +52,9 @@ export default {
       boxShadow: {
         symmetrical: '0 0 10px rgba(0, 0, 0, 0.15)',
       },
+      fontSize: {
+        md: '0.92rem'
+      } 
     },
   },
   plugins: [],

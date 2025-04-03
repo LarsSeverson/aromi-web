@@ -90,20 +90,29 @@ const FRAGRANCE_NOTES_LAYER_QUERY = graphql(/* GraphQL */ `
 type FragranceNotesData = Pick<NonNullable<FragranceNotesLayerQuery['fragrance']>['notes'], 'top' | 'middle' | 'base'>
 export type FlattenedFragranceNotesLayerReturn = NonNullable<FlattenType<FragranceNotesData>['base' | 'middle' | 'top']>
 
-const useFragranceNotesLayer = (fragranceId: number, layer: NoteLayer, fill: boolean = false): PaginatedQueryHookReturn<FlattenedFragranceNotesLayerReturn> => {
+export interface UseFragranceNotesParams {
+  fragranceId: number
+  layer: NoteLayer
+  fill?: boolean
+  limit?: number
+}
+
+const useFragranceNotesLayer = (params: UseFragranceNotesParams): PaginatedQueryHookReturn<FlattenedFragranceNotesLayerReturn> => {
+  const { fragranceId, layer, fill = false, limit = NOTES_LIMIT } = params
+
   const key = useMemo<keyof FragranceNotesData>(() => layer.toLowerCase() as keyof FragranceNotesData, [layer])
   const variables = useMemo<FragranceNotesLayerQueryVariables>(() => ({
     fragranceId,
     notesInput: {
       pagination: {
-        first: NOTES_LIMIT
+        first: limit
       },
       fill
     },
     includeTop: layer === NoteLayer.Top,
     includeMiddle: layer === NoteLayer.Middle,
     includeBase: layer === NoteLayer.Base
-  }), [fragranceId, layer, fill])
+  }), [fragranceId, limit, fill, layer])
 
   const { data, loading, error, networkStatus, fetchMore, refetch } = useQuery(FRAGRANCE_NOTES_LAYER_QUERY, {
     variables,

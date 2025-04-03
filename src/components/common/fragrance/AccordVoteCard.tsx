@@ -1,3 +1,4 @@
+import { formatNumber } from '@/common/string-utils'
 import BouncyButton, { type BouncyButtonProps } from '@/components/BouncyButton'
 import { type FragranceAccord } from '@/generated/graphql'
 import clsx from 'clsx'
@@ -5,11 +6,11 @@ import React, { useMemo, useState } from 'react'
 
 export type CardAccordPreview = FragranceAccord
 
-export interface AccordPreviewCardProps extends BouncyButtonProps {
+export interface AccordVoteCardProps extends BouncyButtonProps {
   accord: CardAccordPreview
 }
 
-const AccordPreviewCard = (props: AccordPreviewCardProps) => {
+const AccordVoteCard = (props: AccordVoteCardProps) => {
   const { accord, className, ...rest } = props
   const { color: backgroundColor, name, votes, myVote } = accord
 
@@ -35,7 +36,7 @@ const AccordPreviewCard = (props: AccordPreviewCardProps) => {
     <BouncyButton
       className={clsx(
         'flex flex-col px-2 py-2 group hover:backdrop-opacity-0 group',
-        'active:scale-[0.99]',
+        'active:scale-[1.0]',
         className
       )}
       {...rest}
@@ -46,16 +47,16 @@ const AccordPreviewCard = (props: AccordPreviewCardProps) => {
       >
         <div
           className={clsx(
-            'w-full aspect-square rounded-xl overflow-hidden bg-empty',
+            'w-full aspect-square rounded-xl overflow-hidden',
             'group-hover:outline-sinopia outline outline-[3px] outline-none transition-all duration-100 ease-in-out',
-            'group-active:scale-[0.99]',
             (curSelected ?? false) && 'outline-sinopia'
           )}
         >
           <div
             className={clsx(
-              'w-full aspect-square rounded-xl',
-              (curSelected ?? false) && 'scale-95'
+              'w-full aspect-square rounded-xl bg-empty',
+              'group-active:scale-[0.95]',
+              (curSelected ?? false) && 'scale-[0.95]'
             )}
             style={{ backgroundColor }}
           />
@@ -72,7 +73,7 @@ const AccordPreviewCard = (props: AccordPreviewCardProps) => {
             <p
               className='font-semibold text-sm ml-auto'
             >
-              {selectedVotes}
+              {formatNumber(selectedVotes)}
             </p>
           )}
         </div>
@@ -81,4 +82,4 @@ const AccordPreviewCard = (props: AccordPreviewCardProps) => {
   )
 }
 
-export default AccordPreviewCard
+export default AccordVoteCard

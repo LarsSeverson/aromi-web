@@ -12,17 +12,18 @@ export const Route = createFileRoute('/fragrance/$id/review')({
     {
       rating: Number(search.rating) ?? 0
     }
-  )
+  ),
+  loader: ({ context }) => context
 })
 
 function Review () {
   const { rating } = Route.useSearch()
-  const { id: fragranceId } = Route.useParams()
+  const { fragrance } = Route.useLoaderData()
 
   return (
     <ReviewPage
       rating={rating}
-      fragranceId={Number(fragranceId)}
+      fragrance={fragrance}
     />
   )
 }

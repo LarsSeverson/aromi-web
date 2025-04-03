@@ -1,11 +1,11 @@
 import React from 'react'
-import AccordPreviewCard, { type CardAccordPreview } from './AccordPreviewCard'
+import AccordVoteCard, { type CardAccordPreview } from './AccordVoteCard'
 
-export interface AccordsListProps {
+export interface VoteAccordsListProps {
   accords: CardAccordPreview[]
 }
 
-const AccordsList = (props: AccordsListProps) => {
+const VoteAccordsList = (props: VoteAccordsListProps) => {
   const { accords } = props
 
   return (
@@ -14,7 +14,7 @@ const AccordsList = (props: AccordsListProps) => {
     >
       <div className='w-full grid grid-cols-[repeat(auto-fit,minmax(60px,128px))] justify-center'>
         {accords.map(accord => (
-          <AccordPreviewCard
+          <AccordVoteCard
             key={accord.id}
             accord={accord}
           />
@@ -24,4 +24,4 @@ const AccordsList = (props: AccordsListProps) => {
   )
 }
 
-export default AccordsList
+export default VoteAccordsList
