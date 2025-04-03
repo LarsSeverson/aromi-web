@@ -9,3 +9,16 @@ body {
   overflow-y: scroll;
   scrollbar-gutter: stable;
 }
+
+@layer components {
+  .middle-slider {
+    @apply appearance-none rounded-full bg-empty w-full;
+    background: linear-gradient(to right, rgba(234, 159, 132, 0.164) 50%, rgba(198, 71, 29, 0.255) 50%);
+  }
+  .middle-slider::-webkit-slider-thumb {
+    @apply bg-white cursor-pointer h-8 w-8 rounded-full border-none drop-shadow-2xl shadow-symmetrical z-10;
+  }
+  .middle-slider::-moz-range-thumb {
+    @apply bg-white cursor-pointer h-8 w-8 rounded-full border-none drop-shadow-2xl shadow-symmetrical z-10;
+  }
+}

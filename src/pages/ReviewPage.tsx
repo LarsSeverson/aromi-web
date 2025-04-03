@@ -1,5 +1,6 @@
-import AccordPreviewCard from '@/components/common/fragrance/AccordPreviewCard'
+import AccordsList from '@/components/common/fragrance/AccordsList'
 import InteractableRatingStars from '@/components/common/InteractableRatingStars'
+import MiddleSlider from '@/components/common/MiddleSlider'
 import PageCategory from '@/components/common/PageCategory'
 import useFragranceAccords from '@/hooks/useFragranceAccords'
 import { Colors } from '@/styles/Colors'
@@ -13,7 +14,7 @@ export interface ReviewPageProps {
 const ReviewPage = (props: ReviewPageProps) => {
   const { fragranceId, rating } = props
 
-  const { data: accords } = useFragranceAccords(fragranceId, 24, true)
+  const { data: accords } = useFragranceAccords(fragranceId, 21, true)
 
   return (
     <div
@@ -35,23 +36,15 @@ const ReviewPage = (props: ReviewPageProps) => {
         <PageCategory
           title='How are the accords?'
         >
-          <div
-            className='flex items-center justify-center'
-          >
-            <div className='grid grid-cols-6 w-fit'>
-              {accords.map(accord => (
-                <AccordPreviewCard
-                  key={accord.id}
-                  accord={accord}
-                  className='w-32'
-                />
-              ))}
-            </div>
-          </div>
+          <AccordsList
+            accords={accords}
+          />
         </PageCategory>
         <PageCategory
           title='How would you rate its characteristics?'
-        />
+        >
+          <MiddleSlider />
+        </PageCategory>
         <PageCategory
           title='How do the notes develop?'
         >
