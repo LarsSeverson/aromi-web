@@ -1,7 +1,7 @@
 import React from 'react'
 import BouncyButton, { type BouncyButtonProps } from './BouncyButton'
 import clsx from 'clsx'
-import Spinner from './common/Spinner'
+import Spinner from './Spinner'
 
 export interface ButtonTextProps extends BouncyButtonProps {
   text: string
@@ -14,10 +14,8 @@ const ButtonText = (props: ButtonTextProps) => {
   const combinedClass = clsx(
     `
       items-center 
-      justify-center 
-      px-[15px]
-      py-[10px] 
-      rounded-[21px] 
+      justify-center
+      rounded-xl
     `,
     className
   )
@@ -27,7 +25,10 @@ const ButtonText = (props: ButtonTextProps) => {
       className={combinedClass}
       {...rest}
     >
-      <p className='font-p text-[16px] mt-[-4px]' style={{ opacity: (loading ?? false) ? '0' : '1' }}>
+      <p
+        className='font-semibold'
+        style={{ opacity: (loading ?? false) ? '0' : '1' }}
+      >
         {text}
       </p>
       {(loading ?? false) && <Spinner />}

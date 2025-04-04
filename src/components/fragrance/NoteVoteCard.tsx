@@ -1,8 +1,8 @@
-import BouncyButton, { type BouncyButtonProps } from '@/components/BouncyButton'
 import clsx from 'clsx'
 import React, { useMemo, useState } from 'react'
 import { type CardNotePreview } from './NotePreviewCard'
 import { formatNumber } from '@/common/string-utils'
+import BouncyButton, { type BouncyButtonProps } from '../common/BouncyButton'
 
 export interface NoteVoteCardProps extends BouncyButtonProps {
   note: CardNotePreview

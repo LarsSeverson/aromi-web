@@ -1,6 +1,6 @@
 import { type FragranceReviewDistribution } from '@/generated/graphql'
 import React from 'react'
-import LinearScaleBar from '../LinearScaleBar'
+import LinearScaleBar from '../common/LinearScaleBar'
 import { Colors } from '@/styles/Colors'
 import clsx from 'clsx'
 

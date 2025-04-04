@@ -1,6 +1,6 @@
 import { type FragranceReviewDistribution } from '@/generated/graphql'
 import React from 'react'
-import RatingStars from '../RatingStars'
+import RatingStars from '../common/RatingStars'
 import { Colors } from '@/styles/Colors'
 import clsx from 'clsx'
 import { formatNumber } from '@/common/string-utils'

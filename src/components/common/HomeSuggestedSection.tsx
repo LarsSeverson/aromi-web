@@ -1,8 +1,8 @@
 import useSuggestedFragrances, { type SuggestedFragrancesFragrance } from '@/hooks/useSuggestedFragances'
 import React, { useCallback } from 'react'
-import { MasonryList } from './common/MasonryList'
+import { MasonryList } from './MasonryList'
 import { useMainLayoutContext } from '@/contexts/MainLayoutContext'
-import { FragrancePreviewCard } from './common/fragrance/FragrancePreviewCard'
+import { FragrancePreviewCard } from '../fragrance/FragrancePreviewCard'
 
 export const HomeSuggestedSection = () => {
   const { mainContentRect } = useMainLayoutContext()

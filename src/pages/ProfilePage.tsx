@@ -1,10 +1,10 @@
 import React from 'react'
 import { Link, Outlet, useLocation } from '@tanstack/react-router'
 import emptyAvatar from '@/assets/avatar-empty.svg'
-import Divider from '@/components/Divider'
 import clsx from 'clsx'
 import { formatNumber } from '@/common/string-utils'
 import { type User } from '@/generated/graphql'
+import Divider from '@/components/common/Divider'
 
 export type ProfileUser = Pick<User, 'id' | 'username' | 'followers' | 'following'>
 export interface ProfilePageProps {

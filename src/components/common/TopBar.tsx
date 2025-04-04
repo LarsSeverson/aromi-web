@@ -3,9 +3,9 @@ import BouncyButton from './BouncyButton'
 import ButtonText from './ButtonText'
 import { useAuthContext } from '@/contexts/AuthContext'
 import { AuthState } from '@/hooks/useAuth'
-import LogInModal from './modals/LogInModal'
 import clsx from 'clsx'
 import emptyAvatar from '@/assets/avatar-empty.svg'
+import LogInModal from '../modals/LogInModal'
 
 export interface TopBarProps extends React.HTMLAttributes<HTMLDivElement> {}
 

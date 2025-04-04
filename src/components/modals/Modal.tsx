@@ -1,8 +1,8 @@
 import React from 'react'
 import { Dialog, DialogBackdrop, DialogPanel, type DialogProps } from '@headlessui/react'
 import { IoClose } from 'react-icons/io5'
-import BouncyButton from '../BouncyButton'
 import clsx from 'clsx'
+import BouncyButton from '../common/BouncyButton'
 
 export interface ModalProps extends DialogProps {
   open: boolean

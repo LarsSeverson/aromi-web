@@ -4,10 +4,10 @@ import collectionImage from '@/assets/collection.svg'
 import emptyFragranceImage from '@/assets/fall-back-fi.svg'
 import clsx from 'clsx'
 import React from 'react'
-import { Overlay } from '../Overlay'
+import { Overlay } from '../common/Overlay'
 import { Link } from '@tanstack/react-router'
 import { FaPen } from 'react-icons/fa6'
-import BouncyButton from '@/components/BouncyButton'
+import BouncyButton from '../common/BouncyButton'
 
 type FlattenedCollection = FlattenType<FragranceCollection>
 type PartialUser = Pick<FlattenedCollection['user'], 'username'>

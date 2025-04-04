@@ -1,4 +1,4 @@
-import { FragrancePreviewCard } from '@/components/common/fragrance/FragrancePreviewCard'
+import { FragrancePreviewCard } from '@/components/fragrance/FragrancePreviewCard'
 import { MasonryList } from '@/components/common/MasonryList'
 import { type User } from '@/generated/graphql'
 import useUserLikes from '@/hooks/useUserLikes'

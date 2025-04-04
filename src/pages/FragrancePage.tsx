@@ -1,30 +1,31 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { formatNumber } from '@/common/string-utils'
-import BouncyButton from '@/components/BouncyButton'
-import ButtonText from '@/components/ButtonText'
-import { FragranceImageCarousel } from '@/components/common/fragrance/FragranceImageCarousel'
+import { FragranceImageCarousel } from '@/components/fragrance/FragranceImageCarousel'
 import RatingStars from '@/components/common/RatingStars'
 import { VoteButton } from '@/components/common/VoteButton'
 import useFragranceImages from '@/hooks/useFragranceImages'
-import { HiDotsHorizontal } from 'react-icons/hi'
-import AccordsLadder from '@/components/common/fragrance/AccordsLadder'
+import AccordsLadder from '@/components/fragrance/AccordsLadder'
 import useFragranceAccords from '@/hooks/useFragranceAccords'
 import useFragranceTraits from '@/hooks/useFragranceTraits'
-import NotesPyramid from '@/components/common/fragrance/NotesPyramid'
+import NotesPyramid from '@/components/fragrance/NotesPyramid'
 import useFragranceNotes from '@/hooks/useFragranceNotes'
 import { type Fragrance, NoteLayer, type User } from '@/generated/graphql'
-import { CharacteristicsLadder } from '@/components/common/fragrance/CharacteristicsLadder'
+import { CharacteristicsLadder } from '@/components/fragrance/CharacteristicsLadder'
 import PageCategory from '@/components/common/PageCategory'
 import useFragranceReviews from '@/hooks/useFragranceReviews'
-import { ReviewsSummary } from '@/components/common/fragrance/ReviewsSummary'
-import Divider from '@/components/Divider'
-import { ReviewsList } from '@/components/common/fragrance/ReviewsList'
+import { ReviewsSummary } from '@/components/fragrance/ReviewsSummary'
+import { ReviewsList } from '@/components/fragrance/ReviewsList'
 import { PageNav } from '@/components/common/PageNav'
 import { useMyReview } from '@/hooks/useMyReview'
 import MyReviewCard from '@/components/common/MyReviewCard'
 import { Colors } from '@/styles/Colors'
 import InteractableRatingStars from '@/components/common/InteractableRatingStars'
 import { useNavigate } from '@tanstack/react-router'
+import BouncyButton from '@/components/common/BouncyButton'
+import Divider from '@/components/common/Divider'
+import { TbMessage2Star } from 'react-icons/tb'
+import { PiShareFat } from 'react-icons/pi'
+import { HiDotsHorizontal } from 'react-icons/hi'
 
 export type FragrancePageUser = Pick<User, 'username' | 'id'>
 export type FragrancePageFragrance = Pick<Fragrance, 'id' | 'brand' | 'name' | 'rating' | 'reviewsCount' | 'reviewDistribution' | 'votes'>
@@ -45,6 +46,8 @@ export const FragrancePage = (props: FragrancePageProps) => {
   const { data: reviews } = useFragranceReviews(fragranceId)
   const { data: myReview } = useMyReview(fragranceId)
 
+  const reviewRef = useRef<HTMLDivElement>(null)
+
   const [curReviewPage, setCurReviewPage] = useState(0)
   const totalPages = Math.ceil(reviews.length / 4)
 
@@ -53,6 +56,15 @@ export const FragrancePage = (props: FragrancePageProps) => {
     { layer: NoteLayer.Middle, notes: notes.middle },
     { layer: NoteLayer.Base, notes: notes.base }
   ].filter(item => item.notes.length > 0)
+
+  const scrollToReview = () => {
+    if (reviewRef.current != null) {
+      window.scrollTo({
+        top: reviewRef.current.offsetTop - 100,
+        behavior: 'smooth'
+      })
+    }
+  }
 
   return (
     <div className='h-full flex flex-col items-center relative'>
@@ -65,13 +77,13 @@ export const FragrancePage = (props: FragrancePageProps) => {
           </div>
         </div>
         <div className='flex-1 justify-start py-3'>
-          <div className='flex-1 flex flex-col gap-2 max-w-xl min-w-44'>
+          <div className='flex-1 flex flex-col max-w-xl min-w-44'>
             <div className='flex flex-row justify-between items-center'>
               <h2 className='font-pd text-2xl truncate'>
                 {info.name}
               </h2>
               <BouncyButton
-                className='rounded-full'
+                className='rounded-full aspect-square ml-auto'
               >
                 <HiDotsHorizontal
                   size={20}
@@ -81,33 +93,85 @@ export const FragrancePage = (props: FragrancePageProps) => {
             <h2 className='font-p text-xl'>
               {info.brand}
             </h2>
-            <div className='flex flex-row items-center justify-between my-4'>
+
+            <div className='flex flex-row items-center mt-5'>
+              <RatingStars
+                rating={info.rating}
+                size={20}
+                filledColor={Colors.sinopia}
+                emptyColor={Colors.empty2}
+              />
+              <p
+                className='font-semibold text-sm opacity-80 ml-1'
+              >
+                ({info.rating} / 5.0)
+              </p>
+            </div>
+
+            <div className='flex flex-row items-end mb-3 gap-3'>
               <VoteButton
                 votes={info.votes.likes - info.votes.dislikes}
               />
-              <div className='flex flex-row items-center'>
-                <BouncyButton
-                  className='px-0 py-0 hover:backdrop-opacity-0'
+
+              <BouncyButton
+                className='rounded-full px-3 py-0 flex items-center justify-center border gap-1 group'
+                onClick={scrollToReview}
+              >
+                <div
+                  className='h-8 flex items-center justify-center group-hover:text-sinopia'
                 >
-                  <RatingStars
-                    rating={info.rating}
+                  <TbMessage2Star
                     size={18}
                   />
-                </BouncyButton>
-                <p className='font-p text-lg mb-[3px]'>
-                  ({formatNumber(info.reviewsCount)})
+                </div>
+                <p
+                  className='font-semibold text-sm'
+                >
+                  {formatNumber(info.reviewsCount)}
                 </p>
+              </BouncyButton>
+
+              <BouncyButton
+                className='rounded-full px-3 py-0 flex items-center justify-center border gap-1 group'
+              >
+                <div
+                  className='h-8 flex items-center justify-center gap-2'
+                >
+                  <PiShareFat
+                    className='group-hover:text-sinopia'
+                    size={18}
+                  />
+                  <p
+                    className='font-semibold text-sm'
+                  >
+                    Share
+                  </p>
+
+                </div>
+              </BouncyButton>
+
+              <div className='flex ml-auto'>
+                <BouncyButton
+                  className='bg-sinopia text-white rounded-full px-7 py-3 hover:shadow-lg hover:brightness-105'
+                >
+                  <p
+                    className='font-semibold'
+                  >
+                    Save
+                  </p>
+                </BouncyButton>
               </div>
             </div>
-            <div className='flex flex-col'>
-              <ButtonText
-                text='Add to collection'
-                className='bg-sinopia text-white py-[12px] active:scale-[0.99] max-w-xs w-full self-center'
-              />
-            </div>
+
+            <Divider
+              horizontal
+              className='mb-5'
+            />
+
             <div
-              className='flex flex-col gap-7 overflow-auto'
+              className='flex flex-col overflow-auto'
             >
+
               <div className='flex flex-col gap-3'>
                 <PageCategory
                   title='Accords'
@@ -159,7 +223,10 @@ export const FragrancePage = (props: FragrancePageProps) => {
         <PageCategory
           title='Reviews'
         >
-          <div className='w-full flex flex-col items-center'>
+          <div
+            ref={reviewRef}
+            className='w-full flex flex-col items-center'
+          >
             <div className='max-w-4xl w-full'>
               {myReview == null && (
                 <InteractableRatingStars

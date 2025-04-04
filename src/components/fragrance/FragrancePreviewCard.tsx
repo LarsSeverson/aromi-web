@@ -1,13 +1,13 @@
 import { type FragranceImage, type Fragrance } from '@/generated/graphql'
 import clsx from 'clsx'
 import React from 'react'
-import { VoteButton } from '../VoteButton'
+import { VoteButton } from '../common/VoteButton'
 import fallbackImage from '@/assets/fall-back-fi.svg'
-import ButtonText from '@/components/ButtonText'
-import BouncyButton from '@/components/BouncyButton'
 import { HiDotsHorizontal } from 'react-icons/hi'
 import { Link, type LinkProps } from '@tanstack/react-router'
-import { Overlay } from '../Overlay'
+import { Overlay } from '../common/Overlay'
+import ButtonText from '../common/ButtonText'
+import BouncyButton from '../common/BouncyButton'
 
 export type CardFragrancePreview = Omit<Pick<Fragrance, 'id' | 'name' | 'brand' | 'votes'>, 'images'> & {
   images: FragranceImage[]
@@ -60,8 +60,8 @@ export const FragrancePreviewCard = (props: FragrancePreviewCardProps) => {
         >
           <ButtonText
             text='Save'
-            className='bg-sinopia text-white right-3 top-3'
-            style={{ position: 'absolute' }}
+            className='bg-sinopia text-white right-3 top-3 py-3 px-5'
+            style={{ position: 'absolute', borderRadius: 50 }}
           />
 
           <BouncyButton

@@ -1,6 +1,6 @@
-import TextButton from '@/components/TextButton'
 import clsx from 'clsx'
 import React from 'react'
+import TextButton from './TextButton'
 
 export interface PageCategoryProps extends React.HTMLAttributes<HTMLDivElement> {
   title: string

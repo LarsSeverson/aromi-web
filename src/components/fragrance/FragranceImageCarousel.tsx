@@ -1,9 +1,9 @@
 import { type FragranceImage } from '@/generated/graphql'
 import React, { useState, type HTMLAttributes } from 'react'
 import fallback from '@/assets/fall-back-fi.svg'
-import BouncyButton from '@/components/BouncyButton'
 import { HiChevronLeft, HiChevronRight } from 'react-icons/hi'
 import clsx from 'clsx'
+import BouncyButton from '../common/BouncyButton'
 
 export interface FragranceImageCarouselProps extends HTMLAttributes<HTMLDivElement> {
   images: FragranceImage[]

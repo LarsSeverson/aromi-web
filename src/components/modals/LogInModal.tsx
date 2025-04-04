@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 import Modal, { type ModalProps } from './Modal'
-import TextButton from '../TextButton'
-import ButtonText from '../ButtonText'
-import Divider from '../Divider'
 import Form from '../common/Form'
 import { useAuthContext } from '@/contexts/AuthContext'
 import { AuthErrorCode } from '@/common/auth-errors'
 import { Logo } from '../common/Icons'
+import TextButton from '../common/TextButton'
+import Divider from '../common/Divider'
+import ButtonText from '../common/ButtonText'
 
 export interface LogInModalProps extends ModalProps {}
 

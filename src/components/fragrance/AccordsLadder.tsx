@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import LinearScaleBar from '../LinearScaleBar'
+import LinearScaleBar from '../common/LinearScaleBar'
 import { type FragranceAccord } from '@/generated/graphql'
 
 export type BarFragranceAccord = Pick<FragranceAccord, 'id' | 'name' | 'color' | 'votes'>

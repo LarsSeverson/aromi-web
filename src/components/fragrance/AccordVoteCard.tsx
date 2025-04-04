@@ -1,8 +1,8 @@
 import { formatNumber } from '@/common/string-utils'
-import BouncyButton, { type BouncyButtonProps } from '@/components/BouncyButton'
 import { type FragranceAccord } from '@/generated/graphql'
 import clsx from 'clsx'
 import React, { useMemo, useState } from 'react'
+import BouncyButton, { type BouncyButtonProps } from '../common/BouncyButton'
 
 export type CardAccordPreview = FragranceAccord
 

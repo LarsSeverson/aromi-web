@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
-import SideBar from '../components/SideBar'
-import TopBar from '@/components/TopBar'
 import { ResizeContainer } from '@/components/common/ResizeContainer'
 import MainLayoutProvider from '@/contexts/MainLayoutContext'
 import { Outlet } from '@tanstack/react-router'
+import SideBar from '@/components/common/SideBar'
+import TopBar from '@/components/common/TopBar'
 
 const MainLayout = () => {
   const [mainContentRect, setMainContextRect] = useState(new DOMRect())

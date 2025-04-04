@@ -1,13 +1,13 @@
-import BouncyButton from '@/components/BouncyButton'
 import { type User, type FragranceReview } from '@/generated/graphql'
 import { Colors } from '@/styles/Colors'
 import React from 'react'
 import { HiDotsHorizontal } from 'react-icons/hi'
 import empty from '@/assets/avatar-empty.svg'
 import { formatDate } from '@/common/string-utils'
-import { VoteButton } from '../VoteButton'
-import RatingStars from '../RatingStars'
+import { VoteButton } from '../common/VoteButton'
+import RatingStars from '../common/RatingStars'
 import clsx from 'clsx'
+import BouncyButton from '../common/BouncyButton'
 
 type CardFragranceReviewUsaer = Pick<User, 'id' | 'username'>
 export type CardFragranceReview = Omit<FragranceReview, 'fragrance' | 'user'> & { user: CardFragranceReviewUsaer }

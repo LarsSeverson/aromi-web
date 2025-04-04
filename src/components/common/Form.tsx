@@ -1,6 +1,6 @@
 import React, { useContext, useRef } from 'react'
 import { createContext, type FormEvent, useState } from 'react'
-import InputField, { type InputFieldProps } from '../InputField'
+import InputField, { type InputFieldProps } from './InputField'
 
 export type ValidateFn = (value: string) => string | null
 

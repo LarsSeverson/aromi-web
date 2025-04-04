@@ -1,4 +1,4 @@
-import { UserReviewsList } from '@/components/common/profile/UserReviewsList'
+import { UserReviewsList } from '@/components/profile/UserReviewsList'
 import { type User } from '@/generated/graphql'
 import useUserReviews from '@/hooks/useUserReviews'
 import React, { useState } from 'react'

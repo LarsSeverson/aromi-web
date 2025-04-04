@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 import React, { useCallback, useState } from 'react'
 import { FaStar, FaRegStar } from 'react-icons/fa'
-import BouncyButton from '../BouncyButton'
+import BouncyButton from './BouncyButton'
 
 export const ratingMap = {
   0: 'Select your rating',

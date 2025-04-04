@@ -1,14 +1,14 @@
 import { type FragranceTrait } from '@/generated/graphql'
 import React from 'react'
 import clsx from 'clsx'
-import MidScaleBar from '../MidScaleBar'
+import MidScaleBar from '../common/MidScaleBar'
 import gender from '@/assets/gender.svg'
 import longevity from '@/assets/longevity.svg'
 import sillage from '@/assets/sillage.svg'
 import complexity from '@/assets/complexity.svg'
 import balance from '@/assets/balance.svg'
 import allure from '@/assets/allure.svg'
-import { Icon } from '../Icon'
+import { Icon } from '../common/Icon'
 
 export type LadderCharacteristic = Pick<FragranceTrait, 'id' | 'value' | 'trait' | 'myVote'>
 

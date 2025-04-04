@@ -1,6 +1,6 @@
 import React from 'react'
 import UserReviewCard, { type CardUserFragranceReview } from './UserReviewCard'
-import Divider from '@/components/Divider'
+import Divider from '../common/Divider'
 
 export interface UserReviewsListProps {
   reviews: CardUserFragranceReview[]

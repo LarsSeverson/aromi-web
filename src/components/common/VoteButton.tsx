@@ -1,9 +1,9 @@
 import React, { useMemo, useState, useCallback } from 'react'
-import BouncyButton from '../BouncyButton'
-import Divider from '../Divider'
 import clsx from 'clsx'
 import { DislikeIcon, FillDislikeIcon, FillLikeIcon, LikeIcon } from './Icons'
 import { formatNumber } from '@/common/string-utils'
+import BouncyButton from './BouncyButton'
+import Divider from './Divider'
 
 export interface VoteButtonProps extends React.HTMLAttributes<HTMLDivElement> {
   votes: number
@@ -54,7 +54,7 @@ export const VoteButton = (props: VoteButtonProps) => {
   return (
     <div
       className={clsx(
-        'flex flex-row rounded-full border-[1px]',
+        'flex flex-row rounded-full border',
         curVote == null ? 'bg-white border-gray-200' : curVote ? 'bg-sinopia border-sinopia' : 'bg-som border-som',
         className)}
       {...rest}
@@ -62,10 +62,9 @@ export const VoteButton = (props: VoteButtonProps) => {
       <BouncyButton
         className={clsx(
           'px-0 py-0 rounded-full aspect-square',
-          'hover:backdrop-brightness-95',
+          'w-8',
           curVote !== null ? 'text-white' : 'hover:text-sinopia'
         )}
-        style={{ width: '2rem' }}
         onClick={onFor}
       >
         {curVote === true ? <FillLikeIcon /> : <LikeIcon />}
@@ -84,9 +83,9 @@ export const VoteButton = (props: VoteButtonProps) => {
       <BouncyButton
         className={clsx(
           'px-0 rounded-full aspect-square',
+          'w-8',
           curVote !== null ? 'text-white' : 'hover:text-som'
         )}
-        style={{ width: '2rem' }}
         onClick={onAgainst}
       >
         {curVote === false ? <FillDislikeIcon /> : <DislikeIcon />}

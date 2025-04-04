@@ -5,11 +5,11 @@ import emptyFragrance from '@/assets/fall-back-fi.svg'
 import React from 'react'
 import { type FlattenType } from '@/common/util-types'
 import { formatDate } from '@/common/string-utils'
-import RatingStars from '../RatingStars'
-import BouncyButton from '@/components/BouncyButton'
+import RatingStars from '../common/RatingStars'
 import { HiDotsHorizontal } from 'react-icons/hi'
-import { VoteButton } from '../VoteButton'
-import { Overlay } from '../Overlay'
+import { VoteButton } from '../common/VoteButton'
+import { Overlay } from '../common/Overlay'
+import BouncyButton from '../common/BouncyButton'
 
 type FlattenedReview = FlattenType<FragranceReview>
 type UserReviewFragrance = Pick<FlattenedReview['fragrance'], 'brand' | 'name' | 'images'>

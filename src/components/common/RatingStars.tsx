@@ -1,4 +1,3 @@
-import { Link } from '@tanstack/react-router'
 import clsx from 'clsx'
 import React, { useCallback, useState } from 'react'
 import { FaStar, FaRegStar } from 'react-icons/fa'
@@ -56,12 +55,8 @@ const RatingStars = (props: RatingStarsProps) => {
     const width = fillPercentage === 100 ? fillPercentage : transformFillPercentage(fillPercentage)
 
     return (
-      <Link
+      <div
         key={index}
-        to={to ?? '.'}
-        search={{
-          rating: startNumber
-        }}
         className={clsx(
           'relative',
           interactable && 'cursor-pointer'
@@ -82,7 +77,7 @@ const RatingStars = (props: RatingStarsProps) => {
             color={filledColor}
           />
         </div>
-      </Link>
+      </div>
     )
   })
 

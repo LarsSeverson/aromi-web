@@ -68,7 +68,7 @@ export const SearchIcon = (props: IconProps) => {
 }
 
 export const DislikeIcon = (props: IconProps) => {
-  const { size = 16, color, ...rest } = props
+  const { size = 18, color, ...rest } = props
   return (
     <div
       {...rest}
@@ -88,7 +88,7 @@ export const DislikeIcon = (props: IconProps) => {
 }
 
 export const FillDislikeIcon = (props: IconProps) => {
-  const { size = 16, color, ...rest } = props
+  const { size = 18, color, ...rest } = props
   return (
     <div
       {...rest}
@@ -108,7 +108,7 @@ export const FillDislikeIcon = (props: IconProps) => {
 }
 
 export const LikeIcon = (props: IconProps) => {
-  const { size = 16, color, ...rest } = props
+  const { size = 18, color, ...rest } = props
   return (
     <div
       {...rest}
@@ -128,7 +128,7 @@ export const LikeIcon = (props: IconProps) => {
 }
 
 export const FillLikeIcon = (props: IconProps) => {
-  const { size = 16, color, ...rest } = props
+  const { size = 18, color, ...rest } = props
   return (
     <div
       {...rest}

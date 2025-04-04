@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { CommunityIcon, HomeIcon, Logo, ProfileIcon, SearchIcon } from './common/Icons'
+import { CommunityIcon, HomeIcon, Logo, ProfileIcon, SearchIcon } from './Icons'
 import SideBarButton from './SideBarButton'
 import { Link, useLocation } from '@tanstack/react-router'
 import clsx from 'clsx'

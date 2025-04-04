@@ -1,7 +1,7 @@
 import React from 'react'
 import { type CardNotePreview } from './NotePreviewCard'
 import NoteVoteCard from './NoteVoteCard'
-import Divider from '@/components/Divider'
+import Divider from '../common/Divider'
 
 export interface VoteNotesListProps {
   top: CardNotePreview[]

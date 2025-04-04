@@ -1,5 +1,5 @@
 import React from 'react'
-import BouncyButton from '../BouncyButton'
+import BouncyButton from './BouncyButton'
 import { TiArrowLeftThick, TiArrowRightThick } from 'react-icons/ti'
 import clsx from 'clsx'
 

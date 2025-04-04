@@ -1,9 +1,9 @@
-import Divider from '@/components/Divider'
 import { type NoteLayer } from '@/generated/graphql'
 import clsx from 'clsx'
 import React from 'react'
 import NotesPyramidRow from './NotesPyramidRow'
 import { type CardNotePreview } from './NotePreviewCard'
+import Divider from '../common/Divider'
 
 export interface NotesPyramidLayer {
   layer: NoteLayer
