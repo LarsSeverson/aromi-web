@@ -6,8 +6,10 @@ import fallbackImage from '@/assets/fall-back-fi.svg'
 import { HiDotsHorizontal } from 'react-icons/hi'
 import { Link, type LinkProps } from '@tanstack/react-router'
 import { Overlay } from '../common/Overlay'
-import ButtonText from '../common/ButtonText'
 import BouncyButton from '../common/BouncyButton'
+import CollectionPopover from './CollectionPopover'
+import { INVALID_ID } from '@/common/util-types'
+import { useAuthContext } from '@/contexts/AuthContext'
 
 export type CardFragrancePreview = Omit<Pick<Fragrance, 'id' | 'name' | 'brand' | 'votes'>, 'images'> & {
   images: FragranceImage[]
@@ -24,9 +26,7 @@ export const FragrancePreviewCard = (props: FragrancePreviewCardProps) => {
   const { fragrance, navigateTo, onFragranceVote, className, to, params, ...rest } = props
   const votes = fragrance.votes.likes - fragrance.votes.dislikes
 
-  // const handleVote = useCallback((myVote: boolean | null) => {
-  //   onFragranceVote?.(myVote)
-  // }, [onFragranceVote])
+  const { userInfo } = useAuthContext()
 
   return (
     <Link
@@ -38,10 +38,10 @@ export const FragrancePreviewCard = (props: FragrancePreviewCardProps) => {
       {...rest}
     >
       <div
-        className='group flex-1 flex rounded-2xl px-0 py-0 relative overflow-hidden'
+        className='group flex-1 flex rounded-2xl px-0 py-0 relative '
       >
         <div
-          className='flex-1 bg-white group-hover:brightness-[.85] relative'
+          className='flex-1 bg-white group-hover:brightness-[.85] relative rounded-2xl overflow-hidden'
         >
           <img
             src={fragrance.images.at(0)?.url ?? fallbackImage}
@@ -56,14 +56,15 @@ export const FragrancePreviewCard = (props: FragrancePreviewCardProps) => {
           <Overlay />
         </div>
         <div
-          className='hidden group-hover:inline absolute w-full h-full'
+          className='group-hover:inline absolute w-full h-full'
         >
-          <ButtonText
-            text='Save'
-            className='bg-sinopia text-white right-3 top-3 py-3 px-5'
-            style={{ position: 'absolute', borderRadius: 50 }}
-          />
-
+          <div
+            className='absolute top-3 right-3'
+          >
+            <CollectionPopover
+              userId={userInfo.user?.id ?? INVALID_ID}
+            />
+          </div>
           <BouncyButton
             className='rounded-full px-2 py-2 bg-white border-[1px] left-3 bottom-3'
             style={{ position: 'absolute' }}

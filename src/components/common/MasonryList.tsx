@@ -85,7 +85,6 @@ export const MasonryList = <T, >(props: MasonryListProps<T>) => {
                 width: effectiveWidth,
                 height: effectiveHeight
               }}
-              className='overflow-hidden'
             >
               {onRenderItem(item, startIndex + colIndex)}
             </div>

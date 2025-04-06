@@ -54,9 +54,12 @@ export default {
       },
       fontSize: {
         md: '0.92rem'
-      } 
+      }
     },
   },
-  plugins: [],
+  plugins: [require('daisyui')],
+  daisyui: {
+    themes: false
+  }
 }
 

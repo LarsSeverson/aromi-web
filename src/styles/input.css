@@ -1,9 +1,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Palanquin:wght@100;200;300;400;500;600;700&family=Playwrite + GB + S:ital,wght@0,100..400;1,100..400&family=Roboto + Mono:ital,wght@0,100..700;1,100..700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Palanquin+Dark:wght@400;500;600;700&family=Palanquin:wght@100;200;300;400;500;600;700&family=Playwrite+GB+S:ital,wght@0,100..400;1,100..400&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Palanquin+Dark:wght@400;500;600;700&family=Palanquin:wght@100;200;300;400;500;600;700&family=Playwrite + GB + S:ital,wght@0,100..400;1,100..400&family=Roboto + Mono:ital,wght@0,100..700;1,100..700&display=swap');
 
 @tailwind base;
+
 @tailwind components;
+
 @tailwind utilities;
+
+#root {
+  isolation: isolate;
+}
+
+html {
+  padding-right: 0 !important;
+}
 
 body {
   overflow-y: scroll;
@@ -12,13 +23,17 @@ body {
 
 @layer components {
   .middle-slider {
-    @apply appearance-none rounded-full bg-empty w-full;
+    @apply bg-empty w-full appearance-none rounded-full;
     background: linear-gradient(to right, rgba(234, 159, 132, 0.164) 50%, rgba(198, 71, 29, 0.255) 50%);
   }
+  
   .middle-slider::-webkit-slider-thumb {
-    @apply bg-white cursor-pointer h-8 w-8 rounded-full border-none drop-shadow-2xl shadow-symmetrical z-10;
+    @apply shadow-symmetrical z-10 h-8 w-8 cursor-pointer rounded-full border-none
+    bg-white drop-shadow-2xl;
   }
+  
   .middle-slider::-moz-range-thumb {
-    @apply bg-white cursor-pointer h-8 w-8 rounded-full border-none drop-shadow-2xl shadow-symmetrical z-10;
+    @apply shadow-symmetrical z-10 h-8 w-8 cursor-pointer rounded-full border-none
+    bg-white drop-shadow-2xl;
   }
 }

@@ -94,7 +94,7 @@ export const FragrancePage = (props: FragrancePageProps) => {
               {info.brand}
             </h2>
 
-            <div className='flex flex-row items-center mt-5'>
+            <div className='flex flex-row items-center mt-4 mb-2'>
               <RatingStars
                 rating={info.rating}
                 size={20}
@@ -111,6 +111,7 @@ export const FragrancePage = (props: FragrancePageProps) => {
             <div className='flex flex-row items-end mb-3 gap-3'>
               <VoteButton
                 votes={info.votes.likes - info.votes.dislikes}
+                myVote={info.votes.myVote}
               />
 
               <BouncyButton

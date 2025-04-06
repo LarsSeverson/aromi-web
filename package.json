@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.13.4",
-    "@headlessui/react": "^2.2.0",
+    "@base-ui-components/react": "^1.0.0-alpha.7",
     "@tanstack/react-router": "^1.114.29",
     "@tanstack/react-virtual": "^3.13.4",
     "aws-amplify": "6.13.2",
@@ -39,6 +39,7 @@
     "@typescript-eslint/parser": "6.21.0",
     "@vitejs/plugin-react": "^4.3.4",
     "concurrently": "^9.1.2",
+    "daisyui": "^5.0.12",
     "eslint": "8.57.1",
     "eslint-config-standard-react": "^13.0.0",
     "eslint-config-standard-with-typescript": "^43.0.1",

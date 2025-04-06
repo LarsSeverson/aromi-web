@@ -1,11 +1,11 @@
-import React, { useState } from 'react'
+import React from 'react'
 import BouncyButton from './BouncyButton'
 import ButtonText from './ButtonText'
 import { useAuthContext } from '@/contexts/AuthContext'
 import { AuthState } from '@/hooks/useAuth'
 import clsx from 'clsx'
 import emptyAvatar from '@/assets/avatar-empty.svg'
-import LogInModal from '../modals/LogInModal'
+// import LogInModal from '../modals/LogInModal'
 
 export interface TopBarProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -15,15 +15,10 @@ const TopBar = (props: TopBarProps) => {
 
   const authenticated = userInfo.state === AuthState.AUTHENTICATED
 
-  const [logInOpen, setLogInOpen] = useState(false)
-  const [, setSignUpOpen] = useState(false)
-
   const handleLogInPress = () => {
-    setLogInOpen(true)
   }
 
   const handleSignUpPress = () => {
-    setSignUpOpen(true)
   }
 
   return (
@@ -58,10 +53,6 @@ const TopBar = (props: TopBarProps) => {
             />
           </BouncyButton>
           )}
-      <LogInModal
-        open={logInOpen}
-        onClose={setLogInOpen}
-      />
     </div>
   )
 }
