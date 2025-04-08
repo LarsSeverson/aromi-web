@@ -1,16 +1,17 @@
 import React, { type SyntheticEvent } from 'react'
 import { Popover } from '@base-ui-components/react'
-import BouncyButton from '../common/BouncyButton'
-import { PiPlusBold } from 'react-icons/pi'
 import useUserCollections from '@/hooks/useUserCollections'
 import CollectionPreviewBarCheck from './CollectionPreviewBarCheck'
+import NewCollectionDialog from '../dialogs/NewCollectionDialog'
+import { type CardFragrancePreview } from './FragrancePreviewCard'
 
-export interface CollectionPopoverProps {
+export interface CollectionPopoverProps extends Popover.Root.Props {
   userId: number
+  fragrance: CardFragrancePreview
 }
 
 const CollectionPopover = (props: CollectionPopoverProps) => {
-  const { userId } = props
+  const { userId, fragrance, ...rest } = props
 
   const { data: collections } = useUserCollections(userId, 10)
 
@@ -24,7 +25,9 @@ const CollectionPopover = (props: CollectionPopoverProps) => {
   }
 
   return (
-    <Popover.Root>
+    <Popover.Root
+      {...rest}
+    >
       <Popover.Trigger
         className='bg-sinopia text-white rounded-full px-7 py-3 hover:shadow-lg hover:brightness-105'
         onClick={handlePopoverTriggerClick}
@@ -55,14 +58,9 @@ const CollectionPopover = (props: CollectionPopoverProps) => {
                 />
               ))}
             </div>
-            <BouncyButton
-              className='w-full p-5 font-semibold shadow-[0_0px_10px_0px_rgba(0,0,0,0.1)] active:scale-[0.99] gap-2 mt-auto'
-            >
-              <PiPlusBold
-                size={20}
-              />
-              New collection
-            </BouncyButton>
+            <NewCollectionDialog
+              fragrance={fragrance}
+            />
           </Popover.Popup>
         </Popover.Positioner>
       </Popover.Portal>

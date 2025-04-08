@@ -19,7 +19,7 @@ const CollectionPreviewBarCheck = (props: CollectionPreviewBarCheckProps) => {
 
   return (
     <div
-      className='w-full flex items-center px-2 py-0 active:scale-[0.99] hover:backdrop-brightness-95 gap-2'
+      className='w-full flex items-center px-2 py-0 active:scale-[0.99] hover:backdrop-brightness-95 gap-2 cursor-pointer'
       onClick={toggleChecked}
     >
       <CollectionPreviewBar

@@ -10,7 +10,7 @@
 
 // export interface LogInModalProps {}
 
-const LogInModal = () => {
+const LogInDialog = () => {
   // const { validateEmail, userLogIn } = useAuthContext()
   // const { ...rest } = props
 
@@ -118,4 +118,4 @@ const LogInModal = () => {
 //   )
 }
 
-export default LogInModal
+export default LogInDialog

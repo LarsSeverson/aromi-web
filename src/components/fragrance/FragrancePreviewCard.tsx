@@ -1,6 +1,6 @@
 import { type FragranceImage, type Fragrance } from '@/generated/graphql'
 import clsx from 'clsx'
-import React from 'react'
+import React, { useState } from 'react'
 import { VoteButton } from '../common/VoteButton'
 import fallbackImage from '@/assets/fall-back-fi.svg'
 import { HiDotsHorizontal } from 'react-icons/hi'
@@ -28,6 +28,8 @@ export const FragrancePreviewCard = (props: FragrancePreviewCardProps) => {
 
   const { userInfo } = useAuthContext()
 
+  const [active, setActive] = useState(false)
+
   return (
     <Link
       to={to ?? '/fragrance/$id'}
@@ -41,7 +43,10 @@ export const FragrancePreviewCard = (props: FragrancePreviewCardProps) => {
         className='group flex-1 flex rounded-2xl px-0 py-0 relative '
       >
         <div
-          className='flex-1 bg-white group-hover:brightness-[.85] relative rounded-2xl overflow-hidden'
+          className={clsx(
+            'flex-1 bg-white relative rounded-2xl overflow-hidden',
+            active ? 'brightness-[0.85]' : 'group-hover:brightness-[0.85]'
+          )}
         >
           <img
             src={fragrance.images.at(0)?.url ?? fallbackImage}
@@ -56,13 +61,18 @@ export const FragrancePreviewCard = (props: FragrancePreviewCardProps) => {
           <Overlay />
         </div>
         <div
-          className='group-hover:inline absolute w-full h-full'
+          className={clsx(
+            'absolute w-full h-full',
+            active ? 'inline' : 'hidden group-hover:inline'
+          )}
         >
           <div
             className='absolute top-3 right-3'
           >
             <CollectionPopover
               userId={userInfo.user?.id ?? INVALID_ID}
+              fragrance={fragrance}
+              onOpenChangeComplete={setActive}
             />
           </div>
           <BouncyButton
