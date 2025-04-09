@@ -15,8 +15,13 @@ const Spinner = (props: SpinnerProps) => {
   )
 
   return (
-    <div className='absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none'>
-      <div className={className} style={{ width: size, height: size }} />
+    <div
+      className='absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none'
+    >
+      <div
+        className={className}
+        style={{ width: size, height: size }}
+      />
     </div>
   )
 }

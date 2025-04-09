@@ -39,7 +39,7 @@ const CollectionPopover = (props: CollectionPopoverProps) => {
           sideOffset={8}
         >
           <Popover.Popup
-            className='bg-white w-[23rem] max-h-[32rem] rounded-xl shadow-xl flex flex-col justify-center items-center'
+            className='bg-white w-[23rem] max-h-[32rem] rounded-xl shadow-xl flex flex-col justify-center items-center overflow-hidden'
             onClick={handlePopoverClick}
           >
             <Popover.Title

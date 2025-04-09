@@ -6,7 +6,7 @@ import { useCallback, useMemo } from 'react'
 
 const COLLECTIONS_LIMIT = 20
 
-const USER_COLLECTIONS_QUERY = graphql(/* GraphQL */`
+export const USER_COLLECTIONS_QUERY = graphql(/* GraphQL */`
   query UserCollections(
     $userId: Int!
     $collectionsInput: QueryInput = {

@@ -82,7 +82,7 @@ export const VoteButton = (props: VoteButtonProps) => {
       </div>
       <BouncyButton
         className={clsx(
-          'px-0 rounded-full aspect-square',
+          'px-0 py-0 rounded-full aspect-square',
           'w-8',
           curVote !== null ? 'text-white' : 'hover:text-som'
         )}
