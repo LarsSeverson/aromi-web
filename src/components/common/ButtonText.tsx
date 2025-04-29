@@ -25,12 +25,12 @@ const ButtonText = (props: ButtonTextProps) => {
       className={combinedClass}
       {...rest}
     >
-      <p
-        className='font-semibold'
+      <div
+        className='font-semibold flex items-center justify-center h-full'
         style={{ opacity: (loading ?? false) ? '0' : '1' }}
       >
         {text}
-      </p>
+      </div>
       {(loading ?? false) && <Spinner />}
     </BouncyButton>
   )

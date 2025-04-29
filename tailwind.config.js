@@ -56,10 +56,6 @@ export default {
         md: '0.92rem'
       }
     },
-  },
-  plugins: [require('daisyui')],
-  daisyui: {
-    themes: false
   }
 }
 

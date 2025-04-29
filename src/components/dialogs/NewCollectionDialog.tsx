@@ -69,7 +69,7 @@ const NewCollectionDialog = (props: NewCollectionDialogProps) => {
                   className='relative rounded-2xl overflow-hidden'
                 >
                   <img
-                    src={fragrance.images.at(0)?.url ?? empty}
+                    src={fragrance.images.at(0)?.src ?? empty}
                     alt={fragrance.name}
                     className='object-cover aspect-square w-full'
                   />

@@ -38,7 +38,7 @@ const USER_LIKES_QUERY = graphql(/* GraphQL */`
               edges {
                 node {
                   id
-                  url
+                  src
                 }
               }
             }

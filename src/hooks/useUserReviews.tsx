@@ -49,7 +49,7 @@ const USER_REVIEWS_QUERY = graphql(/* GraphQL */`
                 edges {
                   node {
                     id
-                    url
+                    src
                   }
                 }
               }

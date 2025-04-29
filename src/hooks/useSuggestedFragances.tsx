@@ -35,7 +35,7 @@ const SUGGESTED_FRAGRANCES_QUERY = graphql(/* GraphQL */ `
             edges {
               node {
                 id
-                url
+                src
               }
             }
           }

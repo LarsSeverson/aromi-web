@@ -7,7 +7,7 @@ import { useAuthContext } from '@/contexts/AuthContext'
 
 const SideBar = () => {
   const location = useLocation()
-  const { userInfo } = useAuthContext()
+  const { isAuthenticated } = useAuthContext()
 
   const getInitialActive = () => {
     if (location.pathname.startsWith('/search')) return 'search'
@@ -54,7 +54,7 @@ const SideBar = () => {
           onClick={() => { setActive('search') }}
         />
         <SideBarButton
-          to={`/user/${userInfo.user?.id}`}
+          to='.'
           Icon={<ProfileIcon />}
           active={active === 'profile'}
           onClick={() => { setActive('profile') }}

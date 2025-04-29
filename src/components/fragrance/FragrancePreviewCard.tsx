@@ -9,7 +9,6 @@ import { Overlay } from '../common/Overlay'
 import BouncyButton from '../common/BouncyButton'
 import CollectionPopover from './CollectionPopover'
 import { INVALID_ID } from '@/common/util-types'
-import { useAuthContext } from '@/contexts/AuthContext'
 
 export type CardFragrancePreview = Omit<Pick<Fragrance, 'id' | 'name' | 'brand' | 'votes'>, 'images'> & {
   images: FragranceImage[]
@@ -17,16 +16,13 @@ export type CardFragrancePreview = Omit<Pick<Fragrance, 'id' | 'name' | 'brand' 
 
 export interface FragrancePreviewCardProps extends LinkProps {
   fragrance: CardFragrancePreview
-  navigateTo?: string | undefined
   className?: string | undefined
   onFragranceVote?: (myVote: boolean | null) => void
 }
 
 export const FragrancePreviewCard = (props: FragrancePreviewCardProps) => {
-  const { fragrance, navigateTo, onFragranceVote, className, to, params, ...rest } = props
+  const { fragrance, onFragranceVote, className, to, params, ...rest } = props
   const votes = fragrance.votes.likes - fragrance.votes.dislikes
-
-  const { userInfo } = useAuthContext()
 
   const [active, setActive] = useState(false)
 
@@ -49,7 +45,7 @@ export const FragrancePreviewCard = (props: FragrancePreviewCardProps) => {
           )}
         >
           <img
-            src={fragrance.images.at(0)?.url ?? fallbackImage}
+            src={fragrance.images.at(0)?.src ?? fallbackImage}
             alt={fragrance.name}
             className='absolute w-full h-full object-cover bg-transparent'
             loading='lazy'
@@ -70,7 +66,8 @@ export const FragrancePreviewCard = (props: FragrancePreviewCardProps) => {
             className='absolute top-3 right-3'
           >
             <CollectionPopover
-              userId={userInfo.user?.id ?? INVALID_ID}
+              // userId={userInfo.user?.id ?? INVALID_ID}
+              userId={INVALID_ID}
               fragrance={fragrance}
               onOpenChangeComplete={setActive}
             />

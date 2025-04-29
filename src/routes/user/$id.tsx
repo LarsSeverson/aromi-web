@@ -2,14 +2,14 @@ import React from 'react'
 import { createFileRoute } from '@tanstack/react-router'
 import { USER_INFO_QUERY } from '@/hooks/useUserInfo'
 import { ProfilePage } from '@/pages/ProfilePage'
+import { client } from '@/common/client'
 
 export const Route = createFileRoute('/user/$id')({
   component: User,
   beforeLoad: async ({ context, params }) => {
-    const { client, auth } = context
-    if (client == null) throw new Error('Client not found')
+    const { auth } = context
 
-    const { data } = await client.client.query({
+    const { data } = await client.query({
       query: USER_INFO_QUERY,
       variables: {
         userId: Number(params.id)

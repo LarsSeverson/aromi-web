@@ -52,7 +52,7 @@ export const COLLECTION_ITEMS_QUERY = graphql(/* GraphQL */`
                 edges {
                   node {
                     id
-                    url
+                    src
                   }
                 }
               }

@@ -31,7 +31,6 @@ const FRAGRANCE_NOTES_LAYER_QUERY = graphql(/* GraphQL */ `
               id
               noteId
               name
-              icon
               layer
               votes
               myVote
@@ -50,7 +49,6 @@ const FRAGRANCE_NOTES_LAYER_QUERY = graphql(/* GraphQL */ `
               id
               noteId
               name
-              icon
               layer
               votes
               myVote
@@ -69,7 +67,6 @@ const FRAGRANCE_NOTES_LAYER_QUERY = graphql(/* GraphQL */ `
               id
               noteId
               name
-              icon
               layer
               votes
               myVote

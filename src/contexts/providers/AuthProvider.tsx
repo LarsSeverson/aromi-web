@@ -10,6 +10,8 @@ export const AuthProvider = (props: AuthProviderProps) => {
   const { children } = props
   const auth = useAuth()
 
+  if (auth.loading) return null
+
   return (
     <AuthContext.Provider
       value={auth}

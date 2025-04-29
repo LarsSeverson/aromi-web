@@ -1,11 +1,9 @@
-import type useAuth from '@/hooks/useAuth'
-import { type useClient } from '@/hooks/useClient'
+import { type UseAuthReturn } from '@/contexts/AuthContext'
 import MainLayout from '@/layouts/MainLayout'
 import { createRootRouteWithContext } from '@tanstack/react-router'
 
 interface RouterContext {
-  auth: ReturnType<typeof useAuth> | undefined
-  client: ReturnType<typeof useClient> | undefined
+  auth: UseAuthReturn | undefined
 }
 
 export const Route = createRootRouteWithContext<RouterContext>()({

@@ -1,6 +1,7 @@
 import { createContext, useContext } from 'react'
-import { type UseAuthReturn } from '@/hooks/useAuth'
+import type useAuth from '@/hooks/useAuth'
 
+export type UseAuthReturn = ReturnType<typeof useAuth>
 export const AuthContext = createContext<UseAuthReturn | null>(null)
 
 export const useAuthContext = (): UseAuthReturn => {

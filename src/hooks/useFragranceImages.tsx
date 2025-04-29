@@ -21,7 +21,7 @@ const FRAGRANCE_IMAGES_QUERY = graphql(/* GraphQL */ `
         edges {
           node {
             id
-            url
+            src
           }
         }
         pageInfo {

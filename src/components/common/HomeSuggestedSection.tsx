@@ -12,7 +12,6 @@ export const HomeSuggestedSection = () => {
     return (
       <FragrancePreviewCard
         fragrance={item}
-        navigateTo={`/fragrance/${item.id}`}
       />
     )
   }, [])

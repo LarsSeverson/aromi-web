@@ -2,18 +2,16 @@ import React from 'react'
 import BouncyButton from './BouncyButton'
 import ButtonText from './ButtonText'
 import { useAuthContext } from '@/contexts/AuthContext'
-import { AuthState } from '@/hooks/useAuth'
 import clsx from 'clsx'
 import emptyAvatar from '@/assets/avatar-empty.svg'
-// import LogInModal from '../modals/LogInModal'
+import LogInDialog from '../dialogs/LogInDialog'
 
 export interface TopBarProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 const TopBar = (props: TopBarProps) => {
   const { className, ...rest } = props
-  const { userInfo } = useAuthContext()
 
-  const authenticated = userInfo.state === AuthState.AUTHENTICATED
+  const { isAuthenticated } = useAuthContext()
 
   const handleLogInPress = () => {
   }
@@ -29,16 +27,14 @@ const TopBar = (props: TopBarProps) => {
       )}
       {...rest}
     >
-      {!authenticated
+      {!isAuthenticated
         ? (
           <div className='ml-auto flex flex-row gap-2'>
+            <LogInDialog />
             <ButtonText
-              text='Log in'
-              className='bg-sinopia hover:bg-sinopia text-white'
-              onClick={handleLogInPress}
-            />
-            <ButtonText
-              text='Sign up'
+              text='Sign Up'
+              className='bg-sinopia hover:bg-sinopia text-white h-9 rounded-t-md rounded-b-md text-sm'
+              style={{ height: 35 }}
               onClick={handleSignUpPress}
             />
           </div>
