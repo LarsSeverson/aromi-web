@@ -7,7 +7,7 @@ import { HiDotsHorizontal } from 'react-icons/hi'
 import { Link, type LinkProps } from '@tanstack/react-router'
 import { Overlay } from '../common/Overlay'
 import BouncyButton from '../common/BouncyButton'
-import CollectionPopover from './CollectionPopover'
+import CollectionPopover from '../popovers/CollectionPopover'
 import { INVALID_ID } from '@/common/util-types'
 
 export type CardFragrancePreview = Omit<Pick<Fragrance, 'id' | 'name' | 'brand' | 'votes'>, 'images'> & {

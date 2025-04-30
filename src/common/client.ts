@@ -10,7 +10,10 @@ const authLink = setContext(() => ({
   }
 }))
 
-const httpLink = new HttpLink({ uri: import.meta.env.VITE_API_ENDPOINT })
+const httpLink = new HttpLink({
+  uri: import.meta.env.VITE_API_ENDPOINT,
+  credentials: 'include'
+})
 
 export const client = new ApolloClient({
   link: from([authLink, httpLink]),

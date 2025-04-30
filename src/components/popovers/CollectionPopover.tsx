@@ -1,9 +1,9 @@
 import React, { type SyntheticEvent } from 'react'
 import { Popover } from '@base-ui-components/react'
 import useUserCollections from '@/hooks/useUserCollections'
-import CollectionPreviewBarCheck from './CollectionPreviewBarCheck'
+import CollectionPreviewBarCheck from '../fragrance/CollectionPreviewBarCheck'
 import NewCollectionDialog from '../dialogs/NewCollectionDialog'
-import { type CardFragrancePreview } from './FragrancePreviewCard'
+import { type CardFragrancePreview } from '../fragrance/FragrancePreviewCard'
 
 export interface CollectionPopoverProps extends Popover.Root.Props {
   userId: number

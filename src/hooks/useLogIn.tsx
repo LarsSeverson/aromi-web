@@ -1,7 +1,7 @@
 import { graphql } from '@/generated'
 import { useMutation } from '@apollo/client'
 
-export const LOGIN_QUERY = graphql(/* GraphQL */`
+export const LOG_IN_MUTATION = graphql(/* GraphQL */`
   mutation LogIn (
     $email: String!
     $password: String!
@@ -15,7 +15,7 @@ export const LOGIN_QUERY = graphql(/* GraphQL */`
 `)
 
 export const useLogIn = () => {
-  const [logIn, { data, loading, error }] = useMutation(LOGIN_QUERY)
+  const [logIn, { data, loading, error }] = useMutation(LOG_IN_MUTATION)
 
   return {
     data: data?.logIn,

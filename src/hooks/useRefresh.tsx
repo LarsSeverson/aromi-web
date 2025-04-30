@@ -1,7 +1,7 @@
 import { graphql } from '@/generated'
 import { useMutation } from '@apollo/client'
 
-export const REFRESH_QUERY = graphql(/* GraphQL */`
+export const REFRESH_MUTATION = graphql(/* GraphQL */`
   mutation Refresh {
     refresh {
       idToken
@@ -12,7 +12,7 @@ export const REFRESH_QUERY = graphql(/* GraphQL */`
 `)
 
 export const useRefresh = () => {
-  const [refresh, { data, error, loading }] = useMutation(REFRESH_QUERY)
+  const [refresh, { data, error, loading }] = useMutation(REFRESH_MUTATION)
 
   return {
     data: data?.refresh,

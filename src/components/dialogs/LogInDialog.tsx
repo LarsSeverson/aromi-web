@@ -6,6 +6,9 @@ import Spinner from '../common/Spinner'
 import Divider from '../common/Divider'
 import ButtonText from '../common/ButtonText'
 import { z } from 'zod'
+import { useAuthContext } from '@/contexts/AuthContext'
+import { ResultAsync } from 'neverthrow'
+import { type ApolloError } from '@apollo/client'
 
 const loginSchema = z.object({
   email: z.string({ required_error: 'Email is required' })
@@ -15,6 +18,10 @@ const loginSchema = z.object({
 })
 
 const LogInDialog = () => {
+  const auth = useAuthContext()
+
+  const [isOpen, setIsOpen] = useState(false)
+  const [error, setError] = useState<string | null>(null)
   const [errors, setErrors] = useState({})
   const [loading, setLoading] = useState(false)
 
@@ -28,23 +35,45 @@ const LogInDialog = () => {
     return {}
   }
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
     setLoading(true)
 
     const formData = new FormData(e.currentTarget)
+    const email = formData.get('email') as string
+    const password = formData.get('password') as string
+
     const response = parseForm(formData)
-    const valid = Object.values(response).length === 0
+    const valid = Object.values(response).length === 0 &&
+      email != null &&
+      password != null
 
-
+    if (valid) {
+      await ResultAsync
+        .fromPromise(
+          auth.logIn({ variables: { email, password } }),
+          error => error as ApolloError
+        )
+        .match(
+          _ => { setIsOpen(false) },
+          error => {
+            setError(error.graphQLErrors
+              .map(e => e.message)
+              .join('; '))
+          }
+        )
+    }
 
     setErrors(response)
     setLoading(false)
   }
 
   return (
-    <Dialog.Root>
+    <Dialog.Root
+      open={isOpen}
+      onOpenChange={setIsOpen}
+    >
       <Dialog.Trigger
         className='bg-gray-200 h-9 rounded-md text-sm font-semibold flex items-center justify-center p-3'
         style={{ height: 35 }}
@@ -65,17 +94,25 @@ const LogInDialog = () => {
               size={50}
             />
             <h1
-              className='text-4xl font-pd mb-4'
+              className='text-4xl font-pd'
             >
               Welcome to aromi
             </h1>
+
+            {error != null && (
+              <p
+                className='text-red-600 font-pd text-sm'
+              >
+                {error}
+              </p>
+            )}
           </div>
 
           <Form
             errors={errors}
             onClearErrors={setErrors}
-            onSubmit={handleSubmit}
-            className='flex flex-col'
+            onSubmit={(e) => { void handleSubmit(e) }}
+            className='flex flex-col mt-4'
           >
             <Field.Root
               name='email'
