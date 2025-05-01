@@ -5,6 +5,8 @@ import { type AuthPayload } from '@/generated/graphql'
 import { accessToken as setClientAcessToken } from '@/common/client'
 import { ResultAsync } from 'neverthrow'
 import { useLogOut } from './useLogOut'
+import { useForgotPassword } from './useForgotPassword'
+import { useConfirmForgotPassword } from './useConfirmForgotPassword'
 
 const useAuth = () => {
   const payload = useRef<AuthPayload | undefined>(null)
@@ -28,6 +30,14 @@ const useAuth = () => {
   const {
     logOut: logOutInner
   } = useLogOut()
+
+  const {
+    forgotPassword
+  } = useForgotPassword()
+
+  const {
+    confirmForgotPassword
+  } = useConfirmForgotPassword()
 
   const setAccessToken = useCallback((token?: string) => {
     setClientAcessToken(token)
@@ -91,9 +101,12 @@ const useAuth = () => {
     hasInitialized,
     loading: logInLoading || refreshLoading,
 
+    refresh,
     logIn,
     logOut,
-    refresh
+
+    forgotPassword,
+    confirmForgotPassword
   }
 }
 

@@ -12,9 +12,12 @@
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as IndexImport } from './routes/index'
+import { Route as AccountRecoveryIndexImport } from './routes/account-recovery/index'
 import { Route as UserIdImport } from './routes/user/$id'
 import { Route as FragranceIdImport } from './routes/fragrance/$id'
 import { Route as CollectionIdImport } from './routes/collection/$id'
+import { Route as AccountRecoverySuccessImport } from './routes/account-recovery/success'
+import { Route as AccountRecoveryConfirmImport } from './routes/account-recovery/confirm'
 import { Route as UserIdIndexImport } from './routes/user/$id/index'
 import { Route as FragranceIdIndexImport } from './routes/fragrance/$id/index'
 import { Route as CollectionIdIndexImport } from './routes/collection/$id/index'
@@ -27,6 +30,12 @@ import { Route as FragranceIdReviewImport } from './routes/fragrance/$id/review'
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AccountRecoveryIndexRoute = AccountRecoveryIndexImport.update({
+  id: '/account-recovery/',
+  path: '/account-recovery/',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -45,6 +54,18 @@ const FragranceIdRoute = FragranceIdImport.update({
 const CollectionIdRoute = CollectionIdImport.update({
   id: '/collection/$id',
   path: '/collection/$id',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AccountRecoverySuccessRoute = AccountRecoverySuccessImport.update({
+  id: '/account-recovery/success',
+  path: '/account-recovery/success',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AccountRecoveryConfirmRoute = AccountRecoveryConfirmImport.update({
+  id: '/account-recovery/confirm',
+  path: '/account-recovery/confirm',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -95,6 +116,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
+    '/account-recovery/confirm': {
+      id: '/account-recovery/confirm'
+      path: '/account-recovery/confirm'
+      fullPath: '/account-recovery/confirm'
+      preLoaderRoute: typeof AccountRecoveryConfirmImport
+      parentRoute: typeof rootRoute
+    }
+    '/account-recovery/success': {
+      id: '/account-recovery/success'
+      path: '/account-recovery/success'
+      fullPath: '/account-recovery/success'
+      preLoaderRoute: typeof AccountRecoverySuccessImport
+      parentRoute: typeof rootRoute
+    }
     '/collection/$id': {
       id: '/collection/$id'
       path: '/collection/$id'
@@ -114,6 +149,13 @@ declare module '@tanstack/react-router' {
       path: '/user/$id'
       fullPath: '/user/$id'
       preLoaderRoute: typeof UserIdImport
+      parentRoute: typeof rootRoute
+    }
+    '/account-recovery/': {
+      id: '/account-recovery/'
+      path: '/account-recovery'
+      fullPath: '/account-recovery'
+      preLoaderRoute: typeof AccountRecoveryIndexImport
       parentRoute: typeof rootRoute
     }
     '/fragrance/$id/review': {
@@ -206,9 +248,12 @@ const UserIdRouteWithChildren =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/account-recovery/confirm': typeof AccountRecoveryConfirmRoute
+  '/account-recovery/success': typeof AccountRecoverySuccessRoute
   '/collection/$id': typeof CollectionIdRouteWithChildren
   '/fragrance/$id': typeof FragranceIdRouteWithChildren
   '/user/$id': typeof UserIdRouteWithChildren
+  '/account-recovery': typeof AccountRecoveryIndexRoute
   '/fragrance/$id/review': typeof FragranceIdReviewRoute
   '/user/$id/likes': typeof UserIdLikesRoute
   '/user/$id/reviews': typeof UserIdReviewsRoute
@@ -219,6 +264,9 @@ export interface FileRoutesByFullPath {
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/account-recovery/confirm': typeof AccountRecoveryConfirmRoute
+  '/account-recovery/success': typeof AccountRecoverySuccessRoute
+  '/account-recovery': typeof AccountRecoveryIndexRoute
   '/fragrance/$id/review': typeof FragranceIdReviewRoute
   '/user/$id/likes': typeof UserIdLikesRoute
   '/user/$id/reviews': typeof UserIdReviewsRoute
@@ -230,9 +278,12 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/account-recovery/confirm': typeof AccountRecoveryConfirmRoute
+  '/account-recovery/success': typeof AccountRecoverySuccessRoute
   '/collection/$id': typeof CollectionIdRouteWithChildren
   '/fragrance/$id': typeof FragranceIdRouteWithChildren
   '/user/$id': typeof UserIdRouteWithChildren
+  '/account-recovery/': typeof AccountRecoveryIndexRoute
   '/fragrance/$id/review': typeof FragranceIdReviewRoute
   '/user/$id/likes': typeof UserIdLikesRoute
   '/user/$id/reviews': typeof UserIdReviewsRoute
@@ -245,9 +296,12 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/account-recovery/confirm'
+    | '/account-recovery/success'
     | '/collection/$id'
     | '/fragrance/$id'
     | '/user/$id'
+    | '/account-recovery'
     | '/fragrance/$id/review'
     | '/user/$id/likes'
     | '/user/$id/reviews'
@@ -257,6 +311,9 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/account-recovery/confirm'
+    | '/account-recovery/success'
+    | '/account-recovery'
     | '/fragrance/$id/review'
     | '/user/$id/likes'
     | '/user/$id/reviews'
@@ -266,9 +323,12 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/account-recovery/confirm'
+    | '/account-recovery/success'
     | '/collection/$id'
     | '/fragrance/$id'
     | '/user/$id'
+    | '/account-recovery/'
     | '/fragrance/$id/review'
     | '/user/$id/likes'
     | '/user/$id/reviews'
@@ -280,16 +340,22 @@ export interface FileRouteTypes {
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AccountRecoveryConfirmRoute: typeof AccountRecoveryConfirmRoute
+  AccountRecoverySuccessRoute: typeof AccountRecoverySuccessRoute
   CollectionIdRoute: typeof CollectionIdRouteWithChildren
   FragranceIdRoute: typeof FragranceIdRouteWithChildren
   UserIdRoute: typeof UserIdRouteWithChildren
+  AccountRecoveryIndexRoute: typeof AccountRecoveryIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AccountRecoveryConfirmRoute: AccountRecoveryConfirmRoute,
+  AccountRecoverySuccessRoute: AccountRecoverySuccessRoute,
   CollectionIdRoute: CollectionIdRouteWithChildren,
   FragranceIdRoute: FragranceIdRouteWithChildren,
   UserIdRoute: UserIdRouteWithChildren,
+  AccountRecoveryIndexRoute: AccountRecoveryIndexRoute,
 }
 
 export const routeTree = rootRoute
@@ -303,13 +369,22 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
+        "/account-recovery/confirm",
+        "/account-recovery/success",
         "/collection/$id",
         "/fragrance/$id",
-        "/user/$id"
+        "/user/$id",
+        "/account-recovery/"
       ]
     },
     "/": {
       "filePath": "index.tsx"
+    },
+    "/account-recovery/confirm": {
+      "filePath": "account-recovery/confirm.tsx"
+    },
+    "/account-recovery/success": {
+      "filePath": "account-recovery/success.tsx"
     },
     "/collection/$id": {
       "filePath": "collection/$id.tsx",
@@ -331,6 +406,9 @@ export const routeTree = rootRoute
         "/user/$id/reviews",
         "/user/$id/"
       ]
+    },
+    "/account-recovery/": {
+      "filePath": "account-recovery/index.tsx"
     },
     "/fragrance/$id/review": {
       "filePath": "fragrance/$id/review.tsx",

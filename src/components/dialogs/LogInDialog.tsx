@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Dialog, Field, Form } from '@base-ui-components/react'
 import { Logo } from '../common/Icons'
 import clsx from 'clsx'
@@ -9,6 +9,8 @@ import { z } from 'zod'
 import { useAuthContext } from '@/contexts/AuthContext'
 import { ResultAsync } from 'neverthrow'
 import { type ApolloError } from '@apollo/client'
+import { Link, useNavigate, useRouterState } from '@tanstack/react-router'
+import { parseForm } from '@/common/form'
 
 const loginSchema = z.object({
   email: z.string({ required_error: 'Email is required' })
@@ -18,22 +20,14 @@ const loginSchema = z.object({
 })
 
 const LogInDialog = () => {
+  const navigate = useNavigate()
+  const { showLogin } = useRouterState({ select: state => state.location.search })
   const auth = useAuthContext()
 
   const [isOpen, setIsOpen] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [errors, setErrors] = useState({})
   const [loading, setLoading] = useState(false)
-
-  const parseForm = (formData: FormData) => {
-    const result = loginSchema.safeParse(Object.fromEntries(formData))
-
-    if (!result.success) {
-      return result.error.flatten().fieldErrors
-    }
-
-    return {}
-  }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -44,7 +38,7 @@ const LogInDialog = () => {
     const email = formData.get('email') as string
     const password = formData.get('password') as string
 
-    const response = parseForm(formData)
+    const response = parseForm(formData, loginSchema)
     const valid = Object.values(response).length === 0 &&
       email != null &&
       password != null
@@ -68,6 +62,13 @@ const LogInDialog = () => {
     setErrors(response)
     setLoading(false)
   }
+
+  useEffect(() => {
+    if (showLogin === 'true') {
+      setIsOpen(true)
+      void navigate({ from: '/', search: { showLogin: undefined } })
+    }
+  }, [showLogin, navigate])
 
   return (
     <Dialog.Root
@@ -161,12 +162,14 @@ const LogInDialog = () => {
               />
             </Field.Root>
 
-            <button
+            <Link
+              to='/account-recovery'
               className='font-pd text-sm hover:underline active:scale-[0.99]'
               style={{ marginLeft: 'auto' }}
+              onClick={() => { setIsOpen(false) }}
             >
               forgot password?
-            </button>
+            </Link>
 
             <button
               type='submit'

@@ -1082,6 +1082,10 @@ video {
   margin-top: 1.25rem;
 }
 
+.mt-6{
+  margin-top: 1.5rem;
+}
+
 .mt-7{
   margin-top: 1.75rem;
 }
@@ -1445,6 +1449,10 @@ video {
   width: 2px;
 }
 
+.w-\[360px\]{
+  width: 360px;
+}
+
 .w-\[3px\]{
   width: 3px;
 }
@@ -1482,18 +1490,6 @@ video {
 
 .w-screen{
   width: 100vw;
-}
-
-.w-\[300px\]{
-  width: 300px;
-}
-
-.w-\[350px\]{
-  width: 350px;
-}
-
-.w-\[360px\]{
-  width: 360px;
 }
 
 .min-w-0{
@@ -3572,6 +3568,11 @@ html {
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
 
+.hover\:brightness-90:hover{
+  --tw-brightness: brightness(.9);
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+
 .hover\:brightness-95:hover{
   --tw-brightness: brightness(.95);
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
@@ -3579,11 +3580,6 @@ html {
 
 .hover\:brightness-\[\.98\]:hover{
   --tw-brightness: brightness(.98);
-  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
-}
-
-.hover\:brightness-90:hover{
-  --tw-brightness: brightness(.9);
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
 
@@ -3728,23 +3724,13 @@ html {
   background-color: rgb(198 71 29 / var(--tw-bg-opacity, 1));
 }
 
-.data-\[unchecked\]\:bg-transparent[data-unchecked]{
-  background-color: transparent;
-}
-
-.data-\[highlighted\]\:bg-gray-400[data-highlighted]{
-  --tw-bg-opacity: 1;
-  background-color: rgb(156 163 175 / var(--tw-bg-opacity, 1));
-}
-
-.data-\[highlighted\]\:bg-gray-100[data-highlighted]{
-  --tw-bg-opacity: 1;
-  background-color: rgb(243 244 246 / var(--tw-bg-opacity, 1));
-}
-
 .data-\[highlighted\]\:bg-empty[data-highlighted]{
   --tw-bg-opacity: 1;
   background-color: rgb(240 240 240 / var(--tw-bg-opacity, 1));
+}
+
+.data-\[unchecked\]\:bg-transparent[data-unchecked]{
+  background-color: transparent;
 }
 
 @media (min-width: 768px){
