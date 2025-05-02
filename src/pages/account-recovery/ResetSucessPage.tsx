@@ -11,7 +11,7 @@ const ResetSucessPage = () => {
         </p>
         <Link
           to='/'
-          search={{ showLogin: 'true' }}
+          search={{ showLogIn: 'true' }}
           className='mt-6 inline-block bg-sinopia text-white px-5 py-2 rounded-xl font-semibold hover:brightness-105'
         >
           Log In

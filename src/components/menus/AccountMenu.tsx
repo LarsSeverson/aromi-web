@@ -33,7 +33,7 @@ export const AccountMenu = (props: AccountMenuProps) => {
       onOpenChange={setIsOpen}
     >
       <Menu.Trigger
-        className='w-10 h-10 rounded-full overflow-hidden hover:brightness-90'
+        className='w-10 h-10 rounded-full overflow-hidden hover:brightness-90 focus-visible:outline-none'
       >
         <img
           src={emptyAvatar}
@@ -45,10 +45,10 @@ export const AccountMenu = (props: AccountMenuProps) => {
           sideOffset={8}
         >
           <Menu.Popup
-            className='bg-white rounded-xl shadow-symmetrical flex flex-col p-2 overflow-hidden select-none'
+            className='bg-white rounded-xl shadow-symmetrical flex flex-col p-2 overflow-hidden select-none focus:outline-none'
           >
             <Menu.Item
-              className='flex gap-3 w-[360px] data-[highlighted]:bg-empty data-[highlighted]:cursor-pointer p-2 rounded-xl'
+              className='flex gap-3 w-[360px] data-[highlighted]:bg-empty data-[highlighted]:cursor-pointer p-2 rounded-xl focus:outline-none'
             >
               <div
                 className='w-16 aspect-square rounded-full overflow-hidden'
@@ -75,7 +75,7 @@ export const AccountMenu = (props: AccountMenuProps) => {
               </div>
             </Menu.Item>
             <Menu.Item
-              className='flex gap-3 w-[360px] data-[highlighted]:bg-empty data-[highlighted]:cursor-pointer p-2 rounded-xl'
+              className='flex gap-3 w-[360px] data-[highlighted]:bg-empty data-[highlighted]:cursor-pointer p-2 rounded-xl focus:outline-none'
               closeOnClick={false}
               onClick={(e) => { void handleLogOutPressed(e) }}
             >

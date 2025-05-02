@@ -7,6 +7,7 @@ import { ResultAsync } from 'neverthrow'
 import { useLogOut } from './useLogOut'
 import { useForgotPassword } from './useForgotPassword'
 import { useConfirmForgotPassword } from './useConfirmForgotPassword'
+import { useSignUp } from './useSignUp'
 
 const useAuth = () => {
   const payload = useRef<AuthPayload | undefined>(null)
@@ -30,6 +31,10 @@ const useAuth = () => {
   const {
     logOut: logOutInner
   } = useLogOut()
+
+  const {
+    signUp
+  } = useSignUp()
 
   const {
     forgotPassword
@@ -104,6 +109,7 @@ const useAuth = () => {
     refresh,
     logIn,
     logOut,
+    signUp,
 
     forgotPassword,
     confirmForgotPassword

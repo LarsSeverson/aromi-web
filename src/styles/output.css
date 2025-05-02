@@ -3318,6 +3318,10 @@ video {
   outline-color: #4b5563;
 }
 
+.outline-red-200{
+  outline-color: #fecaca;
+}
+
 .outline-red-600{
   outline-color: #dc2626;
 }
@@ -3511,6 +3515,12 @@ html {
   isolation: isolate;
 }
 
+*:focus-visible{
+  outline-style: solid;
+  outline-width: 2px;
+  outline-color: #C6471D;
+}
+
 .hover\:border-sinopia:hover{
   --tw-border-opacity: 1;
   border-color: rgb(198 71 29 / var(--tw-border-opacity, 1));
@@ -3627,6 +3637,11 @@ html {
 
 .focus\:outline-sinopia:focus{
   outline-color: #C6471D;
+}
+
+.focus-visible\:outline-none:focus-visible{
+  outline: 2px solid transparent;
+  outline-offset: 2px;
 }
 
 .focus-visible\:outline:focus-visible{

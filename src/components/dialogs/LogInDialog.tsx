@@ -12,16 +12,19 @@ import { type ApolloError } from '@apollo/client'
 import { Link, useNavigate, useRouterState } from '@tanstack/react-router'
 import { parseForm } from '@/common/form'
 
-const loginSchema = z.object({
-  email: z.string({ required_error: 'Email is required' })
-    .email('Please enter a valid email address'),
-  password: z.string({ required_error: 'Password is required' })
-    .min(8, 'Password must be at least 8 characters long')
-})
+const loginSchema = z
+  .object({
+    email: z
+      .string({ required_error: 'Email is required' })
+      .email('Please enter a valid email address'),
+    password: z
+      .string({ required_error: 'Password is required' })
+      .min(8, 'Password must be at least 8 characters long')
+  })
 
 const LogInDialog = () => {
   const navigate = useNavigate()
-  const { showLogin } = useRouterState({ select: state => state.location.search })
+  const { showLogIn, showSignUp } = useRouterState({ select: state => state.location.search })
   const auth = useAuthContext()
 
   const [isOpen, setIsOpen] = useState(false)
@@ -64,11 +67,15 @@ const LogInDialog = () => {
   }
 
   useEffect(() => {
-    if (showLogin === 'true') {
+    if (showLogIn === 'true') {
       setIsOpen(true)
-      void navigate({ from: '/', search: { showLogin: undefined } })
+      void navigate({ from: '/', search: { showLogIn: undefined } })
     }
-  }, [showLogin, navigate])
+
+    if (showSignUp === 'true') {
+      setIsOpen(false)
+    }
+  }, [showLogIn, showSignUp, navigate])
 
   return (
     <Dialog.Root
@@ -202,6 +209,14 @@ const LogInDialog = () => {
               text='Continue with Google'
               className='bg-white border-2 hover:bg-white active:scale-[0.99] hover:brightness-[.98] py-2'
             />
+
+            <Link
+              to='.'
+              search={{ showSignUp: 'true' }}
+              className='text-center font-semibold text-sm mt-4 hover:underline'
+            >
+              Not on aromi yet? Sign Up
+            </Link>
           </Form>
         </Dialog.Popup>
       </Dialog.Portal>

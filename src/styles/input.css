@@ -16,6 +16,10 @@ html {
   isolation: isolate;
 }
 
+*:focus-visible {
+  @apply outline outline-2 outline-sinopia;
+}
+
 @layer components {
   .middle-slider {
     @apply bg-empty w-full appearance-none rounded-full;
