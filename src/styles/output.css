@@ -1672,6 +1672,18 @@ video {
   max-width: 20rem;
 }
 
+.max-w-\[462\]{
+  max-width: 462;
+}
+
+.max-w-\[462px\]{
+  max-width: 462px;
+}
+
+.max-w-\[600px\]{
+  max-width: 600px;
+}
+
 .flex-1{
   flex: 1 1 0%;
 }
@@ -1708,8 +1720,16 @@ video {
   flex-grow: 1;
 }
 
+.flex-grow-0{
+  flex-grow: 0;
+}
+
 .grow-0{
   flex-grow: 0;
+}
+
+.grow{
+  flex-grow: 1;
 }
 
 .basis-0{
@@ -1954,6 +1974,14 @@ video {
 
 .justify-around{
   justify-content: space-around;
+}
+
+.justify-evenly{
+  justify-content: space-evenly;
+}
+
+.justify-stretch{
+  justify-content: stretch;
 }
 
 .gap-1{
@@ -3306,6 +3334,18 @@ video {
   outline-offset: 4px;
 }
 
+.outline-offset-\[-2\]{
+  outline-offset: -2;
+}
+
+.outline-offset-\[-3\]{
+  outline-offset: -3;
+}
+
+.outline-offset-\[-3px\]{
+  outline-offset: -3px;
+}
+
 .outline-black{
   outline-color: #000;
 }
@@ -3529,11 +3569,6 @@ html {
 .hover\:bg-empty:hover{
   --tw-bg-opacity: 1;
   background-color: rgb(240 240 240 / var(--tw-bg-opacity, 1));
-}
-
-.hover\:bg-sinopia:hover{
-  --tw-bg-opacity: 1;
-  background-color: rgb(198 71 29 / var(--tw-bg-opacity, 1));
 }
 
 .hover\:bg-transparent:hover{

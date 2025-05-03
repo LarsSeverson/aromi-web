@@ -43,11 +43,16 @@ const VerificationCodeInput = (props: VerificationCodeInputProps) => {
 
   return (
     <Field.Root
-      className='flex flex-col items-center'
+      className='flex flex-col items-center w-full'
       {...rest}
     >
+      <Field.Label
+        className='font-semibold text-md mr-auto mb-1'
+      >
+        Code
+      </Field.Label>
       <div
-        className='flex gap-2'
+        className='flex gap-2 w-full h-12'
       >
         {Array
           .from({ length: LENGTH })
@@ -64,7 +69,7 @@ const VerificationCodeInput = (props: VerificationCodeInputProps) => {
               pattern='[0-9]*'
               onChange={() => { handleChange(idx) }}
               onKeyDown={e => { handleKeyDown(e, idx) }}
-              className='h-12 w-12 text-center text-xl border-2 rounded-md outline-none focus:border-sinopia'
+              className='text-center w-full h-full border-2 rounded-md outline-offset-[-3px]'
             />
           ))}
       </div>

@@ -11,6 +11,13 @@ import { ResultAsync } from 'neverthrow'
 import { type ApolloError } from '@apollo/client'
 import { parseForm } from '@/common/form'
 import { Link, useNavigate, useRouterState } from '@tanstack/react-router'
+import VerificationCodeInput from '../common/VerificationCodeInput'
+
+interface NewInformationStepProps {
+  onContinue: () => void
+  setEmail: (val: string) => void
+  setPassword: (val: string) => void
+}
 
 const signUpSchema = z
   .object({
@@ -31,13 +38,8 @@ const signUpSchema = z
     message: 'Passwords do not match'
   })
 
-interface StepProps {
-  setIsOpen?: (val: boolean) => void
-  onContinue?: (step: number) => void
-}
-
-const NewInformationStep = (props: StepProps) => {
-  const { onContinue } = props
+const NewInformationStep = (props: NewInformationStepProps) => {
+  const { onContinue, setEmail, setPassword } = props
 
   const auth = useAuthContext()
 
@@ -55,9 +57,10 @@ const NewInformationStep = (props: StepProps) => {
     const password = formData.get('password') as string
 
     const response = parseForm(formData, signUpSchema)
-    const valid = Object.values(response).length === 0 &&
-      email != null &&
-      password != null
+    const valid = Object.values(response).length === 0
+
+    setEmail(email)
+    setPassword(password)
 
     if (valid) {
       await ResultAsync
@@ -66,8 +69,18 @@ const NewInformationStep = (props: StepProps) => {
           error => error as ApolloError
         )
         .match(
-          res => { console.log(res) },
+          _ => {
+            onContinue()
+          },
           error => {
+            const code = error.graphQLErrors?.[0]?.extensions?.code
+
+            if (['USER_NOT_FOUND', 'USERNAME_EXISTS'].includes(code as string)) {
+              // Suppress user enumeration
+              onContinue()
+              return
+            }
+
             setError(error.graphQLErrors
               .map(e => e.message)
               .join('; ')
@@ -224,13 +237,155 @@ const NewInformationStep = (props: StepProps) => {
   )
 }
 
-const ConfirmationStep = (props: StepProps) => {
-  return null
+interface ConfirmationStepProps {
+  email: string
+  password: string
+  onContinue: () => void
+}
+
+const confirmSignUpSchema = z
+  .object({
+    confirmationCode: z
+      .string({ required_error: 'Code is required' })
+      .length(6)
+      .trim()
+      .regex(/^\d{6}$/, 'Code must be a 6-digit number')
+  })
+
+const ConfirmationStep = (props: ConfirmationStepProps) => {
+  const { email, password, onContinue } = props
+
+  const auth = useAuthContext()
+
+  const [error, setError] = useState<string | null>(null)
+  const [errors, setErrors] = useState({})
+  const [loading, setLoading] = useState(false)
+
+  const handleAutoLogin = async () => {
+    await ResultAsync
+      .fromPromise(
+        auth.logIn({ variables: { email, password } }),
+        error => error as ApolloError
+      )
+      .match(
+        () => { onContinue() },
+        error => {
+          setError(error.graphQLErrors
+            .map(e => e.message)
+            .join('; ')
+          )
+        }
+      )
+
+    setLoading(false)
+  }
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+
+    setLoading(true)
+
+    const formData = new FormData(e.currentTarget)
+    const confirmationCode = Array
+      .from({ length: 6 })
+      .map((_, i) => formData.get(`code-${i}`) ?? '')
+      .join('')
+
+    const response = parseForm(formData, confirmSignUpSchema, () => ({
+      confirmationCode
+    }))
+
+    const valid = Object.values(response).length === 0 &&
+      confirmationCode != null
+
+    if (valid) {
+      await ResultAsync
+        .fromPromise(
+          auth.confirmSignUp({ variables: { email, confirmationCode } }),
+          error => error as ApolloError
+        )
+        .match(
+          () => { void handleAutoLogin() },
+          error => {
+            const code = error.graphQLErrors?.[0]?.extensions?.code
+
+            if (['USER_NOT_FOUND', 'NOT_AUTHORIZED'].includes(code as string)) {
+              // Suppress user enumeration
+              setError('Something went wrong. Please try again later.')
+              return
+            }
+
+            setError(error.graphQLErrors
+              .map(e => e.message)
+              .join('; ')
+            )
+          }
+        )
+    }
+
+    setLoading(false)
+    setErrors(response)
+  }
+
+  return (
+    <div
+      className='h-full flex flex-col items-center'
+    >
+      <div
+        className='w-full mb-3'
+      >
+        <h1
+          className='text-2xl font-semibold'
+        >
+          Enter the code from your email
+        </h1>
+        <div
+          className='mt-3 text-md'
+        >
+          If “{email}” is not already linked to an account, you’ll receive a 6-digit code.
+        </div>
+        {error != null && (
+          <p
+            className='text-red-600 font-pd text-sm text-center mt-3'
+          >
+            {error}
+          </p>
+        )}
+      </div>
+
+      <Form
+        className='w-full flex flex-col'
+        errors={errors}
+        onClearErrors={setErrors}
+        onSubmit={(e) => { void handleSubmit(e) }}
+      >
+        <VerificationCodeInput />
+
+        <button
+          type='submit'
+          disabled={loading}
+          className={clsx(
+            'bg-sinopia text-white font-semibold text-md rounded-lg px-3 py-2 mt-5 hover:shadow-lg brightness-100 hover:brightness-105 ml-auto'
+          )}
+        >
+          {loading && <Spinner />}
+          <div
+            className={clsx(loading && 'opacity-0')}
+          >
+            Submit
+          </div>
+        </button>
+      </Form>
+    </div>
+  )
 }
 
 const SignUpDialog = () => {
   const navigate = useNavigate()
   const { showSignUp, showLogIn } = useRouterState({ select: state => state.location.search })
+
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
 
   const [isOpen, setIsOpen] = useState(false)
   const [step, setStep] = useState(0)
@@ -249,7 +404,10 @@ const SignUpDialog = () => {
   return (
     <Dialog.Root
       open={isOpen}
-      onOpenChange={setIsOpen}
+      onOpenChange={(open) => {
+        setIsOpen(open)
+        setStep(0)
+      }}
     >
       <Dialog.Trigger
         className='bg-sinopia text-white h-9 rounded-md text-sm font-semibold flex items-center justify-center p-3'
@@ -262,15 +420,18 @@ const SignUpDialog = () => {
           className='bg-black/30 backdrop-blur-sm fixed inset-0'
         />
         <Dialog.Popup
-          className='bg-white top-1/2 left-1/2 fixed -translate-x-1/2 -translate-y-1/2 rounded-xl overflow-hidden p-11 px-20'
+          className='max-w-[600px] bg-white top-1/2 left-1/2 fixed -translate-x-1/2 -translate-y-1/2 rounded-xl overflow-hidden p-11 px-20'
         >
           {step === 0
             ? <NewInformationStep
-                setIsOpen={setIsOpen}
-                onContinue={setStep}
+                onContinue={() => { setStep(1) }}
+                setEmail={setEmail}
+                setPassword={setPassword}
               />
             : <ConfirmationStep
-                setIsOpen={setIsOpen}
+                onContinue={() => { setIsOpen(false) }}
+                email={email}
+                password={password}
               />}
         </Dialog.Popup>
       </Dialog.Portal>

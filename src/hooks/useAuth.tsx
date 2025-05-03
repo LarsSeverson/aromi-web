@@ -8,6 +8,7 @@ import { useLogOut } from './useLogOut'
 import { useForgotPassword } from './useForgotPassword'
 import { useConfirmForgotPassword } from './useConfirmForgotPassword'
 import { useSignUp } from './useSignUp'
+import { useConfirmSignUp } from './useConfirmSignUp'
 
 const useAuth = () => {
   const payload = useRef<AuthPayload | undefined>(null)
@@ -35,6 +36,10 @@ const useAuth = () => {
   const {
     signUp
   } = useSignUp()
+
+  const {
+    confirmSignUp
+  } = useConfirmSignUp()
 
   const {
     forgotPassword
@@ -110,6 +115,7 @@ const useAuth = () => {
     logIn,
     logOut,
     signUp,
+    confirmSignUp,
 
     forgotPassword,
     confirmForgotPassword

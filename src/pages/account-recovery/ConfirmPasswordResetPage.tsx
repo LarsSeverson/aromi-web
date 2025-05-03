@@ -10,20 +10,21 @@ import { ResultAsync } from 'neverthrow'
 import React, { useState } from 'react'
 import { z } from 'zod'
 
-const confirmPasswordSchema = z.object({
-  confirmationCode: z
-    .string({ required_error: 'Code is required' })
-    .length(6)
-    .trim()
-    .regex(/^\d{6}$/, 'Code must be a 6-digit number'),
-  newPassword: z
-    .string({ required_error: 'New password is required' })
-    .min(8, 'Password must be at least 8 characters long')
-    .trim(),
-  confirmPassword: z
-    .string()
-    .trim()
-})
+const confirmPasswordSchema = z
+  .object({
+    confirmationCode: z
+      .string({ required_error: 'Code is required' })
+      .length(6)
+      .trim()
+      .regex(/^\d{6}$/, 'Code must be a 6-digit number'),
+    newPassword: z
+      .string({ required_error: 'New password is required' })
+      .min(8, 'Password must be at least 8 characters long')
+      .trim(),
+    confirmPassword: z
+      .string()
+      .trim()
+  })
   .refine(data => data.newPassword === data.confirmPassword, {
     path: ['confirmPassword'],
     message: 'Passwords do not match'
@@ -55,13 +56,11 @@ const ConfirmPasswordResetPage = (props: ConfirmPasswordResetPageProps) => {
       .map((_, i) => formData.get(`code-${i}`) ?? '')
       .join('')
 
-    const response = parseForm(formData, confirmPasswordSchema, (raw) => {
-      return {
-        confirmationCode,
-        newPassword: newPassword ?? '',
-        confirmPassword: raw.confirmPassword ?? ''
-      }
-    })
+    const response = parseForm(formData, confirmPasswordSchema, (raw) => ({
+      confirmationCode,
+      newPassword: newPassword ?? '',
+      confirmPassword: raw.confirmPassword ?? ''
+    }))
 
     const valid = Object.values(response).length === 0 &&
       confirmationCode != null &&
