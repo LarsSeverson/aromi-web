@@ -11,6 +11,7 @@ import { ResultAsync } from 'neverthrow'
 import { type ApolloError } from '@apollo/client'
 import { Link, useNavigate, useRouterState } from '@tanstack/react-router'
 import { parseForm } from '@/common/form'
+import { IoClose } from 'react-icons/io5'
 
 const loginSchema = z
   .object({
@@ -55,6 +56,14 @@ const LogInDialog = () => {
         .match(
           _ => { setIsOpen(false) },
           error => {
+            const code = error.graphQLErrors?.[0]?.extensions?.code
+
+            if (['NOT_AUTHORIZED', 'USER_NOT_FOUND', 'USER_NOT_CONFIRMED'].includes(code as string ?? '')) {
+              // Supress user enumeration
+              setError('Incorrect email or password')
+              return
+            }
+
             setError(error.graphQLErrors
               .map(e => e.message)
               .join('; '))
@@ -95,6 +104,19 @@ const LogInDialog = () => {
         <Dialog.Popup
           className='bg-white top-1/2 left-1/2 fixed -translate-x-1/2 -translate-y-1/2 rounded-xl overflow-hidden p-11 px-20'
         >
+          <div
+            className='absolute top-0 left-0 right-0'
+          >
+            <button
+              className='top-4 right-4 absolute px-2 py-2 hover:bg-empty rounded-md flex items-center justify-center'
+              onClick={() => { setIsOpen(false) }}
+            >
+              <IoClose
+                size={24}
+              />
+            </button>
+          </div>
+
           <div
             className='gap-4 flex flex-col justify-center items-center'
           >

@@ -1,6 +1,6 @@
+import React, { useState, type SyntheticEvent } from 'react'
 import { Dialog, Field, Form } from '@base-ui-components/react'
 import clsx from 'clsx'
-import React, { useState, type SyntheticEvent } from 'react'
 import { PiPlusBold } from 'react-icons/pi'
 import { type CardFragrancePreview } from '../fragrance/FragrancePreviewCard'
 import empty from '@/assets/fall-back-fi.svg'

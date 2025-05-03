@@ -9,6 +9,7 @@ import { useForgotPassword } from './useForgotPassword'
 import { useConfirmForgotPassword } from './useConfirmForgotPassword'
 import { useSignUp } from './useSignUp'
 import { useConfirmSignUp } from './useConfirmSignUp'
+import { useResendSignUpConfirmationCode } from './useResendSignUpConfirmationCode'
 
 const useAuth = () => {
   const payload = useRef<AuthPayload | undefined>(null)
@@ -48,6 +49,10 @@ const useAuth = () => {
   const {
     confirmForgotPassword
   } = useConfirmForgotPassword()
+
+  const {
+    resendSignUpConfirmationCode
+  } = useResendSignUpConfirmationCode()
 
   const setAccessToken = useCallback((token?: string) => {
     setClientAcessToken(token)
@@ -118,7 +123,8 @@ const useAuth = () => {
     confirmSignUp,
 
     forgotPassword,
-    confirmForgotPassword
+    confirmForgotPassword,
+    resendSignUpConfirmationCode
   }
 }
 
