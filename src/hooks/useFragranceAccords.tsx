@@ -1,7 +1,7 @@
 import { NetworkStatus, useQuery } from '@apollo/client'
 import { useCallback, useMemo } from 'react'
 import { graphql } from '../generated'
-import { type FragranceAccordsQueryVariables, type FragranceAccordsQuery, SortBy } from '../generated/graphql'
+import { type FragranceAccordsQueryVariables, type FragranceAccordsQuery, VoteSortBy } from '../generated/graphql'
 import { flattenConnection, INVALID_ID, type FlattenType, type PaginatedQueryHookReturn } from '../common/util-types'
 
 const ACCORDS_LIMIT = 18
@@ -13,7 +13,7 @@ const FRAGRANCE_ACCORDS_QUERY = graphql(/* GraphQL */ `
       pagination: {
         first: 18 
         sort: {
-          by: votes
+          by: voteScore
         }
       }
       fill: false
@@ -28,13 +28,23 @@ const FRAGRANCE_ACCORDS_QUERY = graphql(/* GraphQL */ `
             accordId
             name
             color
-            votes
-            myVote
+            votes {
+              voteScore 
+              likesCount
+              dislikesCount
+              myVote
+            }
+            isFill
+            audit {
+              createdAt
+              updatedAt
+              deletedAt
+            }
           }
         }
         pageInfo {
-          hasNextPage
           hasPreviousPage
+          hasNextPage
           startCursor
           endCursor
         }
@@ -52,7 +62,7 @@ const useFragranceAccords = (fragranceId: number, limit: number = ACCORDS_LIMIT,
     accordsInput: {
       pagination: {
         first: limit,
-        sort: { by: SortBy.Votes }
+        sort: { by: VoteSortBy.VoteScore }
       },
       fill
     }

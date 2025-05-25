@@ -19,7 +19,7 @@ export interface FragranceReviewCardProps extends React.HTMLAttributes<HTMLDivEl
 
 export const FragranceReviewCard = (props: FragranceReviewCardProps) => {
   const { review, onVote, className, ...rest } = props
-  const { user, rating, review: text, votes, myVote, dCreated } = review
+  const { user, rating, text, votes, audit } = review
   const { username } = user
 
   return (
@@ -56,7 +56,7 @@ export const FragranceReviewCard = (props: FragranceReviewCardProps) => {
               <span
                 className='text-xs'
               >
-                {formatDate(dCreated)}
+                {formatDate(audit.createdAt)}
               </span>
             </p>
           </div>
@@ -83,8 +83,8 @@ export const FragranceReviewCard = (props: FragranceReviewCardProps) => {
         </p>
       )}
       <VoteButton
-        votes={votes}
-        myVote={myVote}
+        votes={votes.voteScore}
+        myVote={votes.myVote}
         className='mr-auto'
         onVote={onVote}
       />

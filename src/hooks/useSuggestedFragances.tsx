@@ -8,15 +8,11 @@ const FRAGRANCES_LIMIT = 20
 
 const SUGGESTED_FRAGRANCES_QUERY = graphql(/* GraphQL */ `
   query SuggestedFragrances(
-    $input: QueryInput = { 
-      pagination: { 
-        first: 20
-      }
+    $input: PaginationInput = { 
+      first: 20
     }
-    $imagesInput: QueryInput = { 
-      pagination: { 
-        first: 1
-      }
+    $imagesInput: PaginationInput = { 
+      first: 1
     }
   ) {
     fragrances(input: $input) {
@@ -26,9 +22,9 @@ const SUGGESTED_FRAGRANCES_QUERY = graphql(/* GraphQL */ `
           brand
           name
           votes {
-            id
-            dislikes
-            likes
+            voteScore
+            likesCount
+            dislikesCount
             myVote
           }
           images(input: $imagesInput) {
@@ -40,7 +36,6 @@ const SUGGESTED_FRAGRANCES_QUERY = graphql(/* GraphQL */ `
             }
           }
         }
-        cursor
       }
       pageInfo {
         hasPreviousPage
@@ -58,7 +53,9 @@ export type SuggestedFragrancesReturn = FlattendedSuggestedFragrancesData['fragr
 
 const useSuggestedFragrances = (): PaginatedQueryHookReturn<SuggestedFragrancesReturn> => {
   const variables = useMemo<SuggestedFragrancesQueryVariables>(() => ({
-    input: { pagination: { first: FRAGRANCES_LIMIT } }
+    input: {
+      first: FRAGRANCES_LIMIT
+    }
   }), [])
 
   const { data, loading, error, networkStatus, fetchMore, refetch } = useQuery(SUGGESTED_FRAGRANCES_QUERY, {
@@ -76,15 +73,11 @@ const useSuggestedFragrances = (): PaginatedQueryHookReturn<SuggestedFragrancesR
 
     const newVariables: SuggestedFragrancesQueryVariables = {
       input: {
-        pagination: {
-          first: FRAGRANCES_LIMIT,
-          after: data.fragrances.pageInfo.endCursor
-        }
+        first: FRAGRANCES_LIMIT,
+        after: data.fragrances.pageInfo.endCursor
       },
       imagesInput: {
-        pagination: {
-          first: 1
-        }
+        first: 1
       }
     }
 

@@ -2,6 +2,7 @@ import React from 'react'
 import { createFileRoute } from '@tanstack/react-router'
 import { CollectionsTab } from '@/pages/profile/CollectionsTab'
 import { useMainLayoutContext } from '@/contexts/MainLayoutContext'
+import { useMe } from '@/hooks/useMe'
 
 export const Route = createFileRoute('/user/$id/')({
   component: Collections,
@@ -9,13 +10,14 @@ export const Route = createFileRoute('/user/$id/')({
 })
 
 function Collections () {
-  const { user, me } = Route.useLoaderData()
+  const { user } = Route.useLoaderData()
+  const { me } = useMe()
   const { mainContentRect } = useMainLayoutContext()
 
   return (
     <CollectionsTab
       user={user}
-      myCollections={me}
+      myCollections={me?.id === user.id}
       containerWidth={mainContentRect.width}
     />
   )

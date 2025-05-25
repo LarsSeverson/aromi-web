@@ -12,7 +12,8 @@ export interface AccordVoteCardProps extends BouncyButtonProps {
 
 const AccordVoteCard = (props: AccordVoteCardProps) => {
   const { accord, className, ...rest } = props
-  const { color: backgroundColor, name, votes, myVote } = accord
+  const { color: backgroundColor, name, votes } = accord
+  const { voteScore, myVote } = votes
 
   const [curSelected, setCurSelected] = useState<boolean>(myVote === true)
 
@@ -26,11 +27,11 @@ const AccordVoteCard = (props: AccordVoteCardProps) => {
     const addOne = !originallySelected && curSelected
     const removeOne = originallySelected && !curSelected
 
-    if (addOne) return votes + 1
-    if (removeOne) return votes - 1
+    if (addOne) return voteScore + 1
+    if (removeOne) return voteScore - 1
 
-    return votes
-  }, [curSelected, myVote, votes])
+    return voteScore
+  }, [curSelected, myVote, voteScore])
 
   return (
     <BouncyButton

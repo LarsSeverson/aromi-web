@@ -6,6 +6,7 @@ import App from './App'
 import { AuthProvider } from './contexts/providers/AuthProvider'
 import { ApolloProvider } from '@apollo/client'
 import { client } from './common/client'
+import { MyProvider } from './contexts/providers/MyContextProvider'
 
 export const router = createRouter({
   routeTree,
@@ -28,7 +29,9 @@ if (root != null) {
         client={client}
       >
         <AuthProvider>
-          <App />
+          <MyProvider>
+            <App />
+          </MyProvider>
         </AuthProvider>
       </ApolloProvider>
     </StrictMode>

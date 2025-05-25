@@ -5,9 +5,12 @@ import { z } from 'zod'
 
 export const Route = createFileRoute('/account-recovery/confirm')({
   component: Confirm,
-  validateSearch: z.object({
-    email: z.string().optional()
-  })
+  validateSearch: z
+    .object({
+      email: z
+        .string()
+        .optional()
+    })
 })
 
 function Confirm () {

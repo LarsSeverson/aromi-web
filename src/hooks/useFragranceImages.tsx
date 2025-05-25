@@ -9,10 +9,8 @@ const IMAGES_LIMIT = 5
 const FRAGRANCE_IMAGES_QUERY = graphql(/* GraphQL */ `
   query FragranceImages(
     $fragranceId: Int!
-    $imagesInput: QueryInput = {
-      pagination: {
-        first: 5 
-      }
+    $imagesInput: PaginationInput = {
+      first: 5 
     }
   ) {
     fragrance(id: $fragranceId) {
@@ -25,8 +23,8 @@ const FRAGRANCE_IMAGES_QUERY = graphql(/* GraphQL */ `
           }
         }
         pageInfo {
-          hasPreviousPage
           hasNextPage
+          hasPreviousPage
           startCursor
           endCursor
         }
@@ -42,9 +40,7 @@ const useFragranceImages = (fragranceId: number, limit: number = IMAGES_LIMIT): 
   const variables = useMemo<FragranceImagesQueryVariables>(() => ({
     fragranceId,
     imagesInput: {
-      pagination: {
-        first: limit
-      }
+      first: limit
     }
   }), [fragranceId, limit])
 
@@ -65,10 +61,8 @@ const useFragranceImages = (fragranceId: number, limit: number = IMAGES_LIMIT): 
     const newVariables: FragranceImagesQueryVariables = {
       ...variables,
       imagesInput: {
-        pagination: {
-          ...variables.imagesInput?.pagination,
-          after: endCursor
-        }
+        ...variables.imagesInput,
+        after: endCursor
       }
     }
 

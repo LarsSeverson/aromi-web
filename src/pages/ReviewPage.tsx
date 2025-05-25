@@ -71,7 +71,7 @@ const ReviewPage = (props: ReviewPageProps) => {
             className='rounded-xl overflow-hidden relative w-24 h-full flex'
           >
             <img
-              src={images.at(0)?.url ?? empty}
+              src={images.at(0)?.src ?? empty}
               alt={name}
               className='object-cover'
             />

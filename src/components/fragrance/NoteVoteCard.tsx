@@ -10,7 +10,8 @@ export interface NoteVoteCardProps extends BouncyButtonProps {
 
 const NoteVoteCard = (props: NoteVoteCardProps) => {
   const { note, className, ...rest } = props
-  const { name, votes, myVote } = note
+  const { name, votes } = note
+  const { voteScore, myVote } = votes
 
   const [curSelected, setCurSelected] = useState<boolean>(myVote === true)
 
@@ -24,11 +25,11 @@ const NoteVoteCard = (props: NoteVoteCardProps) => {
     const addOne = !originallySelected && curSelected
     const removeOne = originallySelected && !curSelected
 
-    if (addOne) return votes + 1
-    if (removeOne) return votes - 1
+    if (addOne) return voteScore + 1
+    if (removeOne) return voteScore - 1
 
-    return votes
-  }, [curSelected, myVote, votes])
+    return voteScore
+  }, [curSelected, myVote, voteScore])
 
   return (
     <BouncyButton

@@ -6,7 +6,7 @@ import clsx from 'clsx'
 import BouncyButton from '../common/BouncyButton'
 
 export interface FragranceImageCarouselProps extends HTMLAttributes<HTMLDivElement> {
-  images: FragranceImage[]
+  images: Array<Pick<FragranceImage, 'id' | 'src'>>
 }
 
 export const FragranceImageCarousel = (props: FragranceImageCarouselProps) => {
@@ -60,7 +60,7 @@ export const FragranceImageCarousel = (props: FragranceImageCarouselProps) => {
           )}
         </div>
         <img
-          src={empty ? fallback : images.at(curImage)?.url ?? fallback}
+          src={empty ? fallback : images.at(curImage)?.src ?? fallback}
           onLoad={handleImageLoad}
           onError={({ currentTarget }) => {
             currentTarget.onerror = null

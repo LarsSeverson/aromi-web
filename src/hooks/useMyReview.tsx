@@ -11,14 +11,21 @@ const MY_REVIEW_QUERY = graphql(/* GraphQL */ `
       myReview {
         id
         rating
-        review
-        votes
-        dCreated
-        dModified
-        myVote
+        text
+        votes {
+          voteScore
+          likesCount
+          dislikesCount
+          myVote
+        }
         user {
           id
           username
+        }
+        audit {
+          createdAt
+          updatedAt
+          deletedAt
         }
       }
     }
@@ -26,8 +33,7 @@ const MY_REVIEW_QUERY = graphql(/* GraphQL */ `
 `)
 
 type MyReviewUser = Pick<User, 'username' | 'id'>
-export type UseMyReviewReturn = Pick<FragranceReview,
-'id' | 'rating' | 'review' | 'votes' | 'dCreated' | 'dModified' | 'myVote'> & { user: MyReviewUser } | null | undefined
+export type UseMyReviewReturn = Pick<FragranceReview, 'id' | 'rating' | 'text' | 'votes' | 'audit'> & { user: MyReviewUser } | null | undefined
 
 export const useMyReview = (fragranceId: number): QueryHookReturn<UseMyReviewReturn> => {
   const variables = useMemo(() => ({ fragranceId }), [fragranceId])

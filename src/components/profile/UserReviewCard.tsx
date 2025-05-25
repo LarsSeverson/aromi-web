@@ -1,4 +1,4 @@
-import { type FragranceReview } from '@/generated/graphql'
+import { type FragranceImage, type FragranceReview } from '@/generated/graphql'
 import { Colors } from '@/styles/Colors'
 import clsx from 'clsx'
 import emptyFragrance from '@/assets/fall-back-fi.svg'
@@ -12,8 +12,12 @@ import { Overlay } from '../common/Overlay'
 import BouncyButton from '../common/BouncyButton'
 
 type FlattenedReview = FlattenType<FragranceReview>
-type UserReviewFragrance = Pick<FlattenedReview['fragrance'], 'brand' | 'name' | 'images'>
-export type CardUserFragranceReview = Omit<FlattenedReview, 'fragrance' | 'user'> & { fragrance: UserReviewFragrance }
+type UserReviewFragrance = Pick<FlattenedReview['fragrance'], 'brand' | 'name'> & {
+  images: Array<Pick<FragranceImage, 'id' | 'src'>>
+}
+export type CardUserFragranceReview = Omit<FlattenedReview, 'fragrance' | 'user'> & {
+  fragrance: UserReviewFragrance
+}
 
 export interface UserFragranceReviewCardProps extends React.HTMLAttributes<HTMLDivElement> {
   review: CardUserFragranceReview
@@ -22,7 +26,7 @@ export interface UserFragranceReviewCardProps extends React.HTMLAttributes<HTMLD
 
 const UserReviewCard = (props: UserFragranceReviewCardProps) => {
   const { review, onVote, className, ...rest } = props
-  const { fragrance, rating, review: text, votes, myVote, dCreated } = review
+  const { fragrance, rating, text, votes, audit } = review
   const { name, brand, images } = fragrance
 
   return (
@@ -40,7 +44,7 @@ const UserReviewCard = (props: UserFragranceReviewCardProps) => {
           className='w-20 aspect-square rounded-xl overflow-hidden self-start relative'
         >
           <img
-            src={images.at(0)?.url ?? emptyFragrance}
+            src={images.at(0)?.src ?? emptyFragrance}
             className='overflow-hidden object-cover w-full h-full'
             style={{ backgroundColor: Colors.empty }}
           />
@@ -77,7 +81,7 @@ const UserReviewCard = (props: UserFragranceReviewCardProps) => {
               size={18}
             />
             <p className='text-xs'>
-              {formatDate(dCreated)}
+              {formatDate(audit.createdAt)}
             </p>
           </div>
         </div>
@@ -94,8 +98,8 @@ const UserReviewCard = (props: UserFragranceReviewCardProps) => {
           {text}
         </p>)}
       <VoteButton
-        votes={votes}
-        myVote={myVote}
+        votes={votes.voteScore}
+        myVote={votes.myVote}
         className='mr-auto'
         onVote={onVote}
       />

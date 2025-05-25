@@ -9,37 +9,26 @@ const REVIEWS_LIMIT = 20
 const USER_REVIEWS_QUERY = graphql(/* GraphQL */`
   query UserReviews(
     $userId: Int!
-    $reviewsInput: QueryInput = {
-      pagination: {
-        first: 20 
-      }
+    $reviewsInput: PaginationInput = {
+      first: 20 
     }
-    $imagesInput: QueryInput = {
-      pagination: {
-        first: 1
-      }
+    $imagesInput: PaginationInput = {
+      first: 1
     }
   ) {
     user(id: $userId) {
       id
       reviews(input: $reviewsInput) {
-        pageInfo {
-          hasPreviousPage
-          hasNextPage
-          startCursor
-          endCursor
-        }
         edges {
           node {
             id
             rating
-            review
-            votes
-            dCreated
-            dModified
-            myVote
-            user {
-              username
+            text
+            votes {
+              voteScore
+              likesCount
+              dislikesCount
+              myVote
             }
             fragrance {
               id
@@ -54,7 +43,18 @@ const USER_REVIEWS_QUERY = graphql(/* GraphQL */`
                 }
               }
             }
+            audit {
+              createdAt
+              updatedAt
+              deletedAt
+            }
           }
+        }
+        pageInfo {
+          hasPreviousPage
+          hasNextPage
+          startCursor
+          endCursor
         }
       }
     }
@@ -67,9 +67,7 @@ const useUserReviews = (userId: number, limit: number = REVIEWS_LIMIT): Paginate
   const variables = useMemo<UserReviewsQueryVariables>(() => ({
     userId,
     reviewsInput: {
-      pagination: {
-        first: limit
-      }
+      first: limit
     }
   }), [userId, limit])
 
@@ -89,10 +87,8 @@ const useUserReviews = (userId: number, limit: number = REVIEWS_LIMIT): Paginate
     const newVariables: UserReviewsQueryVariables = {
       ...variables,
       reviewsInput: {
-        pagination: {
-          ...variables.reviewsInput?.pagination,
-          after: endCursor
-        }
+        ...variables.reviewsInput,
+        after: endCursor
       }
     }
 

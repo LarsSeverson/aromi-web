@@ -29,7 +29,7 @@ const AccordsLadder = (props: AccordBarsProps) => {
               </p>
               <LinearScaleBar
                 key={index}
-                value={getWidth(accord.votes)}
+                value={getWidth(accord.votes.voteScore)}
                 color={accord.color}
               />
             </div>

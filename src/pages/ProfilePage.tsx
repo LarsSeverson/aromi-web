@@ -6,7 +6,7 @@ import { formatNumber } from '@/common/string-utils'
 import { type User } from '@/generated/graphql'
 import Divider from '@/components/common/Divider'
 
-export type ProfileUser = Pick<User, 'id' | 'username' | 'followers' | 'following'>
+export type ProfileUser = Pick<User, 'id' | 'username' | 'followerCount' | 'followingCount'>
 export interface ProfilePageProps {
   user: ProfileUser
   myProfile: boolean
@@ -14,7 +14,7 @@ export interface ProfilePageProps {
 
 export const ProfilePage = (props: ProfilePageProps) => {
   const { user } = props
-  const { username, followers, following } = user
+  const { username, followerCount, followingCount } = user
   const pathname = useLocation({ select: (location) => location.pathname })
   const activeTab = pathname.match(/\/(likes|reviews)$/)?.[1] ?? '/'
 
@@ -48,16 +48,16 @@ export const ProfilePage = (props: ProfilePageProps) => {
         <div className='flex flex-row gap-2'>
           <div className='flex flex-row gap-1'>
             <p className='font-bold'>
-              {formatNumber(followers)}
+              {formatNumber(followerCount)}
             </p>
             <p className='font-medium text-gray-700'>
-              {followers === 1 ? 'follower' : 'followers'}
+              {followerCount === 1 ? 'follower' : 'followers'}
             </p>
           </div>
           <span> • </span>
           <div className='flex flex-row gap-1'>
             <p className='font-bold'>
-              {formatNumber(following)}
+              {formatNumber(followingCount)}
             </p>
             <p className='font-medium text-gray-700'>
               following

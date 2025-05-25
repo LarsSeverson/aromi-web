@@ -1,4 +1,4 @@
-import { parseForm } from '@/common/form'
+import { parseForm } from '@/common/schema'
 import Spinner from '@/components/common/Spinner'
 import VerificationCodeInput from '@/components/common/VerificationCodeInput'
 import { useAuthContext } from '@/contexts/AuthContext'

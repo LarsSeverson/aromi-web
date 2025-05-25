@@ -10,7 +10,7 @@ import { useAuthContext } from '@/contexts/AuthContext'
 import { ResultAsync } from 'neverthrow'
 import { type ApolloError } from '@apollo/client'
 import { Link, useNavigate, useRouterState } from '@tanstack/react-router'
-import { parseForm } from '@/common/form'
+import { parseForm } from '@/common/schema'
 import { IoClose } from 'react-icons/io5'
 
 const loginSchema = z

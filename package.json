@@ -4,12 +4,12 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "concurrently \"vite\" \"yarn run dev-css\"",
+    "dev": "concurrently \"vite\" \"yarn run gen:css\"",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "dev-css": "npx tailwindcss -i \"$PWD/src/styles/input.css\" -o \"$PWD/src/styles/output.css\" --watch",
-    "codegen": "graphql-codegen --config src/scripts/codegen.ts"
+    "gen:css": "npx tailwindcss -i \"$PWD/src/styles/input.css\" -o \"$PWD/src/styles/output.css\" --watch",
+    "gen:gql": "graphql-codegen --config src/scripts/codegen.ts"
   },
   "dependencies": {
     "@apollo/client": "^3.13.4",

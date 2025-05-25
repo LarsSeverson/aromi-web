@@ -16,7 +16,7 @@ const FRAGRANCE_NOTES_QUERY = graphql(/* GraphQL */ `
       pagination: {
         first: 12 
         sort: {
-          by: votes
+          by: voteScore
         }
       }
       fill: false
@@ -32,8 +32,13 @@ const FRAGRANCE_NOTES_QUERY = graphql(/* GraphQL */ `
               noteId
               name
               layer
-              votes
-              myVote
+              votes {
+                voteScore
+                likesCount
+                dislikesCount
+                myVote
+              }
+              isFill
             }
           }
           pageInfo {
@@ -50,8 +55,13 @@ const FRAGRANCE_NOTES_QUERY = graphql(/* GraphQL */ `
               noteId
               name
               layer
-              votes
-              myVote
+              votes {
+                voteScore
+                likesCount
+                dislikesCount
+                myVote
+              }
+              isFill
             }
           }
           pageInfo {
@@ -68,8 +78,13 @@ const FRAGRANCE_NOTES_QUERY = graphql(/* GraphQL */ `
               noteId
               name
               layer
-              votes
-              myVote
+              votes {
+                voteScore
+                likesCount
+                dislikesCount
+                myVote
+              }
+              isFill
             }
           }
           pageInfo {

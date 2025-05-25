@@ -1,6 +1,6 @@
 import React from 'react'
 import { type FlattenType } from '@/common/util-types'
-import { type FragranceCollection } from '@/generated/graphql'
+import { type FragranceImage, type FragranceCollection } from '@/generated/graphql'
 import { Link, type LinkProps } from '@tanstack/react-router'
 import { FaPen } from 'react-icons/fa6'
 import BouncyButton from '../common/BouncyButton'
@@ -9,7 +9,8 @@ import clsx from 'clsx'
 
 type FlattenedCollection = FlattenType<FragranceCollection>
 type PartialUser = Pick<FlattenedCollection['user'], 'username'>
-type PartialFragrance = Pick<FlattenedCollection['items'][number]['fragrance'], 'images'>
+type PartialImage = Pick<FragranceImage, 'id' | 'src'>
+interface PartialFragrance { images: PartialImage[] }
 type PartialItem = Pick<FlattenedCollection['items'][number], 'id'> & { fragrance: PartialFragrance }
 export type CardCollectionPreview = Pick<FlattenedCollection, 'id' | 'name'> & { user: PartialUser, items: PartialItem[] }
 
@@ -33,7 +34,7 @@ export const CollectionPreviewCard = (props: CollectionPreviewCardProps) => {
       {...rest}
     >
       <GridImages
-        images={items.map(item => item.fragrance.images.at(0)?.url ?? '')}
+        images={items.map(item => item.fragrance.images.at(0)?.src ?? '')}
       />
       <BouncyButton
         className='absolute top-3 right-3 rounded-full bg-sinopia aspect-square px-[10px] hidden group-hover:flex'

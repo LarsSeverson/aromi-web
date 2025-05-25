@@ -11,8 +11,8 @@ export const USER_INFO_QUERY = graphql(/* GraphQL */`
     user(id: $userId) {
       id
       username
-      followers
-      following
+      followerCount
+      followingCount
     }
   }
 `)

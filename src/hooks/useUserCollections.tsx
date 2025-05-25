@@ -9,39 +9,27 @@ const COLLECTIONS_LIMIT = 20
 export const USER_COLLECTIONS_QUERY = graphql(/* GraphQL */`
   query UserCollections(
     $userId: Int!
-    $collectionsInput: QueryInput = {
-      pagination: {
-        first: 20
-      }
+    $collectionsInput: PaginationInput = {
+      first: 20
     }
-    $collectionItemsInput: QueryInput = {
-      pagination: {
-        first: 4
-        sort: {
-          by: added
-          direction: asc
-        }
-      }
+    $collectionItemsInput: PaginationInput = {
+      first: 4
     }
-    $imagesInput: QueryInput = {
-      pagination: {
-        first: 1
-      }
+    $imagesInput: PaginationInput = {
+      first: 1
     }
   ) {
     user(id: $userId) {
       id
       collections(input: $collectionsInput) {
-        pageInfo {
-          hasPreviousPage
-          hasNextPage
-          startCursor
-          endCursor
-        }
         edges {
           node {
             id
             name
+            user {
+              id
+              username
+            }
             items(input: $collectionItemsInput) {
               edges {
                 node {
@@ -60,11 +48,13 @@ export const USER_COLLECTIONS_QUERY = graphql(/* GraphQL */`
                 }
               }
             }
-            user {
-              id
-              username
-            }
           }
+        }
+        pageInfo {
+          hasPreviousPage
+          hasNextPage
+          startCursor
+          endCursor
         }
       }
     }
@@ -77,9 +67,7 @@ const useUserCollections = (userId: number, limit: number = COLLECTIONS_LIMIT): 
   const variables = useMemo<UserCollectionsQueryVariables>(() => ({
     userId,
     collectionsInput: {
-      pagination: {
-        first: limit
-      }
+      first: limit
     }
   }), [userId, limit])
 
@@ -96,10 +84,8 @@ const useUserCollections = (userId: number, limit: number = COLLECTIONS_LIMIT): 
     const newVariables: UserCollectionsQueryVariables = {
       ...variables,
       collectionsInput: {
-        pagination: {
-          ...variables.collectionsInput?.pagination,
-          after: endCursor
-        }
+        ...variables.collectionsInput,
+        after: endCursor
       }
     }
 

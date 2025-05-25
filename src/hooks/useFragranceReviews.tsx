@@ -9,12 +9,10 @@ const REVIEWS_LIMIT = 20
 const FRAGRANCE_REVIEWS_QUERY = graphql(/* GraphQL */ `
   query FragranceReviews(
     $fragranceId: Int!
-    $reviewsInput: QueryInput = {
-      pagination: {
-        first: 20 
-        sort: {
-          by: votes
-        }
+    $reviewsInput: VotePaginationInput = {
+      first: 20
+      sort: {
+        by: voteScore 
       }
     }
   ) {
@@ -25,15 +23,21 @@ const FRAGRANCE_REVIEWS_QUERY = graphql(/* GraphQL */ `
           node {
             id
             rating
-            review
-            votes
-            dCreated
-            dModified
-            dDeleted
-            myVote
+            text
+            votes {
+              voteScore
+              likesCount
+              dislikesCount
+              myVote
+            }
             user {
               id
               username
+            }
+            audit {
+              createdAt
+              updatedAt
+              deletedAt
             }
           }
         }
@@ -54,9 +58,7 @@ const useFragranceReviews = (fragranceId: number): PaginatedQueryHookReturn<Flat
   const variables = useMemo<FragranceReviewsQueryVariables>(() => ({
     fragranceId,
     reviewsInput: {
-      pagination: {
-        first: REVIEWS_LIMIT
-      }
+      first: REVIEWS_LIMIT
     }
   }), [fragranceId])
 
@@ -77,10 +79,8 @@ const useFragranceReviews = (fragranceId: number): PaginatedQueryHookReturn<Flat
     const newVariables: FragranceReviewsQueryVariables = {
       ...variables,
       reviewsInput: {
-        pagination: {
-          ...variables.reviewsInput?.pagination,
-          after: endCursor
-        }
+        ...variables.reviewsInput,
+        after: endCursor
       }
     }
 

@@ -9,7 +9,7 @@ import { z } from 'zod'
 import { useAuthContext } from '@/contexts/AuthContext'
 import { ResultAsync } from 'neverthrow'
 import { type ApolloError } from '@apollo/client'
-import { parseForm } from '@/common/form'
+import { parseForm } from '@/common/schema'
 import { Link } from '@tanstack/react-router'
 
 export interface InformationSignUpStepProps {

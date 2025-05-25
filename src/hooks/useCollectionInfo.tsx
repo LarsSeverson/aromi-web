@@ -15,8 +15,10 @@ export const COLLECTION_INFO_QUERY = graphql(/* GraphQL */`
         id
         username
       }
-      dCreated
-      dModified
+      audit {
+        createdAt
+        updatedAt
+      } 
     }
   }
 `)
@@ -26,8 +28,10 @@ export type CollectionInfo = NonNullable<CollectionInfoQuery['collection']>
 const EMPTY_COLLECTION_INFO: CollectionInfo = {
   id: -1,
   name: 'unknown collection name',
-  dCreated: new Date(),
-  dModified: new Date(),
+  audit: {
+    createdAt: new Date(),
+    updatedAt: new Date()
+  },
   user: {
     id: -1,
     username: 'unknown username'

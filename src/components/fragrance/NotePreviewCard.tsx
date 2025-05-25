@@ -2,7 +2,7 @@ import { type FragranceNote } from '@/generated/graphql'
 import clsx from 'clsx'
 import React from 'react'
 
-export type CardNotePreview = Pick<FragranceNote, 'id' | 'layer' | 'noteId' | 'name' | 'votes' | 'myVote'>
+export type CardNotePreview = Pick<FragranceNote, 'id' | 'layer' | 'noteId' | 'name' | 'votes'>
 
 export interface NotePreviewCardProps extends React.HTMLAttributes<HTMLDivElement> {
   note: CardNotePreview
@@ -43,7 +43,7 @@ const NotePreviewCard = (props: NotePreviewCardProps) => {
         >
           {note?.name.toLowerCase()}
         </p>
-        {(showVotes ?? false) && note.votes > 0 && <p>{note.votes}</p>}
+        {(showVotes ?? false) && note.votes.voteScore > 0 && <p>{note.votes.voteScore}</p>}
       </div>
     </div>
   )

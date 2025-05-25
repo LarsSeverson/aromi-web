@@ -110,7 +110,7 @@ export const FragrancePage = (props: FragrancePageProps) => {
 
             <div className='flex flex-row items-end mb-3 gap-3'>
               <VoteButton
-                votes={info.votes.likes - info.votes.dislikes}
+                votes={info.votes.voteScore}
                 myVote={info.votes.myVote}
               />
 
@@ -179,7 +179,7 @@ export const FragrancePage = (props: FragrancePageProps) => {
                 >
                   <AccordsLadder
                     accords={accords}
-                    maxVote={accords.at(0)?.votes ?? 0}
+                    maxVote={accords.at(0)?.votes.voteScore ?? 0}
                   />
                 </PageCategory>
               </div>

@@ -3,12 +3,11 @@ import { createFileRoute } from '@tanstack/react-router'
 import { USER_INFO_QUERY } from '@/hooks/useUserInfo'
 import { ProfilePage } from '@/pages/ProfilePage'
 import { client } from '@/common/client'
+import { useMyContext } from '@/contexts/MyContext'
 
 export const Route = createFileRoute('/user/$id')({
   component: User,
-  beforeLoad: async ({ context, params }) => {
-    const { auth } = context
-
+  beforeLoad: async ({ params }) => {
     const { data } = await client.query({
       query: USER_INFO_QUERY,
       variables: {
@@ -19,9 +18,8 @@ export const Route = createFileRoute('/user/$id')({
     if (data.user == null) throw new Error('User not found')
 
     const user = data.user
-    const me = auth?.userInfo.user?.id === user.id
 
-    return { user, me }
+    return { user }
   },
   loader: ({ context }) => {
     return context
@@ -29,12 +27,13 @@ export const Route = createFileRoute('/user/$id')({
 })
 
 function User () {
-  const { user, me } = Route.useLoaderData()
+  const { user } = Route.useLoaderData()
+  const { me } = useMyContext()
 
   return (
     <ProfilePage
       user={user}
-      myProfile={me}
+      myProfile={me?.id === user.id}
     />
   )
 }

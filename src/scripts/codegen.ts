@@ -13,7 +13,8 @@ export const config: CodegenConfig = {
       config: {
         scalars: {
           DateTime: 'Date'
-        }
+        },
+        enumsAsConst: true
       }
     }
   }

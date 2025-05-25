@@ -7,7 +7,7 @@ export const Route = createFileRoute('/collection/$id/')({
 })
 
 function RouteComponent () {
-  const { collection, user } = Route.useLoaderData()
+  const { collection } = Route.useLoaderData()
 
   return <div>{collection.name}</div>
 }

@@ -1,4 +1,4 @@
-import { parseForm } from '@/common/form'
+import { parseForm } from '@/common/schema'
 import { useAuthContext } from '@/contexts/AuthContext'
 import { type ApolloError } from '@apollo/client'
 import { Form } from '@base-ui-components/react'

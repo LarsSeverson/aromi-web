@@ -16,9 +16,9 @@ export const FRAGRANCE_INFO_QUERY = graphql(/* GraphQL */ `
       reviewsCount
 
       votes {
-        id
-        likes
-        dislikes
+        voteScore 
+        likesCount
+        dislikesCount
         myVote
       }
 
@@ -42,9 +42,9 @@ const EMPTY_FRAGRANCE: FragranceInfo = {
   rating: 0,
   reviewsCount: 0,
   votes: {
-    id: -1,
-    likes: 0,
-    dislikes: 0,
+    voteScore: 0,
+    likesCount: 0,
+    dislikesCount: 0,
     myVote: undefined
   },
   reviewDistribution: {

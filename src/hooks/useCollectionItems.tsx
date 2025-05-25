@@ -9,19 +9,14 @@ const ITEMS_LIMIT = 20
 export const COLLECTION_ITEMS_QUERY = graphql(/* GraphQL */`
   query CollectionItems(
     $collectionId: Int!
-    $itemsInput: QueryInput = {
-      pagination: {
-        first: 20
-        sort: {
-          by: added
-          direction: desc
-        }
+    $itemsInput: PaginationInput = {
+      first: 20
+      sort: {
+        direction: ASCENDING
       }
     }
-    $imagesInput: QueryInput = {
-      pagination: {
-        first: 1
-      }
+    $imagesInput: PaginationInput = {
+      first: 1
     }
   ) {
     collection(id: $collectionId) {
@@ -36,16 +31,18 @@ export const COLLECTION_ITEMS_QUERY = graphql(/* GraphQL */`
         edges {
           node {
             id
-            dCreated
-            dModified
+            audit {
+              createdAt
+              updatedAt
+            }
             fragrance {
               id
               brand
               name
               votes {
-                id
-                dislikes
-                likes
+                voteScore
+                likesCount
+                dislikesCount
                 myVote
               }
               images(input: $imagesInput) {
@@ -70,9 +67,7 @@ const useUserCollections = (collectionId: number, limit: number = ITEMS_LIMIT): 
   const variables = useMemo<CollectionItemsQueryVariables>(() => ({
     collectionId,
     itemsInput: {
-      pagination: {
-        first: limit
-      }
+      first: limit
     }
   }), [collectionId, limit])
 
@@ -89,10 +84,8 @@ const useUserCollections = (collectionId: number, limit: number = ITEMS_LIMIT): 
     const newVariables: CollectionItemsQueryVariables = {
       ...variables,
       itemsInput: {
-        pagination: {
-          ...variables.itemsInput?.pagination,
-          after: endCursor
-        }
+        ...variables.itemsInput,
+        after: endCursor
       }
     }
 

@@ -11,7 +11,7 @@ import CollectionPopover from '../popovers/CollectionPopover'
 import { INVALID_ID } from '@/common/util-types'
 
 export type CardFragrancePreview = Omit<Pick<Fragrance, 'id' | 'name' | 'brand' | 'votes'>, 'images'> & {
-  images: FragranceImage[]
+  images: Array<Pick<FragranceImage, 'id' | 'src'>>
 }
 
 export interface FragrancePreviewCardProps extends LinkProps {
@@ -22,7 +22,6 @@ export interface FragrancePreviewCardProps extends LinkProps {
 
 export const FragrancePreviewCard = (props: FragrancePreviewCardProps) => {
   const { fragrance, onFragranceVote, className, to, params, ...rest } = props
-  const votes = fragrance.votes.likes - fragrance.votes.dislikes
 
   const [active, setActive] = useState(false)
 
@@ -80,7 +79,7 @@ export const FragrancePreviewCard = (props: FragrancePreviewCardProps) => {
           </BouncyButton>
         </div>
         <VoteButton
-          votes={votes}
+          votes={fragrance.votes.voteScore}
           myVote={fragrance.votes.myVote}
           className='absolute bottom-3 right-3 bottom'
         />

@@ -2,6 +2,7 @@ import React from 'react'
 import { createFileRoute } from '@tanstack/react-router'
 import { LikesTab } from '@/pages/profile/LikesTab'
 import { useMainLayoutContext } from '@/contexts/MainLayoutContext'
+import { useMyContext } from '@/contexts/MyContext'
 
 export const Route = createFileRoute('/user/$id/likes')({
   component: Likes,
@@ -9,13 +10,14 @@ export const Route = createFileRoute('/user/$id/likes')({
 })
 
 function Likes () {
-  const { user, me } = Route.useLoaderData()
+  const { user } = Route.useLoaderData()
+  const { me } = useMyContext()
   const { mainContentRect } = useMainLayoutContext()
 
   return (
     <LikesTab
       user={user}
-      myLikes={me}
+      myLikes={me?.id === user.id}
       containerWidth={mainContentRect.width}
     />
   )

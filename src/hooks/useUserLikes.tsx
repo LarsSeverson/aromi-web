@@ -9,31 +9,27 @@ const LIKES_LIMIT = 20
 const USER_LIKES_QUERY = graphql(/* GraphQL */`
   query UserLikes(
     $userId: Int!
-    $likesInput: QueryInput = {
-      pagination: {
-        first: 20
-      }
+    $likesInput: PaginationInput = {
+      first: 20
     }
-    $imagesInput: QueryInput = {
-      pagination: {
-        first: 1
-      }
+    $imagesInput: PaginationInput = {
+      first: 1
     }
   ) {
     user(id: $userId) {
       id
       likes(input: $likesInput) {
-        pageInfo {
-          hasPreviousPage
-          hasNextPage
-          startCursor
-          endCursor
-        }
         edges {
           node {
             id
             brand
             name
+            votes {
+              voteScore
+              likesCount
+              dislikesCount
+              myVote
+            }
             images(input: $imagesInput) {
               edges {
                 node {
@@ -42,13 +38,13 @@ const USER_LIKES_QUERY = graphql(/* GraphQL */`
                 }
               }
             }
-            votes {
-              id
-              likes
-              dislikes
-              myVote
-            }
           }
+        }
+        pageInfo {
+          hasPreviousPage
+          hasNextPage
+          startCursor
+          endCursor
         }
       }
     }
@@ -62,9 +58,7 @@ const useUserLikes = (userId: number, limit: number = LIKES_LIMIT): PaginatedQue
   const variables = useMemo<UserLikesQueryVariables>(() => ({
     userId,
     likesInput: {
-      pagination: {
-        first: limit
-      }
+      first: limit
     }
   }), [userId, limit])
 
@@ -84,10 +78,8 @@ const useUserLikes = (userId: number, limit: number = LIKES_LIMIT): PaginatedQue
     const newVariables: UserLikesQueryVariables = {
       ...variables,
       likesInput: {
-        pagination: {
-          ...variables.likesInput?.pagination,
-          after: endCursor
-        }
+        ...variables.likesInput,
+        after: endCursor
       }
     }
 

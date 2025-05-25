@@ -3,11 +3,11 @@ import { CommunityIcon, HomeIcon, Logo, ProfileIcon, SearchIcon } from './Icons'
 import SideBarButton from './SideBarButton'
 import { Link, useLocation } from '@tanstack/react-router'
 import clsx from 'clsx'
-import { useAuthContext } from '@/contexts/AuthContext'
+// import { useAuthContext } from '@/contexts/AuthContext'
 
 const SideBar = () => {
   const location = useLocation()
-  const { isAuthenticated } = useAuthContext()
+  // const { isAuthenticated } = useAuthContext()
 
   const getInitialActive = () => {
     if (location.pathname.startsWith('/search')) return 'search'

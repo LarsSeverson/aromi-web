@@ -1,5 +1,5 @@
-import { type FragranceTrait } from '@/generated/graphql'
-import React from 'react'
+import { type FragranceTraitType, type FragranceTrait } from '@/generated/graphql'
+import React, { useMemo } from 'react'
 import clsx from 'clsx'
 import MidScaleBar from '../common/MidScaleBar'
 import gender from '@/assets/gender.svg'
@@ -10,23 +10,25 @@ import balance from '@/assets/balance.svg'
 import allure from '@/assets/allure.svg'
 import { Icon } from '../common/Icon'
 
-export type LadderCharacteristic = Pick<FragranceTrait, 'id' | 'value' | 'trait' | 'myVote'>
+export type LadderCharacteristic = Pick<FragranceTrait, 'voteScore' | 'type' | 'myVote'>
 
-export interface LadderCharacteristics {
-  gender: LadderCharacteristic
-  longevity: LadderCharacteristic
-  sillage: LadderCharacteristic
-  complexity: LadderCharacteristic
-  balance: LadderCharacteristic
-  allure: LadderCharacteristic
+export type LadderCharacteristics = {
+  [key in FragranceTraitType]: LadderCharacteristic
 }
 
 export interface CharacteristicsLadderProps extends React.HTMLAttributes<HTMLDivElement> {
-  characteristics: LadderCharacteristics
+  characteristics: LadderCharacteristic[]
 }
 
 export const CharacteristicsLadder = (props: CharacteristicsLadderProps) => {
   const { characteristics, className, ...rest } = props
+
+  const characteristicsMap = useMemo(() => characteristics
+    .reduce(
+      (map, characteristic) => map.set(characteristic.type, characteristic),
+      new Map<keyof LadderCharacteristics, LadderCharacteristic>()
+    )
+  , [characteristics])
 
   return (
     <div
@@ -37,42 +39,42 @@ export const CharacteristicsLadder = (props: CharacteristicsLadderProps) => {
       {...rest}
     >
       <MidScaleBar
-        value={characteristics.gender.value}
+        value={characteristicsMap.get('GENDER')?.voteScore ?? 50.0}
         label='gender'
         lessLabel='feminine'
         greaterLabel='masculine'
         Icon={<Icon src={gender} size={28} />}
       />
       <MidScaleBar
-        value={characteristics.longevity.value}
+        value={characteristicsMap.get('LONGEVITY')?.voteScore ?? 50.0}
         label='longevity'
         lessLabel='brief'
         greaterLabel='endless'
         Icon={<Icon src={longevity} />}
       />
       <MidScaleBar
-        value={characteristics.sillage.value}
+        value={characteristicsMap.get('SILLAGE')?.voteScore ?? 50.0}
         label='sillage'
         lessLabel='intimate'
         greaterLabel='expansive'
         Icon={<Icon src={sillage} />}
       />
       <MidScaleBar
-        value={characteristics.complexity.value}
+        value={characteristicsMap.get('COMPLEXITY')?.voteScore ?? 50.0}
         label='complexity'
         lessLabel='simple'
         greaterLabel='intricate'
         Icon={<Icon src={complexity} />}
       />
       <MidScaleBar
-        value={characteristics.balance.value}
+        value={characteristicsMap.get('BALANCE')?.voteScore ?? 50.0}
         label='balance'
         lessLabel='unbalanced'
         greaterLabel='harmonious'
         Icon={<Icon src={balance} />}
       />
       <MidScaleBar
-        value={characteristics.allure.value}
+        value={characteristicsMap.get('ALLURE')?.voteScore ?? 50.0}
         label='allure'
         lessLabel='unappealing'
         greaterLabel='captivating'
