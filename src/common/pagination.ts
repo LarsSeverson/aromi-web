@@ -14,7 +14,9 @@ export const makeEmptyData = () => ({
   }
 })
 
-export const relayStylePagination = <TNode extends Reference = Reference> (keyArgs: RelayFieldPolicy<TNode>['keyArgs'] = false): RelayFieldPolicy<TNode> => {
+export const relayStylePagination = <TNode extends Reference = Reference> (
+  keyArgs: RelayFieldPolicy<TNode>['keyArgs'] = false
+): RelayFieldPolicy<TNode> => {
   return {
     keyArgs,
 
@@ -25,15 +27,17 @@ export const relayStylePagination = <TNode extends Reference = Reference> (keyAr
       let firstEdgeCursor = ''
       let lastEdgeCursor = ''
 
-      existing.edges.forEach(edge => {
-        if (canRead(readField('node', edge))) {
-          edges.push(edge)
-          if (edge.cursor != null) {
-            firstEdgeCursor = firstEdgeCursor ?? edge.cursor
-            lastEdgeCursor = edge.cursor
+      existing
+        .edges
+        .forEach(edge => {
+          if (canRead(readField('node', edge))) {
+            edges.push(edge)
+            if (edge.cursor != null) {
+              firstEdgeCursor = firstEdgeCursor ?? edge.cursor
+              lastEdgeCursor = edge.cursor
+            }
           }
-        }
-      })
+        })
 
       if (edges.length > 1 && firstEdgeCursor === lastEdgeCursor) {
         firstEdgeCursor = ''
@@ -59,16 +63,18 @@ export const relayStylePagination = <TNode extends Reference = Reference> (keyAr
 
       if (incoming == null) return existing
 
-      const incomingEdges = incoming.edges?.map(edge => {
-        if (isReference((edge = { ...edge }))) {
-          edge.cursor = readField('cursor', edge)
-        }
+      const incomingEdges = incoming
+        .edges?.map(edge => {
+          if (isReference((edge = { ...edge }))) {
+            edge.cursor = readField('cursor', edge)
+          }
 
-        return edge
-      }) ?? []
+          return edge
+        }) ?? []
 
       if (incoming.pageInfo != null) {
         const { pageInfo } = incoming
+
         const { startCursor, endCursor } = pageInfo
         const firstEdge = incomingEdges.at(0)
         const lastEdge = incomingEdges.at(-1)

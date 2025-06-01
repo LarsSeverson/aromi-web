@@ -1,5 +1,6 @@
 import React from 'react'
 import './styles/output.css'
+import 'react-loading-skeleton/dist/skeleton.css'
 import { useAuthContext } from './contexts/AuthContext'
 import { RouterProvider } from '@tanstack/react-router'
 import { router } from './main'

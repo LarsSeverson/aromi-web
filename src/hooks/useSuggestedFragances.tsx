@@ -10,6 +10,9 @@ const SUGGESTED_FRAGRANCES_QUERY = graphql(/* GraphQL */ `
   query SuggestedFragrances(
     $input: PaginationInput = { 
       first: 20
+      sort: {
+        direction: ASCENDING
+      }
     }
     $imagesInput: PaginationInput = { 
       first: 1
@@ -32,6 +35,7 @@ const SUGGESTED_FRAGRANCES_QUERY = graphql(/* GraphQL */ `
               node {
                 id
                 src
+                bg
               }
             }
           }
@@ -54,7 +58,10 @@ export type SuggestedFragrancesReturn = FlattendedSuggestedFragrancesData['fragr
 const useSuggestedFragrances = (): PaginatedQueryHookReturn<SuggestedFragrancesReturn> => {
   const variables = useMemo<SuggestedFragrancesQueryVariables>(() => ({
     input: {
-      first: FRAGRANCES_LIMIT
+      first: FRAGRANCES_LIMIT,
+      sort: {
+        direction: 'ASCENDING'
+      }
     }
   }), [])
 
@@ -65,16 +72,19 @@ const useSuggestedFragrances = (): PaginatedQueryHookReturn<SuggestedFragrancesR
 
   const getMore = useCallback(() => {
     if (data == null) return
+    if (networkStatus === NetworkStatus.fetchMore) return
 
-    const pageInfo = data.fragrances.pageInfo
-    const { hasNextPage, endCursor } = pageInfo
+    const { hasNextPage, endCursor } = data.fragrances.pageInfo
 
     if (!hasNextPage || (endCursor == null)) return
 
     const newVariables: SuggestedFragrancesQueryVariables = {
       input: {
         first: FRAGRANCES_LIMIT,
-        after: data.fragrances.pageInfo.endCursor
+        after: endCursor,
+        sort: {
+          direction: 'ASCENDING'
+        }
       },
       imagesInput: {
         first: 1
@@ -82,7 +92,7 @@ const useSuggestedFragrances = (): PaginatedQueryHookReturn<SuggestedFragrancesR
     }
 
     void fetchMore({ variables: newVariables })
-  }, [data, fetchMore])
+  }, [data, networkStatus, fetchMore])
 
   const refresh = useCallback(() => {
     void refetch(variables)

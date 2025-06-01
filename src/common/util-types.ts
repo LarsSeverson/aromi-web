@@ -16,7 +16,7 @@ export interface QueryHookReturn<T> {
 
 export interface PaginatedQueryHookReturn<T> extends QueryHookReturn<T> {
   pageInfo: PageInfo | undefined
-  loadingMore?: boolean | undefined
+  loadingMore: boolean
   getMore: () => void
 }
 

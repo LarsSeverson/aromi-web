@@ -20,6 +20,11 @@ html {
   @apply outline outline-2 outline-sinopia;
 }
 
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
 @layer components {
   .middle-slider {
     @apply bg-empty w-full appearance-none rounded-full;

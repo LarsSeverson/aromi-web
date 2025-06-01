@@ -3545,6 +3545,16 @@ html {
   outline-color: #C6471D;
 }
 
+@keyframes blink {
+  0%, 100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+}
+
 .hover\:border-sinopia:hover{
   --tw-border-opacity: 1;
   border-color: rgb(198 71 29 / var(--tw-border-opacity, 1));
