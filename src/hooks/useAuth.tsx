@@ -54,15 +54,11 @@ const useAuth = () => {
     resendSignUpConfirmationCode
   } = useResendSignUpConfirmationCode()
 
-  const setAccessToken = useCallback((token?: string) => {
-    setClientAcessToken(token)
-  }, [])
-
   const handleTokenExpiration = useCallback(() => {
     const data = payload.current
-    if (data?.expiresAt == null) return
+    if (data?.expiresIn == null) return
 
-    const expMs = data.expiresAt * 1000
+    const expMs = data.expiresIn * 1000
     const msToRefresh = expMs - Date.now() - 60 * 1000 // 1min before
 
     if (timer.current != null) clearTimeout(timer.current)
@@ -70,12 +66,21 @@ const useAuth = () => {
     timer.current = setTimeout(() => { void refresh() }, msToRefresh)
   }, [refresh])
 
+  const handleNewPayload = useCallback((newPayload: AuthPayload | null | undefined) => {
+    payload.current = newPayload
+    setIsAuthenticated(newPayload != null)
+    setClientAcessToken(newPayload?.accessToken)
+    handleTokenExpiration()
+  }, [handleTokenExpiration])
+
   const cleanAuth = useCallback(() => {
+    console.log('ran')
+
     if (timer.current != null) clearTimeout(timer.current)
     payload.current = null
     setIsAuthenticated(false)
-    setAccessToken(undefined)
-  }, [setAccessToken])
+    setClientAcessToken(undefined)
+  }, [])
 
   const logOut = useCallback(async () => {
     const result = await ResultAsync
@@ -89,26 +94,29 @@ const useAuth = () => {
   }, [logOutInner, cleanAuth])
 
   useEffect(() => {
+    if (!hasInitialized) return
+
     const newPayload = refreshPayload ?? logInPayload
-    payload.current = newPayload
-
-    setIsAuthenticated(newPayload != null)
-    setAccessToken(newPayload?.accessToken)
-
-    handleTokenExpiration()
-  }, [refreshPayload, logInPayload, setAccessToken, handleTokenExpiration])
+    handleNewPayload(newPayload)
+  }, [hasInitialized, refreshPayload, logInPayload, handleNewPayload])
 
   useEffect(() => {
     if (hasInitialized) return
 
     void ResultAsync
       .fromPromise(refresh(), () => null)
-      .then(() => {
+      .match(
+        ({ data }) => {
+          handleNewPayload(data?.refresh)
+        },
+        () => null
+      )
+      .finally(() => {
         setHasInitialized(true)
       })
-  }, [hasInitialized, refresh])
+  }, [hasInitialized, handleNewPayload, refresh])
 
-  useEffect(cleanAuth, [cleanAuth])
+  useEffect(() => cleanAuth, [cleanAuth])
 
   return {
     payload,

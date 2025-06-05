@@ -1,5 +1,6 @@
 import { type UseAuthReturn } from '@/contexts/AuthContext'
 import MainLayout from '@/layouts/MainLayout'
+import NotFoundPage from '@/pages/NotFoundPage'
 import { createRootRouteWithContext } from '@tanstack/react-router'
 
 interface RouterContext {
@@ -7,5 +8,6 @@ interface RouterContext {
 }
 
 export const Route = createRootRouteWithContext<RouterContext>()({
-  component: MainLayout
+  component: MainLayout,
+  notFoundComponent: NotFoundPage
 })

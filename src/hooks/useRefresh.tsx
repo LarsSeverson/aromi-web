@@ -6,7 +6,7 @@ export const REFRESH_MUTATION = graphql(/* GraphQL */`
     refresh {
       idToken
       accessToken
-      expiresAt
+      expiresIn
     }
   }  
 `)

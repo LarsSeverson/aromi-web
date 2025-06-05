@@ -9,7 +9,7 @@ export const LOG_IN_MUTATION = graphql(/* GraphQL */`
     logIn (email: $email, password: $password) {
       idToken
       accessToken
-      expiresAt
+      expiresIn
     }
   }  
 `)

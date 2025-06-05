@@ -10,7 +10,7 @@ export const ME_QUERY = graphql(/* GraphQL */`
       username
       email
     }
-  }  
+  }
 `)
 
 export const useMe = () => {

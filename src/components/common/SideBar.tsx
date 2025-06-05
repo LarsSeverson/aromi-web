@@ -3,10 +3,12 @@ import { CommunityIcon, HomeIcon, Logo, ProfileIcon, SearchIcon } from './Icons'
 import SideBarButton from './SideBarButton'
 import { Link, useLocation } from '@tanstack/react-router'
 import clsx from 'clsx'
+import { useMyContext } from '@/contexts/MyContext'
 // import { useAuthContext } from '@/contexts/AuthContext'
 
 const SideBar = () => {
   const location = useLocation()
+  const myContext = useMyContext()
   // const { isAuthenticated } = useAuthContext()
 
   const getInitialActive = () => {
@@ -54,7 +56,7 @@ const SideBar = () => {
           onClick={() => { setActive('search') }}
         />
         <SideBarButton
-          to='.'
+          to={`/user/${myContext.me?.id}`}
           Icon={<ProfileIcon />}
           active={active === 'profile'}
           onClick={() => { setActive('profile') }}

@@ -12,7 +12,14 @@ export const router = createRouter({
   routeTree,
   context: {
     auth: undefined
-  }
+  },
+  scrollRestoration: true,
+  getScrollRestorationKey: location => {
+    if (location.pathname === '/') return 'homeScrollPos'
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    return location.state.key!
+  },
+  notFoundMode: 'root'
 })
 
 declare module '@tanstack/react-router' {

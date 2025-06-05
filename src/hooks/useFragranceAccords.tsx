@@ -9,15 +9,7 @@ const ACCORDS_LIMIT = 18
 const FRAGRANCE_ACCORDS_QUERY = graphql(/* GraphQL */ `
   query FragranceAccords(
     $fragranceId: Int!
-    $accordsInput: AccordsInput = {
-      pagination: {
-        first: 18 
-        sort: {
-          by: voteScore
-        }
-      }
-      fill: false
-    }
+    $accordsInput: AccordsInput
   ) {
     fragrance(id: $fragranceId) {
       id
@@ -56,7 +48,11 @@ const FRAGRANCE_ACCORDS_QUERY = graphql(/* GraphQL */ `
 export type FlattenedFragranceAccordsQuery = FlattenType<NonNullable<FragranceAccordsQuery['fragrance']>>
 export type FragranceAccordsQueryReturn = FlattenedFragranceAccordsQuery['accords']
 
-const useFragranceAccords = (fragranceId: number, limit: number = ACCORDS_LIMIT, fill: boolean = false): PaginatedQueryHookReturn<FragranceAccordsQueryReturn> => {
+const useFragranceAccords = (
+  fragranceId: number,
+  limit: number = ACCORDS_LIMIT,
+  fill: boolean = false
+): PaginatedQueryHookReturn<FragranceAccordsQueryReturn> => {
   const variables = useMemo<FragranceAccordsQueryVariables>(() => ({
     fragranceId,
     accordsInput: {

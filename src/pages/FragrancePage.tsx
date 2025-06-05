@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { formatNumber } from '@/common/string-utils'
 import { FragranceImageCarousel } from '@/components/fragrance/FragranceImageCarousel'
 import RatingStars from '@/components/common/RatingStars'
@@ -26,6 +26,7 @@ import Divider from '@/components/common/Divider'
 import { TbMessage2Star } from 'react-icons/tb'
 import { PiShareFat } from 'react-icons/pi'
 import { HiDotsHorizontal } from 'react-icons/hi'
+import { useLogFragranceView } from '@/hooks/useLogFragranceView'
 
 export type FragrancePageUser = Pick<User, 'username' | 'id'>
 export type FragrancePageFragrance = Pick<Fragrance, 'id' | 'brand' | 'name' | 'rating' | 'reviewsCount' | 'reviewDistribution' | 'votes'>
@@ -39,6 +40,8 @@ export const FragrancePage = (props: FragrancePageProps) => {
   const { id: fragranceId } = info
 
   const navigate = useNavigate()
+  const { logFragranceView } = useLogFragranceView()
+
   const { data: images } = useFragranceImages(fragranceId, 5)
   const { data: traits } = useFragranceTraits(fragranceId)
   const { data: accords } = useFragranceAccords(fragranceId, 10)
@@ -65,6 +68,12 @@ export const FragrancePage = (props: FragrancePageProps) => {
       })
     }
   }
+
+  useEffect(() => {
+    if (process.env.NODE_ENV === 'production') {
+      void logFragranceView({ variables: { input: { fragranceId } } })
+    }
+  }, [fragranceId, logFragranceView])
 
   return (
     <div className='h-full flex flex-col items-center relative'>

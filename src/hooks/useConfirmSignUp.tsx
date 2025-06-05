@@ -9,7 +9,9 @@ export const CONFIRM_SIGN_UP_MUTATION = graphql(/* GraphQL */`
     confirmSignUp(
       email: $email
       confirmationCode: $confirmationCode
-    )
+    ) {
+      id
+    }
   }
 `)
 

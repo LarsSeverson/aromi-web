@@ -15,6 +15,7 @@ export interface MasonryListProps<T> extends React.HTMLAttributes<HTMLDivElement
   scale?: number | undefined
   gap?: number | undefined
   onEndReachedThreshold?: number | undefined
+  initialScrollOffset?: number | undefined
 
   onRenderItem: (item: T, index: number) => React.ReactNode
   onRenderSkeleton: () => React.ReactNode
@@ -31,6 +32,7 @@ export const MasonryList = <T, >(props: MasonryListProps<T>) => {
     gap = 15,
     scale = 0.8,
     onEndReachedThreshold = 300,
+    initialScrollOffset = 0,
     onRenderItem,
     onRenderSkeleton,
     onEndReached,
@@ -51,7 +53,8 @@ export const MasonryList = <T, >(props: MasonryListProps<T>) => {
     count: rowCount,
     estimateSize: () => effectiveHeight,
     overscan: 5,
-    gap
+    gap,
+    initialOffset: initialScrollOffset
   })
 
   useEffect(() => {
@@ -73,7 +76,7 @@ export const MasonryList = <T, >(props: MasonryListProps<T>) => {
   return (
     <div
       {...rest}
-      className='relative'
+      className='relative transition-[height] duration-300'
       style={{ height: `${rowVirtualizer.getTotalSize()}px` }}
     >
       {rowVirtualizer
