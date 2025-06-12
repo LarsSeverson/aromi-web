@@ -1,8 +1,7 @@
 import React from 'react'
 import AccountRecoveryPage from '@/pages/account-recovery/AccountRecoveryPage'
-import { createFileRoute } from '@tanstack/react-router'
 
-export const Route = createFileRoute('/account-recovery/')({
+export const Route = createFileRoute({
   component: AccountRecovery
 })
 

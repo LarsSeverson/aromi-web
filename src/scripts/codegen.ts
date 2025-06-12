@@ -3,12 +3,13 @@ import 'dotenv/config'
 
 export const config: CodegenConfig = {
   schema: process.env.VITE_API_ENDPOINT_DEV,
-  documents: ['src/**/*.tsx'],
+  documents: ['src/**/*.{ts,tsx}'],
   generates: {
     './src/generated/': {
       preset: 'client',
       presetConfig: {
-        filename: 'graphql.ts'
+        gqlTagName: 'gql',
+        fragmentMasking: false
       },
       config: {
         scalars: {

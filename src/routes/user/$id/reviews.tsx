@@ -1,9 +1,8 @@
 import React from 'react'
-import { createFileRoute } from '@tanstack/react-router'
 import ReviewsTab from '@/pages/profile/ReviewsTab'
 import { useMyContext } from '@/contexts/MyContext'
 
-export const Route = createFileRoute('/user/$id/reviews')({
+export const Route = createFileRoute({
   component: Reviews,
   loader: ({ context }) => context
 })

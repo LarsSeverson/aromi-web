@@ -1,6 +1,6 @@
 import { useQuery } from '@apollo/client'
 import { graphql } from '../generated'
-import { flattenConnection, type FlattenType, INVALID_ID, type PaginatedQueryHookReturn } from '../common/util-types'
+import { nodes, type FlattenType, INVALID_ID, type PaginatedQueryHookReturn } from '../common/util-types'
 import { useCallback, useMemo } from 'react'
 import { type CollectionItemsQuery, type CollectionItemsQueryVariables } from '@/generated/graphql'
 
@@ -97,11 +97,11 @@ const useUserCollections = (collectionId: number, limit: number = ITEMS_LIMIT): 
   }, [variables, refetch])
 
   const collections = useMemo<FlattenedCollectionItems>(() =>
-    flattenConnection(data?.collection?.items).map(item => ({
+    nodes(data?.collection?.items).map(item => ({
       ...item,
       fragrance: {
         ...item.fragrance,
-        images: flattenConnection(item.fragrance.images)
+        images: nodes(item.fragrance.images)
       }
     })),
   [data?.collection])

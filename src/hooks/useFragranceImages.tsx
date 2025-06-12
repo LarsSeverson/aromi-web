@@ -1,37 +1,10 @@
 import { NetworkStatus, useQuery } from '@apollo/client'
 import { useCallback, useMemo } from 'react'
 import { graphql } from '../generated'
-import { flattenConnection, INVALID_ID, type PaginatedQueryHookReturn, type FlattenType } from '../common/util-types'
+import { nodes, INVALID_ID, type PaginatedQueryHookReturn, type FlattenType } from '../common/util-types'
 import { type FragranceImagesQueryVariables, type FragranceImagesQuery } from '../generated/graphql'
 
 const IMAGES_LIMIT = 5
-
-const FRAGRANCE_IMAGES_QUERY = graphql(/* GraphQL */ `
-  query FragranceImages(
-    $fragranceId: Int!
-    $imagesInput: PaginationInput = {
-      first: 5 
-    }
-  ) {
-    fragrance(id: $fragranceId) {
-      id
-      images(input: $imagesInput) {
-        edges {
-          node {
-            id
-            src
-          }
-        }
-        pageInfo {
-          hasNextPage
-          hasPreviousPage
-          startCursor
-          endCursor
-        }
-      }
-    }
-  }
-`)
 
 export type FlattenedFragranceQuery = FlattenType<NonNullable<FragranceImagesQuery['fragrance']>>
 export type FlattenedFragranceQueryImages = FlattenType<FlattenedFragranceQuery['images']>
@@ -74,7 +47,7 @@ const useFragranceImages = (fragranceId: number, limit: number = IMAGES_LIMIT): 
   }, [refetch])
 
   const images = useMemo<FlattenedFragranceQuery['images']>(() =>
-    flattenConnection(data?.fragrance?.images),
+    nodes(data?.fragrance?.images),
   [data?.fragrance?.images])
 
   return {

@@ -1,10 +1,9 @@
 import React from 'react'
-import { createFileRoute } from '@tanstack/react-router'
 import { CollectionsTab } from '@/pages/profile/CollectionsTab'
 import { useMainLayoutContext } from '@/contexts/MainLayoutContext'
 import { useMe } from '@/hooks/useMe'
 
-export const Route = createFileRoute('/user/$id/')({
+export const Route = createFileRoute({
   component: Collections,
   loader: ({ context }) => context
 })

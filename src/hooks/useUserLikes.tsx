@@ -1,7 +1,7 @@
 import { useQuery } from '@apollo/client'
 import { graphql } from '../generated'
 import { type UserLikesQueryVariables, type UserLikesQuery } from '../generated/graphql'
-import { flattenConnection, type FlattenType, INVALID_ID, type PaginatedQueryHookReturn } from '../common/util-types'
+import { nodes, type FlattenType, INVALID_ID, type PaginatedQueryHookReturn } from '../common/util-types'
 import { useCallback, useMemo } from 'react'
 
 const LIKES_LIMIT = 20
@@ -22,19 +22,22 @@ const USER_LIKES_QUERY = graphql(/* GraphQL */`
         edges {
           node {
             id
-            brand
-            name
-            votes {
-              voteScore
-              likesCount
-              dislikesCount
-              myVote
-            }
-            images(input: $imagesInput) {
-              edges {
-                node {
-                  id
-                  src
+            fragrance {
+              id
+              brand
+              name
+              votes {
+                voteScore
+                likesCount
+                dislikesCount
+                myVote
+              }
+              images(input: $imagesInput) {
+                edges {
+                  node {
+                    id
+                    src
+                  }
                 }
               }
             }
@@ -52,7 +55,7 @@ const USER_LIKES_QUERY = graphql(/* GraphQL */`
 `)
 
 export type FlattenedUserLikes = FlattenType<NonNullable<UserLikesQuery['user']>>['likes']
-export type UserLikesFragrance = FlattenedUserLikes[number]
+export type UserLikesFragrance = FlattenedUserLikes[number]['fragrance']
 
 const useUserLikes = (userId: number, limit: number = LIKES_LIMIT): PaginatedQueryHookReturn<FlattenedUserLikes> => {
   const variables = useMemo<UserLikesQueryVariables>(() => ({
@@ -90,14 +93,7 @@ const useUserLikes = (userId: number, limit: number = LIKES_LIMIT): PaginatedQue
     void refetch(variables)
   }, [variables, refetch])
 
-  const likes = useMemo<FlattenedUserLikes>(() =>
-    flattenConnection(data?.user?.likes).map(like =>
-      ({
-        ...like,
-        images: flattenConnection(like.images)
-      })
-    ),
-  [data?.user?.likes])
+  const likes = useMemo<FlattenedUserLikes>(() => nodes(data?.user?.likes), [data?.user?.likes])
 
   return {
     data: likes,

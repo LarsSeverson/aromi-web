@@ -1,7 +1,7 @@
 import { useQuery } from '@apollo/client'
 import { graphql } from '../generated'
 import { type UserReviewsQueryVariables, type UserReviewsQuery } from '../generated/graphql'
-import { flattenConnection, type FlattenType, INVALID_ID, type PaginatedQueryHookReturn } from '../common/util-types'
+import { nodes, type FlattenType, INVALID_ID, type PaginatedQueryHookReturn } from '../common/util-types'
 import { useCallback, useMemo } from 'react'
 
 const REVIEWS_LIMIT = 20
@@ -100,11 +100,11 @@ const useUserReviews = (userId: number, limit: number = REVIEWS_LIMIT): Paginate
   }, [variables, refetch])
 
   const reviews = useMemo<FlattenedUserReviews>(() =>
-    flattenConnection(data?.user?.reviews).map(review => ({
+    nodes(data?.user?.reviews).map(review => ({
       ...review,
       fragrance: {
         ...review.fragrance,
-        images: flattenConnection(review.fragrance.images)
+        images: nodes(review.fragrance.images)
       }
     })),
   [data?.user?.reviews])

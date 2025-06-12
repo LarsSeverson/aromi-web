@@ -1,9 +1,9 @@
 import React from 'react'
 import { FRAGRANCE_INFO_QUERY } from '@/hooks/useFragranceInfo'
-import { createFileRoute, Outlet } from '@tanstack/react-router'
+import { Outlet } from '@tanstack/react-router'
 import { client } from '@/common/client'
 
-export const Route = createFileRoute('/fragrance/$id')({
+export const Route = createFileRoute({
   component: Fragrance,
   beforeLoad: async ({ params }) => {
     const { data } = await client.query({

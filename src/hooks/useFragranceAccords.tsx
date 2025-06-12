@@ -2,48 +2,9 @@ import { NetworkStatus, useQuery } from '@apollo/client'
 import { useCallback, useMemo } from 'react'
 import { graphql } from '../generated'
 import { type FragranceAccordsQueryVariables, type FragranceAccordsQuery, VoteSortBy } from '../generated/graphql'
-import { flattenConnection, INVALID_ID, type FlattenType, type PaginatedQueryHookReturn } from '../common/util-types'
+import { nodes, INVALID_ID, type FlattenType, type PaginatedQueryHookReturn } from '../common/util-types'
 
 const ACCORDS_LIMIT = 18
-
-const FRAGRANCE_ACCORDS_QUERY = graphql(/* GraphQL */ `
-  query FragranceAccords(
-    $fragranceId: Int!
-    $accordsInput: AccordsInput
-  ) {
-    fragrance(id: $fragranceId) {
-      id
-      accords(input: $accordsInput) {
-        edges {
-          node {
-            id
-            accordId
-            name
-            color
-            votes {
-              voteScore 
-              likesCount
-              dislikesCount
-              myVote
-            }
-            isFill
-            audit {
-              createdAt
-              updatedAt
-              deletedAt
-            }
-          }
-        }
-        pageInfo {
-          hasPreviousPage
-          hasNextPage
-          startCursor
-          endCursor
-        }
-      }
-    }
-  }
-`)
 
 export type FlattenedFragranceAccordsQuery = FlattenType<NonNullable<FragranceAccordsQuery['fragrance']>>
 export type FragranceAccordsQueryReturn = FlattenedFragranceAccordsQuery['accords']
@@ -96,7 +57,7 @@ const useFragranceAccords = (
   }, [variables, refetch])
 
   const accords = useMemo<FragranceAccordsQueryReturn>(() =>
-    flattenConnection(data?.fragrance?.accords),
+    nodes(data?.fragrance?.accords),
   [data?.fragrance?.accords])
 
   return {

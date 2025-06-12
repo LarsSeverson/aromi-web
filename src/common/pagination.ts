@@ -24,14 +24,18 @@ export const relayStylePagination = <TNode extends Reference = Reference> (
       if (existing == null) return existing
 
       const edges: Array<TRelayEdge<TNode>> = []
+      const nodes: TNode[] = []
+
       let firstEdgeCursor = ''
       let lastEdgeCursor = ''
 
       existing
         .edges
         .forEach(edge => {
-          if (canRead(readField('node', edge))) {
+          const node = readField('node', edge)
+          if (canRead(node)) {
             edges.push(edge)
+            nodes.push(node as TNode)
             if (edge.cursor != null) {
               firstEdgeCursor = firstEdgeCursor ?? edge.cursor
               lastEdgeCursor = edge.cursor
@@ -48,6 +52,7 @@ export const relayStylePagination = <TNode extends Reference = Reference> (
       return {
         ...getExtras(existing),
         edges,
+        nodes,
         pageInfo: {
           ...existing.pageInfo,
           startCursor: startCursor ?? firstEdgeCursor,
@@ -104,3 +109,10 @@ export const relayStylePagination = <TNode extends Reference = Reference> (
     }
   }
 }
+
+interface BaseConnection<T> {
+  edges: Array<{ node: T }>
+}
+
+export const nodes = <T>(connection?: BaseConnection<T>): T[] =>
+  connection?.edges.map(e => e.node) ?? []

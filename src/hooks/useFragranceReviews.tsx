@@ -2,55 +2,9 @@ import { NetworkStatus, useQuery } from '@apollo/client'
 import { useCallback, useMemo } from 'react'
 import { graphql } from '../generated'
 import { type FragranceReviewsQueryVariables, type FragranceReviewsQuery } from '../generated/graphql'
-import { flattenConnection, INVALID_ID, type FlattenType, type PaginatedQueryHookReturn } from '../common/util-types'
+import { nodes, INVALID_ID, type FlattenType, type PaginatedQueryHookReturn } from '../common/util-types'
 
 const REVIEWS_LIMIT = 20
-
-const FRAGRANCE_REVIEWS_QUERY = graphql(/* GraphQL */ `
-  query FragranceReviews(
-    $fragranceId: Int!
-    $reviewsInput: VotePaginationInput = {
-      first: 20
-      sort: {
-        by: voteScore 
-      }
-    }
-  ) {
-    fragrance(id: $fragranceId) {
-      id
-      reviews(input: $reviewsInput) {
-        edges {
-          node {
-            id
-            rating
-            text
-            votes {
-              voteScore
-              likesCount
-              dislikesCount
-              myVote
-            }
-            user {
-              id
-              username
-            }
-            audit {
-              createdAt
-              updatedAt
-              deletedAt
-            }
-          }
-        }
-        pageInfo {
-          hasPreviousPage
-          hasNextPage
-          startCursor
-          endCursor
-        }
-      }
-    }
-  }
-`)
 
 export type FlattenedFragranceReviewsReturn = FlattenType<NonNullable<FragranceReviewsQuery['fragrance']>['reviews']>
 
@@ -92,7 +46,7 @@ const useFragranceReviews = (fragranceId: number): PaginatedQueryHookReturn<Flat
   }, [variables, refetch])
 
   const reviews = useMemo<FlattenedFragranceReviewsReturn>(() =>
-    flattenConnection(data?.fragrance?.reviews),
+    nodes(data?.fragrance?.reviews),
   [data?.fragrance?.reviews])
 
   return {

@@ -1,9 +1,9 @@
 import React from 'react'
-import { createFileRoute, Outlet } from '@tanstack/react-router'
+import { Outlet } from '@tanstack/react-router'
 import { COLLECTION_INFO_QUERY } from '@/hooks/useCollectionInfo'
 import { client } from '@/common/client'
 
-export const Route = createFileRoute('/collection/$id')({
+export const Route = createFileRoute({
   component: Collection,
   beforeLoad: async ({ params }) => {
     const { data } = await client.query({

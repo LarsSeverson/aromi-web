@@ -1,11 +1,10 @@
 import React from 'react'
-import { createFileRoute } from '@tanstack/react-router'
 import { USER_INFO_QUERY } from '@/hooks/useUserInfo'
 import { ProfilePage } from '@/pages/ProfilePage'
 import { client } from '@/common/client'
 import { useMyContext } from '@/contexts/MyContext'
 
-export const Route = createFileRoute('/user/$id')({
+export const Route = createFileRoute({
   component: User,
   beforeLoad: async ({ params }) => {
     const { data } = await client.query({

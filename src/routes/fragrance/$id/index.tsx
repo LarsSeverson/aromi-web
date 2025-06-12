@@ -1,9 +1,8 @@
 import React from 'react'
-import { createFileRoute } from '@tanstack/react-router'
 import { FragrancePage } from '@/pages/FragrancePage'
 import { useMyContext } from '@/contexts/MyContext'
 
-export const Route = createFileRoute('/fragrance/$id/')({
+export const Route = createFileRoute({
   component: FragranceIndex,
   loader: ({ context }) => context
 })

@@ -20,12 +20,10 @@ export interface PaginatedQueryHookReturn<T> extends QueryHookReturn<T> {
   getMore: () => void
 }
 
-export type FlattenType<T> = T extends Date
-  ? T
-  : T extends { edges: Array<{ node: infer U }> }
-    ? Array<FlattenType<U>>
-    : T extends object
-      ? { [K in keyof T]: FlattenType<T[K]> }
-      : T
+export type NodeOf<C> =
+  C extends { edges: Array<{ node: infer N }> } ? N : never
 
-export const flattenConnection = <T>(connection?: { edges: Array<{ node: T }> }): T[] => connection?.edges.map(edge => edge.node) ?? []
+export type FlatConnection<
+  T,
+  K extends keyof T & string
+> = Omit<T, K> & { [P in K]: Array<NodeOf<T[P]>> }

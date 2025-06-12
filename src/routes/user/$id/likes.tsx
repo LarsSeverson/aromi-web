@@ -1,10 +1,9 @@
 import React from 'react'
-import { createFileRoute } from '@tanstack/react-router'
 import { LikesTab } from '@/pages/profile/LikesTab'
 import { useMainLayoutContext } from '@/contexts/MainLayoutContext'
 import { useMyContext } from '@/contexts/MyContext'
 
-export const Route = createFileRoute('/user/$id/likes')({
+export const Route = createFileRoute({
   component: Likes,
   loader: ({ context }) => context
 })
