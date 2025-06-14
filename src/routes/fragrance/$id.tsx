@@ -1,5 +1,5 @@
 import React from 'react'
-import { FRAGRANCE_INFO_QUERY } from '@/hooks/useFragranceInfo'
+import { FRAGRANCE_INFO_QUERY } from '@/hooks/useFragrance'
 import { Outlet } from '@tanstack/react-router'
 import { client } from '@/common/client'
 

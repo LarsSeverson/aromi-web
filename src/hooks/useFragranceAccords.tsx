@@ -1,74 +1,49 @@
 import { NetworkStatus, useQuery } from '@apollo/client'
 import { useCallback, useMemo } from 'react'
-import { graphql } from '../generated'
-import { type FragranceAccordsQueryVariables, type FragranceAccordsQuery, VoteSortBy } from '../generated/graphql'
-import { nodes, INVALID_ID, type FlattenType, type PaginatedQueryHookReturn } from '../common/util-types'
-
-const ACCORDS_LIMIT = 18
-
-export type FlattenedFragranceAccordsQuery = FlattenType<NonNullable<FragranceAccordsQuery['fragrance']>>
-export type FragranceAccordsQueryReturn = FlattenedFragranceAccordsQuery['accords']
+import { FRAGRANCE_ACCORDS_QUERY } from '@/graphql/queries/FragranceQueries'
+import { flatten } from '@/common/pagination'
+import { type AccordsInput } from '@/generated/graphql'
 
 const useFragranceAccords = (
   fragranceId: number,
-  limit: number = ACCORDS_LIMIT,
-  fill: boolean = false
-): PaginatedQueryHookReturn<FragranceAccordsQueryReturn> => {
-  const variables = useMemo<FragranceAccordsQueryVariables>(() => ({
-    fragranceId,
-    accordsInput: {
-      pagination: {
-        first: limit,
-        sort: { by: VoteSortBy.VoteScore }
-      },
-      fill
-    }
-  }), [fill, fragranceId, limit])
-
-  const { data, loading, error, networkStatus, refetch, fetchMore } = useQuery(FRAGRANCE_ACCORDS_QUERY, {
-    variables,
-    notifyOnNetworkStatusChange: true,
-    skip: fragranceId === INVALID_ID
+  input?: AccordsInput
+) => {
+  const {
+    data, loading, error, networkStatus,
+    refetch, fetchMore
+  } = useQuery(FRAGRANCE_ACCORDS_QUERY, {
+    variables: { fragranceId, input },
+    notifyOnNetworkStatusChange: true
   })
 
-  const getMore = useCallback(() => {
+  const loadMore = useCallback(() => {
     if (data?.fragrance == null) return
+    if (networkStatus === NetworkStatus.fetchMore) return
 
-    const pageInfo = data.fragrance.accords.pageInfo
-    const { hasNextPage, endCursor } = pageInfo
+    const { hasNextPage, endCursor } = data.fragrance.accords.pageInfo
 
     if (!hasNextPage || (endCursor == null)) return
 
-    const newVariables: FragranceAccordsQueryVariables = {
-      ...variables,
-      accordsInput: {
-        pagination: {
-          ...variables.accordsInput?.pagination,
-          after: endCursor
-        }
+    const newVariables = {
+      fragranceId,
+      input: {
+        pagination: { after: endCursor }
       }
     }
 
     void fetchMore({ variables: newVariables })
-  }, [data, variables, fetchMore])
+  }, [fragranceId, data, networkStatus, fetchMore])
 
-  const refresh = useCallback(() => {
-    void refetch(variables)
-  }, [variables, refetch])
-
-  const accords = useMemo<FragranceAccordsQueryReturn>(() =>
-    nodes(data?.fragrance?.accords),
-  [data?.fragrance?.accords])
+  const accords = useMemo(() => flatten(data?.fragrance?.accords ?? []), [data?.fragrance?.accords])
 
   return {
     data: accords,
-    pageInfo: data?.fragrance?.accords.pageInfo,
     loading,
     loadingMore: networkStatus === NetworkStatus.fetchMore,
     error,
 
-    refresh,
-    getMore
+    loadMore,
+    refetch
   }
 }
 

@@ -8,3 +8,11 @@ export const PageInfoFragment = gql(/* GraphQL */`
     endCursor
   }
 `)
+
+export const AuditFragment = gql(/* GraphQL */`
+  fragment AuditBase on Audit {
+    createdAt
+    updatedAt
+    deletedAt
+  }
+`)

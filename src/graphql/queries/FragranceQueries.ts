@@ -1,5 +1,15 @@
 import { gql } from '@/generated'
 
+export const FRAGRANCE_QUERY = gql(/* GraphQL */`
+  query Fragrance(
+    $id: Int!
+  ) {
+    fragrance(id: $id) {
+      ...FragranceSummary
+    }
+  }
+`)
+
 export const SUGGESTED_FRAGRANCES_QUERY = gql(/* GraphQL */`
   query SuggestedFragrances(
     $input: PaginationInput
@@ -53,23 +63,20 @@ export const FRAGRANCE_ACCORDS_QUERY = gql(/* GraphQL */`
 export const FRAGRANCE_NOTES_QUERY = gql(/* GraphQL */`
   query FragranceNotes(
     $fragranceId: Int!
-    $includeTop: Boolean = false
-    $includeMiddle: Boolean = false
-    $includeBase: Boolean = false
     $input: NotesInput
   ) {
     fragrance(id: $fragranceId) {
       id
       notes {
-        top(input: $input) @include(if: $includeTop) {
+        top(input: $input) {
           ...FragranceNoteConnection
         }
 
-        middle(input: $input) @include(if: $includeMiddle) {
+        middle(input: $input) {
           ...FragranceNoteConnection
         }
 
-        base(input: $input) @include(if: $includeBase) {
+        base(input: $input) {
           ...FragranceNoteConnection
         }
       }
@@ -86,6 +93,19 @@ export const FRAGRANCE_REVIEWS_QUERY = gql(/* GraphQL */`
       id
       reviews(input: $input) {
         ...FragranceReviewConnection
+      }
+    }
+  }
+`)
+
+export const MY_FRAGRANCE_REVIEW_QUERY = gql(/* GraphQL */`
+  query MyFragranceReview(
+    $fragranceId: Int!
+  ) {
+    fragrance(id: $fragranceId) {
+      ...FragranceSummary
+      myReview {
+        ...FragranceReviewSummary
       }
     }
   }

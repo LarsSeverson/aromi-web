@@ -1,19 +1,15 @@
-import { useCallback } from 'react'
+import { useCallback, useMemo } from 'react'
 import { NetworkStatus, useQuery } from '@apollo/client'
-import { type PaginationInput, type SuggestedFragrancesQueryVariables } from '../generated/graphql'
+import { type PaginationInput } from '../generated/graphql'
 import { SUGGESTED_FRAGRANCES_QUERY } from '@/graphql/queries/FragranceQueries'
-import { nodes } from '@/common/pagination'
+import { flatten } from '@/common/pagination'
 
 const useSuggestedFragrances = (
   input?: PaginationInput
 ) => {
   const {
-    data,
-    loading,
-    error,
-    networkStatus,
-    fetchMore,
-    refetch
+    data, loading, error, networkStatus,
+    fetchMore, refetch
   } = useQuery(SUGGESTED_FRAGRANCES_QUERY, {
     variables: { input },
     notifyOnNetworkStatusChange: true
@@ -27,25 +23,20 @@ const useSuggestedFragrances = (
 
     if (!hasNextPage || (endCursor == null)) return
 
-    const newVariables: SuggestedFragrancesQueryVariables = {
+    const newVariables = {
       input: { after: endCursor }
     }
 
     void fetchMore({ variables: newVariables })
   }, [data, networkStatus, fetchMore])
 
-  const fragrances = data?.fragrances.edges
-    .map(({ node }) => ({
-      ...node,
-      images: nodes(node.images)
-    })) ?? []
+  const fragrances = useMemo(() => flatten(data?.fragrances ?? []), [data?.fragrances])
 
   return {
     data: fragrances,
-    loadingMore: networkStatus === NetworkStatus.fetchMore,
-
-    error,
     loading,
+    loadingMore: networkStatus === NetworkStatus.fetchMore,
+    error,
 
     loadMore,
     refetch

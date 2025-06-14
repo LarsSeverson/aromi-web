@@ -1,64 +1,28 @@
-import { NetworkStatus, useQuery } from '@apollo/client'
-import { useCallback, useMemo } from 'react'
-import { graphql } from '../generated'
-import { nodes, INVALID_ID, type PaginatedQueryHookReturn, type FlattenType } from '../common/util-types'
-import { type FragranceImagesQueryVariables, type FragranceImagesQuery } from '../generated/graphql'
+import { flatten } from '@/common/pagination'
+import { type PaginationInput } from '@/generated/graphql'
+import { FRAGRANCE_IMAGES_QUERY } from '@/graphql/queries/FragranceQueries'
+import { useQuery } from '@apollo/client'
 
-const IMAGES_LIMIT = 5
-
-export type FlattenedFragranceQuery = FlattenType<NonNullable<FragranceImagesQuery['fragrance']>>
-export type FlattenedFragranceQueryImages = FlattenType<FlattenedFragranceQuery['images']>
-
-const useFragranceImages = (fragranceId: number, limit: number = IMAGES_LIMIT): PaginatedQueryHookReturn<FlattenedFragranceQueryImages> => {
-  const variables = useMemo<FragranceImagesQueryVariables>(() => ({
-    fragranceId,
-    imagesInput: {
-      first: limit
-    }
-  }), [fragranceId, limit])
-
-  const { data, loading, error, networkStatus, refetch, fetchMore } = useQuery(FRAGRANCE_IMAGES_QUERY, {
-    variables,
-    notifyOnNetworkStatusChange: true,
-    skip: fragranceId === INVALID_ID
+const useFragranceImages = (
+  fragranceId: number,
+  input?: PaginationInput
+) => {
+  const {
+    data, loading, error,
+    refetch
+  } = useQuery(FRAGRANCE_IMAGES_QUERY, {
+    variables: { fragranceId, input },
+    notifyOnNetworkStatusChange: true
   })
 
-  const getMore = useCallback(() => {
-    if (data?.fragrance == null) return
-
-    const pageInfo = data.fragrance.images.pageInfo
-    const { hasNextPage, endCursor } = pageInfo
-
-    if (!hasNextPage || (endCursor == null)) return
-
-    const newVariables: FragranceImagesQueryVariables = {
-      ...variables,
-      imagesInput: {
-        ...variables.imagesInput,
-        after: endCursor
-      }
-    }
-
-    void fetchMore({ variables: newVariables })
-  }, [data?.fragrance, fetchMore, variables])
-
-  const refresh = useCallback(() => {
-    void refetch()
-  }, [refetch])
-
-  const images = useMemo<FlattenedFragranceQuery['images']>(() =>
-    nodes(data?.fragrance?.images),
-  [data?.fragrance?.images])
+  const images = flatten(data?.fragrance?.images ?? [])
 
   return {
     data: images,
-    pageInfo: data?.fragrance?.images.pageInfo,
     loading,
-    loadingMore: networkStatus === NetworkStatus.fetchMore,
     error,
 
-    refresh,
-    getMore
+    refetch
   }
 }
 

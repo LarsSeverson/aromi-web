@@ -1,30 +1,23 @@
 import { useAuthContext } from '@/contexts/AuthContext'
-import { graphql } from '@/generated'
+import { MY_QUERY } from '@/graphql/queries/UserQueries'
 import { useQuery } from '@apollo/client'
 import { useEffect } from 'react'
 
-export const ME_QUERY = graphql(/* GraphQL */`
-  query MeQuery {
-    me {
-      id
-      username
-      email
-    }
-  }
-`)
-
 export const useMe = () => {
   const { isAuthenticated } = useAuthContext()
-  const { data, loading, error, refetch: refresh } = useQuery(ME_QUERY)
+  const { data, loading, error, refetch } = useQuery(MY_QUERY)
 
   useEffect(() => {
-    void refresh()
-  }, [isAuthenticated, refresh])
+    void refetch()
+  }, [isAuthenticated, refetch])
+
+  const me = data?.me
 
   return {
-    me: data?.me,
+    me,
     loading,
     error,
-    refresh
+
+    refetch
   }
 }

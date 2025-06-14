@@ -1,119 +1,47 @@
-import { useQuery } from '@apollo/client'
-import { graphql } from '../generated'
-import { nodes, type FlattenType, INVALID_ID, type PaginatedQueryHookReturn } from '../common/util-types'
+import { NetworkStatus, useQuery } from '@apollo/client'
 import { useCallback, useMemo } from 'react'
-import { type CollectionItemsQuery, type CollectionItemsQueryVariables } from '@/generated/graphql'
+import { type PaginationInput } from '@/generated/graphql'
+import { USER_COLLECTIONS_QUERY } from '@/graphql/queries/UserQueries'
+import { flatten } from '@/common/pagination'
 
-const ITEMS_LIMIT = 20
+const useUserCollections = (
+  userId: number,
+  input?: PaginationInput
+) => {
+  const {
+    data, loading, error, networkStatus,
+    fetchMore, refetch
+  } = useQuery(USER_COLLECTIONS_QUERY, {
+    variables: { userId, input },
+    notifyOnNetworkStatusChange: true
+  })
 
-export const COLLECTION_ITEMS_QUERY = graphql(/* GraphQL */`
-  query CollectionItems(
-    $collectionId: Int!
-    $itemsInput: PaginationInput = {
-      first: 20
-      sort: {
-        direction: ASCENDING
-      }
-    }
-    $imagesInput: PaginationInput = {
-      first: 1
-    }
-  ) {
-    collection(id: $collectionId) {
-      id
-      items(input: $itemsInput) {
-        pageInfo {
-          hasPreviousPage
-          hasNextPage
-          startCursor
-          endCursor
-        }
-        edges {
-          node {
-            id
-            audit {
-              createdAt
-              updatedAt
-            }
-            fragrance {
-              id
-              brand
-              name
-              votes {
-                voteScore
-                likesCount
-                dislikesCount
-                myVote
-              }
-              images(input: $imagesInput) {
-                edges {
-                  node {
-                    id
-                    src
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-`)
+  const loadMore = useCallback(() => {
+    if (data?.user == null) return
+    if (networkStatus === NetworkStatus.fetchMore) return
 
-export type FlattenedCollectionItems = FlattenType<NonNullable<CollectionItemsQuery['collection']>['items']>
-
-const useUserCollections = (collectionId: number, limit: number = ITEMS_LIMIT): PaginatedQueryHookReturn<FlattenedCollectionItems> => {
-  const variables = useMemo<CollectionItemsQueryVariables>(() => ({
-    collectionId,
-    itemsInput: {
-      first: limit
-    }
-  }), [collectionId, limit])
-
-  const { data, loading, error, fetchMore, refetch } = useQuery(COLLECTION_ITEMS_QUERY, { variables, skip: collectionId === INVALID_ID })
-
-  const getMore = useCallback(() => {
-    if (data?.collection == null) return
-
-    const pageInfo = data.collection?.items.pageInfo
-    const { hasNextPage, endCursor } = pageInfo
+    const { hasNextPage, endCursor } = data.user.collections.pageInfo
 
     if (!hasNextPage || (endCursor == null)) return
 
-    const newVariables: CollectionItemsQueryVariables = {
-      ...variables,
-      itemsInput: {
-        ...variables.itemsInput,
-        after: endCursor
-      }
+    const variables = {
+      userId,
+      input: { after: endCursor }
     }
 
-    void fetchMore({ variables: newVariables })
-  }, [data, variables, fetchMore])
+    void fetchMore({ variables })
+  }, [userId, data, networkStatus, fetchMore])
 
-  const refresh = useCallback(() => {
-    void refetch(variables)
-  }, [variables, refetch])
-
-  const collections = useMemo<FlattenedCollectionItems>(() =>
-    nodes(data?.collection?.items).map(item => ({
-      ...item,
-      fragrance: {
-        ...item.fragrance,
-        images: nodes(item.fragrance.images)
-      }
-    })),
-  [data?.collection])
+  const collections = useMemo(() => flatten(data?.user?.collections ?? []), [data?.user?.collections])
 
   return {
     data: collections,
-    pageInfo: data?.collection?.items.pageInfo,
     loading,
+    loadingMore: networkStatus === NetworkStatus.fetchMore,
     error,
 
-    getMore,
-    refresh
+    loadMore,
+    refetch
   }
 }
 

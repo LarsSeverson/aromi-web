@@ -1,122 +1,49 @@
-import { useQuery } from '@apollo/client'
-import { graphql } from '../generated'
-import { type UserCollectionsQuery, type UserCollectionsQueryVariables } from '../generated/graphql'
-import { nodes, type FlattenType, INVALID_ID, type PaginatedQueryHookReturn } from '../common/util-types'
+import { NetworkStatus, useQuery } from '@apollo/client'
 import { useCallback, useMemo } from 'react'
+import { USER_COLLECTIONS_QUERY } from '@/graphql/queries/UserQueries'
+import { flatten } from '@/common/pagination'
+import { type PaginationInput } from '@/generated/graphql'
 
-const COLLECTIONS_LIMIT = 20
+const useUserCollections = (
+  userId: number,
+  input?: PaginationInput
+) => {
+  const {
+    data, loading, error, networkStatus,
+    fetchMore, refetch
+  } = useQuery(USER_COLLECTIONS_QUERY, {
+    variables: { userId, input },
+    notifyOnNetworkStatusChange: true
+  })
 
-export const USER_COLLECTIONS_QUERY = graphql(/* GraphQL */`
-  query UserCollections(
-    $userId: Int!
-    $collectionsInput: PaginationInput = {
-      first: 20
-    }
-    $collectionItemsInput: PaginationInput = {
-      first: 4
-    }
-    $imagesInput: PaginationInput = {
-      first: 1
-    }
-  ) {
-    user(id: $userId) {
-      id
-      collections(input: $collectionsInput) {
-        edges {
-          node {
-            id
-            name
-            user {
-              id
-              username
-            }
-            items(input: $collectionItemsInput) {
-              edges {
-                node {
-                  id
-                  fragrance {
-                    id
-                    images(input: $imagesInput) {
-                      edges {
-                        node {
-                          id
-                          src
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-        pageInfo {
-          hasPreviousPage
-          hasNextPage
-          startCursor
-          endCursor
-        }
-      }
-    }
-  }
-`)
-
-export type FlattenedUserCollections = FlattenType<NonNullable<UserCollectionsQuery['user']>>['collections']
-
-const useUserCollections = (userId: number, limit: number = COLLECTIONS_LIMIT): PaginatedQueryHookReturn<FlattenedUserCollections> => {
-  const variables = useMemo<UserCollectionsQueryVariables>(() => ({
-    userId,
-    collectionsInput: {
-      first: limit
-    }
-  }), [userId, limit])
-
-  const { data, loading, error, fetchMore, refetch } = useQuery(USER_COLLECTIONS_QUERY, { variables, skip: userId === INVALID_ID })
-
-  const getMore = useCallback(() => {
+  const loadMore = useCallback(() => {
     if (data?.user == null) return
+    if (networkStatus === NetworkStatus.fetchMore) return
 
-    const pageInfo = data.user.collections.pageInfo
-    const { hasNextPage, endCursor } = pageInfo
+    const { hasNextPage, endCursor } = data.user.collections.pageInfo
 
     if (!hasNextPage || (endCursor == null)) return
 
-    const newVariables: UserCollectionsQueryVariables = {
-      ...variables,
-      collectionsInput: {
-        ...variables.collectionsInput,
+    const variables = {
+      userId,
+      input: {
         after: endCursor
       }
     }
 
-    void fetchMore({ variables: newVariables })
-  }, [data, variables, fetchMore])
+    void fetchMore({ variables })
+  }, [userId, data?.user, networkStatus, fetchMore])
 
-  const refresh = useCallback(() => {
-    void refetch(variables)
-  }, [variables, refetch])
-
-  const collections = useMemo<FlattenedUserCollections>(() =>
-    nodes(data?.user?.collections).map(collection => ({
-      ...collection,
-      items: nodes(collection.items).map(item => ({
-        ...item,
-        fragrance: {
-          ...item.fragrance,
-          images: nodes(item.fragrance.images)
-        }
-      }))
-    })),
-  [data?.user?.collections])
+  const collections = useMemo(() => flatten(data?.user?.collections ?? []), [data?.user?.collections])
 
   return {
     data: collections,
-    pageInfo: data?.user?.collections.pageInfo,
     loading,
+    loadingMore: networkStatus === NetworkStatus.fetchMore,
     error,
 
-    getMore,
-    refresh
+    loadMore,
+    refetch
   }
 }
 

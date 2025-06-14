@@ -76,8 +76,50 @@ export const FragranceReviewFragment = gql(/* GraphQL */`
       myVote
     }
     user {
+      ...UserSummary
+    }
+    fragrance {
+      ...FragranceSummary
+    }
+  }
+`)
+
+export const FragranceCollectionFragment = gql(/* GraphQL */`
+  fragment FragranceCollectionSummary on FragranceCollection {
+    id
+    name
+    user {
       id
       username
+    }
+    items(input: { first: 4 }) {
+      ...FragranceCollectionItemConnection
+    }
+    audit {
+      ...AuditBase
+    }
+  }
+`)
+
+export const FragranceCollectionItemFragment = gql(/* GraphQL */`
+  fragment FragranceCollectionItemSummary on FragranceCollectionItem {
+    id
+    rank
+    fragrance {
+      ...FragranceSummary
+    }
+    audit {
+      ...AuditBase
+    }
+  }
+`)
+
+export const FragranceVoteFragment = gql(/* GraphQL */`
+  fragment FragranceVoteSummary on FragranceVote {
+    id
+    vote
+    fragrance {
+      ...FragranceSummary
     }
   }
 `)

@@ -64,3 +64,42 @@ export const FragranceReviewConnectionFragment = gql(/* GraphQL */`
     }
   }
 `)
+
+export const FragranceCollectionConnectionFragment = gql(/* GraphQL */`
+  fragment FragranceCollectionConnection on FragranceCollectionConnection {
+    edges {
+      node {
+        ...FragranceCollectionSummary
+      }
+    }
+    pageInfo {
+      ...PageInfoBase
+    }
+  }
+`)
+
+export const FragranceCollectionItemConnectionFragment = gql(/* GraphQL */`
+  fragment FragranceCollectionItemConnection on FragranceCollectionItemConnection {
+    edges {
+      node {
+        ...FragranceCollectionItemSummary
+      }
+    }
+    pageInfo {
+      ...PageInfoBase
+    }
+  }
+`)
+
+export const FragranceVoteConnectionFragment = gql(/* GraphQL */`
+  fragment FragranceVoteConnection on FragranceVoteConnection {
+    edges {
+      node {
+        ...FragranceVoteSummary
+      }
+    }
+    pageInfo {
+      ...PageInfoBase
+    }
+  }
+`)

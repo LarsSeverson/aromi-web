@@ -1,21 +1,14 @@
-import { graphql } from '@/generated'
+import { REFRESH_MUTATION } from '@/graphql/mutations/AuthMutations'
 import { useMutation } from '@apollo/client'
 
-export const REFRESH_MUTATION = graphql(/* GraphQL */`
-  mutation Refresh {
-    refresh {
-      idToken
-      accessToken
-      expiresIn
-    }
-  }  
-`)
-
 export const useRefresh = () => {
-  const [refresh, { data, error, loading }] = useMutation(REFRESH_MUTATION)
+  const [
+    refresh,
+    { data, error, loading }
+  ] = useMutation(REFRESH_MUTATION)
 
   return {
-    data: data?.refresh,
+    data,
     error,
     loading,
 

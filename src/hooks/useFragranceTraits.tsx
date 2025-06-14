@@ -1,31 +1,24 @@
+import { FRAGRANCE_TRAITS_QUERY } from '@/graphql/queries/FragranceQueries'
 import { useQuery } from '@apollo/client'
-import { useCallback, useMemo } from 'react'
-import { graphql } from '../generated'
-import { type FragranceTraitsQuery, type FragranceTraitsQueryVariables } from '../generated/graphql'
-import { INVALID_ID, type QueryHookReturn } from '../common/util-types'
 
-export type FragranceTraitsQueryTraits = NonNullable<FragranceTraitsQuery['fragrance']>['traits']
-
-const useFragranceTraits = (fragranceId: number): QueryHookReturn<FragranceTraitsQueryTraits> => {
-  const variables = useMemo<FragranceTraitsQueryVariables>(() => ({
-    fragranceId
-  }), [fragranceId])
-
-  const { data, loading, error, refetch } = useQuery(FRAGRANCE_TRAITS_QUERY, {
-    variables,
-    skip: fragranceId === INVALID_ID
+const useFragranceTraits = (
+  fragranceId: number
+) => {
+  const {
+    data, loading, error,
+    refetch
+  } = useQuery(FRAGRANCE_TRAITS_QUERY, {
+    variables: { fragranceId }
   })
 
-  const refresh = useCallback(() => {
-    void refetch(variables)
-  }, [variables, refetch])
+  const traits = data?.fragrance?.traits ?? []
 
   return {
-    data: data?.fragrance?.traits ?? [],
+    data: traits,
     loading,
     error,
 
-    refresh
+    refetch
   }
 }
 

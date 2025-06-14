@@ -1,122 +1,49 @@
-import { useQuery } from '@apollo/client'
-import { graphql } from '../generated'
-import { type UserReviewsQueryVariables, type UserReviewsQuery } from '../generated/graphql'
-import { nodes, type FlattenType, INVALID_ID, type PaginatedQueryHookReturn } from '../common/util-types'
+import { flatten } from '@/common/pagination'
+import { type PaginationInput } from '@/generated/graphql'
+import { USER_REVIEWS_QUERY } from '@/graphql/queries/UserQueries'
+import { NetworkStatus, useQuery } from '@apollo/client'
 import { useCallback, useMemo } from 'react'
 
-const REVIEWS_LIMIT = 20
-
-const USER_REVIEWS_QUERY = graphql(/* GraphQL */`
-  query UserReviews(
-    $userId: Int!
-    $reviewsInput: PaginationInput = {
-      first: 20 
-    }
-    $imagesInput: PaginationInput = {
-      first: 1
-    }
-  ) {
-    user(id: $userId) {
-      id
-      reviews(input: $reviewsInput) {
-        edges {
-          node {
-            id
-            rating
-            text
-            votes {
-              voteScore
-              likesCount
-              dislikesCount
-              myVote
-            }
-            fragrance {
-              id
-              brand
-              name
-              images(input: $imagesInput) {
-                edges {
-                  node {
-                    id
-                    src
-                  }
-                }
-              }
-            }
-            audit {
-              createdAt
-              updatedAt
-              deletedAt
-            }
-          }
-        }
-        pageInfo {
-          hasPreviousPage
-          hasNextPage
-          startCursor
-          endCursor
-        }
-      }
-    }
-  }
-`)
-
-export type FlattenedUserReviews = FlattenType<NonNullable<UserReviewsQuery['user']>>['reviews']
-
-const useUserReviews = (userId: number, limit: number = REVIEWS_LIMIT): PaginatedQueryHookReturn<FlattenedUserReviews> => {
-  const variables = useMemo<UserReviewsQueryVariables>(() => ({
-    userId,
-    reviewsInput: {
-      first: limit
-    }
-  }), [userId, limit])
-
-  const { data, loading, error, fetchMore, refetch } = useQuery(USER_REVIEWS_QUERY, {
-    variables,
-    skip: userId === INVALID_ID
+const useUserReviews = (
+  userId: number,
+  input?: PaginationInput
+) => {
+  const {
+    data, loading, error, networkStatus,
+    fetchMore, refetch
+  } = useQuery(USER_REVIEWS_QUERY, {
+    variables: { userId, input },
+    notifyOnNetworkStatusChange: true
   })
 
-  const getMore = useCallback(() => {
+  const loadMore = useCallback(() => {
     if (data?.user == null) return
+    if (networkStatus === NetworkStatus.fetchMore) return
 
-    const pageInfo = data.user.reviews.pageInfo
-    const { hasNextPage, endCursor } = pageInfo
+    const { hasNextPage, endCursor } = data.user.reviews.pageInfo
 
     if (!hasNextPage || (endCursor == null)) return
 
-    const newVariables: UserReviewsQueryVariables = {
-      ...variables,
-      reviewsInput: {
-        ...variables.reviewsInput,
+    const variables = {
+      userId,
+      input: {
         after: endCursor
       }
     }
 
-    void fetchMore({ variables: newVariables })
-  }, [data, variables, fetchMore])
+    void fetchMore({ variables })
+  }, [userId, data, networkStatus, fetchMore])
 
-  const refresh = useCallback(() => {
-    void refetch(variables)
-  }, [variables, refetch])
-
-  const reviews = useMemo<FlattenedUserReviews>(() =>
-    nodes(data?.user?.reviews).map(review => ({
-      ...review,
-      fragrance: {
-        ...review.fragrance,
-        images: nodes(review.fragrance.images)
-      }
-    })),
-  [data?.user?.reviews])
+  const reviews = useMemo(() => flatten(data?.user?.reviews ?? []), [data?.user?.reviews])
 
   return {
     data: reviews,
-    pageInfo: data?.user?.reviews.pageInfo,
     loading,
+    loadingMore: networkStatus === NetworkStatus.fetchMore,
     error,
 
-    getMore,
-    refresh
+    loadMore,
+    refetch
   }
 }
 

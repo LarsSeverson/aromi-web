@@ -1,5 +1,5 @@
 import React from 'react'
-import { USER_INFO_QUERY } from '@/hooks/useUserInfo'
+import { USER_INFO_QUERY } from '@/hooks/useUser'
 import { ProfilePage } from '@/pages/ProfilePage'
 import { client } from '@/common/client'
 import { useMyContext } from '@/contexts/MyContext'

@@ -1,63 +1,48 @@
+import { flatten } from '@/common/pagination'
+import { type VotePaginationInput } from '@/generated/graphql'
+import { FRAGRANCE_REVIEWS_QUERY } from '@/graphql/queries/FragranceQueries'
 import { NetworkStatus, useQuery } from '@apollo/client'
 import { useCallback, useMemo } from 'react'
-import { graphql } from '../generated'
-import { type FragranceReviewsQueryVariables, type FragranceReviewsQuery } from '../generated/graphql'
-import { nodes, INVALID_ID, type FlattenType, type PaginatedQueryHookReturn } from '../common/util-types'
 
-const REVIEWS_LIMIT = 20
-
-export type FlattenedFragranceReviewsReturn = FlattenType<NonNullable<FragranceReviewsQuery['fragrance']>['reviews']>
-
-const useFragranceReviews = (fragranceId: number): PaginatedQueryHookReturn<FlattenedFragranceReviewsReturn> => {
-  const variables = useMemo<FragranceReviewsQueryVariables>(() => ({
-    fragranceId,
-    reviewsInput: {
-      first: REVIEWS_LIMIT
-    }
-  }), [fragranceId])
-
-  const { data, loading, error, networkStatus, refetch, fetchMore } = useQuery(FRAGRANCE_REVIEWS_QUERY, {
-    variables,
-    notifyOnNetworkStatusChange: true,
-    skip: fragranceId === INVALID_ID
+const useFragranceReviews = (
+  fragranceId: number,
+  input?: VotePaginationInput
+) => {
+  const {
+    data, loading, error, networkStatus,
+    refetch, fetchMore
+  } = useQuery(FRAGRANCE_REVIEWS_QUERY, {
+    variables: { fragranceId, input },
+    notifyOnNetworkStatusChange: true
   })
 
-  const getMore = useCallback(() => {
+  const loadMore = useCallback(() => {
     if (data?.fragrance == null) return
+    if (networkStatus === NetworkStatus.fetchMore) return
 
     const pageInfo = data.fragrance.reviews.pageInfo
     const { hasNextPage, endCursor } = pageInfo
 
     if (!hasNextPage || (endCursor == null)) return
 
-    const newVariables: FragranceReviewsQueryVariables = {
-      ...variables,
-      reviewsInput: {
-        ...variables.reviewsInput,
-        after: endCursor
-      }
+    const variables = {
+      fragranceId,
+      input: { after: endCursor }
     }
 
-    void fetchMore({ variables: newVariables })
-  }, [data, variables, fetchMore])
+    void fetchMore({ variables })
+  }, [fragranceId, data, networkStatus, fetchMore])
 
-  const refresh = useCallback(() => {
-    void refetch(variables)
-  }, [variables, refetch])
-
-  const reviews = useMemo<FlattenedFragranceReviewsReturn>(() =>
-    nodes(data?.fragrance?.reviews),
-  [data?.fragrance?.reviews])
+  const reviews = useMemo(() => flatten(data?.fragrance?.reviews ?? []), [data?.fragrance?.reviews])
 
   return {
     data: reviews,
-    pageInfo: data?.fragrance?.reviews.pageInfo,
     loading,
     loadingMore: networkStatus === NetworkStatus.fetchMore,
     error,
 
-    refresh,
-    getMore
+    refetch,
+    loadMore
   }
 }
 

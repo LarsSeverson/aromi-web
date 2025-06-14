@@ -110,9 +110,50 @@ export const relayStylePagination = <TNode extends Reference = Reference> (
   }
 }
 
-interface BaseConnection<T> {
-  edges: Array<{ node: T }>
+interface NodeWithEdges<T> { edges: Array<{ node: T }> }
+
+type FlattenEdges<T> = T extends NodeWithEdges<infer N>
+  ? Array<FlattenEdges<N>>
+  : T extends Array<infer U>
+    ? Array<FlattenEdges<U>>
+    : T extends object
+      ? { [K in keyof T]: FlattenEdges<T[K]> }
+      : T
+
+export const isEdgeNodeObject = <T>(value: unknown): value is NodeWithEdges<T> => {
+  return (
+    value !== null &&
+    typeof value === 'object' &&
+    'edges' in value &&
+    Array
+      .isArray(value.edges) &&
+    value
+      .edges
+      .every(
+        (e) => typeof e === 'object' && e !== null && 'node' in e
+      )
+  )
 }
 
-export const nodes = <T>(connection?: BaseConnection<T>): T[] =>
-  connection?.edges.map(e => e.node) ?? []
+export const flatten = <T>(input: T): FlattenEdges<T> => {
+  if (Array.isArray(input)) {
+    return input.map(flatten) as FlattenEdges<T>
+  }
+
+  if (typeof input === 'object' && input !== null) {
+    const result: Record<string, unknown> = {}
+
+    for (const key in input) {
+      const value = input[key]
+      const isValueAnEdgeObject = isEdgeNodeObject(value)
+
+      result[key] = isValueAnEdgeObject
+        ? value.edges.map(edge => flatten(edge.node))
+        : flatten(value)
+    }
+
+    return result as FlattenEdges<T>
+  }
+
+  return input as FlattenEdges<T>
+}

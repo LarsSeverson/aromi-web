@@ -1,55 +1,29 @@
 import { useQuery } from '@apollo/client'
-import { useCallback, useMemo } from 'react'
-import { graphql } from '../generated'
-import { type FragranceNotesQuery, type FragranceNotesQueryVariables } from '../generated/graphql'
-import { nodes, INVALID_ID, type QueryHookReturn, type FlattenType } from '../common/util-types'
+import { FRAGRANCE_NOTES_QUERY } from '@/graphql/queries/FragranceQueries'
+import { flatten } from '@/common/pagination'
 
-const NOTES_LIMIT = 12
-
-export interface FlattenedFragranceNotes {
-  top: NonNullable<FlattenType<NonNullable<FragranceNotesQuery['fragrance']>>['notes']['top']>
-  middle: NonNullable<FlattenType<NonNullable<FragranceNotesQuery['fragrance']>>['notes']['middle']>
-  base: NonNullable<FlattenType<NonNullable<FragranceNotesQuery['fragrance']>>['notes']['base']>
-}
-
-export interface UseFragranceNotesIncludes {
-  includeTop: boolean
-  includeMiddle: boolean
-  includeBase: boolean
-}
-
-const useFragranceNotes = (fragranceId: number, includes?: UseFragranceNotesIncludes): QueryHookReturn<FlattenedFragranceNotes> => {
-  const variables = useMemo<FragranceNotesQueryVariables>(() => ({
-    fragranceId,
-    notesInput: {
-      pagination: {
-        first: NOTES_LIMIT
-      }
-    },
-    ...includes
-  }), [fragranceId, includes])
-
-  const { data, loading, error, refetch } = useQuery(FRAGRANCE_NOTES_QUERY, {
-    variables,
-    skip: fragranceId === INVALID_ID
+const useFragranceNotes = (
+  fragranceId: number
+) => {
+  const {
+    data, loading, error,
+    refetch
+  } = useQuery(FRAGRANCE_NOTES_QUERY, {
+    variables: { fragranceId }
   })
 
-  const refresh = useCallback(() => {
-    void refetch(variables)
-  }, [variables, refetch])
-
-  const notes = useMemo<FlattenedFragranceNotes>(() => ({
-    top: nodes(data?.fragrance?.notes.top),
-    middle: nodes(data?.fragrance?.notes.middle),
-    base: nodes(data?.fragrance?.notes.base)
-  }), [data?.fragrance?.notes])
+  const top = flatten(data?.fragrance?.notes.top ?? [])
+  const middle = flatten(data?.fragrance?.notes.middle ?? [])
+  const base = flatten(data?.fragrance?.notes.base ?? [])
 
   return {
-    data: notes,
+    top,
+    middle,
+    base,
     loading,
     error,
 
-    refresh
+    refetch
   }
 }
 

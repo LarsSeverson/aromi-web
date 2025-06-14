@@ -1,6 +1,6 @@
 import React from 'react'
 import { Outlet } from '@tanstack/react-router'
-import { COLLECTION_INFO_QUERY } from '@/hooks/useCollectionInfo'
+import { COLLECTION_INFO_QUERY } from '@/hooks/useCollection'
 import { client } from '@/common/client'
 
 export const Route = createFileRoute({
