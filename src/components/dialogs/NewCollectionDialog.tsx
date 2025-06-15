@@ -2,13 +2,13 @@ import React, { useState, type SyntheticEvent } from 'react'
 import { Dialog, Field, Form } from '@base-ui-components/react'
 import clsx from 'clsx'
 import { PiPlusBold } from 'react-icons/pi'
-import { type CardFragrancePreview } from '../fragrance/FragrancePreviewCard'
+import { type FragrancePreviewCardFragrance } from '../fragrance/FragrancePreviewCard'
 import empty from '@/assets/fall-back-fi.svg'
 import { Overlay } from '../common/Overlay'
 import Spinner from '../common/Spinner'
 
 export interface NewCollectionDialogProps {
-  fragrance: CardFragrancePreview
+  fragrance: FragrancePreviewCardFragrance
 }
 
 const NewCollectionDialog = (props: NewCollectionDialogProps) => {

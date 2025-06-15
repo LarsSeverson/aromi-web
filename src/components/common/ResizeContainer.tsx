@@ -19,7 +19,12 @@ export const ResizeContainer = (props: ResizeContainerProps) => {
       }, 300)
     })
 
-    if (ref.current != null) observer.observe(ref.current)
+    if (ref.current != null) {
+      observer.observe(ref.current)
+
+      const rect = ref.current.getBoundingClientRect()
+      onResize?.(rect)
+    }
 
     return () => {
       observer.disconnect()

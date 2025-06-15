@@ -74,8 +74,6 @@ const useAuth = () => {
   }, [handleTokenExpiration])
 
   const cleanAuth = useCallback(() => {
-    console.log('ran')
-
     if (timer.current != null) clearTimeout(timer.current)
     payload.current = null
     setIsAuthenticated(false)
@@ -96,7 +94,7 @@ const useAuth = () => {
   useEffect(() => {
     if (!hasInitialized) return
 
-    const newPayload = refreshPayload ?? logInPayload
+    const newPayload = refreshPayload?.refresh ?? logInPayload?.logIn
     handleNewPayload(newPayload)
   }, [hasInitialized, refreshPayload, logInPayload, handleNewPayload])
 

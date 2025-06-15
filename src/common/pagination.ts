@@ -24,7 +24,6 @@ export const relayStylePagination = <TNode extends Reference = Reference> (
       if (existing == null) return existing
 
       const edges: Array<TRelayEdge<TNode>> = []
-      const nodes: TNode[] = []
 
       let firstEdgeCursor = ''
       let lastEdgeCursor = ''
@@ -35,7 +34,6 @@ export const relayStylePagination = <TNode extends Reference = Reference> (
           const node = readField('node', edge)
           if (canRead(node)) {
             edges.push(edge)
-            nodes.push(node as TNode)
             if (edge.cursor != null) {
               firstEdgeCursor = firstEdgeCursor ?? edge.cursor
               lastEdgeCursor = edge.cursor
@@ -52,7 +50,6 @@ export const relayStylePagination = <TNode extends Reference = Reference> (
       return {
         ...getExtras(existing),
         edges,
-        nodes,
         pageInfo: {
           ...existing.pageInfo,
           startCursor: startCursor ?? firstEdgeCursor,
@@ -110,9 +107,9 @@ export const relayStylePagination = <TNode extends Reference = Reference> (
   }
 }
 
-interface NodeWithEdges<T> { edges: Array<{ node: T }> }
+export interface NodeWithEdges<T> { edges: Array<{ node: T }> }
 
-type FlattenEdges<T> = T extends NodeWithEdges<infer N>
+export type FlattenEdges<T> = T extends NodeWithEdges<infer N>
   ? Array<FlattenEdges<N>>
   : T extends Array<infer U>
     ? Array<FlattenEdges<U>>
@@ -136,6 +133,12 @@ export const isEdgeNodeObject = <T>(value: unknown): value is NodeWithEdges<T> =
 }
 
 export const flatten = <T>(input: T): FlattenEdges<T> => {
+  if (isEdgeNodeObject(input)) {
+    return input
+      .edges
+      .map(edge => flatten(edge.node)) as FlattenEdges<T>
+  }
+
   if (Array.isArray(input)) {
     return input.map(flatten) as FlattenEdges<T>
   }

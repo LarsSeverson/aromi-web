@@ -27,25 +27,27 @@ import { TbMessage2Star } from 'react-icons/tb'
 import { PiShareFat } from 'react-icons/pi'
 import { HiDotsHorizontal } from 'react-icons/hi'
 import { useLogFragranceView } from '@/hooks/useLogFragranceView'
+import { useMyContext } from '@/contexts/MyContext'
 
 export type FragrancePageUser = Pick<User, 'username' | 'id'>
 export type FragrancePageFragrance = Pick<Fragrance, 'id' | 'brand' | 'name' | 'rating' | 'reviewsCount' | 'reviewDistribution' | 'votes'>
 export interface FragrancePageProps {
   fragrance: FragrancePageFragrance
-  user: FragrancePageUser | undefined | null
 }
 
 export const FragrancePage = (props: FragrancePageProps) => {
-  const { fragrance: info } = props
-  const { id: fragranceId } = info
-
   const navigate = useNavigate()
+  const myContext = useMyContext()
+
+  const { fragrance } = props
+  const { id: fragranceId } = fragrance
+
   const { logFragranceView } = useLogFragranceView()
 
-  const { data: images } = useFragranceImages(fragranceId, 5)
+  const { data: images } = useFragranceImages(fragranceId, { first: 5 })
   const { data: traits } = useFragranceTraits(fragranceId)
-  const { data: accords } = useFragranceAccords(fragranceId, 10)
-  const { data: notes } = useFragranceNotes(fragranceId, { includeTop: true, includeMiddle: true, includeBase: true })
+  const { data: accords } = useFragranceAccords(fragranceId, { pagination: { first: 10 } })
+  // const { data: notes } = useFragranceNotes(fragranceId, { includeTop: true, includeMiddle: true, includeBase: true })
   const { data: reviews } = useFragranceReviews(fragranceId)
   const { data: myReview } = useMyReview(fragranceId)
 
@@ -54,11 +56,11 @@ export const FragrancePage = (props: FragrancePageProps) => {
   const [curReviewPage, setCurReviewPage] = useState(0)
   const totalPages = Math.ceil(reviews.length / 4)
 
-  const layers = [
-    { layer: NoteLayer.Top, notes: notes.top },
-    { layer: NoteLayer.Middle, notes: notes.middle },
-    { layer: NoteLayer.Base, notes: notes.base }
-  ].filter(item => item.notes.length > 0)
+  // const layers = [
+  //   { layer: NoteLayer.Top, notes: notes.top },
+  //   { layer: NoteLayer.Middle, notes: notes.middle },
+  //   { layer: NoteLayer.Base, notes: notes.base }
+  // ].filter(item => item.notes.length > 0)
 
   const scrollToReview = () => {
     if (reviewRef.current != null) {
@@ -89,7 +91,7 @@ export const FragrancePage = (props: FragrancePageProps) => {
           <div className='flex-1 flex flex-col max-w-xl min-w-44'>
             <div className='flex flex-row justify-between items-center'>
               <h2 className='font-pd text-2xl truncate'>
-                {info.name}
+                {fragrance.name}
               </h2>
               <BouncyButton
                 className='rounded-full aspect-square ml-auto'
@@ -100,12 +102,12 @@ export const FragrancePage = (props: FragrancePageProps) => {
               </BouncyButton>
             </div>
             <h2 className='font-p text-xl'>
-              {info.brand}
+              {fragrance.brand}
             </h2>
 
             <div className='flex flex-row items-center mt-4 mb-2'>
               <RatingStars
-                rating={info.rating}
+                rating={fragrance.rating}
                 size={20}
                 filledColor={Colors.sinopia}
                 emptyColor={Colors.empty2}
@@ -113,14 +115,14 @@ export const FragrancePage = (props: FragrancePageProps) => {
               <p
                 className='font-semibold text-sm opacity-80 ml-1'
               >
-                ({info.rating} / 5.0)
+                ({fragrance.rating} / 5.0)
               </p>
             </div>
 
             <div className='flex flex-row items-end mb-3 gap-3'>
               <VoteButton
-                votes={info.votes.voteScore}
-                myVote={info.votes.myVote}
+                votes={fragrance.votes.voteScore}
+                myVote={fragrance.votes.myVote}
               />
 
               <BouncyButton
@@ -137,7 +139,7 @@ export const FragrancePage = (props: FragrancePageProps) => {
                 <p
                   className='font-semibold text-sm'
                 >
-                  {formatNumber(info.reviewsCount)}
+                  {formatNumber(fragrance.reviewsCount)}
                 </p>
               </BouncyButton>
 
@@ -211,10 +213,10 @@ export const FragrancePage = (props: FragrancePageProps) => {
           title='Notes'
         >
           <div className='w-full flex flex-col items-center'>
-            <NotesPyramid
+            {/* <NotesPyramid
               layers={layers}
               className='mx-5 w-full max-w-4xl'
-            />
+            /> */}
           </div>
         </PageCategory>
         {myReview != null && (
@@ -223,9 +225,9 @@ export const FragrancePage = (props: FragrancePageProps) => {
           >
             <div className='w-full flex justify-center'>
               <div className='w-full max-w-4xl'>
-                <MyReviewCard
+                {/* <MyReviewCard
                   myReview={myReview}
-                />
+                /> */}
               </div>
             </div>
           </PageCategory>
@@ -257,9 +259,9 @@ export const FragrancePage = (props: FragrancePageProps) => {
                 />
               )}
               <ReviewsSummary
-                rating={info.rating}
-                reviewCount={info.reviewsCount}
-                reviewDistribution={info.reviewDistribution}
+                rating={fragrance.rating}
+                reviewCount={fragrance.reviewsCount}
+                reviewDistribution={fragrance.reviewDistribution}
                 className='w-full max-w-4xl'
               />
               <Divider
@@ -267,11 +269,11 @@ export const FragrancePage = (props: FragrancePageProps) => {
                 className='my-5'
               />
 
-              <ReviewsList
+              {/* <ReviewsList
                 reviews={reviews}
                 currentPage={curReviewPage}
                 reviewsPerPage={4}
-              />
+              /> */}
               <PageNav
                 totalPages={totalPages}
                 curPage={curReviewPage}

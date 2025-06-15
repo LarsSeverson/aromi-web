@@ -1,23 +1,25 @@
-import useSuggestedFragrances, { type SuggestedFragrancesFragrance } from '@/hooks/useSuggestedFragances'
+import useSuggestedFragrances from '@/hooks/useSuggestedFragances'
 import React, { useCallback } from 'react'
 import { MasonryList } from './MasonryList'
 import { useMainLayoutContext } from '@/contexts/MainLayoutContext'
-import { FragrancePreviewCard } from '../fragrance/FragrancePreviewCard'
+import { FragrancePreviewCard, type FragrancePreviewCardFragrance } from '../fragrance/FragrancePreviewCard'
 import FragrancePreviewCardLoading from '../fragrance/FragrancePreviewCardLoading'
 import { useElementScrollRestoration } from '@tanstack/react-router'
 
 export const HomeSuggestedSection = () => {
   const { mainContentRect } = useMainLayoutContext()
-  const { data, loading, loadingMore, getMore } = useSuggestedFragrances()
+  const { data, loading, loadingMore, loadMore } = useSuggestedFragrances()
 
   const scrollEntry = useElementScrollRestoration({
     getKey: () => 'homeScrollPos',
     getElement: () => window
   })
 
-  const onRenderFragrance = useCallback((item: SuggestedFragrancesFragrance) => {
+  const onRenderFragrance = useCallback((item: FragrancePreviewCardFragrance) => {
     return (
-      <FragrancePreviewCard fragrance={item} />
+      <FragrancePreviewCard
+        fragrance={item}
+      />
     )
   }, [])
 
@@ -36,7 +38,7 @@ export const HomeSuggestedSection = () => {
         initialScrollOffset={scrollEntry?.scrollY}
         onRenderItem={onRenderFragrance}
         onRenderSkeleton={onRenderSkeleton}
-        onEndReached={getMore}
+        onEndReached={loadMore}
       />
     </div>
   )

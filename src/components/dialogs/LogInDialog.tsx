@@ -102,7 +102,7 @@ const LogInDialog = () => {
           className='bg-black/30 backdrop-blur-sm fixed inset-0'
         />
         <Dialog.Popup
-          className='bg-white top-1/2 left-1/2 fixed -translate-x-1/2 -translate-y-1/2 rounded-xl overflow-hidden p-11 px-20'
+          className='bg-white top-1/2 left-1/2 fixed -translate-x-1/2 -translate-y-1/2 rounded-xl overflow-hidden p-11 px-20 w-[463px]'
         >
           <div
             className='absolute top-0 left-0 right-0'
@@ -124,7 +124,7 @@ const LogInDialog = () => {
               size={50}
             />
             <h1
-              className='text-4xl font-pd'
+              className='text-4xl font-pd text-center'
             >
               Welcome to aromi
             </h1>

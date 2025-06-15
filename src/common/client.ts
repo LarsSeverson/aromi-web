@@ -1,6 +1,7 @@
-import { ApolloClient, from, HttpLink, InMemoryCache, makeVar } from '@apollo/client'
+import { ApolloClient, ApolloLink, from, HttpLink, InMemoryCache, makeVar } from '@apollo/client'
 import { setContext } from '@apollo/client/link/context'
 import { relayStylePagination } from './pagination'
+import { print } from 'graphql'
 
 export const accessToken = makeVar<string | null>(null)
 
@@ -15,8 +16,21 @@ const httpLink = new HttpLink({
   credentials: 'include'
 })
 
+const logLink = new ApolloLink((operation, forward) => {
+  const { query, variables, operationName } = operation
+  console.log('▶ GraphQL Request:', {
+    operationName,
+    query: print(query),
+    variables
+  })
+  return forward(operation).map(response => {
+    console.log('◀ GraphQL Response:', response)
+    return response
+  })
+})
+
 export const client = new ApolloClient({
-  link: from([authLink, httpLink]),
+  link: from([authLink, /* logLink, */ httpLink]),
   cache: new InMemoryCache({
     typePolicies: {
       Query: {

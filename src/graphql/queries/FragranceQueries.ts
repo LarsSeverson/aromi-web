@@ -6,6 +6,15 @@ export const FRAGRANCE_QUERY = gql(/* GraphQL */`
   ) {
     fragrance(id: $id) {
       ...FragranceSummary
+      rating
+      reviewsCount
+      reviewDistribution {
+        one
+        two
+        three
+        four
+        five
+      }
     }
   }
 `)
@@ -15,7 +24,14 @@ export const SUGGESTED_FRAGRANCES_QUERY = gql(/* GraphQL */`
     $input: PaginationInput
   ) {
     fragrances(input: $input) {
-      ...FragranceConnection
+      edges {
+        node {
+          ...FragranceSummary
+        }
+      } 
+      pageInfo {
+        ...PageInfoBase
+      }
     }
   }
 `)

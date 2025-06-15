@@ -1457,6 +1457,10 @@ video {
   width: 3px;
 }
 
+.w-\[463px\]{
+  width: 463px;
+}
+
 .w-\[720px\]{
   width: 720px;
 }
@@ -2450,6 +2454,11 @@ video {
 .bg-blue-200{
   --tw-bg-opacity: 1;
   background-color: rgb(191 219 254 / var(--tw-bg-opacity, 1));
+}
+
+.bg-blue-400{
+  --tw-bg-opacity: 1;
+  background-color: rgb(96 165 250 / var(--tw-bg-opacity, 1));
 }
 
 .bg-blue-50{

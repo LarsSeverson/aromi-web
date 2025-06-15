@@ -3,11 +3,11 @@ import { Popover } from '@base-ui-components/react'
 import useUserCollections from '@/hooks/useUserCollections'
 import CollectionPreviewBarCheck from '../fragrance/CollectionPreviewBarCheck'
 import NewCollectionDialog from '../dialogs/NewCollectionDialog'
-import { type CardFragrancePreview } from '../fragrance/FragrancePreviewCard'
+import { type FragrancePreviewCardFragrance } from '../fragrance/FragrancePreviewCard'
 
 export interface CollectionPopoverProps extends Popover.Root.Props {
   userId: number
-  fragrance: CardFragrancePreview
+  fragrance: FragrancePreviewCardFragrance
 }
 
 const CollectionPopover = (props: CollectionPopoverProps) => {

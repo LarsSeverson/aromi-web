@@ -8,6 +8,7 @@ export const FragranceFragment = gql(/* GraphQL */`
     votes {
       voteScore
       likesCount
+      dislikesCount
       myVote
     }
     images(input: { first: 1 }) {

@@ -23,14 +23,14 @@ const useSuggestedFragrances = (
 
     if (!hasNextPage || (endCursor == null)) return
 
-    const newVariables = {
+    const variables = {
       input: { after: endCursor }
     }
 
-    void fetchMore({ variables: newVariables })
+    void fetchMore({ variables })
   }, [data, networkStatus, fetchMore])
 
-  const fragrances = useMemo(() => flatten(data?.fragrances ?? []), [data?.fragrances])
+  const fragrances = useMemo(() => flatten(data?.fragrances ?? []), [data])
 
   return {
     data: fragrances,

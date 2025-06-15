@@ -9,13 +9,14 @@ import CollectionPopover from '../popovers/CollectionPopover'
 import { INVALID_ID } from '@/common/util-types'
 import FragranceImageCard, { type FragranceImageCardImage } from './FragranceImageCard'
 import { useMyContext } from '@/contexts/MyContext'
+import { type FlattenEdges } from '@/common/pagination'
 
-export type CardFragrancePreview = Omit<Pick<Fragrance, 'id' | 'name' | 'brand' | 'votes'>, 'images'> & {
+export type FragrancePreviewCardFragrance = Pick<FlattenEdges<Fragrance>, 'id' | 'name' | 'brand' | 'votes'> & {
   images: FragranceImageCardImage[]
 }
 
 export interface FragrancePreviewCardProps extends LinkProps {
-  fragrance: CardFragrancePreview
+  fragrance: FragrancePreviewCardFragrance
   className?: string | undefined
   onFragranceVote?: (myVote: boolean | null) => void
 }

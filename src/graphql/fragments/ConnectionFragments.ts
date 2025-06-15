@@ -20,9 +20,6 @@ export const FragranceImageConnectionFragment = gql(/* GraphQL */`
         ...FragranceImageSummary
       }
     }
-    pageInfo {
-      ...PageInfoBase
-    }
   }
 `)
 
