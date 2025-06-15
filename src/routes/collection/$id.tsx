@@ -1,15 +1,16 @@
 import React from 'react'
-import { Outlet } from '@tanstack/react-router'
-import { COLLECTION_INFO_QUERY } from '@/hooks/useCollection'
+import { Outlet, createFileRoute } from '@tanstack/react-router'
 import { client } from '@/common/client'
+import { COLLECTION_QUERY } from '@/graphql/queries/CollectionQueries'
 
-export const Route = createFileRoute({
+export const Route = createFileRoute('/collection/$id')({
   component: Collection,
   beforeLoad: async ({ params }) => {
-    const { data } = await client.query({
-      query: COLLECTION_INFO_QUERY,
-      variables: { collectionId: Number(params.id) }
-    })
+    const { data } = await client
+      .query({
+        query: COLLECTION_QUERY,
+        variables: { id: Number(params.id) }
+      })
 
     if (data.collection == null) throw new Error('Collection not found')
 

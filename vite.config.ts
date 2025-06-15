@@ -8,8 +8,7 @@ export default defineConfig({
   plugins: [
     tanstackRouter({
       target: 'react',
-      autoCodeSplitting: true,
-      verboseFileRoutes: false
+      autoCodeSplitting: true
     }),
     react({
       babel: {

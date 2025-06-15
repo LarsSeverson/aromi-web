@@ -8,8 +8,6 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import type { CreateFileRoute, FileRoutesByPath } from '@tanstack/react-router'
-
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AccountRecoveryIndexRouteImport } from './routes/account-recovery/index'
@@ -198,32 +196,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/account-recovery/confirm': {
-      id: '/account-recovery/confirm'
-      path: '/account-recovery/confirm'
-      fullPath: '/account-recovery/confirm'
-      preLoaderRoute: typeof AccountRecoveryConfirmRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/account-recovery/success': {
-      id: '/account-recovery/success'
-      path: '/account-recovery/success'
-      fullPath: '/account-recovery/success'
-      preLoaderRoute: typeof AccountRecoverySuccessRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/collection/$id': {
-      id: '/collection/$id'
-      path: '/collection/$id'
-      fullPath: '/collection/$id'
-      preLoaderRoute: typeof CollectionIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/fragrance/$id': {
-      id: '/fragrance/$id'
-      path: '/fragrance/$id'
-      fullPath: '/fragrance/$id'
-      preLoaderRoute: typeof FragranceIdRouteImport
+    '/account-recovery/': {
+      id: '/account-recovery/'
+      path: '/account-recovery'
+      fullPath: '/account-recovery'
+      preLoaderRoute: typeof AccountRecoveryIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/user/$id': {
@@ -233,47 +210,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UserIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/account-recovery/': {
-      id: '/account-recovery/'
-      path: '/account-recovery'
-      fullPath: '/account-recovery'
-      preLoaderRoute: typeof AccountRecoveryIndexRouteImport
+    '/fragrance/$id': {
+      id: '/fragrance/$id'
+      path: '/fragrance/$id'
+      fullPath: '/fragrance/$id'
+      preLoaderRoute: typeof FragranceIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/fragrance/$id/review': {
-      id: '/fragrance/$id/review'
-      path: '/review'
-      fullPath: '/fragrance/$id/review'
-      preLoaderRoute: typeof FragranceIdReviewRouteImport
-      parentRoute: typeof FragranceIdRoute
+    '/collection/$id': {
+      id: '/collection/$id'
+      path: '/collection/$id'
+      fullPath: '/collection/$id'
+      preLoaderRoute: typeof CollectionIdRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/user/$id/likes': {
-      id: '/user/$id/likes'
-      path: '/likes'
-      fullPath: '/user/$id/likes'
-      preLoaderRoute: typeof UserIdLikesRouteImport
-      parentRoute: typeof UserIdRoute
+    '/account-recovery/success': {
+      id: '/account-recovery/success'
+      path: '/account-recovery/success'
+      fullPath: '/account-recovery/success'
+      preLoaderRoute: typeof AccountRecoverySuccessRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/user/$id/reviews': {
-      id: '/user/$id/reviews'
-      path: '/reviews'
-      fullPath: '/user/$id/reviews'
-      preLoaderRoute: typeof UserIdReviewsRouteImport
-      parentRoute: typeof UserIdRoute
-    }
-    '/collection/$id/': {
-      id: '/collection/$id/'
-      path: '/'
-      fullPath: '/collection/$id/'
-      preLoaderRoute: typeof CollectionIdIndexRouteImport
-      parentRoute: typeof CollectionIdRoute
-    }
-    '/fragrance/$id/': {
-      id: '/fragrance/$id/'
-      path: '/'
-      fullPath: '/fragrance/$id/'
-      preLoaderRoute: typeof FragranceIdIndexRouteImport
-      parentRoute: typeof FragranceIdRoute
+    '/account-recovery/confirm': {
+      id: '/account-recovery/confirm'
+      path: '/account-recovery/confirm'
+      fullPath: '/account-recovery/confirm'
+      preLoaderRoute: typeof AccountRecoveryConfirmRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/user/$id/': {
       id: '/user/$id/'
@@ -282,125 +245,42 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UserIdIndexRouteImport
       parentRoute: typeof UserIdRoute
     }
+    '/fragrance/$id/': {
+      id: '/fragrance/$id/'
+      path: '/'
+      fullPath: '/fragrance/$id/'
+      preLoaderRoute: typeof FragranceIdIndexRouteImport
+      parentRoute: typeof FragranceIdRoute
+    }
+    '/collection/$id/': {
+      id: '/collection/$id/'
+      path: '/'
+      fullPath: '/collection/$id/'
+      preLoaderRoute: typeof CollectionIdIndexRouteImport
+      parentRoute: typeof CollectionIdRoute
+    }
+    '/user/$id/reviews': {
+      id: '/user/$id/reviews'
+      path: '/reviews'
+      fullPath: '/user/$id/reviews'
+      preLoaderRoute: typeof UserIdReviewsRouteImport
+      parentRoute: typeof UserIdRoute
+    }
+    '/user/$id/likes': {
+      id: '/user/$id/likes'
+      path: '/likes'
+      fullPath: '/user/$id/likes'
+      preLoaderRoute: typeof UserIdLikesRouteImport
+      parentRoute: typeof UserIdRoute
+    }
+    '/fragrance/$id/review': {
+      id: '/fragrance/$id/review'
+      path: '/review'
+      fullPath: '/fragrance/$id/review'
+      preLoaderRoute: typeof FragranceIdReviewRouteImport
+      parentRoute: typeof FragranceIdRoute
+    }
   }
-}
-
-declare module './routes/index' {
-  const createFileRoute: CreateFileRoute<
-    '/',
-    FileRoutesByPath['/']['parentRoute'],
-    FileRoutesByPath['/']['id'],
-    FileRoutesByPath['/']['path'],
-    FileRoutesByPath['/']['fullPath']
-  >
-}
-declare module './routes/account-recovery/confirm' {
-  const createFileRoute: CreateFileRoute<
-    '/account-recovery/confirm',
-    FileRoutesByPath['/account-recovery/confirm']['parentRoute'],
-    FileRoutesByPath['/account-recovery/confirm']['id'],
-    FileRoutesByPath['/account-recovery/confirm']['path'],
-    FileRoutesByPath['/account-recovery/confirm']['fullPath']
-  >
-}
-declare module './routes/account-recovery/success' {
-  const createFileRoute: CreateFileRoute<
-    '/account-recovery/success',
-    FileRoutesByPath['/account-recovery/success']['parentRoute'],
-    FileRoutesByPath['/account-recovery/success']['id'],
-    FileRoutesByPath['/account-recovery/success']['path'],
-    FileRoutesByPath['/account-recovery/success']['fullPath']
-  >
-}
-declare module './routes/collection/$id' {
-  const createFileRoute: CreateFileRoute<
-    '/collection/$id',
-    FileRoutesByPath['/collection/$id']['parentRoute'],
-    FileRoutesByPath['/collection/$id']['id'],
-    FileRoutesByPath['/collection/$id']['path'],
-    FileRoutesByPath['/collection/$id']['fullPath']
-  >
-}
-declare module './routes/fragrance/$id' {
-  const createFileRoute: CreateFileRoute<
-    '/fragrance/$id',
-    FileRoutesByPath['/fragrance/$id']['parentRoute'],
-    FileRoutesByPath['/fragrance/$id']['id'],
-    FileRoutesByPath['/fragrance/$id']['path'],
-    FileRoutesByPath['/fragrance/$id']['fullPath']
-  >
-}
-declare module './routes/user/$id' {
-  const createFileRoute: CreateFileRoute<
-    '/user/$id',
-    FileRoutesByPath['/user/$id']['parentRoute'],
-    FileRoutesByPath['/user/$id']['id'],
-    FileRoutesByPath['/user/$id']['path'],
-    FileRoutesByPath['/user/$id']['fullPath']
-  >
-}
-declare module './routes/account-recovery/index' {
-  const createFileRoute: CreateFileRoute<
-    '/account-recovery/',
-    FileRoutesByPath['/account-recovery/']['parentRoute'],
-    FileRoutesByPath['/account-recovery/']['id'],
-    FileRoutesByPath['/account-recovery/']['path'],
-    FileRoutesByPath['/account-recovery/']['fullPath']
-  >
-}
-declare module './routes/fragrance/$id/review' {
-  const createFileRoute: CreateFileRoute<
-    '/fragrance/$id/review',
-    FileRoutesByPath['/fragrance/$id/review']['parentRoute'],
-    FileRoutesByPath['/fragrance/$id/review']['id'],
-    FileRoutesByPath['/fragrance/$id/review']['path'],
-    FileRoutesByPath['/fragrance/$id/review']['fullPath']
-  >
-}
-declare module './routes/user/$id/likes' {
-  const createFileRoute: CreateFileRoute<
-    '/user/$id/likes',
-    FileRoutesByPath['/user/$id/likes']['parentRoute'],
-    FileRoutesByPath['/user/$id/likes']['id'],
-    FileRoutesByPath['/user/$id/likes']['path'],
-    FileRoutesByPath['/user/$id/likes']['fullPath']
-  >
-}
-declare module './routes/user/$id/reviews' {
-  const createFileRoute: CreateFileRoute<
-    '/user/$id/reviews',
-    FileRoutesByPath['/user/$id/reviews']['parentRoute'],
-    FileRoutesByPath['/user/$id/reviews']['id'],
-    FileRoutesByPath['/user/$id/reviews']['path'],
-    FileRoutesByPath['/user/$id/reviews']['fullPath']
-  >
-}
-declare module './routes/collection/$id/index' {
-  const createFileRoute: CreateFileRoute<
-    '/collection/$id/',
-    FileRoutesByPath['/collection/$id/']['parentRoute'],
-    FileRoutesByPath['/collection/$id/']['id'],
-    FileRoutesByPath['/collection/$id/']['path'],
-    FileRoutesByPath['/collection/$id/']['fullPath']
-  >
-}
-declare module './routes/fragrance/$id/index' {
-  const createFileRoute: CreateFileRoute<
-    '/fragrance/$id/',
-    FileRoutesByPath['/fragrance/$id/']['parentRoute'],
-    FileRoutesByPath['/fragrance/$id/']['id'],
-    FileRoutesByPath['/fragrance/$id/']['path'],
-    FileRoutesByPath['/fragrance/$id/']['fullPath']
-  >
-}
-declare module './routes/user/$id/index' {
-  const createFileRoute: CreateFileRoute<
-    '/user/$id/',
-    FileRoutesByPath['/user/$id/']['parentRoute'],
-    FileRoutesByPath['/user/$id/']['id'],
-    FileRoutesByPath['/user/$id/']['path'],
-    FileRoutesByPath['/user/$id/']['fullPath']
-  >
 }
 
 interface CollectionIdRouteChildren {

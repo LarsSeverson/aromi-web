@@ -1,6 +1,7 @@
+import { createFileRoute } from '@tanstack/react-router'
 import React from 'react'
 
-export const Route = createFileRoute({
+export const Route = createFileRoute('/collection/$id/')({
   component: RouteComponent,
   loader: ({ context }) => context
 })

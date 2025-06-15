@@ -1,18 +1,20 @@
+import { createFileRoute } from '@tanstack/react-router'
 import React from 'react'
-import { USER_INFO_QUERY } from '@/hooks/useUser'
 import { ProfilePage } from '@/pages/ProfilePage'
 import { client } from '@/common/client'
 import { useMyContext } from '@/contexts/MyContext'
+import { USER_QUERY } from '@/graphql/queries/UserQueries'
 
-export const Route = createFileRoute({
+export const Route = createFileRoute('/user/$id')({
   component: User,
   beforeLoad: async ({ params }) => {
-    const { data } = await client.query({
-      query: USER_INFO_QUERY,
-      variables: {
-        userId: Number(params.id)
-      }
-    })
+    const { data } = await client
+      .query({
+        query: USER_QUERY,
+        variables: {
+          id: Number(params.id)
+        }
+      })
 
     if (data.user == null) throw new Error('User not found')
 

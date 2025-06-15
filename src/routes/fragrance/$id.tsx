@@ -1,17 +1,16 @@
 import React from 'react'
-import { FRAGRANCE_INFO_QUERY } from '@/hooks/useFragrance'
-import { Outlet } from '@tanstack/react-router'
+import { Outlet, createFileRoute } from '@tanstack/react-router'
 import { client } from '@/common/client'
+import { FRAGRANCE_QUERY } from '@/graphql/queries/FragranceQueries'
 
-export const Route = createFileRoute({
+export const Route = createFileRoute('/fragrance/$id')({
   component: Fragrance,
   beforeLoad: async ({ params }) => {
-    const { data } = await client.query({
-      query: FRAGRANCE_INFO_QUERY,
-      variables: {
-        fragranceId: Number(params.id)
-      }
-    })
+    const { data } = await client
+      .query({
+        query: FRAGRANCE_QUERY,
+        variables: { id: Number(params.id) }
+      })
 
     if (data.fragrance == null) throw new Error('Fragrance not found')
 

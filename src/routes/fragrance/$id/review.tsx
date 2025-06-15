@@ -1,8 +1,9 @@
+import { createFileRoute } from '@tanstack/react-router'
 import React from 'react'
 import ReviewPage from '@/pages/ReviewPage'
 import { z } from 'zod'
 
-export const Route = createFileRoute({
+export const Route = createFileRoute('/fragrance/$id/review')({
   component: Review,
   validateSearch: z
     .object({
