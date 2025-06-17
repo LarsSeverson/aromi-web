@@ -1,9 +1,9 @@
 import React from 'react'
-import { type CardFragranceReview, FragranceReviewCard } from './FragranceReviewCard'
+import { type FragranceReviewCardFragranceReview, FragranceReviewCard } from './FragranceReviewCard'
 import clsx from 'clsx'
 
 export interface ReviewsListProps extends React.HTMLAttributes<HTMLDivElement> {
-  reviews: CardFragranceReview[]
+  reviews: FragranceReviewCardFragranceReview[]
   currentPage: number
   reviewsPerPage?: number
 }

@@ -31,7 +31,7 @@ export const MasonryList = <T, >(props: MasonryListProps<T>) => {
     itemHeight = 400,
     gap = 15,
     scale = 0.8,
-    onEndReachedThreshold = 300,
+    onEndReachedThreshold = 500,
     initialScrollOffset = 0,
     onRenderItem,
     onRenderSkeleton,

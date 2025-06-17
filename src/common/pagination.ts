@@ -109,13 +109,12 @@ export const relayStylePagination = <TNode extends Reference = Reference> (
 
 export interface NodeWithEdges<T> { edges: Array<{ node: T }> }
 
-export type FlattenEdges<T> = T extends NodeWithEdges<infer N>
-  ? Array<FlattenEdges<N>>
-  : T extends Array<infer U>
-    ? Array<FlattenEdges<U>>
-    : T extends object
-      ? { [K in keyof T]: FlattenEdges<T[K]> }
-      : T
+export type FlattenEdges<T> =
+  T extends Date ? T :
+    T extends NodeWithEdges<infer N> ? Array<FlattenEdges<N>> :
+      T extends Array<infer U> ? Array<FlattenEdges<U>> :
+        T extends object ? { [K in keyof T]: FlattenEdges<T[K]> } :
+          T
 
 export const isEdgeNodeObject = <T>(value: unknown): value is NodeWithEdges<T> => {
   return (

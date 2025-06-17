@@ -9,11 +9,11 @@ import RatingStars from '../common/RatingStars'
 import clsx from 'clsx'
 import BouncyButton from '../common/BouncyButton'
 
-type CardFragranceReviewUsaer = Pick<User, 'id' | 'username'>
-export type CardFragranceReview = Omit<FragranceReview, 'fragrance' | 'user'> & { user: CardFragranceReviewUsaer }
+type FragranceReviewCardUser = Pick<User, 'id' | 'username'>
+export type FragranceReviewCardFragranceReview = Omit<FragranceReview, 'fragrance' | 'user'> & { user: FragranceReviewCardUser }
 
 export interface FragranceReviewCardProps extends React.HTMLAttributes<HTMLDivElement> {
-  review: CardFragranceReview
+  review: FragranceReviewCardFragranceReview
   onVote?: (myVote: boolean | null) => void
 }
 

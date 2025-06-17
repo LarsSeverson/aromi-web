@@ -82,6 +82,9 @@ export const FragranceReviewFragment = gql(/* GraphQL */`
     fragrance {
       ...FragranceSummary
     }
+    audit {
+      ...AuditBase
+    }
   }
 `)
 

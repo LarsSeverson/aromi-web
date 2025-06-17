@@ -7,6 +7,10 @@ import { AuthProvider } from './contexts/providers/AuthProvider'
 import { ApolloProvider } from '@apollo/client'
 import { client } from './common/client'
 import { MyProvider } from './contexts/providers/MyContextProvider'
+import topbar from 'topbar'
+import { Colors } from './styles/Colors'
+
+topbar.config({ barThickness: 2, barColors: { 0: Colors.sinopia } })
 
 export const router = createRouter({
   routeTree,

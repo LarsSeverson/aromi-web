@@ -27,7 +27,6 @@ import { TbMessage2Star } from 'react-icons/tb'
 import { PiShareFat } from 'react-icons/pi'
 import { HiDotsHorizontal } from 'react-icons/hi'
 import { useLogFragranceView } from '@/hooks/useLogFragranceView'
-import { useMyContext } from '@/contexts/MyContext'
 
 export type FragrancePageUser = Pick<User, 'username' | 'id'>
 export type FragrancePageFragrance = Pick<Fragrance, 'id' | 'brand' | 'name' | 'rating' | 'reviewsCount' | 'reviewDistribution' | 'votes'>
@@ -37,7 +36,6 @@ export interface FragrancePageProps {
 
 export const FragrancePage = (props: FragrancePageProps) => {
   const navigate = useNavigate()
-  const myContext = useMyContext()
 
   const { fragrance } = props
   const { id: fragranceId } = fragrance
@@ -47,7 +45,7 @@ export const FragrancePage = (props: FragrancePageProps) => {
   const { data: images } = useFragranceImages(fragranceId, { first: 5 })
   const { data: traits } = useFragranceTraits(fragranceId)
   const { data: accords } = useFragranceAccords(fragranceId, { pagination: { first: 10 } })
-  // const { data: notes } = useFragranceNotes(fragranceId, { includeTop: true, includeMiddle: true, includeBase: true })
+  const { top, middle, base } = useFragranceNotes(fragranceId)
   const { data: reviews } = useFragranceReviews(fragranceId)
   const { data: myReview } = useMyReview(fragranceId)
 
@@ -56,11 +54,11 @@ export const FragrancePage = (props: FragrancePageProps) => {
   const [curReviewPage, setCurReviewPage] = useState(0)
   const totalPages = Math.ceil(reviews.length / 4)
 
-  // const layers = [
-  //   { layer: NoteLayer.Top, notes: notes.top },
-  //   { layer: NoteLayer.Middle, notes: notes.middle },
-  //   { layer: NoteLayer.Base, notes: notes.base }
-  // ].filter(item => item.notes.length > 0)
+  const layers = [
+    { layer: NoteLayer.Top, notes: top },
+    { layer: NoteLayer.Middle, notes: middle },
+    { layer: NoteLayer.Base, notes: base }
+  ].filter(item => item.notes.length > 0)
 
   const scrollToReview = () => {
     if (reviewRef.current != null) {
@@ -213,10 +211,10 @@ export const FragrancePage = (props: FragrancePageProps) => {
           title='Notes'
         >
           <div className='w-full flex flex-col items-center'>
-            {/* <NotesPyramid
+            <NotesPyramid
               layers={layers}
               className='mx-5 w-full max-w-4xl'
-            /> */}
+            />
           </div>
         </PageCategory>
         {myReview != null && (
@@ -225,9 +223,9 @@ export const FragrancePage = (props: FragrancePageProps) => {
           >
             <div className='w-full flex justify-center'>
               <div className='w-full max-w-4xl'>
-                {/* <MyReviewCard
+                <MyReviewCard
                   myReview={myReview}
-                /> */}
+                />
               </div>
             </div>
           </PageCategory>
@@ -269,11 +267,11 @@ export const FragrancePage = (props: FragrancePageProps) => {
                 className='my-5'
               />
 
-              {/* <ReviewsList
+              <ReviewsList
                 reviews={reviews}
                 currentPage={curReviewPage}
                 reviewsPerPage={4}
-              /> */}
+              />
               <PageNav
                 totalPages={totalPages}
                 curPage={curReviewPage}
