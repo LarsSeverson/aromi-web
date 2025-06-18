@@ -4,6 +4,7 @@ import clsx from 'clsx'
 import LogInDialog from '../dialogs/LogInDialog'
 import { AccountMenu } from '../menus/AccountMenu'
 import SignUpDialog from '../dialogs/SignUpDialog'
+import { useMyContext } from '@/contexts/MyContext'
 
 export interface TopBarProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -11,6 +12,7 @@ const TopBar = (props: TopBarProps) => {
   const { className, ...rest } = props
 
   const { isAuthenticated } = useAuthContext()
+  const { me } = useMyContext()
 
   return (
     <div
@@ -20,7 +22,7 @@ const TopBar = (props: TopBarProps) => {
       )}
       {...rest}
     >
-      {!isAuthenticated
+      {!isAuthenticated || me == null
         ? (
           <div className='ml-auto flex flex-row gap-2'>
             <LogInDialog />
@@ -29,7 +31,7 @@ const TopBar = (props: TopBarProps) => {
           )
         : (
           <AccountMenu
-            user={{ username: 'Test', email: 'test@example.com' }}
+            user={me}
           />
           )}
     </div>

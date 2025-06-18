@@ -11,7 +11,7 @@ export interface VoteButtonProps extends React.HTMLAttributes<HTMLDivElement> {
 
   onRenderForIcon?: (active: boolean) => React.ReactNode
   onRenderAgainstIcon?: (active: boolean) => React.ReactNode
-  onVote?: (vote: boolean | null) => void
+  onVote?: (vote: boolean | null) => void | Promise<void>
 }
 
 export const VoteButton = (props: VoteButtonProps) => {
@@ -39,7 +39,7 @@ export const VoteButton = (props: VoteButtonProps) => {
 
     const newVote = (curVote ?? false) ? null : true
     setCurVote(newVote)
-    onVote?.(newVote)
+    void onVote?.(newVote)
   }, [curVote, onVote])
 
   const onAgainst = useCallback((e: React.SyntheticEvent) => {
@@ -48,7 +48,7 @@ export const VoteButton = (props: VoteButtonProps) => {
 
     const newVote = curVote === false ? null : false
     setCurVote(newVote)
-    onVote?.(newVote)
+    void onVote?.(newVote)
   }, [curVote, onVote])
 
   return (

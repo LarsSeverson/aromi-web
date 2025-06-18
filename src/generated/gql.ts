@@ -45,6 +45,7 @@ type Documents = {
     "\n  mutation ForgotPassword(\n    $email: String!\n  ) {\n    forgotPassword(email: $email) {\n      ...DeliveryResultBase\n    }\n  }\n": typeof types.ForgotPasswordDocument,
     "\n  mutation ConfirmForgotPassword(\n    $email: String!\n    $confirmationCode: String!\n    $newPassword: String!\n  ) {\n    confirmForgotPassword(email: $email, confirmationCode: $confirmationCode, newPassword: $newPassword) {\n      complete\n    }\n  }\n": typeof types.ConfirmForgotPasswordDocument,
     "\n  mutation LogFragranceView (\n    $input: LogFragranceViewInput!\n  ) {\n    logFragranceView(input: $input)\n  }\n": typeof types.LogFragranceViewDocument,
+    "\n  mutation VoteOnFragrance(\n    $input: VoteOnFragranceInput!\n  ) {\n    voteOnFragrance(input: $input) {\n      id\n    }\n  }\n": typeof types.VoteOnFragranceDocument,
     "\n  query Collection(\n    $id: Int!\n  ) {\n    collection(id: $id) {\n      ...FragranceCollectionSummary\n    }\n  }\n": typeof types.CollectionDocument,
     "\n  query CollectionItems(\n    $collectionId: Int!\n    $input: PaginationInput\n  ) {\n    collection(id: $collectionId) {\n      id\n      items(input: $input) {\n        ...FragranceCollectionItemConnection\n      }\n    }\n  }\n": typeof types.CollectionItemsDocument,
     "\n  query Fragrance(\n    $id: Int!\n  ) {\n    fragrance(id: $id) {\n      ...FragranceSummary\n      rating\n      reviewsCount\n      reviewDistribution {\n        one\n        two\n        three\n        four\n        five\n      }\n    }\n  }\n": typeof types.FragranceDocument,
@@ -93,6 +94,7 @@ const documents: Documents = {
     "\n  mutation ForgotPassword(\n    $email: String!\n  ) {\n    forgotPassword(email: $email) {\n      ...DeliveryResultBase\n    }\n  }\n": types.ForgotPasswordDocument,
     "\n  mutation ConfirmForgotPassword(\n    $email: String!\n    $confirmationCode: String!\n    $newPassword: String!\n  ) {\n    confirmForgotPassword(email: $email, confirmationCode: $confirmationCode, newPassword: $newPassword) {\n      complete\n    }\n  }\n": types.ConfirmForgotPasswordDocument,
     "\n  mutation LogFragranceView (\n    $input: LogFragranceViewInput!\n  ) {\n    logFragranceView(input: $input)\n  }\n": types.LogFragranceViewDocument,
+    "\n  mutation VoteOnFragrance(\n    $input: VoteOnFragranceInput!\n  ) {\n    voteOnFragrance(input: $input) {\n      id\n    }\n  }\n": types.VoteOnFragranceDocument,
     "\n  query Collection(\n    $id: Int!\n  ) {\n    collection(id: $id) {\n      ...FragranceCollectionSummary\n    }\n  }\n": types.CollectionDocument,
     "\n  query CollectionItems(\n    $collectionId: Int!\n    $input: PaginationInput\n  ) {\n    collection(id: $collectionId) {\n      id\n      items(input: $input) {\n        ...FragranceCollectionItemConnection\n      }\n    }\n  }\n": types.CollectionItemsDocument,
     "\n  query Fragrance(\n    $id: Int!\n  ) {\n    fragrance(id: $id) {\n      ...FragranceSummary\n      rating\n      reviewsCount\n      reviewDistribution {\n        one\n        two\n        three\n        four\n        five\n      }\n    }\n  }\n": types.FragranceDocument,
@@ -248,6 +250,10 @@ export function gql(source: "\n  mutation ConfirmForgotPassword(\n    $email: St
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(source: "\n  mutation LogFragranceView (\n    $input: LogFragranceViewInput!\n  ) {\n    logFragranceView(input: $input)\n  }\n"): (typeof documents)["\n  mutation LogFragranceView (\n    $input: LogFragranceViewInput!\n  ) {\n    logFragranceView(input: $input)\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation VoteOnFragrance(\n    $input: VoteOnFragranceInput!\n  ) {\n    voteOnFragrance(input: $input) {\n      id\n    }\n  }\n"): (typeof documents)["\n  mutation VoteOnFragrance(\n    $input: VoteOnFragranceInput!\n  ) {\n    voteOnFragrance(input: $input) {\n      id\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

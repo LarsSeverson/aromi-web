@@ -13,7 +13,7 @@ export interface CollectionPopoverProps extends Popover.Root.Props {
 const CollectionPopover = (props: CollectionPopoverProps) => {
   const { userId, fragrance, ...rest } = props
 
-  const { data: collections } = useUserCollections(userId, 10)
+  const { data: collections } = useUserCollections(userId)
 
   const handlePopoverTriggerClick = (e: SyntheticEvent) => {
     e.preventDefault()
@@ -51,12 +51,13 @@ const CollectionPopover = (props: CollectionPopoverProps) => {
               className='overflow-auto w-full mb-2'
               style={{ scrollbarGutter: 'stable both-edges' }}
             >
-              {collections.map(collection => (
-                <CollectionPreviewBarCheck
-                  key={collection.id}
-                  collection={collection}
-                />
-              ))}
+              {collections
+                .map(collection => (
+                  <CollectionPreviewBarCheck
+                    key={collection.id}
+                    collection={collection}
+                  />
+                ))}
             </div>
             <NewCollectionDialog
               fragrance={fragrance}

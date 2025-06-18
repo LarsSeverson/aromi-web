@@ -35,7 +35,13 @@ export const client = new ApolloClient({
     typePolicies: {
       Query: {
         fields: {
-          fragrances: relayStylePagination()
+          fragrances: relayStylePagination(),
+          fragrance: {
+            keyArgs: false,
+            merge (_, incoming) {
+              return incoming
+            }
+          }
         }
       },
       Fragrance: {
