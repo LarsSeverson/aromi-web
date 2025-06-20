@@ -28,15 +28,15 @@ export const FragrancePreviewCard = (props: FragrancePreviewCardProps) => {
 
   const { fragrance, className, to, params, ...rest } = props
 
-  const [hasFocus, setHasFocus] = useState(false)
   const [isPopoverOpen, setIsPopoverOpen] = useState(false)
+  const [isLinkFocused, setIsLinkFocused] = useState(false)
 
-  const isOverlayVisible = hasFocus || isPopoverOpen
+  const handleLinkFocus = () => {
+    setIsLinkFocused(true)
+  }
 
-  const handleFocus = () => { setHasFocus(true) }
-  const handleBlur = (e: React.FocusEvent<HTMLAnchorElement>) => {
-    const insideCard = e.currentTarget.contains(e.relatedTarget)
-    if (!insideCard) { setHasFocus(false) }
+  const handleLinkBlur = () => {
+    // setIsLinkFocused(false)
   }
 
   const handleVoteOnFragrance = async (vote: boolean | null) => {
@@ -58,31 +58,39 @@ export const FragrancePreviewCard = (props: FragrancePreviewCardProps) => {
   }
 
   return (
-    <Link
-      to={to ?? '/fragrance/$id'}
-      params={params ?? { id: String(fragrance.id) }}
+    <div
       className={clsx(
-        'group flex flex-col h-full'
+        'group hover:cursor-pointer relative flex flex-col h-full',
+        className
       )}
-      onFocus={handleFocus}
-      onBlur={handleBlur}
-      {...rest}
+      onMouseEnter={() => { setIsLinkFocused(false) }}
     >
       <div
-        className='group flex-1 flex rounded-2xl relative'
+        className='flex-1 flex flex-col rounded-2xl relative pointer-events-none'
       >
-        <FragranceImageCard
-          active={isOverlayVisible}
-          image={fragrance.images.at(0)}
-        />
+        <Link
+          to={to ?? '/fragrance/$id'}
+          params={params ?? { id: String(fragrance.id) }}
+          className='flex flex-1 rounded-2xl pointer-events-auto'
+          onFocus={handleLinkFocus}
+          onBlur={handleLinkBlur}
+          tabIndex={0}
+          {...rest}
+        >
+          <FragranceImageCard
+            active={isLinkFocused || isPopoverOpen}
+            image={fragrance.images.at(0)}
+          />
+        </Link>
         <div
           className={clsx(
-            'absolute w-full h-full',
-            isOverlayVisible ? 'inline' : 'hidden group-hover:inline'
+            'absolute inset-0 opacity-0 transition-opacity pointer-events-none',
+            'group-hover:opacity-100 group-focus:opacity-100',
+            (isLinkFocused || isPopoverOpen) && 'opacity-100'
           )}
         >
           <div
-            className='absolute top-3 right-3'
+            className='pointer-events-auto'
           >
             <CollectionPopover
               userId={myContext.me?.id ?? INVALID_ID}
@@ -90,35 +98,38 @@ export const FragrancePreviewCard = (props: FragrancePreviewCardProps) => {
               onOpenChangeComplete={setIsPopoverOpen}
             />
           </div>
-          <ShareFragrancePopover
-            userId={myContext.me?.id ?? INVALID_ID}
-            fragrance={fragrance}
-            onOpenChangeComplete={setIsPopoverOpen}
+          <div
+            className='pointer-events-auto'
+          >
+            <ShareFragrancePopover
+              userId={myContext.me?.id ?? INVALID_ID}
+              fragrance={fragrance}
+              onOpenChangeComplete={setIsPopoverOpen}
+            />
+          </div>
+        </div>
+        <div
+          className='pointer-events-auto'
+        >
+          <VoteButton
+            votes={fragrance.votes.voteScore}
+            myVote={fragrance.votes.myVote}
+            className='absolute bottom-3 right-3 z-10'
+            onVote={handleVoteOnFragrance}
           />
         </div>
-        <VoteButton
-          votes={fragrance.votes.voteScore}
-          myVote={fragrance.votes.myVote}
-          className='absolute bottom-3 right-3 bottom'
-          onVote={handleVoteOnFragrance}
-        />
       </div>
+
       <div className='px-1 pt-2'>
-        <div
-          className='flex flex-row'
-        >
-          <h5
-            className='flex-1 truncate font-semibold text-sm'
-          >
+        <div className='flex flex-row'>
+          <h5 className='flex-1 truncate font-semibold text-sm'>
             {fragrance.name}
           </h5>
         </div>
-        <h6
-          className='truncate text-sm'
-        >
+        <h6 className='truncate text-sm'>
           {fragrance.brand}
         </h6>
       </div>
-    </Link>
+    </div>
   )
 }

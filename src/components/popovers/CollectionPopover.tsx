@@ -4,6 +4,7 @@ import useUserCollections from '@/hooks/useUserCollections'
 import CollectionPreviewBarCheck from '../fragrance/CollectionPreviewBarCheck'
 import NewCollectionDialog from '../dialogs/NewCollectionDialog'
 import { type FragrancePreviewCardFragrance } from '../fragrance/FragrancePreviewCard'
+import clsx from 'clsx'
 
 export interface CollectionPopoverProps extends Popover.Root.Props {
   userId: number
@@ -29,7 +30,10 @@ const CollectionPopover = (props: CollectionPopoverProps) => {
       {...rest}
     >
       <Popover.Trigger
-        className='bg-sinopia text-white rounded-full px-7 py-3 hover:shadow-lg hover:brightness-105'
+        tabIndex={0}
+        className={clsx(
+          'bg-sinopia text-white rounded-full px-7 py-3 hover:shadow-lg hover:brightness-105 absolute top-3 right-3'
+        )}
         onClick={handlePopoverTriggerClick}
       >
         Save

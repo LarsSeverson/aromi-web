@@ -68,8 +68,8 @@ const useAuth = () => {
 
   const handleNewPayload = useCallback((newPayload: AuthPayload | null | undefined) => {
     payload.current = newPayload
-    setIsAuthenticated(newPayload != null)
     setClientAcessToken(newPayload?.accessToken)
+    setIsAuthenticated(newPayload != null)
     handleTokenExpiration()
   }, [handleTokenExpiration])
 

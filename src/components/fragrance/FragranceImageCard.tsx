@@ -19,7 +19,8 @@ const FragranceImageCard = (props: FragranceImageCardProps) => {
     <div
       className={clsx(
         'flex-1 rounded-2xl overflow-hidden',
-        active ? 'brightness-[0.85]' : 'group-hover:brightness-[0.85]'
+        'group-focus:brightness-[0.85] group-hover:brightness-[0.85]',
+        active && 'brightness-[0.85]'
       )}
     >
       <ProgressiveImage

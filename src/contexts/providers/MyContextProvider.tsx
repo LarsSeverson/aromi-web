@@ -10,6 +10,8 @@ export const MyProvider = (props: MyProviderProps) => {
   const { children } = props
   const me = useMe()
 
+  if (me.loading) return null
+
   return (
     <MyContext.Provider
       value={me}

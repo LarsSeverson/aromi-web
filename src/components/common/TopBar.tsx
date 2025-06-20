@@ -14,6 +14,8 @@ const TopBar = (props: TopBarProps) => {
   const { isAuthenticated } = useAuthContext()
   const { me } = useMyContext()
 
+  console.log(isAuthenticated, me == null)
+
   return (
     <div
       className={clsx(
