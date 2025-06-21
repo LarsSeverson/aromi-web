@@ -1,10 +1,9 @@
 import React, { type SyntheticEvent } from 'react'
 import { Popover } from '@base-ui-components/react'
-import useUserCollections from '@/hooks/useUserCollections'
-import CollectionPreviewBarCheck from '../fragrance/CollectionPreviewBarCheck'
 import NewCollectionDialog from '../dialogs/NewCollectionDialog'
 import { type FragrancePreviewCardFragrance } from '../fragrance/FragrancePreviewCard'
 import clsx from 'clsx'
+import CollectionPopoverList from './CollectionPopoverList'
 
 export interface CollectionPopoverProps extends Popover.Root.Props {
   userId: number
@@ -13,8 +12,6 @@ export interface CollectionPopoverProps extends Popover.Root.Props {
 
 const CollectionPopover = (props: CollectionPopoverProps) => {
   const { userId, fragrance, ...rest } = props
-
-  const { data: collections } = useUserCollections(userId)
 
   const handlePopoverTriggerClick = (e: SyntheticEvent) => {
     e.preventDefault()
@@ -51,18 +48,9 @@ const CollectionPopover = (props: CollectionPopoverProps) => {
             >
               Save
             </Popover.Title>
-            <div
-              className='overflow-auto w-full mb-2'
-              style={{ scrollbarGutter: 'stable both-edges' }}
-            >
-              {collections
-                .map(collection => (
-                  <CollectionPreviewBarCheck
-                    key={collection.id}
-                    collection={collection}
-                  />
-                ))}
-            </div>
+            <CollectionPopoverList
+              userId={userId}
+            />
             <NewCollectionDialog
               fragrance={fragrance}
             />

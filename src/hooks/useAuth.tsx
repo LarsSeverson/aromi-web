@@ -19,7 +19,6 @@ const useAuth = () => {
   const [hasInitialized, setHasInitialized] = useState(false)
 
   const {
-    data: refreshPayload,
     loading: refreshLoading,
     refresh
   } = useRefresh()
@@ -68,8 +67,10 @@ const useAuth = () => {
 
   const handleNewPayload = useCallback((newPayload: AuthPayload | null | undefined) => {
     payload.current = newPayload
+
     setClientAcessToken(newPayload?.accessToken)
     setIsAuthenticated(newPayload != null)
+
     handleTokenExpiration()
   }, [handleTokenExpiration])
 
@@ -92,11 +93,11 @@ const useAuth = () => {
   }, [logOutInner, cleanAuth])
 
   useEffect(() => {
-    if (!hasInitialized) return
+    const newPayload = logInPayload?.logIn
+    if (newPayload == null) return
 
-    const newPayload = refreshPayload?.refresh ?? logInPayload?.logIn
     handleNewPayload(newPayload)
-  }, [hasInitialized, refreshPayload, logInPayload, handleNewPayload])
+  }, [logInPayload, handleNewPayload])
 
   useEffect(() => {
     if (hasInitialized) return
@@ -106,12 +107,12 @@ const useAuth = () => {
       .match(
         ({ data }) => {
           handleNewPayload(data?.refresh)
+          setHasInitialized(true)
         },
-        () => null
+        () => {
+          setHasInitialized(true)
+        }
       )
-      .finally(() => {
-        setHasInitialized(true)
-      })
   }, [hasInitialized, handleNewPayload, refresh])
 
   useEffect(() => cleanAuth, [cleanAuth])

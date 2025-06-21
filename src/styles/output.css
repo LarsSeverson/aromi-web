@@ -3436,13 +3436,13 @@ video {
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
 
-.brightness-\[0\.85\]{
-  --tw-brightness: brightness(0.85);
+.brightness-95{
+  --tw-brightness: brightness(.95);
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
 
-.brightness-95{
-  --tw-brightness: brightness(.95);
+.brightness-\[0\.85\]{
+  --tw-brightness: brightness(0.85);
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
 
@@ -3601,10 +3601,6 @@ html {
   }
 }
 
-.focus-within\:opacity-100:focus-within{
-  opacity: 1;
-}
-
 .hover\:cursor-pointer:hover{
   cursor: pointer;
 }
@@ -3709,10 +3705,6 @@ html {
   border-color: rgb(198 71 29 / var(--tw-border-opacity, 1));
 }
 
-.focus\:opacity-100:focus{
-  opacity: 1;
-}
-
 .focus\:outline-none:focus{
   outline: 2px solid transparent;
   outline-offset: 2px;
@@ -3747,12 +3739,6 @@ html {
   outline-color: #C6471D;
 }
 
-.focus-visible\:ring-2:focus-visible{
-  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
-  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
-  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
-}
-
 .active\:scale-95:active{
   --tw-scale-x: .95;
   --tw-scale-y: .95;
@@ -3777,50 +3763,8 @@ html {
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
-.group\/image:focus-within .group-focus-within\/image\:inline{
-  display: inline;
-}
-
-.group:focus-within .group-focus-within\:opacity-100{
-  opacity: 1;
-}
-
-.group:focus-within .group-focus-within\:opacity-0{
-  opacity: 0;
-}
-
-.group\/overlay:focus-within .group-focus-within\/overlay\:opacity-100{
-  opacity: 1;
-}
-
-.group\/test:focus-within .group-focus-within\/test\:opacity-100{
-  opacity: 1;
-}
-
-.group\/test:focus-within .group-focus-within\/test\:opacity-10{
-  opacity: 0.1;
-}
-
-.group:focus-within .group-focus-within\:brightness-\[0\.85\]{
-  --tw-brightness: brightness(0.85);
-  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
-}
-
-.group:hover .group-hover\:block{
-  display: block;
-}
-
-.group:hover .group-hover\:inline{
-  display: inline;
-}
-
 .group:hover .group-hover\:flex{
   display: flex;
-}
-
-.group:hover .group-hover\:bg-blue-200{
-  --tw-bg-opacity: 1;
-  background-color: rgb(191 219 254 / var(--tw-bg-opacity, 1));
 }
 
 .group:hover .group-hover\:text-sinopia{
@@ -3829,10 +3773,6 @@ html {
 }
 
 .group:hover .group-hover\:opacity-100{
-  opacity: 1;
-}
-
-.group\/overlay:hover .group-hover\/overlay\:opacity-100{
   opacity: 1;
 }
 
@@ -3850,30 +3790,13 @@ html {
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
 
-.group:focus .group-focus\:block{
-  display: block;
-}
-
 .group:focus .group-focus\:opacity-100{
-  opacity: 1;
-}
-
-.group\/overlay:focus .group-focus\/overlay\:opacity-100{
   opacity: 1;
 }
 
 .group:focus .group-focus\:brightness-\[0\.85\]{
   --tw-brightness: brightness(0.85);
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
-}
-
-.group:focus .group-focus\:brightness-95{
-  --tw-brightness: brightness(.95);
-  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
-}
-
-.group:focus-visible .group-focus-visible\:opacity-100{
-  opacity: 1;
 }
 
 .group:active .group-active\:scale-\[0\.95\]{

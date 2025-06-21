@@ -5,11 +5,14 @@ import { print } from 'graphql'
 
 export const accessToken = makeVar<string | null>(null)
 
-const authLink = setContext(() => ({
-  headers: {
-    authorization: accessToken()
+const authLink = setContext(() => {
+  const token = accessToken()
+  return {
+    headers: {
+      ...(token != null ? { authorization: `Bearer ${token}` } : {})
+    }
   }
-}))
+})
 
 const httpLink = new HttpLink({
   uri: import.meta.env.VITE_API_ENDPOINT,

@@ -58,7 +58,7 @@ type Documents = {
     "\n  query MyFragranceReview(\n    $fragranceId: Int!\n  ) {\n    fragrance(id: $fragranceId) {\n      ...FragranceSummary\n      myReview {\n        ...FragranceReviewSummary\n      }\n    }\n  }\n": typeof types.MyFragranceReviewDocument,
     "\n  query Me {\n    me {\n      ...UserSummary\n    }\n  }\n": typeof types.MeDocument,
     "\n  query User(\n    $id: Int!\n  ) {\n    user(id: $id) {\n      ...UserSummary\n    }\n  }\n": typeof types.UserDocument,
-    "\n  query UserCollections(\n    $userId: Int!\n    $input: PaginationInput\n  ) {\n    user(id: $userId) {\n      id\n      collections(input: $input) {\n        ...FragranceCollectionConnection\n      }\n    }\n  }\n": typeof types.UserCollectionsDocument,
+    "\n  query UserCollections(\n    $userId: Int!\n    $input: PaginationInput\n  ) {\n    user(id: $userId) {\n      id\n      collections(input: $input) {\n        edges {\n          node {\n            ...FragranceCollectionSummary\n          }\n        } \n        pageInfo {\n          ...PageInfoBase\n        }\n      }\n    }\n  }\n": typeof types.UserCollectionsDocument,
     "\n  query UserLikes(\n    $userId: Int!\n    $input: PaginationInput\n  ) {\n    user(id: $userId) {\n      id\n      likes(input: $input) {\n        ...FragranceVoteConnection\n      }\n    }\n  }\n": typeof types.UserLikesDocument,
     "\n  query UserReviews(\n    $userId: Int!\n    $input: PaginationInput\n  ) {\n    user(id: $userId) {\n      id\n      reviews(input: $input) {\n        ...FragranceReviewConnection\n      }\n    }\n  }\n": typeof types.UserReviewsDocument,
 };
@@ -107,7 +107,7 @@ const documents: Documents = {
     "\n  query MyFragranceReview(\n    $fragranceId: Int!\n  ) {\n    fragrance(id: $fragranceId) {\n      ...FragranceSummary\n      myReview {\n        ...FragranceReviewSummary\n      }\n    }\n  }\n": types.MyFragranceReviewDocument,
     "\n  query Me {\n    me {\n      ...UserSummary\n    }\n  }\n": types.MeDocument,
     "\n  query User(\n    $id: Int!\n  ) {\n    user(id: $id) {\n      ...UserSummary\n    }\n  }\n": types.UserDocument,
-    "\n  query UserCollections(\n    $userId: Int!\n    $input: PaginationInput\n  ) {\n    user(id: $userId) {\n      id\n      collections(input: $input) {\n        ...FragranceCollectionConnection\n      }\n    }\n  }\n": types.UserCollectionsDocument,
+    "\n  query UserCollections(\n    $userId: Int!\n    $input: PaginationInput\n  ) {\n    user(id: $userId) {\n      id\n      collections(input: $input) {\n        edges {\n          node {\n            ...FragranceCollectionSummary\n          }\n        } \n        pageInfo {\n          ...PageInfoBase\n        }\n      }\n    }\n  }\n": types.UserCollectionsDocument,
     "\n  query UserLikes(\n    $userId: Int!\n    $input: PaginationInput\n  ) {\n    user(id: $userId) {\n      id\n      likes(input: $input) {\n        ...FragranceVoteConnection\n      }\n    }\n  }\n": types.UserLikesDocument,
     "\n  query UserReviews(\n    $userId: Int!\n    $input: PaginationInput\n  ) {\n    user(id: $userId) {\n      id\n      reviews(input: $input) {\n        ...FragranceReviewConnection\n      }\n    }\n  }\n": types.UserReviewsDocument,
 };
@@ -305,7 +305,7 @@ export function gql(source: "\n  query User(\n    $id: Int!\n  ) {\n    user(id:
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\n  query UserCollections(\n    $userId: Int!\n    $input: PaginationInput\n  ) {\n    user(id: $userId) {\n      id\n      collections(input: $input) {\n        ...FragranceCollectionConnection\n      }\n    }\n  }\n"): (typeof documents)["\n  query UserCollections(\n    $userId: Int!\n    $input: PaginationInput\n  ) {\n    user(id: $userId) {\n      id\n      collections(input: $input) {\n        ...FragranceCollectionConnection\n      }\n    }\n  }\n"];
+export function gql(source: "\n  query UserCollections(\n    $userId: Int!\n    $input: PaginationInput\n  ) {\n    user(id: $userId) {\n      id\n      collections(input: $input) {\n        edges {\n          node {\n            ...FragranceCollectionSummary\n          }\n        } \n        pageInfo {\n          ...PageInfoBase\n        }\n      }\n    }\n  }\n"): (typeof documents)["\n  query UserCollections(\n    $userId: Int!\n    $input: PaginationInput\n  ) {\n    user(id: $userId) {\n      id\n      collections(input: $input) {\n        edges {\n          node {\n            ...FragranceCollectionSummary\n          }\n        } \n        pageInfo {\n          ...PageInfoBase\n        }\n      }\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

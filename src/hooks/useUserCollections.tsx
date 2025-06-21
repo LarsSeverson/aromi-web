@@ -6,7 +6,7 @@ import { type PaginationInput } from '@/generated/graphql'
 
 const useUserCollections = (
   userId: number,
-  input?: PaginationInput
+  input?: PaginationInput | undefined
 ) => {
   const {
     data, loading, error, networkStatus,

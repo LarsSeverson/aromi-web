@@ -26,7 +26,14 @@ export const USER_COLLECTIONS_QUERY = gql(/* GraphQL */`
     user(id: $userId) {
       id
       collections(input: $input) {
-        ...FragranceCollectionConnection
+        edges {
+          node {
+            ...FragranceCollectionSummary
+          }
+        } 
+        pageInfo {
+          ...PageInfoBase
+        }
       }
     }
   }
