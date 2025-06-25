@@ -50,6 +50,7 @@ const CollectionPopover = (props: CollectionPopoverProps) => {
             </Popover.Title>
             <CollectionPopoverList
               userId={userId}
+              fragranceId={fragrance.id}
             />
             <NewCollectionDialog
               fragrance={fragrance}

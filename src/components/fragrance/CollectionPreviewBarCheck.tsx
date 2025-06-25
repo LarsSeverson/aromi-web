@@ -6,15 +6,17 @@ import clsx from 'clsx'
 
 export interface CollectionPreviewBarCheckProps {
   collection: BarCollectionPreview
-  defaultChecked?: boolean
+  onCheckedChange?: (value: boolean) => void | Promise<void>
 }
 
 const CollectionPreviewBarCheck = (props: CollectionPreviewBarCheckProps) => {
-  const { collection, defaultChecked = false } = props
-  const [checked, setChecked] = useState(defaultChecked)
+  const { collection, onCheckedChange } = props
+  const [checked, setChecked] = useState(collection.hasFragrance)
 
   const toggleChecked = () => {
-    setChecked((prev) => !prev)
+    const next = !checked
+    setChecked(next)
+    void onCheckedChange?.(next)
   }
 
   return (
@@ -26,6 +28,7 @@ const CollectionPreviewBarCheck = (props: CollectionPreviewBarCheckProps) => {
         collection={collection}
         className='flex-1'
       />
+
       <Checkbox.Root
         checked={checked}
         className={clsx(
@@ -33,7 +36,7 @@ const CollectionPreviewBarCheck = (props: CollectionPreviewBarCheckProps) => {
           'data-[unchecked]:border data-[unchecked]:border-gray-300 data-[unchecked]:bg-transparent',
           'data-[checked]:bg-sinopia ml-auto'
         )}
-        onCheckedChange={setChecked}
+        onClick={(e) => { e.stopPropagation() }}
       >
         <Checkbox.Indicator>
           <BsCheck

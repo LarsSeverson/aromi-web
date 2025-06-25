@@ -21,6 +21,7 @@ export const USER_QUERY = gql(/* GraphQL */`
 export const USER_COLLECTIONS_QUERY = gql(/* GraphQL */`
   query UserCollections(
     $userId: Int!
+    $fragranceId: Int
     $input: PaginationInput
   ) {
     user(id: $userId) {
@@ -29,6 +30,7 @@ export const USER_COLLECTIONS_QUERY = gql(/* GraphQL */`
         edges {
           node {
             ...FragranceCollectionSummary
+            hasFragrance(fragranceId: $fragranceId)
           }
         } 
         pageInfo {

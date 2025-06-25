@@ -1,14 +1,14 @@
-import { type FlattenType } from '@/common/util-types'
 import { type FragranceImage, type FragranceCollection } from '@/generated/graphql'
 import React from 'react'
 import GridImages from '../common/GridImages'
 import clsx from 'clsx'
+import { type FlattenEdges } from '@/common/pagination'
 
-type FlattenedCollection = FlattenType<FragranceCollection>
+type FlattenedCollection = FlattenEdges<FragranceCollection>
 type PartialImage = Pick<FragranceImage, 'id' | 'src'>
 interface PartialFragrance { images: PartialImage[] }
 type PartialItem = Pick<FlattenedCollection['items'][number], 'id'> & { fragrance: PartialFragrance }
-export type BarCollectionPreview = Pick<FlattenedCollection, 'name'> & { items: PartialItem[] }
+export type BarCollectionPreview = Pick<FlattenedCollection, 'name' | 'hasFragrance'> & { items: PartialItem[] }
 
 export interface CollectionPreviewBarProps extends React.HTMLAttributes<HTMLDivElement> {
   collection: BarCollectionPreview

@@ -4,12 +4,13 @@ import CollectionPreviewBarCheck from '../fragrance/CollectionPreviewBarCheck'
 
 export interface CollectionPopoverListProps {
   userId: number
+  fragranceId: number
 }
 
 const CollectionPopoverList = (props: CollectionPopoverListProps) => {
-  const { userId } = props
+  const { userId, fragranceId } = props
 
-  const { data } = useUserCollections(userId)
+  const { data } = useUserCollections(userId, undefined, fragranceId)
 
   return (
     <div

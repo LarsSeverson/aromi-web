@@ -6,13 +6,14 @@ import { type PaginationInput } from '@/generated/graphql'
 
 const useUserCollections = (
   userId: number,
-  input?: PaginationInput | undefined
+  input?: PaginationInput | undefined,
+  fragranceId?: number | undefined
 ) => {
   const {
     data, loading, error, networkStatus,
     fetchMore, refetch
   } = useQuery(USER_COLLECTIONS_QUERY, {
-    variables: { userId, input },
+    variables: { userId, input, fragranceId },
     notifyOnNetworkStatusChange: true
   })
 
@@ -26,13 +27,14 @@ const useUserCollections = (
 
     const variables = {
       userId,
+      fragranceId,
       input: {
         after: endCursor
       }
     }
 
     void fetchMore({ variables })
-  }, [userId, data?.user, networkStatus, fetchMore])
+  }, [userId, fragranceId, data?.user, networkStatus, fetchMore])
 
   const collections = useMemo(() => flatten(data?.user?.collections ?? []), [data?.user?.collections])
 

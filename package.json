@@ -28,6 +28,7 @@
     "react-svg": "^16.3.0",
     "react-textarea-autosize": "^8.5.9",
     "topbar": "^3.0.0",
+    "use-debounce": "^10.0.5",
     "zod": "^3.24.3"
   },
   "devDependencies": {
