@@ -13,7 +13,7 @@ export const COLLECTION_QUERY = gql(/* GraphQL */`
 export const COLLECTION_ITEMS_QUERY = gql(/* GraphQL */`
   query CollectionItems(
     $collectionId: Int!
-    $input: PaginationInput
+    $input: ControlledPaginationInput 
   ) {
     collection(id: $collectionId) {
       id

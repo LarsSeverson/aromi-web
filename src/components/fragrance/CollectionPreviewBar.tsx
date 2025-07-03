@@ -8,10 +8,10 @@ type FlattenedCollection = FlattenEdges<FragranceCollection>
 type PartialImage = Pick<FragranceImage, 'id' | 'src'>
 interface PartialFragrance { images: PartialImage[] }
 type PartialItem = Pick<FlattenedCollection['items'][number], 'id'> & { fragrance: PartialFragrance }
-export type BarCollectionPreview = Pick<FlattenedCollection, 'name' | 'hasFragrance'> & { items: PartialItem[] }
+export type CollectionPreviewBarCollection = Pick<FlattenedCollection, 'id' | 'name' | 'hasFragrance'> & { items: PartialItem[] }
 
 export interface CollectionPreviewBarProps extends React.HTMLAttributes<HTMLDivElement> {
-  collection: BarCollectionPreview
+  collection: CollectionPreviewBarCollection
 }
 
 const CollectionPreviewBar = (props: CollectionPreviewBarProps) => {

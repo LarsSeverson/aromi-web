@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 import { Checkbox } from '@base-ui-components/react'
-import CollectionPreviewBar, { type BarCollectionPreview } from './CollectionPreviewBar'
+import CollectionPreviewBar, { type CollectionPreviewBarCollection } from './CollectionPreviewBar'
 import { BsCheck } from 'react-icons/bs'
 import clsx from 'clsx'
 
 export interface CollectionPreviewBarCheckProps {
-  collection: BarCollectionPreview
-  onCheckedChange?: (value: boolean) => void | Promise<void>
+  collection: CollectionPreviewBarCollection
+  onCheckedChange?: (collectionId: number, value: boolean) => void
 }
 
 const CollectionPreviewBarCheck = (props: CollectionPreviewBarCheckProps) => {
@@ -15,13 +15,14 @@ const CollectionPreviewBarCheck = (props: CollectionPreviewBarCheckProps) => {
 
   const toggleChecked = () => {
     const next = !checked
+
     setChecked(next)
-    void onCheckedChange?.(next)
+    onCheckedChange?.(collection.id, next)
   }
 
   return (
     <div
-      className='w-full flex items-center px-2 py-0 active:scale-[0.99] hover:backdrop-brightness-95 gap-2 cursor-pointer'
+      className='w-full flex items-center px-2 py-0 hover:backdrop-brightness-95 gap-2 cursor-pointer'
       onClick={toggleChecked}
     >
       <CollectionPreviewBar

@@ -1,38 +1,38 @@
 import { NetworkStatus, useQuery } from '@apollo/client'
 import { useCallback, useMemo } from 'react'
-import { type PaginationInput } from '@/generated/graphql'
-import { USER_COLLECTIONS_QUERY } from '@/graphql/queries/UserQueries'
+import { type ControlledPaginationInput } from '@/generated/graphql'
 import { flatten } from '@/common/pagination'
+import { COLLECTION_ITEMS_QUERY } from '@/graphql/queries/CollectionQueries'
 
-const useUserCollections = (
-  userId: number,
-  input?: PaginationInput
+const useCollectionItems = (
+  collectionId: number,
+  input?: ControlledPaginationInput
 ) => {
   const {
     data, loading, error, networkStatus,
     fetchMore, refetch
-  } = useQuery(USER_COLLECTIONS_QUERY, {
-    variables: { userId, input },
+  } = useQuery(COLLECTION_ITEMS_QUERY, {
+    variables: { collectionId, input },
     notifyOnNetworkStatusChange: true
   })
 
   const loadMore = useCallback(() => {
-    if (data?.user == null) return
+    if (data?.collection == null) return
     if (networkStatus === NetworkStatus.fetchMore) return
 
-    const { hasNextPage, endCursor } = data.user.collections.pageInfo
+    const { hasNextPage, endCursor } = data.collection.items.pageInfo
 
     if (!hasNextPage || (endCursor == null)) return
 
     const variables = {
-      userId,
+      collectionId,
       input: { after: endCursor }
     }
 
     void fetchMore({ variables })
-  }, [userId, data, networkStatus, fetchMore])
+  }, [collectionId, data, networkStatus, fetchMore])
 
-  const collections = useMemo(() => flatten(data?.user?.collections ?? []), [data?.user?.collections])
+  const collections = useMemo(() => flatten(data?.collection.items ?? []), [data?.collection.items])
 
   return {
     data: collections,
@@ -45,4 +45,4 @@ const useUserCollections = (
   }
 }
 
-export default useUserCollections
+export default useCollectionItems

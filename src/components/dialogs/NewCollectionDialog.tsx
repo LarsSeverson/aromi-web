@@ -1,11 +1,24 @@
-import React, { useState, type SyntheticEvent } from 'react'
+import React, { useRef, useState, type SyntheticEvent } from 'react'
 import { Dialog, Field, Form } from '@base-ui-components/react'
 import clsx from 'clsx'
-import { PiPlusBold } from 'react-icons/pi'
 import { type FragrancePreviewCardFragrance } from '../fragrance/FragrancePreviewCard'
 import empty from '@/assets/fall-back-fi.svg'
 import { Overlay } from '../common/Overlay'
 import Spinner from '../common/Spinner'
+import CollectionPreviewBar, { type CollectionPreviewBarCollection } from '../fragrance/CollectionPreviewBar'
+import { INVALID_ID } from '@/common/util-types'
+import { FiPlus } from 'react-icons/fi'
+import { useCreateFragranceCollectionWithItem } from '@/hooks/useCreateFragranceCollectionWithItem'
+
+const NEW_COLLECTION_PLACEHOLDER = (fragrance: FragrancePreviewCardFragrance): CollectionPreviewBarCollection => ({
+  id: INVALID_ID,
+  name: 'New Collection',
+  items: [{
+    id: INVALID_ID,
+    fragrance
+  }],
+  hasFragrance: false
+})
 
 export interface NewCollectionDialogProps {
   fragrance: FragrancePreviewCardFragrance
@@ -14,40 +27,64 @@ export interface NewCollectionDialogProps {
 const NewCollectionDialog = (props: NewCollectionDialogProps) => {
   const { fragrance } = props
 
-  const [open, setOpen] = useState(false)
+  const { createFragranceCollectionWithItem } = useCreateFragranceCollectionWithItem()
+
+  const nameRef = useRef<HTMLInputElement>(null)
+
+  const [isOpen, setIsOpen] = useState(false)
+  const [, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
 
-  const handleSubmit = (event: SyntheticEvent) => {
+  const handleSubmit = async (event: SyntheticEvent) => {
     event.preventDefault()
 
     setLoading(true)
-    // (1) create collection
-    // (2) add fragrance to collection
-    setLoading(false)
 
-    setOpen(false)
+    await createFragranceCollectionWithItem({
+      name: nameRef.current?.value ?? 'My new collection',
+      fragranceId: fragrance.id
+    })
+      .andTee(console.log)
+      .orTee(error => {
+        console.log(error.graphQLErrors)
+      })
+      .match(
+        () => {
+          setIsOpen(false)
+        },
+        error => {
+          setError(error
+            .graphQLErrors
+            .map(e => e.message)
+            .join('; ')
+          )
+        }
+      )
+
+    setLoading(false)
   }
 
   return (
     <Dialog.Root
-      open={open}
-      onOpenChange={setOpen}
+      open={isOpen}
+      onOpenChange={setIsOpen}
     >
       <Dialog.Trigger
-        className={clsx(
-          'flex items-center justify-center w-full p-5 font-semibold shadow-[0_0px_10px_0px_rgba(0,0,0,0.1)] active:scale-[0.99] gap-2 mt-auto',
-          'hover:brightness-95 bg-white'
-        )}
+        className='w-full flex items-center px-2 py-0 hover:backdrop-brightness-95 gap-2 cursor-pointer justify-between'
       >
-        <PiPlusBold
-          size={20}
+        <CollectionPreviewBar
+          collection={NEW_COLLECTION_PLACEHOLDER(fragrance)}
         />
-        New collection
+        <FiPlus
+          size={22}
+        />
       </Dialog.Trigger>
+
       <Dialog.Portal>
         <Dialog.Backdrop
           className='bg-black/30 backdrop-blur-sm fixed inset-0'
         />
+
         <Dialog.Popup
           className='w-[720px] bg-white top-1/2 left-1/2 fixed -translate-x-1/2 -translate-y-1/2 rounded-xl overflow-hidden'
         >
@@ -59,7 +96,7 @@ const NewCollectionDialog = (props: NewCollectionDialogProps) => {
 
           <Form
             className='relative'
-            onSubmit={handleSubmit}
+            onSubmit={(event) => { void handleSubmit(event) }}
           >
             <div className='flex px-8 pb-8 pt-5 gap-8'>
               <div
@@ -98,6 +135,7 @@ const NewCollectionDialog = (props: NewCollectionDialogProps) => {
                     Name
                   </Field.Label>
                   <Field.Control
+                    ref={nameRef}
                     className={({ valid }) =>
                       clsx(
                         'w-full h-11 px-2 my-1 border-2 rounded-md outline-2 -outline-offset-1 outline-none focus:outline-sinopia',
