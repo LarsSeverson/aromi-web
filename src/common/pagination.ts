@@ -107,7 +107,12 @@ export const relayStylePagination = <TNode extends Reference = Reference> (
   }
 }
 
-export interface NodeWithEdges<T> { edges: Array<{ node: T }> }
+export interface NodeWithEdges<T> {
+  edges: Array<{
+    node: T
+    __typename?: string
+  }>
+}
 
 export type FlattenEdges<T> =
   T extends Date ? T :

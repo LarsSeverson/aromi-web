@@ -1,8 +1,8 @@
 import { createFileRoute } from '@tanstack/react-router'
 import React from 'react'
-import { ProfilePage } from '@/pages/ProfilePage'
+import { ProfilePage } from '@/features/user/pages/ProfilePage'
 import { client } from '@/common/client'
-import { useMyContext } from '@/contexts/MyContext'
+import { useMyContext } from '@/features/user/contexts/MyContext'
 import { USER_QUERY } from '@/graphql/queries/UserQueries'
 
 export const Route = createFileRoute('/user/$id')({

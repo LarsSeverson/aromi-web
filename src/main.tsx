@@ -3,12 +3,12 @@ import { createRoot } from 'react-dom/client'
 import { createRouter } from '@tanstack/react-router'
 import { routeTree } from './routeTree.gen'
 import App from './App'
-import { AuthProvider } from './contexts/providers/AuthProvider'
 import { ApolloProvider } from '@apollo/client'
 import { client } from './common/client'
-import { MyProvider } from './contexts/providers/MyContextProvider'
+import { MyProvider } from './features/user/contexts/MyContextProvider'
 import topbar from 'topbar'
 import { Colors } from './styles/Colors'
+import { AuthProvider } from './features/auth'
 
 topbar.config({ barThickness: 2, barColors: { 0: Colors.sinopia } })
 

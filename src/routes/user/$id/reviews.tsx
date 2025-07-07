@@ -1,7 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 import React from 'react'
-import ReviewsTab from '@/pages/profile/ReviewsTab'
-import { useMyContext } from '@/contexts/MyContext'
+import UserReviewsTab from '@/features/user/tabs/UserReviewsTab'
+import { useMyContext } from '@/features/user/contexts/MyContext'
 
 export const Route = createFileRoute('/user/$id/reviews')({
   component: Reviews,
@@ -13,7 +13,7 @@ function Reviews () {
   const { me } = useMyContext()
 
   return (
-    <ReviewsTab
+    <UserReviewsTab
       user={user}
       myReviews={me?.id === user.id}
     />

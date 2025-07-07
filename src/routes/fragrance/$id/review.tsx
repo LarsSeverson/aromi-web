@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 import React from 'react'
-import ReviewPage from '@/pages/ReviewPage'
+import FragranceReviewPage from '@/features/fragrance/pages/FragranceReviewPage'
 import { z } from 'zod'
 
 export const Route = createFileRoute('/fragrance/$id/review')({
@@ -19,7 +19,7 @@ function Review () {
   const { fragrance } = Route.useLoaderData()
 
   return (
-    <ReviewPage
+    <FragranceReviewPage
       rating={rating ?? 0}
       fragrance={fragrance}
     />

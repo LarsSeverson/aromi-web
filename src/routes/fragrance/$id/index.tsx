@@ -1,6 +1,6 @@
 import React from 'react'
 import { createFileRoute } from '@tanstack/react-router'
-import { FragrancePage } from '@/pages/FragrancePage'
+import { FragrancePage } from '@/features/fragrance/pages/FragrancePage'
 
 export const Route = createFileRoute('/fragrance/$id/')({
   component: FragranceIndex,

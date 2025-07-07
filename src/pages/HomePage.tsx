@@ -1,4 +1,4 @@
-import { HomeSuggestedSection } from '@/components/common/HomeSuggestedSection'
+import { HomeSuggestedSection } from '@/components/HomeSuggestedSection'
 import React from 'react'
 
 export const HomePage = () => {
