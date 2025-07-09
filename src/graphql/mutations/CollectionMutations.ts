@@ -34,6 +34,8 @@ export const DELETE_FRAGRANCE_COLLECTION_ITEM_MUTATION = gql(/* GraphQL */`
   mutation DeleteFragranceCollectionItem(
     $input: DeleteFragranceCollectionItemInput!
   ) {
-    deleteFragranceCollectionItem(input: $input)
+    deleteFragranceCollectionItem(input: $input) {
+      ...FragranceCollectionItemSummary
+    }
   }
 `)

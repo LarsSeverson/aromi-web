@@ -9,6 +9,7 @@ import { INVALID_ID } from '@/common/util-types'
 import { FiPlus } from 'react-icons/fi'
 import { useCreateCollectionWithItem } from '@/features/collection/hooks/useCreateCollectionWithItem'
 import { type FragrancePreviewCardFragrance } from '@/features/fragrance/components/FragrancePreviewCard'
+import { useToastError } from '@/hooks/useToastError'
 
 const NEW_COLLECTION_PLACEHOLDER = (fragrance: FragrancePreviewCardFragrance): CollectionPreviewBarCollection => ({
   id: INVALID_ID,
@@ -28,11 +29,11 @@ const NewCollectionDialog = (props: NewCollectionDialogProps) => {
   const { fragrance } = props
 
   const { createFragranceCollectionWithItem } = useCreateCollectionWithItem()
+  const { toastApolloError } = useToastError()
 
   const nameRef = useRef<HTMLInputElement>(null)
 
   const [isOpen, setIsOpen] = useState(false)
-  const [, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
 
   const handleSubmit = async (event: SyntheticEvent) => {
@@ -44,22 +45,15 @@ const NewCollectionDialog = (props: NewCollectionDialogProps) => {
       name: nameRef.current?.value ?? 'My new collection',
       fragranceId: fragrance.id
     })
-      .andTee(console.log)
-      .orTee(error => {
-        console.log(error.graphQLErrors)
-      })
       .match(
         () => {
-          setIsOpen(false)
+          //
         },
-        error => {
-          setError(error
-            .graphQLErrors
-            .map(e => e.message)
-            .join('; ')
-          )
-        }
+        toastApolloError
       )
+      .finally(() => {
+        setIsOpen(false)
+      })
 
     setLoading(false)
   }

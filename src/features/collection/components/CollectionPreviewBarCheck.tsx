@@ -6,7 +6,7 @@ import clsx from 'clsx'
 
 export interface CollectionPreviewBarCheckProps {
   collection: CollectionPreviewBarCollection
-  onCheckedChange?: (collectionId: number, value: boolean) => void
+  onCheckedChange?: (collectionId: number, value: boolean, prevValue: boolean) => void
 }
 
 const CollectionPreviewBarCheck = (props: CollectionPreviewBarCheckProps) => {
@@ -14,15 +14,16 @@ const CollectionPreviewBarCheck = (props: CollectionPreviewBarCheckProps) => {
   const [checked, setChecked] = useState(collection.hasFragrance)
 
   const toggleChecked = () => {
+    const prev = collection.hasFragrance
     const next = !checked
 
     setChecked(next)
-    onCheckedChange?.(collection.id, next)
+    onCheckedChange?.(collection.id, next, prev)
   }
 
   return (
     <div
-      className='w-full flex items-center px-2 py-0 hover:backdrop-brightness-95 gap-2 cursor-pointer'
+      className='w-full flex items-center px-2 py-0 hover:backdrop-brightness-95 gap-2'
       onClick={toggleChecked}
     >
       <CollectionPreviewBar

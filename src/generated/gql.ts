@@ -32,7 +32,7 @@ type Documents = {
     "\n  fragment FragranceAccordSummary on FragranceAccord {\n    id\n    accordId\n    name\n    color\n    isFill\n    votes {\n      voteScore\n      likesCount\n      dislikesCount\n      myVote\n    }\n  }\n": typeof types.FragranceAccordSummaryFragmentDoc,
     "\n  fragment FragranceNoteSummary on FragranceNote {\n    id\n    noteId\n    name\n    layer\n    isFill\n    votes {\n      voteScore\n      likesCount\n      dislikesCount\n      myVote\n    }\n  }\n": typeof types.FragranceNoteSummaryFragmentDoc,
     "\n  fragment FragranceReviewSummary on FragranceReview {\n    id\n    rating\n    text\n    votes {\n      voteScore\n      likesCount\n      dislikesCount\n      myVote\n    }\n    user {\n      ...UserSummary\n    }\n    fragrance {\n      ...FragranceSummary\n    }\n    audit {\n      ...AuditBase\n    }\n  }\n": typeof types.FragranceReviewSummaryFragmentDoc,
-    "\n  fragment FragranceCollectionSummary on FragranceCollection {\n    __typename\n    id\n    name\n    user {\n      id\n      username\n    }\n    items(input: { first: 4 }) {\n      ...FragranceCollectionItemConnection\n    }\n    audit {\n      ...AuditBase\n    }\n  }\n": typeof types.FragranceCollectionSummaryFragmentDoc,
+    "\n  fragment FragranceCollectionSummary on FragranceCollection {\n    id\n    name\n    user {\n      id\n      username\n    }\n    items(input: { first: 4 }) {\n      ...FragranceCollectionItemConnection\n    }\n    audit {\n      ...AuditBase\n    }\n  }\n": typeof types.FragranceCollectionSummaryFragmentDoc,
     "\n  fragment FragranceCollectionItemSummary on FragranceCollectionItem {\n    id\n    rank\n    fragrance {\n      ...FragranceSummary\n    }\n    audit {\n      ...AuditBase\n    }\n  }\n": typeof types.FragranceCollectionItemSummaryFragmentDoc,
     "\n  fragment FragranceVoteSummary on FragranceVote {\n    id\n    vote\n    fragrance {\n      ...FragranceSummary\n    }\n  }\n": typeof types.FragranceVoteSummaryFragmentDoc,
     "\n  fragment UserSummary on User {\n    id\n    username\n    email\n    followerCount\n    followingCount\n    audit {\n      ...AuditBase\n    }\n  }\n": typeof types.UserSummaryFragmentDoc,
@@ -47,7 +47,7 @@ type Documents = {
     "\n  mutation CreateFragranceCollection(\n    $input: CreateFragranceCollectionInput!\n  ) {\n    createFragranceCollection(input: $input) {\n      ...FragranceCollectionSummary\n    }\n  }\n": typeof types.CreateFragranceCollectionDocument,
     "\n  mutation CreateFragranceCollectionItem(\n    $input: CreateFragranceCollectionItemInput!\n  ) {\n    createFragranceCollectionItem(input: $input) {\n      ...FragranceCollectionItemSummary\n    }\n  }\n": typeof types.CreateFragranceCollectionItemDocument,
     "\n  mutation MoveFragranceCollectionItem(\n    $input: MoveFragranceCollectionItemInput!\n  ) {\n    moveFragranceCollectionItem(input: $input) {\n      ...FragranceCollectionItemSummary\n    }\n  }\n": typeof types.MoveFragranceCollectionItemDocument,
-    "\n  mutation DeleteFragranceCollectionItem(\n    $input: DeleteFragranceCollectionItemInput!\n  ) {\n    deleteFragranceCollectionItem(input: $input)\n  }\n": typeof types.DeleteFragranceCollectionItemDocument,
+    "\n  mutation DeleteFragranceCollectionItem(\n    $input: DeleteFragranceCollectionItemInput!\n  ) {\n    deleteFragranceCollectionItem(input: $input) {\n      ...FragranceCollectionItemSummary\n    }\n  }\n": typeof types.DeleteFragranceCollectionItemDocument,
     "\n  mutation LogFragranceView (\n    $input: LogFragranceViewInput!\n  ) {\n    logFragranceView(input: $input)\n  }\n": typeof types.LogFragranceViewDocument,
     "\n  mutation VoteOnFragrance(\n    $input: VoteOnFragranceInput!\n  ) {\n    voteOnFragrance(input: $input) {\n      id\n    }\n  }\n": typeof types.VoteOnFragranceDocument,
     "\n  query Collection(\n    $id: Int!\n  ) {\n    collection(id: $id) {\n      ...FragranceCollectionSummary\n    }\n  }\n": typeof types.CollectionDocument,
@@ -85,7 +85,7 @@ const documents: Documents = {
     "\n  fragment FragranceAccordSummary on FragranceAccord {\n    id\n    accordId\n    name\n    color\n    isFill\n    votes {\n      voteScore\n      likesCount\n      dislikesCount\n      myVote\n    }\n  }\n": types.FragranceAccordSummaryFragmentDoc,
     "\n  fragment FragranceNoteSummary on FragranceNote {\n    id\n    noteId\n    name\n    layer\n    isFill\n    votes {\n      voteScore\n      likesCount\n      dislikesCount\n      myVote\n    }\n  }\n": types.FragranceNoteSummaryFragmentDoc,
     "\n  fragment FragranceReviewSummary on FragranceReview {\n    id\n    rating\n    text\n    votes {\n      voteScore\n      likesCount\n      dislikesCount\n      myVote\n    }\n    user {\n      ...UserSummary\n    }\n    fragrance {\n      ...FragranceSummary\n    }\n    audit {\n      ...AuditBase\n    }\n  }\n": types.FragranceReviewSummaryFragmentDoc,
-    "\n  fragment FragranceCollectionSummary on FragranceCollection {\n    __typename\n    id\n    name\n    user {\n      id\n      username\n    }\n    items(input: { first: 4 }) {\n      ...FragranceCollectionItemConnection\n    }\n    audit {\n      ...AuditBase\n    }\n  }\n": types.FragranceCollectionSummaryFragmentDoc,
+    "\n  fragment FragranceCollectionSummary on FragranceCollection {\n    id\n    name\n    user {\n      id\n      username\n    }\n    items(input: { first: 4 }) {\n      ...FragranceCollectionItemConnection\n    }\n    audit {\n      ...AuditBase\n    }\n  }\n": types.FragranceCollectionSummaryFragmentDoc,
     "\n  fragment FragranceCollectionItemSummary on FragranceCollectionItem {\n    id\n    rank\n    fragrance {\n      ...FragranceSummary\n    }\n    audit {\n      ...AuditBase\n    }\n  }\n": types.FragranceCollectionItemSummaryFragmentDoc,
     "\n  fragment FragranceVoteSummary on FragranceVote {\n    id\n    vote\n    fragrance {\n      ...FragranceSummary\n    }\n  }\n": types.FragranceVoteSummaryFragmentDoc,
     "\n  fragment UserSummary on User {\n    id\n    username\n    email\n    followerCount\n    followingCount\n    audit {\n      ...AuditBase\n    }\n  }\n": types.UserSummaryFragmentDoc,
@@ -100,7 +100,7 @@ const documents: Documents = {
     "\n  mutation CreateFragranceCollection(\n    $input: CreateFragranceCollectionInput!\n  ) {\n    createFragranceCollection(input: $input) {\n      ...FragranceCollectionSummary\n    }\n  }\n": types.CreateFragranceCollectionDocument,
     "\n  mutation CreateFragranceCollectionItem(\n    $input: CreateFragranceCollectionItemInput!\n  ) {\n    createFragranceCollectionItem(input: $input) {\n      ...FragranceCollectionItemSummary\n    }\n  }\n": types.CreateFragranceCollectionItemDocument,
     "\n  mutation MoveFragranceCollectionItem(\n    $input: MoveFragranceCollectionItemInput!\n  ) {\n    moveFragranceCollectionItem(input: $input) {\n      ...FragranceCollectionItemSummary\n    }\n  }\n": types.MoveFragranceCollectionItemDocument,
-    "\n  mutation DeleteFragranceCollectionItem(\n    $input: DeleteFragranceCollectionItemInput!\n  ) {\n    deleteFragranceCollectionItem(input: $input)\n  }\n": types.DeleteFragranceCollectionItemDocument,
+    "\n  mutation DeleteFragranceCollectionItem(\n    $input: DeleteFragranceCollectionItemInput!\n  ) {\n    deleteFragranceCollectionItem(input: $input) {\n      ...FragranceCollectionItemSummary\n    }\n  }\n": types.DeleteFragranceCollectionItemDocument,
     "\n  mutation LogFragranceView (\n    $input: LogFragranceViewInput!\n  ) {\n    logFragranceView(input: $input)\n  }\n": types.LogFragranceViewDocument,
     "\n  mutation VoteOnFragrance(\n    $input: VoteOnFragranceInput!\n  ) {\n    voteOnFragrance(input: $input) {\n      id\n    }\n  }\n": types.VoteOnFragranceDocument,
     "\n  query Collection(\n    $id: Int!\n  ) {\n    collection(id: $id) {\n      ...FragranceCollectionSummary\n    }\n  }\n": types.CollectionDocument,
@@ -209,7 +209,7 @@ export function gql(source: "\n  fragment FragranceReviewSummary on FragranceRev
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\n  fragment FragranceCollectionSummary on FragranceCollection {\n    __typename\n    id\n    name\n    user {\n      id\n      username\n    }\n    items(input: { first: 4 }) {\n      ...FragranceCollectionItemConnection\n    }\n    audit {\n      ...AuditBase\n    }\n  }\n"): (typeof documents)["\n  fragment FragranceCollectionSummary on FragranceCollection {\n    __typename\n    id\n    name\n    user {\n      id\n      username\n    }\n    items(input: { first: 4 }) {\n      ...FragranceCollectionItemConnection\n    }\n    audit {\n      ...AuditBase\n    }\n  }\n"];
+export function gql(source: "\n  fragment FragranceCollectionSummary on FragranceCollection {\n    id\n    name\n    user {\n      id\n      username\n    }\n    items(input: { first: 4 }) {\n      ...FragranceCollectionItemConnection\n    }\n    audit {\n      ...AuditBase\n    }\n  }\n"): (typeof documents)["\n  fragment FragranceCollectionSummary on FragranceCollection {\n    id\n    name\n    user {\n      id\n      username\n    }\n    items(input: { first: 4 }) {\n      ...FragranceCollectionItemConnection\n    }\n    audit {\n      ...AuditBase\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -269,7 +269,7 @@ export function gql(source: "\n  mutation MoveFragranceCollectionItem(\n    $inp
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\n  mutation DeleteFragranceCollectionItem(\n    $input: DeleteFragranceCollectionItemInput!\n  ) {\n    deleteFragranceCollectionItem(input: $input)\n  }\n"): (typeof documents)["\n  mutation DeleteFragranceCollectionItem(\n    $input: DeleteFragranceCollectionItemInput!\n  ) {\n    deleteFragranceCollectionItem(input: $input)\n  }\n"];
+export function gql(source: "\n  mutation DeleteFragranceCollectionItem(\n    $input: DeleteFragranceCollectionItemInput!\n  ) {\n    deleteFragranceCollectionItem(input: $input) {\n      ...FragranceCollectionItemSummary\n    }\n  }\n"): (typeof documents)["\n  mutation DeleteFragranceCollectionItem(\n    $input: DeleteFragranceCollectionItemInput!\n  ) {\n    deleteFragranceCollectionItem(input: $input) {\n      ...FragranceCollectionItemSummary\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

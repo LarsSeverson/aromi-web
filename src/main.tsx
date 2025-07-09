@@ -9,6 +9,8 @@ import { MyProvider } from './features/user/contexts/MyContextProvider'
 import topbar from 'topbar'
 import { Colors } from './styles/Colors'
 import { AuthProvider } from './features/auth'
+import { Toast } from '@base-ui-components/react'
+import { Toaster } from './components/Toaster'
 
 topbar.config({ barThickness: 2, barColors: { 0: Colors.sinopia } })
 
@@ -41,7 +43,10 @@ if (root != null) {
       >
         <AuthProvider>
           <MyProvider>
-            <App />
+            <Toast.Provider>
+              <App />
+              <Toaster />
+            </Toast.Provider>
           </MyProvider>
         </AuthProvider>
       </ApolloProvider>

@@ -7,6 +7,41 @@ import { type ApolloCache, type FetchResult, makeReference, type Reference, useM
 export const useCreateCollection = () => {
   const myCtx = useMyContext()
 
+  const [
+    createFragranceCollection,
+    { data, loading, error }
+  ] = useMutation(
+    CREATE_FRAGRANCE_COLLECTION_MUTATION,
+    {
+      update (cache, result) {
+        handleUpdateCache(cache, result)
+      }
+    }
+  )
+
+  const handleUpdateMyCollections = (
+    cache: ApolloCache<unknown>,
+    existing: NodeWithEdges<Reference>,
+    incoming: CreateFragranceCollectionMutation['createFragranceCollection']
+  ) => {
+    const newCollectionId = cache.identify(incoming)
+    if (newCollectionId == null) return existing
+
+    const newCollectionRef = makeReference(newCollectionId)
+    const newEdges = (existing)
+      .edges
+      .slice()
+      .unshift({
+        __typename: 'FragranceCollectionEdge',
+        node: newCollectionRef
+      })
+
+    return {
+      ...existing,
+      edges: newEdges
+    }
+  }
+
   const handleUpdateCache = (
     cache: ApolloCache<unknown>,
     result: FetchResult<CreateFragranceCollectionMutation>
@@ -14,43 +49,16 @@ export const useCreateCollection = () => {
     const incoming = result.data?.createFragranceCollection
 
     if (myCtx.me == null) return
+    if (incoming == null) return
 
-    cache.modify({
-      id: cache.identify(myCtx.me),
-      fields: {
-        collections (existing = {}) {
-          if (incoming == null) return existing
-
-          const newCollectionId = cache.identify(incoming)
-          if (newCollectionId == null) return existing
-
-          const newCollectionRef = makeReference(newCollectionId)
-          const newEdges = (existing as NodeWithEdges<Reference>)
-            .edges
-            .slice()
-            .unshift({
-              __typename: 'FragranceCollectionEdge',
-              node: newCollectionRef
-            })
-
-          return {
-            ...existing,
-            edges: newEdges
-          }
+    cache
+      .modify({
+        id: cache.identify(myCtx.me),
+        fields: {
+          collections: (existing = { edges: [] }) => handleUpdateMyCollections(cache, existing as NodeWithEdges<Reference>, incoming)
         }
-      }
-    })
+      })
   }
-
-  const [
-    createFragranceCollection,
-    { data, loading, error }
-  ] = useMutation(
-    CREATE_FRAGRANCE_COLLECTION_MUTATION,
-    {
-      update: handleUpdateCache
-    }
-  )
 
   return {
     data,

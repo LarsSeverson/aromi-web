@@ -4,6 +4,9 @@ import clsx from 'clsx'
 import CollectionPopoverList from '@/features/collection/components/CollectionPopoverList'
 import BouncyButton from '@/components/BouncyButton'
 import { type FragrancePreviewCardFragrance } from '@/features/fragrance/components/FragrancePreviewCard'
+import { useModifyCollections } from '../hooks/useModifyCollections'
+import { useToastError } from '@/hooks/useToastError'
+import Spinner from '@/components/Spinner'
 
 export interface CollectionPopoverProps extends Popover.Root.Props {
   userId: number
@@ -13,9 +16,13 @@ export interface CollectionPopoverProps extends Popover.Root.Props {
 const CollectionPopover = (props: CollectionPopoverProps) => {
   const { userId, fragrance, ...rest } = props
 
-  const collectionsSelected = useRef(new Set<number>())
-  const [isOneCollectionSelected, setIsOneCollectionSelected] = useState(false)
+  const { modifyCollections } = useModifyCollections()
+  const { toastApolloError } = useToastError()
+
+  const collectionsModified = useRef(new Map<number, boolean>())
+  const [hasModifiedCollections, setHasModifiedCollections] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
   const handlePopoverTriggerClick = (e: SyntheticEvent) => {
     e.preventDefault()
@@ -27,25 +34,27 @@ const CollectionPopover = (props: CollectionPopoverProps) => {
   }
 
   const clearCollectionsSelected = () => {
-    collectionsSelected.current.clear()
-    setIsOneCollectionSelected(false)
+    collectionsModified.current.clear()
+    setHasModifiedCollections(false)
   }
 
   const handleOnCollectionSelected = (
     collectionId: number,
-    value: boolean
+    value: boolean,
+    prevValue: boolean
   ) => {
-    const doesExist = collectionsSelected.current.has(collectionId)
+    const shouldDelete = value === prevValue
+    const shouldAdd = !shouldDelete
 
-    if (doesExist && !value) {
-      collectionsSelected.current.delete(collectionId)
+    if (shouldDelete) {
+      collectionsModified.current.delete(collectionId)
     }
 
-    if (!doesExist && value) {
-      collectionsSelected.current.add(collectionId)
+    if (shouldAdd) {
+      collectionsModified.current.set(collectionId, value)
     }
 
-    setIsOneCollectionSelected(collectionsSelected.current.size > 0)
+    setHasModifiedCollections(collectionsModified.current.size > 0)
   }
 
   const handleOnOpenChange = (open: boolean) => {
@@ -56,6 +65,21 @@ const CollectionPopover = (props: CollectionPopoverProps) => {
   const handleOnCancel = () => {
     setIsOpen(false)
     clearCollectionsSelected()
+  }
+
+  const handleOnSubmit = async () => {
+    setIsLoading(true)
+
+    await modifyCollections(collectionsModified.current, fragrance.id)
+      .match(
+        () => {
+          //
+        },
+        toastApolloError
+      )
+
+    clearCollectionsSelected()
+    setIsLoading(false)
   }
 
   return (
@@ -106,11 +130,17 @@ const CollectionPopover = (props: CollectionPopoverProps) => {
                 >
                   Cancel
                 </BouncyButton>
-                {isOneCollectionSelected && (
+                {hasModifiedCollections && (
                   <BouncyButton
                     className='bg-sinopia rounded-3xl w-20 text-white h-10'
+                    onClick={() => { void handleOnSubmit() }}
                   >
-                    Done
+                    {isLoading && <Spinner />}
+                    <span
+                      className={clsx(isLoading && 'opacity-0')}
+                    >
+                      Done
+                    </span>
                   </BouncyButton>
                 )}
               </div>

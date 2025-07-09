@@ -8,7 +8,7 @@ import { type FragrancePreviewCardFragrance } from '@/features/fragrance/compone
 export interface CollectionPopoverListProps {
   userId: number
   fragrance: FragrancePreviewCardFragrance
-  onCollectionSelected?: (collectionId: number, value: boolean) => void
+  onCollectionSelected?: (collectionId: number, value: boolean, prevValue: boolean) => void
 }
 
 const CollectionPopoverList = (props: CollectionPopoverListProps) => {

@@ -10,7 +10,7 @@ export interface CreateCollectionWithItemVariables {
 
 export const useCreateCollectionWithItem = () => {
   const { createFragranceCollection } = useCreateCollection()
-  const { createFragranceCollectionItem } = useCreateCollectionItem()
+  const { createCollectionItem: createFragranceCollectionItem } = useCreateCollectionItem()
 
   const createFragranceCollectionWithItem = (variables: CreateCollectionWithItemVariables) => {
     return ResultAsync
