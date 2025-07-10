@@ -1720,6 +1720,14 @@ video {
   flex: none;
 }
 
+.flex-\[16\]{
+  flex: 16;
+}
+
+.flex-\[6\]{
+  flex: 6;
+}
+
 .flex-shrink{
   flex-shrink: 1;
 }
@@ -2102,6 +2110,12 @@ video {
   margin-bottom: calc(1.5rem * var(--tw-space-y-reverse));
 }
 
+.space-y-7 > :not([hidden]) ~ :not([hidden]){
+  --tw-space-y-reverse: 0;
+  margin-top: calc(1.75rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(1.75rem * var(--tw-space-y-reverse));
+}
+
 .divide-dashed > :not([hidden]) ~ :not([hidden]){
   border-style: dashed;
 }
@@ -2132,6 +2146,10 @@ video {
 
 .self-baseline{
   align-self: baseline;
+}
+
+.justify-self-center{
+  justify-self: center;
 }
 
 .overflow-auto{

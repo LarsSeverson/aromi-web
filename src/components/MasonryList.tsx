@@ -1,3 +1,4 @@
+import { type Identifiable } from '@/common/util-types'
 import { useWindowVirtualizer } from '@tanstack/react-virtual'
 import React, { useEffect } from 'react'
 
@@ -5,7 +6,7 @@ import React, { useEffect } from 'react'
   TODO: Variable height (an actual masonry list)
 */
 
-export interface MasonryListProps<T> extends React.HTMLAttributes<HTMLDivElement> {
+export interface MasonryListProps<T extends Identifiable> extends React.HTMLAttributes<HTMLDivElement> {
   items: T[]
 
   containerWidth: number
@@ -22,7 +23,7 @@ export interface MasonryListProps<T> extends React.HTMLAttributes<HTMLDivElement
   onEndReached?: () => void
 }
 
-export const MasonryList = <T, >(props: MasonryListProps<T>) => {
+export const MasonryList = <T extends Identifiable, >(props: MasonryListProps<T>) => {
   const {
     items,
     containerWidth,
@@ -31,7 +32,7 @@ export const MasonryList = <T, >(props: MasonryListProps<T>) => {
     itemHeight = 400,
     gap = 15,
     scale = 0.8,
-    onEndReachedThreshold = 500,
+    onEndReachedThreshold = 1000,
     initialScrollOffset = 0,
     onRenderItem,
     onRenderSkeleton,
@@ -52,7 +53,7 @@ export const MasonryList = <T, >(props: MasonryListProps<T>) => {
   const rowVirtualizer = useWindowVirtualizer({
     count: rowCount,
     estimateSize: () => effectiveHeight,
-    overscan: 5,
+    overscan: 12,
     gap,
     initialOffset: initialScrollOffset
   })
@@ -94,10 +95,13 @@ export const MasonryList = <T, >(props: MasonryListProps<T>) => {
               const x = colIndex * (effectiveWidth + gap)
               const y = virtualRow.start
               const isSkeleton = loading && idx >= items.length
+              const key = idx < items.length
+                ? `item-${items[idx].id}`
+                : `skeleton-${rowIndex}-${colIndex}`
 
               return (
                 <div
-                  key={`${rowIndex}-${colIndex}`}
+                  key={key}
                   style={{
                     position: 'absolute',
                     top: 0,
