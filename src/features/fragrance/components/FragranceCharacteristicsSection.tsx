@@ -1,11 +1,11 @@
 import React from 'react'
 import PageCategory from '@/components/PageCategory'
 import { CharacteristicsLadder } from './CharacteristicsLadder'
-import { type FragrancePageFragrance } from '../pages/FragrancePage'
 import useFragranceTraits from '../hooks/useFragranceTraits'
+import { type IFragranceSummary } from '../types'
 
 export interface FragranceCharacteristicsSectionProps {
-  fragrance: FragrancePageFragrance
+  fragrance: IFragranceSummary
 }
 
 const FragranceCharacteristicsSection = (props: FragranceCharacteristicsSectionProps) => {

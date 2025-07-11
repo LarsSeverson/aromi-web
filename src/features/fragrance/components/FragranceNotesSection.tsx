@@ -1,12 +1,12 @@
 import PageCategory from '@/components/PageCategory'
 import React from 'react'
 import NotesPyramid from './NotesPyramid'
-import { type FragrancePageFragrance } from '../pages/FragrancePage'
 import useFragranceNotes from '../hooks/useFragranceNotes'
 import { NoteLayer } from '@/generated/graphql'
+import { type IFragranceSummary } from '../types'
 
 export interface FragranceNotesSectionProps {
-  fragrance: FragrancePageFragrance
+  fragrance: IFragranceSummary
 }
 
 const FragranceNotesSection = (props: FragranceNotesSectionProps) => {

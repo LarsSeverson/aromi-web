@@ -1,6 +1,5 @@
 import React, { forwardRef, useState } from 'react'
 import PageCategory from '@/components/PageCategory'
-import { type FragrancePageFragrance } from '../pages/FragrancePage'
 import MyReviewSection from './MyReviewSection'
 import { useMyReview } from '@/features/user'
 import InteractableRatingStars from '@/components/InteractableRatingStars'
@@ -11,11 +10,12 @@ import Divider from '@/components/Divider'
 import { ReviewsList } from './ReviewsList'
 import useFragranceReviews from '../hooks/useFragranceReviews'
 import { PageNav } from '@/components/PageNav'
+import { type IFragranceSummary } from '../types'
 
 const REVIEWS_PER_PAGE = 4
 
 export interface FragranceReviewsSectionProps extends React.HTMLAttributes<HTMLDivElement> {
-  fragrance: FragrancePageFragrance
+  fragrance: IFragranceSummary
 }
 
 const FragranceReviewsSection = forwardRef<HTMLDivElement, FragranceReviewsSectionProps>((props, ref) => {

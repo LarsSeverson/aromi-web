@@ -1716,16 +1716,20 @@ video {
   flex: 3;
 }
 
+.flex-\[6\]{
+  flex: 6;
+}
+
 .flex-none{
   flex: none;
 }
 
-.flex-\[16\]{
-  flex: 16;
+.flex-\[5\]{
+  flex: 5;
 }
 
-.flex-\[6\]{
-  flex: 6;
+.flex-\[4\]{
+  flex: 4;
 }
 
 .flex-shrink{

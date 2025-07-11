@@ -9,6 +9,7 @@ export const Route = createFileRoute('/fragrance/$id/')({
 
 function FragranceIndex () {
   const { fragrance } = Route.useLoaderData()
+  console.log(fragrance.id)
 
   return (
     <FragrancePage

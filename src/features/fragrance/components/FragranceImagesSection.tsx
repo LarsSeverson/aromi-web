@@ -3,11 +3,11 @@ import fallback from '@/assets/fall-back-fi.svg'
 import { HiChevronLeft, HiChevronRight } from 'react-icons/hi'
 import clsx from 'clsx'
 import BouncyButton from '@/components/BouncyButton'
-import { type FragrancePageFragrance } from '../pages/FragrancePage'
 import useFragranceImages from '../hooks/useFragranceImages'
+import { type IFragranceSummary } from '../types'
 
 export interface FragranceImagesSectionProps extends HTMLAttributes<HTMLDivElement> {
-  fragrance: FragrancePageFragrance
+  fragrance: IFragranceSummary
 }
 
 export const FragranceImagesSection = (props: FragranceImagesSectionProps) => {
@@ -28,21 +28,21 @@ export const FragranceImagesSection = (props: FragranceImagesSectionProps) => {
 
   return (
     <div
-      className='flex flex-1 rounded-2xl overflow-hidden m-10 max-w-xl min-w-44'
+      className='flex flex-1 rounded-2xl overflow-hidden m-10'
     >
       <div
-        className='flex flex-row h-full w-full items-center group relative'
+        className='flex-1 flex flex-row items-center justify-center group relative'
       >
         <div
           className={clsx(
-            'w-full relative',
+            'relative w-full h-full',
             className
           )}
           style={dimensions !== null ? { aspectRatio: `${dimensions.width} / ${dimensions.height}` } : {}}
           {...rest}
         >
           <div
-            className='px-4 h-full w-full flex flex-row justify-between items-center z-10 absolute'
+            className='px-4 h-full flex flex-row justify-between items-center z-10 absolute'
           >
             {!empty && (
               <BouncyButton

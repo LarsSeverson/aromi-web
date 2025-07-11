@@ -1,3 +1,5 @@
+export * from './types'
+
 export * from './hooks/useFragrance'
 export * from './hooks/useFragranceAccords'
 export * from './hooks/useFragranceImages'

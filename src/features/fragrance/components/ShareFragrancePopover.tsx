@@ -11,11 +11,12 @@ import Divider from '@/components/Divider'
 export interface ShareFragrancePopoverProps extends Popover.Root.Props {
   userId: number
   fragrance: FragrancePreviewCardFragrance
+  onRenderTrigger?: () => React.ReactNode
 }
 
 const ShareFragrancePopover = (props: ShareFragrancePopoverProps) => {
   const router = useRouter()
-  const { userId, fragrance, ...rest } = props
+  const { userId, fragrance, onRenderTrigger, ...rest } = props
 
   const [isLinkLoading, setIsLinkLoading] = useState(false)
   const [showLinkFeedback, setShowLinkFeedback] = useState(false)
@@ -66,14 +67,17 @@ const ShareFragrancePopover = (props: ShareFragrancePopoverProps) => {
     <Popover.Root
       {...rest}
     >
-      <Popover.Trigger
-        className='rounded-full p-2 bg-white border-[1px] left-3 bottom-3 absolute text-center transition-transform active:scale-95 hover:brightness-95'
-        onClick={handlePopoverTriggerClick}
-      >
-        <GoShare
-          size={18}
-        />
-      </Popover.Trigger>
+      {onRenderTrigger?.() ??
+        (
+          <Popover.Trigger
+            className='rounded-full p-2 bg-white border-[1px] left-3 bottom-3 absolute text-center transition-transform active:scale-95 hover:brightness-95'
+            onClick={handlePopoverTriggerClick}
+          >
+            <GoShare
+              size={18}
+            />
+          </Popover.Trigger>
+        )}
       <Popover.Portal>
         <Popover.Positioner
           sideOffset={8}

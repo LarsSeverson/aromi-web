@@ -90,7 +90,7 @@ export const FragrancePreviewCard = (props: FragrancePreviewCardProps) => {
           )}
         >
           <div
-            className='pointer-events-auto'
+            className='pointer-events-auto absolute top-3 right-3'
           >
             <CollectionPopover
               userId={myContext.me?.id ?? INVALID_ID}

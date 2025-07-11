@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from 'react'
 import { FragranceImagesSection } from '@/features/fragrance/components/FragranceImagesSection'
-import { type Fragrance, type User } from '@/generated/graphql'
 import BouncyButton from '@/components/BouncyButton'
 import { useLogFragranceView } from '@/features/fragrance/hooks/useLogFragranceView'
 import { IoMdArrowRoundBack } from 'react-icons/io'
@@ -8,11 +7,10 @@ import FragranceInfoSection from '../components/FragranceInfoSection'
 import FragranceCharacteristicsSection from '../components/FragranceCharacteristicsSection'
 import FragranceNotesSection from '../components/FragranceNotesSection'
 import FragranceReviewsSection from '../components/FragranceReviewsSection'
+import { type IFragranceSummary } from '../types'
 
-export type FragrancePageUser = Pick<User, 'username' | 'id'>
-export type FragrancePageFragrance = Pick<Fragrance, 'id' | 'brand' | 'name' | 'rating' | 'reviewsCount' | 'reviewDistribution' | 'votes'>
 export interface FragrancePageProps {
-  fragrance: FragrancePageFragrance
+  fragrance: IFragranceSummary
 }
 
 export const FragrancePage = (props: FragrancePageProps) => {
@@ -59,13 +57,13 @@ export const FragrancePage = (props: FragrancePageProps) => {
       </div>
 
       <div
-        className='flex-[6] gap-5'
+        className='flex-[6] gap-5 h-full'
       >
         <div
-          className='flex flex-wrap gap-5'
+          className='flex-1 flex flex-wrap gap-5 h-full'
         >
           <div
-            className='border flex-1 rounded-xl flex'
+            className='border flex-1 rounded-xl flex h-full'
           >
             <FragranceImagesSection
               fragrance={fragrance}

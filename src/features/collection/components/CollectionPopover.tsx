@@ -91,7 +91,7 @@ const CollectionPopover = (props: CollectionPopoverProps) => {
       <Popover.Trigger
         tabIndex={0}
         className={clsx(
-          'bg-sinopia text-white rounded-full px-7 py-3 hover:shadow-lg hover:brightness-105 absolute top-3 right-3'
+          'bg-sinopia text-white rounded-full px-7 py-3 hover:shadow-lg hover:brightness-105'
         )}
         onClick={handlePopoverTriggerClick}
       >

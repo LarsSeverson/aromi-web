@@ -40,7 +40,7 @@ export const client = new ApolloClient({
         fields: {
           fragrances: relayStylePagination(),
           fragrance: {
-            keyArgs: false,
+            keyArgs: ['id'],
             merge (_, incoming) {
               return incoming
             }
