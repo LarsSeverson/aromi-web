@@ -8,6 +8,7 @@ import FragranceCharacteristicsSection from '../components/FragranceCharacterist
 import FragranceNotesSection from '../components/FragranceNotesSection'
 import FragranceReviewsSection from '../components/FragranceReviewsSection'
 import { type IFragranceSummary } from '../types'
+import { useCanGoBack, useRouter } from '@tanstack/react-router'
 
 export interface FragrancePageProps {
   fragrance: IFragranceSummary
@@ -16,6 +17,9 @@ export interface FragrancePageProps {
 export const FragrancePage = (props: FragrancePageProps) => {
   const { fragrance } = props
   const { id: fragranceId } = fragrance
+
+  const router = useRouter()
+  const canGoBack = useCanGoBack()
 
   const { logFragranceView } = useLogFragranceView()
 
@@ -28,6 +32,10 @@ export const FragrancePage = (props: FragrancePageProps) => {
         behavior: 'smooth'
       })
     }
+  }
+
+  const handleGoBack = () => {
+    router.history.back()
   }
 
   useEffect(() => {
@@ -43,17 +51,16 @@ export const FragrancePage = (props: FragrancePageProps) => {
       <div
         className='flex-1'
       >
-        <div
-          className='flex-1'
-        >
+        {canGoBack != null && (
           <BouncyButton
             className='ml-auto'
+            onClick={handleGoBack}
           >
             <IoMdArrowRoundBack
               size={32}
             />
           </BouncyButton>
-        </div>
+        )}
       </div>
 
       <div

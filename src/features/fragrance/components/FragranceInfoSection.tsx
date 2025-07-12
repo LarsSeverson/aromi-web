@@ -42,7 +42,7 @@ const FragranceInfoSection = (props: FragranceInfoSectionProps) => {
   return (
 
     <div
-      className='flex flex-col m-2 max-w-xl min-w-44'
+      className='flex flex-col m-2 min-w-44'
     >
 
       <div

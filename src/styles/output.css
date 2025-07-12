@@ -819,6 +819,10 @@ video {
   top: 1.25rem;
 }
 
+.bottom-\[50\%\]{
+  bottom: 50%;
+}
+
 .isolate{
   isolation: isolate;
 }
@@ -955,6 +959,11 @@ video {
 .my-20{
   margin-top: 5rem;
   margin-bottom: 5rem;
+}
+
+.my-24{
+  margin-top: 6rem;
+  margin-bottom: 6rem;
 }
 
 .my-3{
@@ -1287,6 +1296,10 @@ video {
 
 .h-screen{
   height: 100vh;
+}
+
+.max-h-36{
+  max-height: 9rem;
 }
 
 .max-h-\[32rem\]{
@@ -1722,14 +1735,6 @@ video {
 
 .flex-none{
   flex: none;
-}
-
-.flex-\[5\]{
-  flex: 5;
-}
-
-.flex-\[4\]{
-  flex: 4;
 }
 
 .flex-shrink{
@@ -2699,6 +2704,10 @@ video {
   padding: 5rem;
 }
 
+.p-24{
+  padding: 6rem;
+}
+
 .p-3{
   padding: 0.75rem;
 }
@@ -2878,6 +2887,16 @@ video {
   padding-bottom: 0.625rem;
 }
 
+.py-20{
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+}
+
+.py-24{
+  padding-top: 6rem;
+  padding-bottom: 6rem;
+}
+
 .py-3{
   padding-top: 0.75rem;
   padding-bottom: 0.75rem;
@@ -2886,6 +2905,51 @@ video {
 .py-4{
   padding-top: 1rem;
   padding-bottom: 1rem;
+}
+
+.px-\[\]{
+  padding-left: ;
+  padding-right: ;
+}
+
+.px-\[1\.5\]{
+  padding-left: 1.5;
+  padding-right: 1.5;
+}
+
+.py-\[1\.5\]{
+  padding-top: 1.5;
+  padding-bottom: 1.5;
+}
+
+.px-\[1\.5px\]{
+  padding-left: 1.5px;
+  padding-right: 1.5px;
+}
+
+.py-\[1\.5px\]{
+  padding-top: 1.5px;
+  padding-bottom: 1.5px;
+}
+
+.px-\[3px\]{
+  padding-left: 3px;
+  padding-right: 3px;
+}
+
+.px-\[5px\]{
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.px-\[6px\]{
+  padding-left: 6px;
+  padding-right: 6px;
+}
+
+.py-\[6px\]{
+  padding-top: 6px;
+  padding-bottom: 6px;
 }
 
 .pb-1{
@@ -3644,6 +3708,10 @@ video {
   transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
 }
 
+.contain-strict{
+  contain: strict;
+}
+
 html {
   scrollbar-gutter: stable;
 }
@@ -3853,6 +3921,18 @@ html {
 
 .group:hover .group-hover\:opacity-100{
   opacity: 1;
+}
+
+.group:hover .group-hover\:opacity-10{
+  opacity: 0.1;
+}
+
+.group:hover .group-hover\:opacity-90{
+  opacity: 0.9;
+}
+
+.group:hover .group-hover\:opacity-85{
+  opacity: 0.85;
 }
 
 .group:hover .group-hover\:outline-sinopia{

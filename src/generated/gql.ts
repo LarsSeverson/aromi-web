@@ -27,7 +27,7 @@ type Documents = {
     "\n  fragment FragranceCollectionItemConnection on FragranceCollectionItemConnection {\n    edges {\n      node {\n        ...FragranceCollectionItemSummary\n      }\n    }\n    pageInfo {\n      ...PageInfoBase\n    }\n  }\n": typeof types.FragranceCollectionItemConnectionFragmentDoc,
     "\n  fragment FragranceVoteConnection on FragranceVoteConnection {\n    edges {\n      node {\n        ...FragranceVoteSummary\n      }\n    }\n    pageInfo {\n      ...PageInfoBase\n    }\n  }\n": typeof types.FragranceVoteConnectionFragmentDoc,
     "\n  fragment FragranceSummary on Fragrance {\n    id\n    brand\n    name\n    votes {\n      voteScore\n      likesCount\n      dislikesCount\n      myVote\n    }\n    images(input: { first: 1 }) {\n      ...FragranceImageConnection \n    }\n  }\n": typeof types.FragranceSummaryFragmentDoc,
-    "\n  fragment FragranceImageSummary on FragranceImage {\n    id\n    src\n    bg\n  }\n": typeof types.FragranceImageSummaryFragmentDoc,
+    "\n  fragment FragranceImageSummary on FragranceImage {\n    id\n    src\n    bg\n    width\n    height\n  }\n": typeof types.FragranceImageSummaryFragmentDoc,
     "\n  fragment FragranceTraitSummary on FragranceTrait {\n    type\n    voteScore\n    myVote\n  }\n": typeof types.FragranceTraitSummaryFragmentDoc,
     "\n  fragment FragranceAccordSummary on FragranceAccord {\n    id\n    accordId\n    name\n    color\n    isFill\n    votes {\n      voteScore\n      likesCount\n      dislikesCount\n      myVote\n    }\n  }\n": typeof types.FragranceAccordSummaryFragmentDoc,
     "\n  fragment FragranceNoteSummary on FragranceNote {\n    id\n    noteId\n    name\n    layer\n    isFill\n    votes {\n      voteScore\n      likesCount\n      dislikesCount\n      myVote\n    }\n  }\n": typeof types.FragranceNoteSummaryFragmentDoc,
@@ -80,7 +80,7 @@ const documents: Documents = {
     "\n  fragment FragranceCollectionItemConnection on FragranceCollectionItemConnection {\n    edges {\n      node {\n        ...FragranceCollectionItemSummary\n      }\n    }\n    pageInfo {\n      ...PageInfoBase\n    }\n  }\n": types.FragranceCollectionItemConnectionFragmentDoc,
     "\n  fragment FragranceVoteConnection on FragranceVoteConnection {\n    edges {\n      node {\n        ...FragranceVoteSummary\n      }\n    }\n    pageInfo {\n      ...PageInfoBase\n    }\n  }\n": types.FragranceVoteConnectionFragmentDoc,
     "\n  fragment FragranceSummary on Fragrance {\n    id\n    brand\n    name\n    votes {\n      voteScore\n      likesCount\n      dislikesCount\n      myVote\n    }\n    images(input: { first: 1 }) {\n      ...FragranceImageConnection \n    }\n  }\n": types.FragranceSummaryFragmentDoc,
-    "\n  fragment FragranceImageSummary on FragranceImage {\n    id\n    src\n    bg\n  }\n": types.FragranceImageSummaryFragmentDoc,
+    "\n  fragment FragranceImageSummary on FragranceImage {\n    id\n    src\n    bg\n    width\n    height\n  }\n": types.FragranceImageSummaryFragmentDoc,
     "\n  fragment FragranceTraitSummary on FragranceTrait {\n    type\n    voteScore\n    myVote\n  }\n": types.FragranceTraitSummaryFragmentDoc,
     "\n  fragment FragranceAccordSummary on FragranceAccord {\n    id\n    accordId\n    name\n    color\n    isFill\n    votes {\n      voteScore\n      likesCount\n      dislikesCount\n      myVote\n    }\n  }\n": types.FragranceAccordSummaryFragmentDoc,
     "\n  fragment FragranceNoteSummary on FragranceNote {\n    id\n    noteId\n    name\n    layer\n    isFill\n    votes {\n      voteScore\n      likesCount\n      dislikesCount\n      myVote\n    }\n  }\n": types.FragranceNoteSummaryFragmentDoc,
@@ -189,7 +189,7 @@ export function gql(source: "\n  fragment FragranceSummary on Fragrance {\n    i
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\n  fragment FragranceImageSummary on FragranceImage {\n    id\n    src\n    bg\n  }\n"): (typeof documents)["\n  fragment FragranceImageSummary on FragranceImage {\n    id\n    src\n    bg\n  }\n"];
+export function gql(source: "\n  fragment FragranceImageSummary on FragranceImage {\n    id\n    src\n    bg\n    width\n    height\n  }\n"): (typeof documents)["\n  fragment FragranceImageSummary on FragranceImage {\n    id\n    src\n    bg\n    width\n    height\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

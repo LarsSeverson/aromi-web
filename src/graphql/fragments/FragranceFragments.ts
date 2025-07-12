@@ -22,6 +22,8 @@ export const FragranceImageFragment = gql(/* GraphQL */`
     id
     src
     bg
+    width
+    height
   }
 `)
 
