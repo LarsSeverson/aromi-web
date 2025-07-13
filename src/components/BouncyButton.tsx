@@ -12,8 +12,8 @@ const BouncyButton = (props: BouncyButtonProps) => {
     <button
       type='button'
       className={clsx(
-        'transition-transform active:scale-95 backdrop-brightness-100 hover:backdrop-brightness-90 p-3 flex justify-center items-center select-none',
         className,
+        'transition-transform active:scale-95 backdrop-brightness-100 hover:backdrop-brightness-90 p-3 flex justify-center items-center select-none',
         ((className?.includes('rounded')) ?? false) ? '' : 'rounded-lg',
         (disabled ?? false) && 'opacity-40 cursor-not-allowed'
       )}

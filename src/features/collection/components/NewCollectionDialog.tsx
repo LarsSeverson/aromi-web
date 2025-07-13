@@ -34,12 +34,12 @@ const NewCollectionDialog = (props: NewCollectionDialogProps) => {
   const nameRef = useRef<HTMLInputElement>(null)
 
   const [isOpen, setIsOpen] = useState(false)
-  const [loading, setLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
-  const handleSubmit = async (event: SyntheticEvent) => {
+  const handleNewCollectionSubmit = async (event: SyntheticEvent) => {
     event.preventDefault()
 
-    setLoading(true)
+    setIsLoading(true)
 
     await createFragranceCollectionWithItem({
       name: nameRef.current?.value ?? 'My new collection',
@@ -55,7 +55,7 @@ const NewCollectionDialog = (props: NewCollectionDialogProps) => {
         setIsOpen(false)
       })
 
-    setLoading(false)
+    setIsLoading(false)
   }
 
   return (
@@ -90,7 +90,7 @@ const NewCollectionDialog = (props: NewCollectionDialogProps) => {
 
           <Form
             className='relative'
-            onSubmit={(event) => { void handleSubmit(event) }}
+            onSubmit={(event) => { void handleNewCollectionSubmit(event) }}
           >
             <div className='flex px-8 pb-8 pt-5 gap-8'>
               <div
@@ -157,14 +157,14 @@ const NewCollectionDialog = (props: NewCollectionDialogProps) => {
               </Dialog.Close>
               <button
                 type='submit'
-                disabled={loading}
+                disabled={isLoading}
                 className={clsx(
                   'bg-sinopia text-white rounded-full px-7 py-3 hover:shadow-lg brightness-100 hover:brightness-105'
                 )}
               >
-                {loading && <Spinner />}
+                {isLoading && <Spinner />}
                 <div
-                  className={clsx(loading && 'opacity-0')}
+                  className={clsx(isLoading && 'opacity-0')}
                 >
                   Create
                 </div>

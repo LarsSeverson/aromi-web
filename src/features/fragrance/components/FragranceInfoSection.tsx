@@ -1,6 +1,5 @@
 import React from 'react'
 import BouncyButton from '@/components/BouncyButton'
-import { HiDotsHorizontal } from 'react-icons/hi'
 import RatingStars from '@/components/RatingStars'
 import { Colors } from '@/styles/Colors'
 import { VoteButton } from '@/components/VoteButton'
@@ -18,6 +17,7 @@ import { useMyContext } from '@/features/user'
 import { INVALID_ID } from '@/common/util-types'
 import { Popover } from '@base-ui-components/react'
 import CollectionPopover from '@/features/collection/components/CollectionPopover'
+import MoreOptionsFragrancePopover from './MoreOptionsFragrancePopover'
 
 export interface FragranceInfoSectionProps {
   fragrance: IFragranceSummary
@@ -54,13 +54,9 @@ const FragranceInfoSection = (props: FragranceInfoSectionProps) => {
           {name}
         </h2>
 
-        <BouncyButton
-          className='rounded-full aspect-square ml-auto'
-        >
-          <HiDotsHorizontal
-            size={20}
-          />
-        </BouncyButton>
+        <MoreOptionsFragrancePopover
+          fragrance={fragrance}
+        />
       </div>
 
       <h2 className='font-p text-xl'>
@@ -146,13 +142,14 @@ const FragranceInfoSection = (props: FragranceInfoSectionProps) => {
 
       <Divider
         horizontal
-        className='mb-5'
       />
 
       <div
         className='flex flex-col overflow-auto'
       >
-        <div className='flex flex-col gap-3'>
+        <div
+          className='flex flex-col gap-3'
+        >
           <PageCategory
             title='Accords'
           >
