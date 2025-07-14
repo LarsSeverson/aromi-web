@@ -17,3 +17,13 @@ export const VOTE_ON_FRAGRANCE_MUTATION = gql(/* GraphQL */`
     }
   }
 `)
+
+export const CREATE_FRAGRANCE_REPORT_MUTATION = gql(/* GraphQL */`
+  mutation CreateFragranceReport(
+    $input: CreateFragranceReportInput!
+  ) {
+    createFragranceReport(input: $input) {
+      id
+    }
+  }
+`)

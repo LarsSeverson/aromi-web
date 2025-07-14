@@ -53,7 +53,7 @@ export const FragrancePage = (props: FragrancePageProps) => {
       >
         {canGoBack != null && (
           <BouncyButton
-            className='ml-auto'
+            className='ml-auto sticky top-20'
             onClick={handleGoBack}
           >
             <IoMdArrowRoundBack

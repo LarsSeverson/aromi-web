@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import fallbackImage from '@/assets/fall-back-fi.svg'
 import { type IFragrancePreviewSummary } from '../types'
 import { Dialog, Form } from '@base-ui-components/react'
@@ -6,6 +6,13 @@ import { TbFlag } from 'react-icons/tb'
 import { Overlay } from '@/components/Overlay'
 import clsx from 'clsx'
 import Spinner from '@/components/Spinner'
+import { useCreateFragranceReport } from '../hooks/useCreateFragranceReport'
+import { ResultAsync } from 'neverthrow'
+import { useToastError } from '@/hooks/useToastError'
+import { useToastMessage } from '@/hooks/useToastMessage'
+
+const MIN_LENGTH = 100
+const MAX_LENGTH = 1000
 
 export interface ReportFragranceDialogProps {
   fragrance: IFragrancePreviewSummary
@@ -15,22 +22,54 @@ const ReportFragranceDialog = (props: ReportFragranceDialogProps) => {
   const { fragrance } = props
   const { brand, name, images } = fragrance
 
+  const { toastMessage } = useToastMessage()
+  const { toastApolloError } = useToastError()
+  const { createFragranceReport } = useCreateFragranceReport()
+
+  const reportRef = useRef<HTMLTextAreaElement>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [isReportEmpty, setIsReportEmpty] = useState(true)
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const [characterCount, setCharacterCount] = useState(0)
 
   const handleReportChange = (event: React.FormEvent<HTMLTextAreaElement>) => {
     const value = event.currentTarget.value
-    const isEmpty = value.length === 0
+    const length = value.length
 
-    setIsReportEmpty(isEmpty)
+    setCharacterCount(prev => (prev !== length ? length : prev))
+    setIsReportEmpty(length === 0)
   }
 
-  const handleReportSubmit = () => {
+  const handleReportSubmit = async (event: React.FormEvent) => {
+    event.preventDefault()
+    event.stopPropagation()
+
     setIsLoading(true)
+
+    const fragranceId = fragrance.id
+    const report = reportRef.current?.value ?? ''
+
+    await ResultAsync
+      .fromPromise(
+        createFragranceReport({ variables: { input: { fragranceId, report } } }),
+        error => { toastApolloError(error, 'Something went wrong creating this report') }
+      )
+      .match(
+        () => {
+          setIsDialogOpen(false)
+          toastMessage('Thanks for helping us improve.')
+        },
+        _ => {}
+      )
+
+    setIsLoading(false)
   }
 
   return (
-    <Dialog.Root>
+    <Dialog.Root
+      open={isDialogOpen}
+      onOpenChange={setIsDialogOpen}
+    >
       <Dialog.Trigger
         className='w-full flex p-3 hover:brightness-95 bg-white rounded-xl gap-2 items-center justify-start'
       >
@@ -60,7 +99,7 @@ const ReportFragranceDialog = (props: ReportFragranceDialogProps) => {
           </Dialog.Title>
 
           <Form
-            onSubmit={handleReportSubmit}
+            onSubmit={(event) => { void handleReportSubmit(event) }}
           >
             <div className='flex px-8 pb-8 pt-5 gap-8'>
               <div
@@ -92,9 +131,10 @@ const ReportFragranceDialog = (props: ReportFragranceDialogProps) => {
               </div>
 
               <div
-                className='flex-[2]'
+                className='flex-[2] flex flex-col gap-2'
               >
                 <textarea
+                  ref={reportRef}
                   placeholder='Notice something incorrect or missing? Tell us here...'
                   className={clsx(
                     'border border-gray-300 rounded-md w-full h-full p-4 resize-none outline-none hover:border-sinopia',
@@ -102,6 +142,24 @@ const ReportFragranceDialog = (props: ReportFragranceDialogProps) => {
                   )}
                   onInput={handleReportChange}
                 />
+
+                <div
+                  className='flex ml-auto gap-1'
+                >
+                  {characterCount < 100 && (
+                    <span
+                      className='text-sm text-gray-500'
+                    >
+                      Reports need to be at least {MIN_LENGTH} characters.
+                    </span>
+                  )}
+
+                  <span
+                    className='text-sm text-gray-500'
+                  >
+                    ({characterCount} / {MAX_LENGTH})
+                  </span>
+                </div>
               </div>
             </div>
 
@@ -114,7 +172,7 @@ const ReportFragranceDialog = (props: ReportFragranceDialogProps) => {
                 Cancel
               </Dialog.Close>
 
-              {!isReportEmpty && (
+              {!isReportEmpty && (characterCount >= MIN_LENGTH) && (
                 <button
                   type='submit'
                   disabled={isLoading}

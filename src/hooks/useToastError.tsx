@@ -5,10 +5,11 @@ export const useToastError = () => {
   const mngr = Toast.useToastManager()
 
   const toastApolloError = (
-    error: ApolloError,
+    error: unknown,
     title: string = 'Something went wrong'
   ) => {
-    const message = error.graphQLErrors?.[0]?.message ?? ''
+    const typed = error as ApolloError
+    const message = typed.graphQLErrors?.[0]?.message ?? ''
     mngr
       .add(
         {

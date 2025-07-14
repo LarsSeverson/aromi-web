@@ -22,7 +22,7 @@ export const FragranceImagesSection = (props: FragranceImagesSectionProps) => {
 
   return (
     <div
-      className='flex flex-1 items-center justify-center'
+      className='flex flex-1 items-center justify-center min-w-44'
     >
       <div
         className='rounded-2xl overflow-hidden group'
