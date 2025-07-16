@@ -42,7 +42,7 @@ const FragranceInfoSection = (props: FragranceInfoSectionProps) => {
   return (
 
     <div
-      className='flex flex-col m-2 min-w-44'
+      className='flex flex-1 flex-col min-w-44'
     >
 
       <div
@@ -59,7 +59,9 @@ const FragranceInfoSection = (props: FragranceInfoSectionProps) => {
         />
       </div>
 
-      <h2 className='font-p text-xl'>
+      <h2
+        className='font-p text-xl'
+      >
         {brand}
       </h2>
 
@@ -103,32 +105,28 @@ const FragranceInfoSection = (props: FragranceInfoSectionProps) => {
           </p>
         </BouncyButton>
 
-        <div
-          className='rounded-full px-3 py-0 flex items-center justify-center border gap-1 group'
-        >
-          <ShareFragrancePopover
-            fragrance={fragrance}
-            userId={myContext.me?.id ?? INVALID_ID}
-            onRenderTrigger={() => (
-              <Popover.Trigger>
-                <div
-                  className='h-8 flex items-center justify-center gap-2'
+        <ShareFragrancePopover
+          fragrance={fragrance}
+          userId={myContext.me?.id ?? INVALID_ID}
+          onRenderTrigger={() => (
+            <Popover.Trigger>
+              <div
+                className='rounded-full px-3 h-[34px] flex items-center justify-center border gap-1 group hover:brightness-95 bg-white'
+              >
+                <PiShareFat
+                  className='group-hover:text-sinopia'
+                  size={18}
+                />
+                <p
+                  className='font-semibold text-sm'
                 >
-                  <PiShareFat
-                    className='group-hover:text-sinopia'
-                    size={18}
-                  />
-                  <p
-                    className='font-semibold text-sm'
-                  >
-                    Share
-                  </p>
+                  Share
+                </p>
 
-                </div>
-              </Popover.Trigger>
-            )}
-          />
-        </div>
+              </div>
+            </Popover.Trigger>
+          )}
+        />
 
         <div
           className='flex ml-auto'
@@ -152,6 +150,9 @@ const FragranceInfoSection = (props: FragranceInfoSectionProps) => {
         >
           <PageCategory
             title='Accords'
+            isEmpty={accords.length === 0}
+            emptyTitle='No accords yet'
+            emptyButtonText='Vote on Accords'
           >
             <AccordsLadder
               accords={accords}

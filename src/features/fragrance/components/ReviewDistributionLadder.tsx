@@ -26,10 +26,21 @@ const ReviewDistributionLadder = (props: ReviewDistributionLadderProps) => {
       )}
       {...rest}
     >
-      <div className='table w-full font-light text-[14px] border-spacing-3'>
-        <div className='table-row'>
-          <div className='table-cell pr-1 text-center align-middle w-1/6 min-w-20'>5 stars</div>
-          <div className='table-cell align-middle'>
+      <div
+        className='table w-full font-light text-[14px] border-spacing-3'
+      >
+        <div
+          className='table-row'
+        >
+          <div
+            className='table-cell pr-1 text-center align-middle w-1/6 min-w-20'
+          >
+            5 stars
+          </div>
+
+          <div
+            className='table-cell align-middle'
+          >
             <LinearScaleBar
               value={getWidth(reviewDistribution.five)}
               color={Colors.sinopia}
@@ -38,9 +49,19 @@ const ReviewDistributionLadder = (props: ReviewDistributionLadderProps) => {
             />
           </div>
         </div>
-        <div className='table-row'>
-          <div className='table-cell pr-1 text-center align-middle w-1/6'>4 stars</div>
-          <div className='table-cell align-middle'>
+
+        <div
+          className='table-row'
+        >
+          <div
+            className='table-cell pr-1 text-center align-middle w-1/6'
+          >
+            4 stars
+          </div>
+
+          <div
+            className='table-cell align-middle'
+          >
             <LinearScaleBar
               value={getWidth(reviewDistribution.four)}
               color={Colors.cocoaBrown}
@@ -49,9 +70,19 @@ const ReviewDistributionLadder = (props: ReviewDistributionLadderProps) => {
             />
           </div>
         </div>
-        <div className='table-row'>
-          <div className='table-cell pr-1 text-center align-middle'>3 stars</div>
-          <div className='table-cell align-middle'>
+
+        <div
+          className='table-row'
+        >
+          <div
+            className='table-cell pr-1 text-center align-middle'
+          >
+            3 stars
+          </div>
+
+          <div
+            className='table-cell align-middle'
+          >
             <LinearScaleBar
               value={getWidth(reviewDistribution.three)}
               color={Colors.caramel}
@@ -60,9 +91,19 @@ const ReviewDistributionLadder = (props: ReviewDistributionLadderProps) => {
             />
           </div>
         </div>
-        <div className='table-row'>
-          <div className='table-cell pr-1 text-center align-middle'>2 stars</div>
-          <div className='table-cell align-middle'>
+
+        <div
+          className='table-row'
+        >
+          <div
+            className='table-cell pr-1 text-center align-middle'
+          >
+            2 stars
+          </div>
+
+          <div
+            className='table-cell align-middle'
+          >
             <LinearScaleBar
               value={getWidth(reviewDistribution.two)}
               color={Colors.butterscotch}
@@ -71,9 +112,18 @@ const ReviewDistributionLadder = (props: ReviewDistributionLadderProps) => {
             />
           </div>
         </div>
-        <div className='table-row'>
-          <div className='table-cell pr-1 text-center align-middle'>1 star</div>
-          <div className='table-cell align-middle'>
+        <div
+          className='table-row'
+        >
+          <div
+            className='table-cell pr-1 text-center align-middle'
+          >
+            1 star
+          </div>
+
+          <div
+            className='table-cell align-middle'
+          >
             <LinearScaleBar
               value={getWidth(reviewDistribution.one)}
               color={Colors.hunyadiYellow}

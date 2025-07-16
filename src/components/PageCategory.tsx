@@ -1,24 +1,23 @@
 import clsx from 'clsx'
 import React from 'react'
-import TextButton from './TextButton'
 
 export interface PageCategoryProps extends React.HTMLAttributes<HTMLDivElement> {
   title: string
-  expandText?: string | undefined
-  showSeeAll?: boolean | undefined
+  isEmpty?: boolean | undefined
+  emptyTitle?: string
+  emptyBody?: string
+  emptyButtonText?: string
   children?: React.ReactNode
-  onCategoryPressed?: () => void
-  onSeeAll?: (open: boolean) => void
 }
 
 const PageCategory = (props: PageCategoryProps) => {
   const {
     title,
-    expandText,
-    showSeeAll,
     children,
-    onCategoryPressed,
-    onSeeAll,
+    isEmpty = false,
+    emptyTitle = 'Nothing to show here',
+    emptyBody = 'Tried this fragrance? Help out the community by sharing your experience',
+    emptyButtonText = 'Write a review',
     className,
     ...rest
   } = props
@@ -39,25 +38,33 @@ const PageCategory = (props: PageCategoryProps) => {
         >
           {title}
         </h2>
-        {(showSeeAll ?? false) && (
-          <TextButton
-            text='see all'
-            onClick={() => { onSeeAll?.(true) }}
-          />
-        )}
       </div>
 
-      {children}
-
-      {/* {(expandText != null) && (
-        <BouncyButton
-          style={[styles.categoryButton, { borderColor: theme.colors.surfaceDisabled }]}
-          onPress={onCategoryPressed}
+      {isEmpty && (
+        <div
+          className='w-full text-center mt-10'
         >
-          <Text style={{ opacity: 0.8 }}>{expandText}</Text>
-        </BouncyButton>
-      )} */}
+          <h2
+            className='font-semibold text-lg'
+          >
+            {emptyTitle}
+          </h2>
 
+          <h5
+            className='font-medium opacity-80 mb-5 mt-2'
+          >
+            {emptyBody}
+          </h5>
+
+          <button
+            className='border-2 px-11 py-3 rounded-md font-medium hover:brightness-95 bg-white w-2/3'
+          >
+            {emptyButtonText}
+          </button>
+        </div>
+      )}
+
+      {children}
     </div>
   )
 }

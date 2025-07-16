@@ -31,6 +31,9 @@ const FragranceNotesSection = (props: FragranceNotesSectionProps) => {
   return (
     <PageCategory
       title='Notes'
+      emptyTitle='No notes yet'
+      emptyButtonText='Vote on Notes'
+      isEmpty={layers.length === 0}
     >
       <div className='w-full flex flex-col items-center'>
         <NotesPyramid

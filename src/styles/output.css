@@ -791,6 +791,14 @@ video {
   top: 50%;
 }
 
+.top-10{
+  top: 2.5rem;
+}
+
+.top-12{
+  top: 3rem;
+}
+
 .top-16{
   top: 4rem;
 }
@@ -819,12 +827,12 @@ video {
   top: 1.25rem;
 }
 
-.top-10{
-  top: 2.5rem;
+.top-\[\]{
+  top: ;
 }
 
-.top-12{
-  top: 3rem;
+.top-\[78px\]{
+  top: 78px;
 }
 
 .isolate{
@@ -1302,6 +1310,10 @@ video {
   height: 100vh;
 }
 
+.h-\[34px\]{
+  height: 34px;
+}
+
 .max-h-36{
   max-height: 9rem;
 }
@@ -1533,6 +1545,18 @@ video {
   width: 100vw;
 }
 
+.w-4\/5{
+  width: 80%;
+}
+
+.w-3\/4{
+  width: 75%;
+}
+
+.w-2\/3{
+  width: 66.666667%;
+}
+
 .min-w-0{
   min-width: 0px;
 }
@@ -1604,6 +1628,22 @@ video {
 
 .min-w-full{
   min-width: 100%;
+}
+
+.min-w-\[48px\]{
+  min-width: 48px;
+}
+
+.min-w-\[6px\]{
+  min-width: 6px;
+}
+
+.min-w-\[1px\]{
+  min-width: 1px;
+}
+
+.min-w-\[3px\]{
+  min-width: 3px;
 }
 
 .max-w-16{
@@ -2131,6 +2171,12 @@ video {
   --tw-space-y-reverse: 0;
   margin-top: calc(1.75rem * calc(1 - var(--tw-space-y-reverse)));
   margin-bottom: calc(1.75rem * var(--tw-space-y-reverse));
+}
+
+.space-y-3 > :not([hidden]) ~ :not([hidden]){
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.75rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.75rem * var(--tw-space-y-reverse));
 }
 
 .divide-dashed > :not([hidden]) ~ :not([hidden]){
@@ -2925,6 +2971,11 @@ video {
   padding-bottom: 6px;
 }
 
+.px-11{
+  padding-left: 2.75rem;
+  padding-right: 2.75rem;
+}
+
 .pb-1{
   padding-bottom: 0.25rem;
 }
@@ -2965,12 +3016,20 @@ video {
   padding-left: 0.5rem;
 }
 
+.pl-4{
+  padding-left: 1rem;
+}
+
 .pl-\[72px\]{
   padding-left: 72px;
 }
 
 .pr-1{
   padding-right: 0.25rem;
+}
+
+.pr-3{
+  padding-right: 0.75rem;
 }
 
 .pr-4{
@@ -3003,14 +3062,6 @@ video {
 
 .pt-\[72px\]{
   padding-top: 72px;
-}
-
-.pl-4{
-  padding-left: 1rem;
-}
-
-.pr-3{
-  padding-right: 0.75rem;
 }
 
 .text-left{
@@ -3790,6 +3841,11 @@ html {
 
 .hover\:brightness-\[\.98\]:hover{
   --tw-brightness: brightness(.98);
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+
+.hover\:brightness-75:hover{
+  --tw-brightness: brightness(.75);
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
 

@@ -13,8 +13,12 @@ const MyReviewSection = (props: MyReviewSectionProps) => {
     <PageCategory
       title='My review'
     >
-      <div className='w-full flex justify-center'>
-        <div className='w-full max-w-4xl'>
+      <div
+        className='w-full flex justify-center'
+      >
+        <div
+          className='w-full max-w-4xl'
+        >
           <MyReviewCard
             myReview={myReview}
           />

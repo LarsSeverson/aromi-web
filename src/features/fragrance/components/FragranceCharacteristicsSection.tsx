@@ -15,6 +15,7 @@ const FragranceCharacteristicsSection = (props: FragranceCharacteristicsSectionP
 
   return (
     <PageCategory
+      isEmpty={characteristics.length === 0}
       title='Characteristics'
     >
       <div

@@ -58,6 +58,7 @@ export const FragranceNoteFragment = gql(/* GraphQL */`
     name
     layer
     isFill
+    thumbnail
     votes {
       voteScore
       likesCount

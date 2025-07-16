@@ -17,24 +17,32 @@ const AccordsLadder = (props: AccordBarsProps) => {
   }, [maxVote])
 
   return (
-    <div {...rest}>
+    <div
+      {...rest}
+    >
       <div
         className='flex flex-col gap-2'
       >
-        {accords.map((accord, index) => {
-          return (
-            <div key={index}>
-              <p className='font-pd text-gray-800 mx-3'>
-                {accord.name}
-              </p>
-              <LinearScaleBar
+        {accords
+          .map((accord, index) => {
+            return (
+              <div
                 key={index}
-                value={getWidth(accord.votes.voteScore)}
-                color={accord.color}
-              />
-            </div>
-          )
-        })}
+              >
+                <p
+                  className='font-pd text-gray-800 mx-3'
+                >
+                  {accord.name}
+                </p>
+
+                <LinearScaleBar
+                  key={index}
+                  value={getWidth(accord.votes.voteScore)}
+                  color={accord.color}
+                />
+              </div>
+            )
+          })}
       </div>
     </div>
   )

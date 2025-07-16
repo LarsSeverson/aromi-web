@@ -1,8 +1,9 @@
+import { Overlay } from '@/components/Overlay'
 import { type FragranceNote } from '@/generated/graphql'
 import clsx from 'clsx'
 import React from 'react'
 
-export type CardNotePreview = Pick<FragranceNote, 'id' | 'layer' | 'noteId' | 'name' | 'votes'>
+export type CardNotePreview = Pick<FragranceNote, 'id' | 'layer' | 'noteId' | 'name' | 'votes' | 'thumbnail'>
 
 export interface NotePreviewCardProps extends React.HTMLAttributes<HTMLDivElement> {
   note: CardNotePreview
@@ -19,6 +20,8 @@ const NotePreviewCard = (props: NotePreviewCardProps) => {
     ...rest
   } = props
 
+  const { name, votes, thumbnail } = note
+
   return (
     <div
       className={clsx(
@@ -30,7 +33,18 @@ const NotePreviewCard = (props: NotePreviewCardProps) => {
       <div
         className='w-full aspect-square rounded-xl overflow-hidden bg-gray-200'
       >
-        <img />
+        {thumbnail != null && (
+          <div
+            className='relative'
+          >
+            <img
+              src={thumbnail}
+              className='object-cover'
+            />
+
+            <Overlay />
+          </div>
+        )}
       </div>
       <div
         className={clsx(
@@ -41,9 +55,9 @@ const NotePreviewCard = (props: NotePreviewCardProps) => {
         <p
           className='truncate font-pd text-[15px] opacity-85'
         >
-          {note?.name.toLowerCase()}
+          {name}
         </p>
-        {(showVotes ?? false) && note.votes.voteScore > 0 && <p>{note.votes.voteScore}</p>}
+        {(showVotes ?? false) && votes.voteScore > 0 && <p>{votes.voteScore}</p>}
       </div>
     </div>
   )

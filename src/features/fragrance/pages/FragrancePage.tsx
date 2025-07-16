@@ -46,14 +46,14 @@ export const FragrancePage = (props: FragrancePageProps) => {
 
   return (
     <div
-      className='flex flex-wrap h-full gap-5'
+      className='flex flex-wrap gap-5'
     >
       <div
         className='flex-1'
       >
         {canGoBack != null && (
           <BouncyButton
-            className='ml-auto sticky top-20'
+            className='ml-auto sticky top-[78px]'
             onClick={handleGoBack}
           >
             <IoMdArrowRoundBack
@@ -64,13 +64,13 @@ export const FragrancePage = (props: FragrancePageProps) => {
       </div>
 
       <div
-        className='flex-[6] gap-5 h-full'
+        className='flex-[6] gap-5'
       >
         <div
-          className='flex-1 flex flex-wrap gap-5 h-full'
+          className='flex-1 flex flex-wrap gap-5'
         >
           <div
-            className='border flex-1 rounded-xl flex h-full'
+            className='border flex-1 rounded-xl flex'
           >
             <FragranceImagesSection
               fragrance={fragrance}
