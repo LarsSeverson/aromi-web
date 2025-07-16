@@ -15,7 +15,7 @@ export const useToastError = () => {
         {
           title,
           description: message,
-          timeout: 10000
+          timeout: 7000
         }
       )
   }

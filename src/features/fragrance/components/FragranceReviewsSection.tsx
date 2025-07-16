@@ -2,15 +2,13 @@ import React, { forwardRef, useState } from 'react'
 import PageCategory from '@/components/PageCategory'
 import MyReviewSection from './MyReviewSection'
 import { useMyReview } from '@/features/user'
-import InteractableRatingStars from '@/components/InteractableRatingStars'
-import { Colors } from '@/styles/Colors'
-import { useNavigate } from '@tanstack/react-router'
 import { ReviewsSummary } from './ReviewsSummary'
 import Divider from '@/components/Divider'
 import { ReviewsList } from './ReviewsList'
 import useFragranceReviews from '../hooks/useFragranceReviews'
 import { PageNav } from '@/components/PageNav'
 import { type IFragranceSummary } from '../types'
+import StartReviewButton from './StartReviewButton'
 
 const REVIEWS_PER_PAGE = 4
 
@@ -20,8 +18,6 @@ export interface FragranceReviewsSectionProps extends React.HTMLAttributes<HTMLD
 
 const FragranceReviewsSection = forwardRef<HTMLDivElement, FragranceReviewsSectionProps>((props, ref) => {
   const { fragrance, ...rest } = props
-
-  const navigate = useNavigate()
 
   const { data: myReview } = useMyReview(fragrance.id)
   const { data: reviews } = useFragranceReviews(fragrance.id)
@@ -46,25 +42,12 @@ const FragranceReviewsSection = forwardRef<HTMLDivElement, FragranceReviewsSecti
         <div
           className='w-full flex flex-col items-center'
         >
-          <div className='max-w-4xl w-full'>
-            {myReview == null && (
-              <InteractableRatingStars
-                rating={0}
-                size={42}
-                emptyColor={Colors.empty2}
-                filledColor={Colors.sinopia}
-                className='mb-5'
-                onStarClick={(rating) => {
-                  void navigate({
-                    from: '/fragrance/$id',
-                    to: 'review',
-                    search: {
-                      rating
-                    }
-                  })
-                }}
-              />
-            )}
+          <div
+            className='max-w-4xl w-full'
+          >
+            <StartReviewButton
+              fragrance={fragrance}
+            />
 
             <ReviewsSummary
               rating={fragrance.rating}

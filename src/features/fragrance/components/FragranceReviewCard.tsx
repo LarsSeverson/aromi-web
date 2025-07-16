@@ -1,26 +1,35 @@
-import { type User, type FragranceReview } from '@/generated/graphql'
 import { Colors } from '@/styles/Colors'
 import React from 'react'
 import { HiDotsHorizontal } from 'react-icons/hi'
-import empty from '@/assets/avatar-empty.svg'
 import { formatDate } from '@/common/string-utils'
 import { VoteButton } from '@/components/VoteButton'
 import RatingStars from '@/components/RatingStars'
 import clsx from 'clsx'
 import BouncyButton from '@/components/BouncyButton'
-
-type FragranceReviewCardUser = Pick<User, 'id' | 'username'>
-export type FragranceReviewCardFragranceReview = Omit<FragranceReview, 'fragrance' | 'user'> & { user: FragranceReviewCardUser }
+import UserAvatar from '@/features/user/components/UserAvatar'
+import { useVoteOnReview } from '../hooks/useVoteOnReview'
+import { useToastError } from '@/hooks/useToastError'
+import { type IFragranceReviewSummary } from '../types'
 
 export interface FragranceReviewCardProps extends React.HTMLAttributes<HTMLDivElement> {
-  review: FragranceReviewCardFragranceReview
-  onVote?: (myVote: boolean | null) => void
+  review: IFragranceReviewSummary
 }
 
 export const FragranceReviewCard = (props: FragranceReviewCardProps) => {
-  const { review, onVote, className, ...rest } = props
+  const { review, className, ...rest } = props
   const { user, rating, text, votes, audit } = review
   const { username } = user
+
+  const { toastApolloError } = useToastError()
+  const { voteOnReview } = useVoteOnReview()
+
+  const handleVoteOnReview = async (vote: boolean | null) => {
+    await voteOnReview({ reviewId: review.id, vote })
+      .match(
+        () => {},
+        toastApolloError
+      )
+  }
 
   return (
     <div
@@ -33,11 +42,10 @@ export const FragranceReviewCard = (props: FragranceReviewCardProps) => {
       <div
         className='flex flex-row gap-5'
       >
-        <img
-          src={empty}
-          className='rounded-full min-w-16 w-16 aspect-square overflow-hidden object-cover'
-          style={{ backgroundColor: Colors.empty }}
+        <UserAvatar
+          user={user}
         />
+
         <div
           className='flex flex-col gap-2'
         >
@@ -52,7 +60,9 @@ export const FragranceReviewCard = (props: FragranceReviewCardProps) => {
               >
                 {username}
               </span>
+
               <span> • </span>
+
               <span
                 className='text-xs'
               >
@@ -60,6 +70,7 @@ export const FragranceReviewCard = (props: FragranceReviewCardProps) => {
               </span>
             </p>
           </div>
+
           <RatingStars
             rating={rating}
             filledColor={Colors.sinopia}
@@ -67,6 +78,7 @@ export const FragranceReviewCard = (props: FragranceReviewCardProps) => {
             size={18}
           />
         </div>
+
         <BouncyButton
           className='aspect-square rounded-full mb-auto ml-auto px-2'
         >
@@ -74,7 +86,9 @@ export const FragranceReviewCard = (props: FragranceReviewCardProps) => {
             size={22}
           />
         </BouncyButton>
+
       </div>
+
       {text.length > 0 && (
         <p
           className='px-5'
@@ -82,11 +96,12 @@ export const FragranceReviewCard = (props: FragranceReviewCardProps) => {
           {text}
         </p>
       )}
+
       <VoteButton
         votes={votes.voteScore}
         myVote={votes.myVote}
         className='mr-auto'
-        onVote={onVote}
+        onVote={handleVoteOnReview}
       />
     </div>
   )

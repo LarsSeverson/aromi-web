@@ -12,6 +12,7 @@ import { useVoteOnFragrance } from '@/features/fragrance/hooks/useVoteOnFragranc
 import { ResultAsync } from 'neverthrow'
 import { type ApolloError } from '@apollo/client'
 import ShareFragrancePopover from '@/features/fragrance/components/ShareFragrancePopover'
+import { useToastError } from '@/hooks/useToastError'
 
 export type FragrancePreviewCardFragrance = Pick<FlattenEdges<Fragrance>, 'id' | 'name' | 'brand' | 'votes'> & {
   images: FragranceImageCardImage[]
@@ -23,10 +24,12 @@ export interface FragrancePreviewCardProps extends LinkProps {
 }
 
 export const FragrancePreviewCard = (props: FragrancePreviewCardProps) => {
-  const myContext = useMyContext()
-  const { voteOnFragrance } = useVoteOnFragrance()
-
   const { fragrance, className, to, params, ...rest } = props
+
+  const myContext = useMyContext()
+
+  const { toastApolloError } = useToastError()
+  const { voteOnFragrance } = useVoteOnFragrance()
 
   const [isPopoverOpen, setIsPopoverOpen] = useState(false)
   const [isLinkFocused, setIsLinkFocused] = useState(false)
@@ -51,9 +54,7 @@ export const FragrancePreviewCard = (props: FragrancePreviewCardProps) => {
       )
       .match(
         _ => {},
-        error => {
-          console.log(error)
-        }
+        toastApolloError
       )
   }
 

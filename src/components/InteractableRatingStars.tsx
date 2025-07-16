@@ -97,7 +97,9 @@ const InteractableRatingStars = (props: InteractableRatingStarsProps) => {
         {stars}
       </div>
 
-      <p className='font-medium opacity-50'>
+      <p
+        className='text-sm opacity-50'
+      >
         {ratingMap[effectiveRating as keyof typeof ratingMap] ?? ratingMap[0]}
       </p>
     </div>

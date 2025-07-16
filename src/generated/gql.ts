@@ -50,6 +50,7 @@ type Documents = {
     "\n  mutation DeleteFragranceCollectionItem(\n    $input: DeleteFragranceCollectionItemInput!\n  ) {\n    deleteFragranceCollectionItem(input: $input) {\n      ...FragranceCollectionItemSummary\n    }\n  }\n": typeof types.DeleteFragranceCollectionItemDocument,
     "\n  mutation LogFragranceView (\n    $input: LogFragranceViewInput!\n  ) {\n    logFragranceView(input: $input)\n  }\n": typeof types.LogFragranceViewDocument,
     "\n  mutation VoteOnFragrance(\n    $input: VoteOnFragranceInput!\n  ) {\n    voteOnFragrance(input: $input) {\n      id\n    }\n  }\n": typeof types.VoteOnFragranceDocument,
+    "\n  mutation VoteOnReview(\n    $input: VoteOnReviewInput!\n  ) {\n    voteOnReview(input: $input) {\n      id\n    }\n  }\n": typeof types.VoteOnReviewDocument,
     "\n  mutation CreateFragranceReport(\n    $input: CreateFragranceReportInput!\n  ) {\n    createFragranceReport(input: $input) {\n      id\n    }\n  }\n": typeof types.CreateFragranceReportDocument,
     "\n  query Collection(\n    $id: Int!\n  ) {\n    collection(id: $id) {\n      ...FragranceCollectionSummary\n    }\n  }\n": typeof types.CollectionDocument,
     "\n  query CollectionItems(\n    $collectionId: Int!\n    $input: ControlledPaginationInput \n  ) {\n    collection(id: $collectionId) {\n      id\n      items(input: $input) {\n        ...FragranceCollectionItemConnection\n      }\n    }\n  }\n": typeof types.CollectionItemsDocument,
@@ -104,6 +105,7 @@ const documents: Documents = {
     "\n  mutation DeleteFragranceCollectionItem(\n    $input: DeleteFragranceCollectionItemInput!\n  ) {\n    deleteFragranceCollectionItem(input: $input) {\n      ...FragranceCollectionItemSummary\n    }\n  }\n": types.DeleteFragranceCollectionItemDocument,
     "\n  mutation LogFragranceView (\n    $input: LogFragranceViewInput!\n  ) {\n    logFragranceView(input: $input)\n  }\n": types.LogFragranceViewDocument,
     "\n  mutation VoteOnFragrance(\n    $input: VoteOnFragranceInput!\n  ) {\n    voteOnFragrance(input: $input) {\n      id\n    }\n  }\n": types.VoteOnFragranceDocument,
+    "\n  mutation VoteOnReview(\n    $input: VoteOnReviewInput!\n  ) {\n    voteOnReview(input: $input) {\n      id\n    }\n  }\n": types.VoteOnReviewDocument,
     "\n  mutation CreateFragranceReport(\n    $input: CreateFragranceReportInput!\n  ) {\n    createFragranceReport(input: $input) {\n      id\n    }\n  }\n": types.CreateFragranceReportDocument,
     "\n  query Collection(\n    $id: Int!\n  ) {\n    collection(id: $id) {\n      ...FragranceCollectionSummary\n    }\n  }\n": types.CollectionDocument,
     "\n  query CollectionItems(\n    $collectionId: Int!\n    $input: ControlledPaginationInput \n  ) {\n    collection(id: $collectionId) {\n      id\n      items(input: $input) {\n        ...FragranceCollectionItemConnection\n      }\n    }\n  }\n": types.CollectionItemsDocument,
@@ -280,6 +282,10 @@ export function gql(source: "\n  mutation LogFragranceView (\n    $input: LogFra
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(source: "\n  mutation VoteOnFragrance(\n    $input: VoteOnFragranceInput!\n  ) {\n    voteOnFragrance(input: $input) {\n      id\n    }\n  }\n"): (typeof documents)["\n  mutation VoteOnFragrance(\n    $input: VoteOnFragranceInput!\n  ) {\n    voteOnFragrance(input: $input) {\n      id\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation VoteOnReview(\n    $input: VoteOnReviewInput!\n  ) {\n    voteOnReview(input: $input) {\n      id\n    }\n  }\n"): (typeof documents)["\n  mutation VoteOnReview(\n    $input: VoteOnReviewInput!\n  ) {\n    voteOnReview(input: $input) {\n      id\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
