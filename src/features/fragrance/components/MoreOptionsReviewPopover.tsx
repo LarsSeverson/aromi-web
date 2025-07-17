@@ -1,15 +1,15 @@
-import React from 'react'
 import { Popover } from '@base-ui-components/react'
+import React from 'react'
 import { HiDotsHorizontal } from 'react-icons/hi'
-import ReportFragranceDialog from './ReportFragranceDialog'
-import { type IFragrancePreviewSummary } from '../types'
+import { type IFragranceReviewSummary } from '../types'
+import ReportReviewDialog from './ReportReviewDialog'
 
-export interface MoreOptionsFragrancePopoverProps {
-  fragrance: IFragrancePreviewSummary
+export interface MoreOptionsReviewPopoverProps {
+  review: IFragranceReviewSummary
 }
 
-const MoreOptionsFragrancePopover = (props: MoreOptionsFragrancePopoverProps) => {
-  const { fragrance } = props
+const MoreOptionsReviewPopover = (props: MoreOptionsReviewPopoverProps) => {
+  const { review } = props
 
   return (
     <Popover.Root>
@@ -26,8 +26,8 @@ const MoreOptionsFragrancePopover = (props: MoreOptionsFragrancePopoverProps) =>
           <Popover.Popup
             className='bg-white w-[20rem] max-h-[32rem] rounded-xl shadow-symmetrical flex flex-col justify-center items-center overflow-hidden p-5 gap-2'
           >
-            <ReportFragranceDialog
-              fragrance={fragrance}
+            <ReportReviewDialog
+              review={review}
             />
           </Popover.Popup>
         </Popover.Positioner>
@@ -36,4 +36,4 @@ const MoreOptionsFragrancePopover = (props: MoreOptionsFragrancePopoverProps) =>
   )
 }
 
-export default MoreOptionsFragrancePopover
+export default MoreOptionsReviewPopover

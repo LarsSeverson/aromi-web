@@ -20,9 +20,20 @@ const StartReviewButton = (props: StartReviewButtonProps) => {
 
   const user = myContext.me ?? PLACEHOLDER_USER
 
+  const handleRouteToReview = (rating?: number | undefined) => {
+    void navigate({
+      from: '/fragrance/$id',
+      to: 'review',
+      search: {
+        rating
+      }
+    })
+  }
+
   return (
     <div
       className='shadow-symmetrical p-5 group cursor-pointer'
+      onClick={() => { handleRouteToReview() }}
     >
       <div
         className='flex flex-col gap-5'
@@ -74,15 +85,7 @@ const StartReviewButton = (props: StartReviewButtonProps) => {
             emptyColor={Colors.empty2}
             filledColor={Colors.sinopia}
             className='ml-auto'
-            onStarClick={(rating) => {
-              void navigate({
-                from: '/fragrance/$id',
-                to: 'review',
-                search: {
-                  rating
-                }
-              })
-            }}
+            onStarClick={handleRouteToReview}
           />
         </div>
       </div>

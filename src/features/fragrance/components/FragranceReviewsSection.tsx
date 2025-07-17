@@ -30,11 +30,6 @@ const FragranceReviewsSection = forwardRef<HTMLDivElement, FragranceReviewsSecti
       ref={ref}
       {...rest}
     >
-      {myReview != null && (
-        <MyReviewSection
-          myReview={myReview}
-        />
-      )}
 
       <PageCategory
         title='Reviews'
@@ -45,15 +40,23 @@ const FragranceReviewsSection = forwardRef<HTMLDivElement, FragranceReviewsSecti
           <div
             className='max-w-4xl w-full'
           >
-            <StartReviewButton
-              fragrance={fragrance}
-            />
+            {myReview != null
+              ? (
+                <MyReviewSection
+                  myReview={myReview}
+                />
+                )
+              : (
+                <StartReviewButton
+                  fragrance={fragrance}
+                />
+                )}
 
             <ReviewsSummary
               rating={fragrance.rating}
               reviewCount={fragrance.reviewsCount}
               reviewDistribution={fragrance.reviewDistribution}
-              className='w-full max-w-4xl'
+              className='w-full max-w-4xl mt-3'
             />
 
             <Divider

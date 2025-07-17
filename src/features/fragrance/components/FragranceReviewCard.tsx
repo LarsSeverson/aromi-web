@@ -1,15 +1,14 @@
 import { Colors } from '@/styles/Colors'
 import React from 'react'
-import { HiDotsHorizontal } from 'react-icons/hi'
 import { formatDate } from '@/common/string-utils'
 import { VoteButton } from '@/components/VoteButton'
 import RatingStars from '@/components/RatingStars'
 import clsx from 'clsx'
-import BouncyButton from '@/components/BouncyButton'
 import UserAvatar from '@/features/user/components/UserAvatar'
 import { useVoteOnReview } from '../hooks/useVoteOnReview'
 import { useToastError } from '@/hooks/useToastError'
 import { type IFragranceReviewSummary } from '../types'
+import MoreOptionsReviewPopover from './MoreOptionsReviewPopover'
 
 export interface FragranceReviewCardProps extends React.HTMLAttributes<HTMLDivElement> {
   review: IFragranceReviewSummary
@@ -79,13 +78,13 @@ export const FragranceReviewCard = (props: FragranceReviewCardProps) => {
           />
         </div>
 
-        <BouncyButton
-          className='aspect-square rounded-full mb-auto ml-auto px-2'
+        <div
+          className='ml-auto'
         >
-          <HiDotsHorizontal
-            size={22}
+          <MoreOptionsReviewPopover
+            review={review}
           />
-        </BouncyButton>
+        </div>
 
       </div>
 

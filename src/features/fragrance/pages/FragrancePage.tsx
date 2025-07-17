@@ -64,7 +64,7 @@ export const FragrancePage = (props: FragrancePageProps) => {
       </div>
 
       <div
-        className='flex-[6] gap-5'
+        className='flex-[6] gap-5 w-full'
       >
         <div
           className='flex-1 flex flex-wrap gap-5'

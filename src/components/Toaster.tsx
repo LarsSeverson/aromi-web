@@ -15,7 +15,7 @@ export const Toaster = () => {
             <Toast.Root
               key={toast.id}
               toast={toast}
-              className='flex gap-2 py-3 pl-4 pr-3 min-w-80 rounded-xl shadow-xl backdrop-blur-2xl bg-gray-950/60 text-white'
+              className='flex gap-2 py-3 pl-4 pr-3 rounded-xl shadow-xl backdrop-blur-2xl bg-gray-950/60 text-white'
             >
 
               <div

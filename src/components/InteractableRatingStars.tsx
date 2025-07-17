@@ -67,6 +67,7 @@ const InteractableRatingStars = (props: InteractableRatingStarsProps) => {
           size={size}
           color={emptyColor}
         />
+
         <div
           className='absolute top-0 left-0 overflow-hidden'
           style={{ width: `${width}%`, height: size }}

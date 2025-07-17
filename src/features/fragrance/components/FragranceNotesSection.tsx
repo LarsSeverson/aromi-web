@@ -35,10 +35,12 @@ const FragranceNotesSection = (props: FragranceNotesSectionProps) => {
       emptyButtonText='Vote on Notes'
       isEmpty={layers.length === 0}
     >
-      <div className='w-full flex flex-col items-center'>
+      <div
+        className='w-full flex flex-col items-center flex-1'
+      >
         <NotesPyramid
           layers={layers}
-          className='mx-5 w-full max-w-4xl'
+          className='mx-5 w-full max-w-4xl flex-1'
         />
       </div>
     </PageCategory>

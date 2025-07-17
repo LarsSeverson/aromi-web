@@ -37,3 +37,13 @@ export const CREATE_FRAGRANCE_REPORT_MUTATION = gql(/* GraphQL */`
     }
   }
 `)
+
+export const CREATE_REVIEW_REPORT_MUTATION = gql(/* GraphQL */`
+  mutation CreateReviewReport(
+    $input: CreateReviewReportInput!
+  ) {
+    createReviewReport(input: $input) {
+      id
+    }
+  }
+`)

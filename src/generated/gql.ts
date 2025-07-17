@@ -52,6 +52,7 @@ type Documents = {
     "\n  mutation VoteOnFragrance(\n    $input: VoteOnFragranceInput!\n  ) {\n    voteOnFragrance(input: $input) {\n      id\n    }\n  }\n": typeof types.VoteOnFragranceDocument,
     "\n  mutation VoteOnReview(\n    $input: VoteOnReviewInput!\n  ) {\n    voteOnReview(input: $input) {\n      id\n    }\n  }\n": typeof types.VoteOnReviewDocument,
     "\n  mutation CreateFragranceReport(\n    $input: CreateFragranceReportInput!\n  ) {\n    createFragranceReport(input: $input) {\n      id\n    }\n  }\n": typeof types.CreateFragranceReportDocument,
+    "\n  mutation CreateReviewReport(\n    $input: CreateReviewReportInput!\n  ) {\n    createReviewReport(input: $input) {\n      id\n    }\n  }\n": typeof types.CreateReviewReportDocument,
     "\n  query Collection(\n    $id: Int!\n  ) {\n    collection(id: $id) {\n      ...FragranceCollectionSummary\n    }\n  }\n": typeof types.CollectionDocument,
     "\n  query CollectionItems(\n    $collectionId: Int!\n    $input: ControlledPaginationInput \n  ) {\n    collection(id: $collectionId) {\n      id\n      items(input: $input) {\n        ...FragranceCollectionItemConnection\n      }\n    }\n  }\n": typeof types.CollectionItemsDocument,
     "\n  query Fragrance(\n    $id: Int!\n  ) {\n    fragrance(id: $id) {\n      ...FragranceSummary\n      rating\n      reviewsCount\n      reviewDistribution {\n        one\n        two\n        three\n        four\n        five\n      }\n    }\n  }\n": typeof types.FragranceDocument,
@@ -107,6 +108,7 @@ const documents: Documents = {
     "\n  mutation VoteOnFragrance(\n    $input: VoteOnFragranceInput!\n  ) {\n    voteOnFragrance(input: $input) {\n      id\n    }\n  }\n": types.VoteOnFragranceDocument,
     "\n  mutation VoteOnReview(\n    $input: VoteOnReviewInput!\n  ) {\n    voteOnReview(input: $input) {\n      id\n    }\n  }\n": types.VoteOnReviewDocument,
     "\n  mutation CreateFragranceReport(\n    $input: CreateFragranceReportInput!\n  ) {\n    createFragranceReport(input: $input) {\n      id\n    }\n  }\n": types.CreateFragranceReportDocument,
+    "\n  mutation CreateReviewReport(\n    $input: CreateReviewReportInput!\n  ) {\n    createReviewReport(input: $input) {\n      id\n    }\n  }\n": types.CreateReviewReportDocument,
     "\n  query Collection(\n    $id: Int!\n  ) {\n    collection(id: $id) {\n      ...FragranceCollectionSummary\n    }\n  }\n": types.CollectionDocument,
     "\n  query CollectionItems(\n    $collectionId: Int!\n    $input: ControlledPaginationInput \n  ) {\n    collection(id: $collectionId) {\n      id\n      items(input: $input) {\n        ...FragranceCollectionItemConnection\n      }\n    }\n  }\n": types.CollectionItemsDocument,
     "\n  query Fragrance(\n    $id: Int!\n  ) {\n    fragrance(id: $id) {\n      ...FragranceSummary\n      rating\n      reviewsCount\n      reviewDistribution {\n        one\n        two\n        three\n        four\n        five\n      }\n    }\n  }\n": types.FragranceDocument,
@@ -290,6 +292,10 @@ export function gql(source: "\n  mutation VoteOnReview(\n    $input: VoteOnRevie
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(source: "\n  mutation CreateFragranceReport(\n    $input: CreateFragranceReportInput!\n  ) {\n    createFragranceReport(input: $input) {\n      id\n    }\n  }\n"): (typeof documents)["\n  mutation CreateFragranceReport(\n    $input: CreateFragranceReportInput!\n  ) {\n    createFragranceReport(input: $input) {\n      id\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation CreateReviewReport(\n    $input: CreateReviewReportInput!\n  ) {\n    createReviewReport(input: $input) {\n      id\n    }\n  }\n"): (typeof documents)["\n  mutation CreateReviewReport(\n    $input: CreateReviewReportInput!\n  ) {\n    createReviewReport(input: $input) {\n      id\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
