@@ -48,6 +48,13 @@ const InteractableRatingStars = (props: InteractableRatingStarsProps) => {
     return Math.max(0, Math.min(100, adjusted))
   }, [])
 
+  const handleStarClick = (e: React.SyntheticEvent, rating: number) => {
+    e.stopPropagation()
+    e.preventDefault()
+
+    onStarClick?.(rating)
+  }
+
   const stars = Array.from({ length: 5 }, (_, index) => {
     const startNumber = index + 1
     const fillPercentage = effectiveRating >= startNumber ? 100 : (effectiveRating - (startNumber - 1)) * 100
@@ -61,7 +68,7 @@ const InteractableRatingStars = (props: InteractableRatingStarsProps) => {
         )}
         style={{ width: size, height: size, marginRight: 2 }}
         onMouseEnter={() => { setHoveredRating(startNumber) }}
-        onClick={() => { onStarClick?.(startNumber) }}
+        onClick={(e) => { handleStarClick(e, startNumber) }}
       >
         <FaRegStar
           size={size}

@@ -1,14 +1,12 @@
 import React, { useEffect, useRef } from 'react'
 import { FragranceImagesSection } from '@/features/fragrance/components/FragranceImagesSection'
-import BouncyButton from '@/components/BouncyButton'
 import { useLogFragranceView } from '@/features/fragrance/hooks/useLogFragranceView'
-import { IoMdArrowRoundBack } from 'react-icons/io'
 import FragranceInfoSection from '../components/FragranceInfoSection'
 import FragranceCharacteristicsSection from '../components/FragranceCharacteristicsSection'
 import FragranceNotesSection from '../components/FragranceNotesSection'
 import FragranceReviewsSection from '../components/FragranceReviewsSection'
 import { type IFragranceSummary } from '../types'
-import { useCanGoBack, useRouter } from '@tanstack/react-router'
+import FragranceBackButton from '../components/FragranceBackButton'
 
 export interface FragrancePageProps {
   fragrance: IFragranceSummary
@@ -17,9 +15,6 @@ export interface FragrancePageProps {
 export const FragrancePage = (props: FragrancePageProps) => {
   const { fragrance } = props
   const { id: fragranceId } = fragrance
-
-  const router = useRouter()
-  const canGoBack = useCanGoBack()
 
   const { logFragranceView } = useLogFragranceView()
 
@@ -32,10 +27,6 @@ export const FragrancePage = (props: FragrancePageProps) => {
         behavior: 'smooth'
       })
     }
-  }
-
-  const handleGoBack = () => {
-    router.history.back()
   }
 
   useEffect(() => {
@@ -51,20 +42,13 @@ export const FragrancePage = (props: FragrancePageProps) => {
       <div
         className='flex-1'
       >
-        {canGoBack != null && (
-          <BouncyButton
-            className='ml-auto sticky top-[78px]'
-            onClick={handleGoBack}
-          >
-            <IoMdArrowRoundBack
-              size={32}
-            />
-          </BouncyButton>
-        )}
+        <FragranceBackButton
+          className='sticky top-[87px] ml-auto'
+        />
       </div>
 
       <div
-        className='flex-[6] gap-5 w-full'
+        className='flex-[6] w-full'
       >
         <div
           className='flex-1 flex flex-wrap gap-5'

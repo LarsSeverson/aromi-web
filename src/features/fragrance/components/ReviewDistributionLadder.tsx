@@ -27,13 +27,13 @@ const ReviewDistributionLadder = (props: ReviewDistributionLadderProps) => {
       {...rest}
     >
       <div
-        className='table w-full font-light text-[14px] border-spacing-3'
+        className='table w-full font-light text-[14px] border-spacing-y-3'
       >
         <div
           className='table-row'
         >
           <div
-            className='table-cell pr-1 text-center align-middle w-1/6 min-w-20'
+            className='table-cell text-center align-middle w-1/6 min-w-20'
           >
             5 stars
           </div>
@@ -54,7 +54,7 @@ const ReviewDistributionLadder = (props: ReviewDistributionLadderProps) => {
           className='table-row'
         >
           <div
-            className='table-cell pr-1 text-center align-middle w-1/6'
+            className='table-cell text-center align-middle w-1/6'
           >
             4 stars
           </div>
@@ -75,7 +75,7 @@ const ReviewDistributionLadder = (props: ReviewDistributionLadderProps) => {
           className='table-row'
         >
           <div
-            className='table-cell pr-1 text-center align-middle'
+            className='table-cell text-center align-middle'
           >
             3 stars
           </div>
@@ -96,7 +96,7 @@ const ReviewDistributionLadder = (props: ReviewDistributionLadderProps) => {
           className='table-row'
         >
           <div
-            className='table-cell pr-1 text-center align-middle'
+            className='table-cell text-center align-middle'
           >
             2 stars
           </div>
@@ -116,7 +116,7 @@ const ReviewDistributionLadder = (props: ReviewDistributionLadderProps) => {
           className='table-row'
         >
           <div
-            className='table-cell pr-1 text-center align-middle'
+            className='table-cell text-center align-middle'
           >
             1 star
           </div>
