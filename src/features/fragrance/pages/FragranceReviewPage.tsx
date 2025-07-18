@@ -1,32 +1,14 @@
-import VoteAccordsList from '@/features/fragrance/components/VoteAccordsList'
-import { Icon } from '@/components/Icon'
-import InteractableRatingStars from '@/components/InteractableRatingStars'
-import MiddleSlider from '@/components/MiddleSlider'
-import PageCategory from '@/components/PageCategory'
-import useFragranceAccords from '@/features/fragrance/hooks/useFragranceAccords'
-import gender from '@/assets/gender.svg'
-import longevity from '@/assets/longevity.svg'
-import sillage from '@/assets/sillage.svg'
-import complexity from '@/assets/complexity.svg'
-import balance from '@/assets/balance.svg'
-import allure from '@/assets/allure.svg'
-import fallbackImage from '@/assets/fall-back-fi.svg'
-import { Colors } from '@/styles/Colors'
 import React from 'react'
-import { type Fragrance } from '@/generated/graphql'
-import TextareaAutosize from 'react-textarea-autosize'
-import clsx from 'clsx'
-import { TiArrowLeftThick } from 'react-icons/ti'
-import useFragranceImages from '@/features/fragrance/hooks/useFragranceImages'
-import { Overlay } from '@/components/Overlay'
-import RatingStars from '@/components/RatingStars'
-import { Link, useCanGoBack, useRouter } from '@tanstack/react-router'
+import VoteOnAccordsSection from '@/features/fragrance/components/VoteOnAccordsSection'
+import InteractableRatingStars from '@/components/InteractableRatingStars'
+import { Colors } from '@/styles/Colors'
 import Divider from '@/components/Divider'
-import BouncyButton from '@/components/BouncyButton'
 import FragranceBackButton from '../components/FragranceBackButton'
 import { type IFragranceSummary } from '../types'
-import ReviewDistributionLadder from '../components/ReviewDistributionLadder'
-import { ReviewsSummary } from '../components/ReviewsSummary'
+import VoteOnCharacteristicsSection from '../components/VoteOnCharacteristicsSection'
+import { Accordion } from '@base-ui-components/react'
+import VoteOnNotesSection from '../components/VoteOnNotesSection'
+import WriteAReviewSection from '../components/WriteAReviewSection'
 
 export interface FragranceReviewPageProps {
   fragrance: IFragranceSummary
@@ -35,17 +17,7 @@ export interface FragranceReviewPageProps {
 
 const FragranceReviewPage = (props: FragranceReviewPageProps) => {
   const { fragrance, rating } = props
-  const {
-    id,
-    name,
-    brand,
-    rating: fragranceRating,
-    reviewDistribution,
-    reviewsCount
-  } = fragrance
-
-  const { data: images } = useFragranceImages(id)
-  const { data: accords } = useFragranceAccords(id)
+  const { name, brand } = fragrance
 
   return (
     <div
@@ -62,15 +34,17 @@ const FragranceReviewPage = (props: FragranceReviewPageProps) => {
       <div
         className='flex-[6] flex-col gap-5 w-full max-w-3xl'
       >
-        <div>
+        <div
+          className='px-4'
+        >
           <p
-            className='mx-2 mt-2 font-semibold text-xl truncate'
+            className='font-semibold text-xl truncate'
           >
             {name}
           </p>
 
           <p
-            className='mx-2 font-light text-lg'
+            className='font-light text-lg'
           >
             {brand}
           </p>
@@ -78,20 +52,38 @@ const FragranceReviewPage = (props: FragranceReviewPageProps) => {
 
         <Divider
           horizontal
-          className='my-3'
+          className='my-3 mx-4'
         />
 
-        <PageCategory
-          title='How are the accords?'
+        <Accordion.Root
+          className='flex flex-col'
         >
-          {}
-        </PageCategory>
+          <div
+            className='p-4'
+          >
+            <h1
+              className='text-lg font-bold'
+            >
+              How would you rate this fragrance?
+            </h1>
 
-        <PageCategory
-          title='How do the notes develop?'
-        >
-          {}
-        </PageCategory>
+            <InteractableRatingStars
+              rating={rating}
+              size={32}
+              emptyColor={Colors.empty2}
+              filledColor={Colors.sinopia}
+              className='mr-auto text-md flex items-center gap-1 mt-2'
+            />
+          </div>
+
+          <VoteOnAccordsSection />
+
+          <VoteOnCharacteristicsSection />
+
+          <VoteOnNotesSection />
+
+          <WriteAReviewSection />
+        </Accordion.Root>
       </div>
 
       <div

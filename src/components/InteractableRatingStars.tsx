@@ -2,15 +2,7 @@ import clsx from 'clsx'
 import React, { useCallback, useState } from 'react'
 import { FaStar, FaRegStar } from 'react-icons/fa'
 import BouncyButton from './BouncyButton'
-
-export const ratingMap = {
-  0: 'Select your rating',
-  1: 'Terrible',
-  2: 'Poor',
-  3: 'Average',
-  4: 'Good',
-  5: 'Excellent'
-}
+import { ratingMap } from '@/features/fragrance'
 
 export interface InteractableRatingStarsProps extends React.HTMLAttributes<HTMLDivElement> {
   rating: number
@@ -91,7 +83,6 @@ const InteractableRatingStars = (props: InteractableRatingStarsProps) => {
   return (
     <div
       className={clsx(
-        'flex flex-col items-center gap-3',
         className
       )}
       {...rest}
@@ -106,7 +97,7 @@ const InteractableRatingStars = (props: InteractableRatingStarsProps) => {
       </div>
 
       <p
-        className='text-sm opacity-50'
+        className='opacity-50'
       >
         {ratingMap[effectiveRating as keyof typeof ratingMap] ?? ratingMap[0]}
       </p>

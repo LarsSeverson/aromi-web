@@ -84,7 +84,7 @@ const StartReviewButton = (props: StartReviewButtonProps) => {
             size={30}
             emptyColor={Colors.empty2}
             filledColor={Colors.sinopia}
-            className='ml-auto'
+            className='ml-auto text-md flex flex-col items-center gap-1'
             onStarClick={handleRouteToReview}
           />
         </div>
