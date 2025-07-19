@@ -17,7 +17,7 @@ export interface FragranceReviewPageProps {
 
 const FragranceReviewPage = (props: FragranceReviewPageProps) => {
   const { fragrance, rating } = props
-  const { name, brand } = fragrance
+  const { id, name, brand } = fragrance
 
   return (
     <div
@@ -76,7 +76,9 @@ const FragranceReviewPage = (props: FragranceReviewPageProps) => {
             />
           </div>
 
-          <VoteOnAccordsSection />
+          <VoteOnAccordsSection
+            fragranceId={id}
+          />
 
           <VoteOnCharacteristicsSection />
 

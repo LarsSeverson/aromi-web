@@ -48,6 +48,9 @@ export const FragranceAccordFragment = gql(/* GraphQL */`
       dislikesCount
       myVote
     }
+    audit {
+      ...AuditBase
+    }
   }
 `)
 

@@ -1,6 +1,6 @@
+import React from 'react'
 import { Accordion } from '@base-ui-components/react'
 import clsx from 'clsx'
-import React from 'react'
 
 export interface VoteOnSectionPanelProps {
   children?: React.ReactNode

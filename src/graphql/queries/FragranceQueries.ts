@@ -70,7 +70,14 @@ export const FRAGRANCE_ACCORDS_QUERY = gql(/* GraphQL */`
     fragrance(id: $fragranceId) {
       id
       accords(input: $input) {
-        ...FragranceAccordConnection
+        edges {
+          node {
+            ...FragranceAccordSummary
+          }
+        } 
+        pageInfo {
+          ...PageInfoBase
+        }
       }
     } 
   }

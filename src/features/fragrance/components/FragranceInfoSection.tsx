@@ -18,6 +18,7 @@ import { INVALID_ID } from '@/common/util-types'
 import { Popover } from '@base-ui-components/react'
 import CollectionPopover from '@/features/collection/components/CollectionPopover'
 import MoreOptionsFragrancePopover from './MoreOptionsFragrancePopover'
+import { VoteSortBy } from '@/generated/graphql'
 
 export interface FragranceInfoSectionProps {
   fragrance: IFragranceSummary
@@ -32,7 +33,7 @@ const FragranceInfoSection = (props: FragranceInfoSectionProps) => {
 
   const myContext = useMyContext()
 
-  const { data: accords } = useFragranceAccords(id, { pagination: { first: 10 } })
+  const { data: accords } = useFragranceAccords(id, { pagination: { first: 10, sort: { by: VoteSortBy.Votes } } })
   const { voteOnFragrance } = useVoteOnFragrance()
 
   const handleFragranceVote = (vote: boolean | null) => {

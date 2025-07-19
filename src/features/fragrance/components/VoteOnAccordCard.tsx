@@ -1,16 +1,14 @@
 import React, { useMemo, useState } from 'react'
 import { formatNumber } from '@/common/string-utils'
-import { type FragranceAccord } from '@/generated/graphql'
 import clsx from 'clsx'
 import BouncyButton, { type BouncyButtonProps } from '@/components/BouncyButton'
+import { type IFragranceAccordSummary } from '../types'
 
-export type CardAccordPreview = FragranceAccord
-
-export interface AccordVoteCardProps extends BouncyButtonProps {
-  accord: CardAccordPreview
+export interface VoteOnAccordCardProps extends BouncyButtonProps {
+  accord: IFragranceAccordSummary
 }
 
-const AccordVoteCard = (props: AccordVoteCardProps) => {
+const VoteOnAccordCard = (props: VoteOnAccordCardProps) => {
   const { accord, className, ...rest } = props
   const { color: backgroundColor, name, votes } = accord
   const { voteScore, myVote } = votes
@@ -83,4 +81,4 @@ const AccordVoteCard = (props: AccordVoteCardProps) => {
   )
 }
 
-export default AccordVoteCard
+export default VoteOnAccordCard
