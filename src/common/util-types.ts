@@ -1,3 +1,5 @@
+import { okAsync } from 'neverthrow'
+
 export const INVALID_ID = -1
 
 export type NonNullableVariables<T> = T extends object
@@ -5,3 +7,5 @@ export type NonNullableVariables<T> = T extends object
   : T
 
 export interface Identifiable { id: number | string }
+
+export const noRes = okAsync(undefined)

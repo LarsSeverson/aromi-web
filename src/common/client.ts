@@ -54,7 +54,8 @@ export const client = new ApolloClient({
               return { ...existing, ...incoming }
             }
           },
-          accords: relayStylePagination()
+          accords: relayStylePagination(),
+          fillerAccords: relayStylePagination()
         }
       },
       FragranceNote: {

@@ -41,7 +41,6 @@ export const FragranceAccordFragment = gql(/* GraphQL */`
     accordId
     name
     color
-    isFill
     votes {
       voteScore
       likesCount
@@ -60,7 +59,6 @@ export const FragranceNoteFragment = gql(/* GraphQL */`
     noteId
     name
     layer
-    isFill
     thumbnail
     votes {
       voteScore

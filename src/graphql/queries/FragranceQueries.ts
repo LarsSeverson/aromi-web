@@ -65,7 +65,7 @@ export const FRAGRANCE_TRAITS_QUERY = gql(/* GraphQL */`
 export const FRAGRANCE_ACCORDS_QUERY = gql(/* GraphQL */`
   query FragranceAccords(
     $fragranceId: Int!
-    $input: AccordsInput
+    $input: VotePaginationInput
   ) {
     fragrance(id: $fragranceId) {
       id
@@ -83,10 +83,31 @@ export const FRAGRANCE_ACCORDS_QUERY = gql(/* GraphQL */`
   }
 `)
 
+export const FILLER_FRAGRANCE_ACCORDS_QUERY = gql(/* GraphQL */`
+  query FillerFragranceAccords(
+    $fragranceId: Int!
+    $input: PaginationInput
+  ) {
+    fragrance(id: $fragranceId) {
+      id
+      fillerAccords(input: $input) {
+        edges {
+          node {
+            ...FragranceAccordSummary
+          }
+        }
+        pageInfo {
+          ...PageInfoBase
+        }
+      }
+    }
+  }
+`)
+
 export const FRAGRANCE_NOTES_QUERY = gql(/* GraphQL */`
   query FragranceNotes(
     $fragranceId: Int!
-    $input: NotesInput
+    $input: VotePaginationInput
   ) {
     fragrance(id: $fragranceId) {
       id

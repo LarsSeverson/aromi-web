@@ -1,19 +1,19 @@
-import { type ApolloError, NetworkStatus, useQuery } from '@apollo/client'
-import { useMemo } from 'react'
-import { FRAGRANCE_ACCORDS_QUERY } from '@/graphql/queries/FragranceQueries'
 import { flatten } from '@/common/pagination'
-import { type FragranceAccordsQueryVariables, type VotePaginationInput } from '@/generated/graphql'
-import { ResultAsync } from 'neverthrow'
 import { noRes } from '@/common/util-types'
+import { type FillerFragranceAccordsQueryVariables, type PaginationInput } from '@/generated/graphql'
+import { FILLER_FRAGRANCE_ACCORDS_QUERY } from '@/graphql/queries/FragranceQueries'
+import { type ApolloError, NetworkStatus, useQuery } from '@apollo/client'
+import { ResultAsync } from 'neverthrow'
+import { useMemo } from 'react'
 
-const useFragranceAccords = (
+export const useFillerFragranceAccords = (
   fragranceId: number,
-  input?: VotePaginationInput
+  input?: PaginationInput
 ) => {
   const {
     data, loading, error, networkStatus,
     refetch, fetchMore
-  } = useQuery(FRAGRANCE_ACCORDS_QUERY, {
+  } = useQuery(FILLER_FRAGRANCE_ACCORDS_QUERY, {
     variables: { fragranceId, input },
     notifyOnNetworkStatusChange: true
   })
@@ -22,11 +22,11 @@ const useFragranceAccords = (
     if (data?.fragrance == null) return noRes
     if (networkStatus === NetworkStatus.fetchMore) return noRes
 
-    const { hasNextPage, endCursor } = data.fragrance.accords.pageInfo
+    const { hasNextPage, endCursor } = data.fragrance.fillerAccords.pageInfo
 
     if (!hasNextPage || (endCursor == null)) return noRes
 
-    const newVariables: FragranceAccordsQueryVariables = {
+    const newVariables: FillerFragranceAccordsQueryVariables = {
       fragranceId,
       input: {
         ...(input ?? {}),
@@ -42,8 +42,8 @@ const useFragranceAccords = (
       .map(result => result.data)
   }
 
-  const accords = useMemo(() => flatten(data?.fragrance?.accords ?? []), [data?.fragrance?.accords])
-  const hasMore = useMemo(() => data?.fragrance?.accords.pageInfo.hasNextPage ?? false, [data?.fragrance?.accords.pageInfo.hasNextPage])
+  const accords = useMemo(() => flatten(data?.fragrance?.fillerAccords ?? []), [data?.fragrance?.fillerAccords])
+  const hasMore = useMemo(() => data?.fragrance?.fillerAccords.pageInfo.hasNextPage ?? false, [data?.fragrance?.fillerAccords.pageInfo])
 
   return {
     data: accords,
@@ -56,5 +56,3 @@ const useFragranceAccords = (
     refetch
   }
 }
-
-export default useFragranceAccords
