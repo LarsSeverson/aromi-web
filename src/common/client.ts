@@ -1,6 +1,6 @@
 import { ApolloClient, ApolloLink, from, HttpLink, InMemoryCache, makeVar } from '@apollo/client'
 import { setContext } from '@apollo/client/link/context'
-import { relayStylePagination } from './pagination'
+import { customRelayStylePagination } from './pagination'
 import { print } from 'graphql'
 
 export const accessToken = makeVar<string | null>(null)
@@ -38,7 +38,7 @@ export const client = new ApolloClient({
     typePolicies: {
       Query: {
         fields: {
-          fragrances: relayStylePagination(),
+          fragrances: customRelayStylePagination(),
           fragrance: {
             keyArgs: ['id'],
             merge (_, incoming) {
@@ -48,18 +48,27 @@ export const client = new ApolloClient({
         }
       },
       Fragrance: {
+        keyFields: ['id'],
         fields: {
+          accords: customRelayStylePagination(),
+          fillerAccords: customRelayStylePagination(),
+
           notes: {
-            merge (existing = {}, incoming) {
-              return { ...existing, ...incoming }
-            }
-          },
-          accords: relayStylePagination(),
-          fillerAccords: relayStylePagination()
+            merge: true
+          }
         }
       },
-      FragranceNote: {
-        keyFields: ['id', 'layer']
+      FragranceNotes: {
+        fields: {
+          top: customRelayStylePagination(),
+          fillerTop: customRelayStylePagination(),
+
+          middle: customRelayStylePagination(),
+          fillerMiddle: customRelayStylePagination(),
+
+          bottom: customRelayStylePagination(),
+          fillerBottom: customRelayStylePagination()
+        }
       }
     }
   })

@@ -29,6 +29,7 @@ export const FragranceImageFragment = gql(/* GraphQL */`
 
 export const FragranceTraitFragment = gql(/* GraphQL */`
   fragment FragranceTraitSummary on FragranceTrait {
+    id
     type
     voteScore
     myVote
@@ -65,6 +66,9 @@ export const FragranceNoteFragment = gql(/* GraphQL */`
       likesCount
       dislikesCount
       myVote
+    }
+    audit {
+      ...AuditBase
     }
   }
 `)

@@ -45,6 +45,7 @@ export const CharacteristicsLadder = (props: CharacteristicsLadderProps) => {
         greaterLabel='masculine'
         Icon={<Icon src={gender} size={28} />}
       />
+
       <MidScaleBar
         value={characteristicsMap.get('LONGEVITY')?.voteScore ?? 50.0}
         label='longevity'
@@ -52,6 +53,7 @@ export const CharacteristicsLadder = (props: CharacteristicsLadderProps) => {
         greaterLabel='endless'
         Icon={<Icon src={longevity} />}
       />
+
       <MidScaleBar
         value={characteristicsMap.get('SILLAGE')?.voteScore ?? 50.0}
         label='sillage'
@@ -59,6 +61,7 @@ export const CharacteristicsLadder = (props: CharacteristicsLadderProps) => {
         greaterLabel='expansive'
         Icon={<Icon src={sillage} />}
       />
+
       <MidScaleBar
         value={characteristicsMap.get('COMPLEXITY')?.voteScore ?? 50.0}
         label='complexity'
@@ -66,6 +69,7 @@ export const CharacteristicsLadder = (props: CharacteristicsLadderProps) => {
         greaterLabel='intricate'
         Icon={<Icon src={complexity} />}
       />
+
       <MidScaleBar
         value={characteristicsMap.get('BALANCE')?.voteScore ?? 50.0}
         label='balance'
@@ -73,6 +77,7 @@ export const CharacteristicsLadder = (props: CharacteristicsLadderProps) => {
         greaterLabel='harmonious'
         Icon={<Icon src={balance} />}
       />
+
       <MidScaleBar
         value={characteristicsMap.get('ALLURE')?.voteScore ?? 50.0}
         label='allure'

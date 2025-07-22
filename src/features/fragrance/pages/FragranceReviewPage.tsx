@@ -50,10 +50,13 @@ const FragranceReviewPage = (props: FragranceReviewPageProps) => {
           </p>
         </div>
 
-        <Divider
-          horizontal
-          className='my-3 mx-4'
-        />
+        <div
+          className='w-full px-3 my-3'
+        >
+          <Divider
+            horizontal
+          />
+        </div>
 
         <Accordion.Root
           className='flex flex-col'
@@ -82,7 +85,9 @@ const FragranceReviewPage = (props: FragranceReviewPageProps) => {
 
           <VoteOnCharacteristicsSection />
 
-          <VoteOnNotesSection />
+          <VoteOnNotesSection
+            fragranceId={id}
+          />
 
           <WriteAReviewSection />
         </Accordion.Root>

@@ -1,7 +1,7 @@
 import { type ApolloError, NetworkStatus, useQuery } from '@apollo/client'
 import { useMemo } from 'react'
 import { FRAGRANCE_ACCORDS_QUERY } from '@/graphql/queries/FragranceQueries'
-import { flatten } from '@/common/pagination'
+import { flatten, validatePagination } from '@/common/pagination'
 import { type FragranceAccordsQueryVariables, type VotePaginationInput } from '@/generated/graphql'
 import { ResultAsync } from 'neverthrow'
 import { noRes } from '@/common/util-types'
@@ -19,12 +19,12 @@ const useFragranceAccords = (
   })
 
   const loadMore = () => {
-    if (data?.fragrance == null) return noRes
-    if (networkStatus === NetworkStatus.fetchMore) return noRes
+    const endCursor = validatePagination(
+      data?.fragrance?.accords.pageInfo,
+      networkStatus
+    )
 
-    const { hasNextPage, endCursor } = data.fragrance.accords.pageInfo
-
-    if (!hasNextPage || (endCursor == null)) return noRes
+    if (endCursor == null) return noRes
 
     const newVariables: FragranceAccordsQueryVariables = {
       fragranceId,
@@ -39,7 +39,7 @@ const useFragranceAccords = (
         fetchMore({ variables: newVariables }),
         error => error as ApolloError
       )
-      .map(result => result.data)
+      .map(result => result.data.fragrance?.accords)
   }
 
   const accords = useMemo(() => flatten(data?.fragrance?.accords ?? []), [data?.fragrance?.accords])

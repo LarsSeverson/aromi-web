@@ -1,6 +1,6 @@
 import { type VoteOnReviewInput } from '@/generated/graphql'
 import { VOTE_ON_REVIEW_MUTATION } from '@/graphql/mutations/FragranceMutations'
-import { useMutation } from '@apollo/client'
+import { type ApolloError, useMutation } from '@apollo/client'
 import { ResultAsync } from 'neverthrow'
 
 export const useVoteOnReview = () => {
@@ -13,7 +13,7 @@ export const useVoteOnReview = () => {
     return ResultAsync
       .fromPromise(
         voteOnReviewInner({ variables: { input } }),
-        error => error
+        error => error as ApolloError
       )
   }
 

@@ -1,17 +1,18 @@
 import React, { useMemo, useState } from 'react'
+import BouncyButton, { type BouncyButtonProps } from '@/components/BouncyButton'
+import { type IFragranceNoteSummary } from '../types'
 import { formatNumber } from '@/common/string-utils'
 import clsx from 'clsx'
-import BouncyButton, { type BouncyButtonProps } from '@/components/BouncyButton'
-import { type IFragranceAccordSummary } from '../types'
+import { Overlay } from '@/components/Overlay'
 
-export interface VoteOnAccordCardProps extends BouncyButtonProps {
-  accord: IFragranceAccordSummary
+export interface VoteOnNoteCardProps extends BouncyButtonProps {
+  note: IFragranceNoteSummary
   onSelected?: (value: boolean | null) => void
 }
 
-const VoteOnAccordCard = (props: VoteOnAccordCardProps) => {
-  const { accord, className, onSelected, ...rest } = props
-  const { color: backgroundColor, name, votes } = accord
+const VoteOnNoteCard = (props: VoteOnNoteCardProps) => {
+  const { note, className, onSelected, ...rest } = props
+  const { thumbnail = '', name, votes } = note
   const { voteScore, myVote } = votes
 
   const [curSelected, setCurSelected] = useState<true | null>(myVote === true ? true : null)
@@ -28,7 +29,7 @@ const VoteOnAccordCard = (props: VoteOnAccordCardProps) => {
     return voteScore
   }, [curSelected, myVote, voteScore])
 
-  const handleAccordPress = () => {
+  const handleNotePress = () => {
     const next = curSelected === true ? null : true
     setCurSelected(next)
     onSelected?.(next)
@@ -42,7 +43,7 @@ const VoteOnAccordCard = (props: VoteOnAccordCardProps) => {
         className
       )}
       {...rest}
-      onClick={handleAccordPress}
+      onClick={handleNotePress}
     >
       <div
         className='w-full'
@@ -56,13 +57,26 @@ const VoteOnAccordCard = (props: VoteOnAccordCardProps) => {
         >
           <div
             className={clsx(
-              'w-full aspect-square rounded-xl bg-empty',
+              'relative w-full aspect-square rounded-xl bg-empty',
               'group-active:scale-[0.95]',
               (curSelected ?? false) && 'scale-[0.95]'
             )}
-            style={{ backgroundColor }}
-          />
+          >
+            {thumbnail != null && (
+              <div
+                className='relative'
+              >
+                <img
+                  src={thumbnail}
+                  className='object-cover'
+                />
+
+                <Overlay />
+              </div>
+            )}
+          </div>
         </div>
+
         <div
           className='mx-1 mt-1 flex'
         >
@@ -71,6 +85,7 @@ const VoteOnAccordCard = (props: VoteOnAccordCardProps) => {
           >
             {name}
           </p>
+
           {selectedVotes !== 0 && (
             <p
               className='font-semibold text-sm ml-auto'
@@ -84,4 +99,4 @@ const VoteOnAccordCard = (props: VoteOnAccordCardProps) => {
   )
 }
 
-export default VoteOnAccordCard
+export default VoteOnNoteCard

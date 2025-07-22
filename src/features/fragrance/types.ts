@@ -1,4 +1,4 @@
-import { type Fragrance, type User, type FragranceImageSummaryFragment, type FragranceReview, type FragranceAccord } from '@/generated/graphql'
+import { type Fragrance, type User, type FragranceImageSummaryFragment, type FragranceReview, type FragranceAccord, type FragranceNote } from '@/generated/graphql'
 import { type IUserSummary } from '../user/types'
 
 export type IFragrancePageUser = Pick<User,
@@ -16,6 +16,7 @@ export interface IFragranceReviewSummary extends Omit<FragranceReview, 'fragranc
 }
 
 export interface IFragranceAccordSummary extends Omit<FragranceAccord, ''> {}
+export interface IFragranceNoteSummary extends Omit<FragranceNote, ''> {}
 
 export const ratingMap = {
   0: 'Select your rating',

@@ -1,8 +1,10 @@
-import { useCallback, useMemo } from 'react'
-import { NetworkStatus, useQuery } from '@apollo/client'
+import { useMemo } from 'react'
+import { type ApolloError, NetworkStatus, useQuery } from '@apollo/client'
 import { type PaginationInput } from '../../../generated/graphql'
 import { SUGGESTED_FRAGRANCES_QUERY } from '@/graphql/queries/FragranceQueries'
-import { flatten } from '@/common/pagination'
+import { flatten, validatePagination } from '@/common/pagination'
+import { noRes } from '@/common/util-types'
+import { ResultAsync } from 'neverthrow'
 
 const useSuggestedFragrances = (
   input?: PaginationInput
@@ -15,20 +17,25 @@ const useSuggestedFragrances = (
     notifyOnNetworkStatusChange: true
   })
 
-  const loadMore = useCallback(() => {
-    if (data == null) return
-    if (networkStatus === NetworkStatus.fetchMore) return
+  const loadMore = () => {
+    const endCursor = validatePagination(
+      data?.fragrances.pageInfo,
+      networkStatus
+    )
 
-    const { hasNextPage, endCursor } = data.fragrances.pageInfo
-
-    if (!hasNextPage || (endCursor == null)) return
+    if (endCursor == null) return noRes
 
     const variables = {
       input: { after: endCursor }
     }
 
-    void fetchMore({ variables })
-  }, [data, networkStatus, fetchMore])
+    return ResultAsync
+      .fromPromise(
+        fetchMore({ variables }),
+        error => error as ApolloError
+      )
+      .map(result => result.data.fragrances)
+  }
 
   const fragrances = useMemo(() => flatten(data?.fragrances ?? []), [data])
 

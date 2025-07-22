@@ -1,55 +1,58 @@
 import { flatten, validatePagination } from '@/common/pagination'
 import { noRes } from '@/common/util-types'
-import { type VotePaginationInput } from '@/generated/graphql'
-import { FRAGRANCE_REVIEWS_QUERY } from '@/graphql/queries/FragranceQueries'
+import { type MiddleFragranceNotesQueryVariables, type VotePaginationInput } from '@/generated/graphql'
+import { BASE_FRAGRANCE_NOTES_QUERY } from '@/graphql/queries/FragranceQueries'
 import { type ApolloError, NetworkStatus, useQuery } from '@apollo/client'
 import { ResultAsync } from 'neverthrow'
-import { useMemo } from 'react'
 
-const useFragranceReviews = (
+export const useBaseFragranceNotes = (
   fragranceId: number,
   input?: VotePaginationInput
 ) => {
   const {
     data, loading, error, networkStatus,
     refetch, fetchMore
-  } = useQuery(FRAGRANCE_REVIEWS_QUERY, {
+  } = useQuery(BASE_FRAGRANCE_NOTES_QUERY, {
     variables: { fragranceId, input },
     notifyOnNetworkStatusChange: true
   })
 
   const loadMore = () => {
     const endCursor = validatePagination(
-      data?.fragrance?.reviews.pageInfo,
+      data?.fragrance?.notes.base.pageInfo,
       networkStatus
     )
 
     if (endCursor == null) return noRes
 
-    const variables = {
+    const newVariables: MiddleFragranceNotesQueryVariables = {
       fragranceId,
-      input: { after: endCursor }
+      input: {
+        ...(input ?? {}),
+        after: endCursor
+      }
     }
 
     return ResultAsync
       .fromPromise(
-        fetchMore({ variables }),
+        fetchMore({ variables: newVariables }),
         error => error as ApolloError
       )
-      .map(result => result.data.fragrance?.reviews)
+      .map(result => result.data.fragrance?.notes.base)
   }
 
-  const reviews = useMemo(() => flatten(data?.fragrance?.reviews ?? []), [data?.fragrance?.reviews])
+  const notes = flatten(data?.fragrance?.notes.base ?? [])
+  const hasMore = data?.fragrance?.notes.base.pageInfo.hasNextPage ?? false
 
   return {
-    data: reviews,
-    loading,
-    loadingMore: networkStatus === NetworkStatus.fetchMore,
+    data: notes,
     error,
 
-    refetch,
-    loadMore
+    loading,
+    loadingMore: networkStatus === NetworkStatus.fetchMore,
+    hasMore,
+
+    loadMore,
+    refetch
   }
 }
-
-export default useFragranceReviews

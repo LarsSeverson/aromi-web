@@ -1,32 +1,32 @@
-import { validatePagination, flatten } from '@/common/pagination'
+import { flatten, validatePagination } from '@/common/pagination'
 import { noRes } from '@/common/util-types'
-import { type FillerFragranceAccordsQueryVariables, type PaginationInput } from '@/generated/graphql'
-import { FILLER_FRAGRANCE_ACCORDS_QUERY } from '@/graphql/queries/FragranceQueries'
+import { type PaginationInput, type BaseFillerFragranceNotesQueryVariables } from '@/generated/graphql'
+import { BASE_FILLER_FRAGRANCE_NOTES_QUERY } from '@/graphql/queries/FragranceQueries'
 import { type ApolloError, NetworkStatus, useQuery } from '@apollo/client'
 import { ResultAsync } from 'neverthrow'
 import { useMemo } from 'react'
 
-export const useFillerFragranceAccords = (
+export const useBaseFillerFragranceNotes = (
   fragranceId: number,
   input?: PaginationInput
 ) => {
   const {
     data, loading, error, networkStatus,
     refetch, fetchMore
-  } = useQuery(FILLER_FRAGRANCE_ACCORDS_QUERY, {
+  } = useQuery(BASE_FILLER_FRAGRANCE_NOTES_QUERY, {
     variables: { fragranceId, input },
     notifyOnNetworkStatusChange: true
   })
 
   const loadMore = () => {
     const endCursor = validatePagination(
-      data?.fragrance?.fillerAccords.pageInfo,
+      data?.fragrance?.notes.fillerBase.pageInfo,
       networkStatus
     )
 
     if (endCursor == null) return noRes
 
-    const newVariables: FillerFragranceAccordsQueryVariables = {
+    const newVariables: BaseFillerFragranceNotesQueryVariables = {
       fragranceId,
       input: {
         ...(input ?? {}),
@@ -39,18 +39,19 @@ export const useFillerFragranceAccords = (
         fetchMore({ variables: newVariables }),
         error => error as ApolloError
       )
-      .map(result => result.data.fragrance?.fillerAccords)
+      .map(result => result.data.fragrance?.notes.fillerBase)
   }
 
-  const accords = useMemo(() => flatten(data?.fragrance?.fillerAccords ?? []), [data?.fragrance?.fillerAccords])
-  const hasMore = useMemo(() => data?.fragrance?.fillerAccords.pageInfo.hasNextPage ?? false, [data?.fragrance?.fillerAccords.pageInfo])
+  const notes = useMemo(() => flatten(data?.fragrance?.notes.fillerBase ?? []), [data?.fragrance?.notes.fillerBase])
+  const hasMore = useMemo(() => data?.fragrance?.notes.fillerBase.pageInfo.hasNextPage ?? false, [data?.fragrance?.notes.fillerBase.pageInfo.hasNextPage])
 
   return {
-    data: accords,
+    data: notes,
+    error,
+
     loading,
     loadingMore: networkStatus === NetworkStatus.fetchMore,
     hasMore,
-    error,
 
     loadMore,
     refetch

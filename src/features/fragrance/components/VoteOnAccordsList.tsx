@@ -31,7 +31,7 @@ const VoteOnAccordsList = (props: VoteOnAccordsListProps) => {
   const loadingMore = accordsLoadingMore || fillersLoadingMore
   const hasMore = hasMoreAccords || hasMoreFillers
 
-  const skeletons = Array.from({ length: 24 })
+  const skeletons = Array.from({ length: 12 })
 
   const handleLoadMore = async () => {
     const fn = hasMoreAccords ? loadMoreAccords : loadMoreFillers
@@ -84,11 +84,11 @@ const VoteOnAccordsList = (props: VoteOnAccordsListProps) => {
           </button>
           )
         : (
-          <button
-            className='mr-auto ml-2 mt-3 text-sinopia font-semibold text-md'
+          <span
+            className='mr-auto ml-2 mt-3 text-sinopia font-semibold text-md opacity-50'
           >
-            Show less
-          </button>
+            End of accords
+          </span>
           )}
     </div>
   )

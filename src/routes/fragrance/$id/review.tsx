@@ -9,6 +9,9 @@ export const Route = createFileRoute('/fragrance/$id/review')({
     .object({
       rating: z
         .number()
+        .optional(),
+      showAccords: z
+        .boolean()
         .optional()
     }),
   loader: ({ context }) => context

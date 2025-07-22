@@ -1,4 +1,5 @@
-import { type Reference } from '@apollo/client'
+import { type PageInfo } from '@/generated/graphql'
+import { NetworkStatus, type Reference } from '@apollo/client'
 import { mergeDeep } from '@apollo/client/utilities'
 import { type TRelayEdge, type RelayFieldPolicy, type TRelayPageInfo } from '@apollo/client/utilities/policies/pagination'
 
@@ -14,7 +15,7 @@ export const makeEmptyData = () => ({
   }
 })
 
-export const relayStylePagination = <TNode extends Reference = Reference> (
+export const customRelayStylePagination = <TNode extends Reference = Reference> (
   keyArgs: RelayFieldPolicy<TNode>['keyArgs'] = false
 ): RelayFieldPolicy<TNode> => {
   return {
@@ -163,4 +164,17 @@ export const flatten = <T>(input: T): FlattenEdges<T> => {
   }
 
   return input as FlattenEdges<T>
+}
+
+export const validatePagination = (
+  pageInfo: PageInfo | undefined,
+  networkStatus: NetworkStatus
+) => {
+  if (
+    networkStatus === NetworkStatus.fetchMore ||
+    pageInfo?.endCursor == null ||
+    !pageInfo.hasNextPage
+  ) return null
+
+  return pageInfo.endCursor
 }
