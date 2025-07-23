@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useMemo, useRef, useState } from 'react'
 import { formatNumber } from '@/common/string-utils'
 import clsx from 'clsx'
 import BouncyButton, { type BouncyButtonProps } from '@/components/BouncyButton'
@@ -6,17 +6,18 @@ import { type IFragranceAccordSummary } from '../types'
 
 export interface VoteOnAccordCardProps extends BouncyButtonProps {
   accord: IFragranceAccordSummary
-  onSelected?: (value: boolean | null) => void
+  onSelected?: (value: boolean | null) => void | Promise<void>
 }
 
 const VoteOnAccordCard = (props: VoteOnAccordCardProps) => {
   const { accord, className, onSelected, ...rest } = props
   const { color: backgroundColor, name, votes } = accord
-  const { voteScore, myVote } = votes
 
-  const [curSelected, setCurSelected] = useState<true | null>(myVote === true ? true : null)
+  const stableVotes = useRef(votes)
+  const [curSelected, setCurSelected] = useState<true | null>(stableVotes.current.myVote === true ? true : null)
 
   const selectedVotes = useMemo(() => {
+    const { voteScore, myVote } = stableVotes.current
     const originallySelected = myVote === true
 
     const addOne = !originallySelected && curSelected === true
@@ -26,12 +27,12 @@ const VoteOnAccordCard = (props: VoteOnAccordCardProps) => {
     if (removeOne) return voteScore - 1
 
     return voteScore
-  }, [curSelected, myVote, voteScore])
+  }, [curSelected])
 
   const handleAccordPress = () => {
     const next = curSelected === true ? null : true
     setCurSelected(next)
-    onSelected?.(next)
+    void onSelected?.(next)
   }
 
   return (

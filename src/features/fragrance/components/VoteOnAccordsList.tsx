@@ -1,8 +1,8 @@
 import React from 'react'
 import useFragranceAccords from '../hooks/useFragranceAccords'
-import VoteOnAccordCard from './VoteOnAccordCard'
 import VoteOnAccordCardLoading from './VoteOnAccordCardLoading'
 import { useFillerFragranceAccords } from '../hooks/useFillerFragranceAccords'
+import VoteOnAccordWrapper from './VoteOnAccordWrapper'
 
 export interface VoteOnAccordsListProps {
   fragranceId: number
@@ -52,16 +52,18 @@ const VoteOnAccordsList = (props: VoteOnAccordsListProps) => {
       >
         {accords
           .map(accord => (
-            <VoteOnAccordCard
+            <VoteOnAccordWrapper
               key={accord.accordId}
+              fragranceId={fragranceId}
               accord={accord}
             />
           ))}
 
         {!hasMoreAccords && fillers
           .map(accord => (
-            <VoteOnAccordCard
-              key={accord.id}
+            <VoteOnAccordWrapper
+              key={accord.accordId}
+              fragranceId={fragranceId}
               accord={accord}
             />
           ))}

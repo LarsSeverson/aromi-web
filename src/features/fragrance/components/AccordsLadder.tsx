@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import LinearScaleBar from '@/components/LinearScaleBar'
 import { type FragranceAccord } from '@/generated/graphql'
 
@@ -12,6 +12,8 @@ export interface AccordBarsProps extends React.HTMLAttributes<HTMLDivElement> {
 const AccordsLadder = (props: AccordBarsProps) => {
   const { accords, maxVote, ...rest } = props
 
+  const filteredAccords = useMemo(() => accords.filter(accord => accord.votes.voteScore > 0), [accords])
+
   const getWidth = useCallback((votes: number) => {
     return votes / maxVote * 100
   }, [maxVote])
@@ -23,7 +25,7 @@ const AccordsLadder = (props: AccordBarsProps) => {
       <div
         className='flex flex-col gap-2'
       >
-        {accords
+        {filteredAccords
           .map((accord, index) => {
             return (
               <div

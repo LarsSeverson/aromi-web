@@ -38,28 +38,26 @@ const VoteOnCharacteristicsSection = (props: VoteOnCharacteristicsSectionProps) 
       )
   }, [voteOnTrait])
 
-  const debouncedVoteOnTrait = useMemo(() =>
-    debounce((
-      value: number,
-      fragranceTraitId: number
-    ) => {
-      void handleVoteOnTrait(value, fragranceTraitId)
-    }, 300),
-  [handleVoteOnTrait])
+  const debouncedHandleVoteOnTrait = useMemo(() => debounce((
+    value: number,
+    fragranceTraitId: number
+  ) => {
+    void handleVoteOnTrait(value, fragranceTraitId)
+  }, 300), [handleVoteOnTrait])
 
   const handleSliderChanged = (
     value: number,
     trait: IFragranceTraitSummary | undefined
   ) => {
     if (trait == null) return
-    debouncedVoteOnTrait(value, trait.id)
+    debouncedHandleVoteOnTrait(value, trait.id)
   }
 
   useEffect(() => {
     return () => {
-      debouncedVoteOnTrait.cancel()
+      debouncedHandleVoteOnTrait.cancel()
     }
-  }, [debouncedVoteOnTrait])
+  }, [debouncedHandleVoteOnTrait])
 
   return (
     <Accordion.Item

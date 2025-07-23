@@ -28,7 +28,7 @@ const VoteOnNotesList = (props: VoteOnNotesListProps) => {
     loadMore
   } = props
 
-  const skeletons = Array.from({ length: 6 })
+  const skeletons = Array.from({ length: 12 })
 
   return (
     <div

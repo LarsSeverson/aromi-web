@@ -38,6 +38,16 @@ export const VOTE_ON_TRAIT_MUTATION = gql(/* GraphQL */`
   }
 `)
 
+export const VOTE_ON_ACCORD_MUTATION = gql(/* GraphQL */`
+  mutation VoteOnAccord(
+    $input: VoteOnAccordInput!
+  ) {
+    voteOnAccord(input: $input) {
+      ...FragranceAccordSummary
+    }
+  }
+`)
+
 export const CREATE_FRAGRANCE_REPORT_MUTATION = gql(/* GraphQL */`
   mutation CreateFragranceReport(
     $input: CreateFragranceReportInput!

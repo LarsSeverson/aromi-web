@@ -19,7 +19,7 @@ const VoteOnTopNotesSection = (props: VoteOnTopNotesSectionProps) => {
     loadingMore: notesLoadingMore,
     hasMore: hasMoreNotes,
     loadMore: loadMoreNotes
-  } = useTopFragranceNotes(fragranceId, { first: 12 })
+  } = useTopFragranceNotes(fragranceId, { first: 24 })
 
   const {
     data: fillers,
@@ -27,7 +27,7 @@ const VoteOnTopNotesSection = (props: VoteOnTopNotesSectionProps) => {
     loadingMore: fillersLoadingMore,
     hasMore: hasMoreFillers,
     loadMore: loadMoreFillers
-  } = useTopFillerFragranceNotes(fragranceId, { first: 12 })
+  } = useTopFillerFragranceNotes(fragranceId, { first: 24 })
 
   const handleLoadMore = async () => {
     const fn = hasMoreNotes ? loadMoreNotes : loadMoreFillers
