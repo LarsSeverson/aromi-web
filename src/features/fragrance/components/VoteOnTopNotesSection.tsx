@@ -29,7 +29,15 @@ const VoteOnTopNotesSection = (props: VoteOnTopNotesSectionProps) => {
     loadMore: loadMoreFillers
   } = useTopFillerFragranceNotes(fragranceId, { first: 12 })
 
-  const handleLoadMore = async () => {}
+  const handleLoadMore = async () => {
+    const fn = hasMoreNotes ? loadMoreNotes : loadMoreFillers
+
+    await fn()
+      .match(
+        () => {},
+        () => {}
+      )
+  }
 
   return (
     <Accordion.Item>

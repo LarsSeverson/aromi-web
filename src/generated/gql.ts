@@ -51,6 +51,7 @@ type Documents = {
     "\n  mutation LogFragranceView (\n    $input: LogFragranceViewInput!\n  ) {\n    logFragranceView(input: $input)\n  }\n": typeof types.LogFragranceViewDocument,
     "\n  mutation VoteOnFragrance(\n    $input: VoteOnFragranceInput!\n  ) {\n    voteOnFragrance(input: $input) {\n      id\n    }\n  }\n": typeof types.VoteOnFragranceDocument,
     "\n  mutation VoteOnReview(\n    $input: VoteOnReviewInput!\n  ) {\n    voteOnReview(input: $input) {\n      id\n    }\n  }\n": typeof types.VoteOnReviewDocument,
+    "\n  mutation VoteOnTrait(\n    $input: VoteOnTraitInput!\n  ) {\n    voteOnTrait(input: $input) {\n      ...FragranceTraitSummary\n    }\n  }\n": typeof types.VoteOnTraitDocument,
     "\n  mutation CreateFragranceReport(\n    $input: CreateFragranceReportInput!\n  ) {\n    createFragranceReport(input: $input) {\n      id\n    }\n  }\n": typeof types.CreateFragranceReportDocument,
     "\n  mutation CreateReviewReport(\n    $input: CreateReviewReportInput!\n  ) {\n    createReviewReport(input: $input) {\n      id\n    }\n  }\n": typeof types.CreateReviewReportDocument,
     "\n  query Collection(\n    $id: Int!\n  ) {\n    collection(id: $id) {\n      ...FragranceCollectionSummary\n    }\n  }\n": typeof types.CollectionDocument,
@@ -115,6 +116,7 @@ const documents: Documents = {
     "\n  mutation LogFragranceView (\n    $input: LogFragranceViewInput!\n  ) {\n    logFragranceView(input: $input)\n  }\n": types.LogFragranceViewDocument,
     "\n  mutation VoteOnFragrance(\n    $input: VoteOnFragranceInput!\n  ) {\n    voteOnFragrance(input: $input) {\n      id\n    }\n  }\n": types.VoteOnFragranceDocument,
     "\n  mutation VoteOnReview(\n    $input: VoteOnReviewInput!\n  ) {\n    voteOnReview(input: $input) {\n      id\n    }\n  }\n": types.VoteOnReviewDocument,
+    "\n  mutation VoteOnTrait(\n    $input: VoteOnTraitInput!\n  ) {\n    voteOnTrait(input: $input) {\n      ...FragranceTraitSummary\n    }\n  }\n": types.VoteOnTraitDocument,
     "\n  mutation CreateFragranceReport(\n    $input: CreateFragranceReportInput!\n  ) {\n    createFragranceReport(input: $input) {\n      id\n    }\n  }\n": types.CreateFragranceReportDocument,
     "\n  mutation CreateReviewReport(\n    $input: CreateReviewReportInput!\n  ) {\n    createReviewReport(input: $input) {\n      id\n    }\n  }\n": types.CreateReviewReportDocument,
     "\n  query Collection(\n    $id: Int!\n  ) {\n    collection(id: $id) {\n      ...FragranceCollectionSummary\n    }\n  }\n": types.CollectionDocument,
@@ -304,6 +306,10 @@ export function gql(source: "\n  mutation VoteOnFragrance(\n    $input: VoteOnFr
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(source: "\n  mutation VoteOnReview(\n    $input: VoteOnReviewInput!\n  ) {\n    voteOnReview(input: $input) {\n      id\n    }\n  }\n"): (typeof documents)["\n  mutation VoteOnReview(\n    $input: VoteOnReviewInput!\n  ) {\n    voteOnReview(input: $input) {\n      id\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation VoteOnTrait(\n    $input: VoteOnTraitInput!\n  ) {\n    voteOnTrait(input: $input) {\n      ...FragranceTraitSummary\n    }\n  }\n"): (typeof documents)["\n  mutation VoteOnTrait(\n    $input: VoteOnTraitInput!\n  ) {\n    voteOnTrait(input: $input) {\n      ...FragranceTraitSummary\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

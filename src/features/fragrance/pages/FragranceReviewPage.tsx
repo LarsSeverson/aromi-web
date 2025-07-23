@@ -83,7 +83,9 @@ const FragranceReviewPage = (props: FragranceReviewPageProps) => {
             fragranceId={id}
           />
 
-          <VoteOnCharacteristicsSection />
+          <VoteOnCharacteristicsSection
+            fragranceId={id}
+          />
 
           <VoteOnNotesSection
             fragranceId={id}

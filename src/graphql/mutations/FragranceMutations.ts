@@ -28,6 +28,16 @@ export const VOTE_ON_REVIEW_MUTATION = gql(/* GraphQL */`
   }
 `)
 
+export const VOTE_ON_TRAIT_MUTATION = gql(/* GraphQL */`
+  mutation VoteOnTrait(
+    $input: VoteOnTraitInput!
+  ) {
+    voteOnTrait(input: $input) {
+      ...FragranceTraitSummary
+    }
+  }
+`)
+
 export const CREATE_FRAGRANCE_REPORT_MUTATION = gql(/* GraphQL */`
   mutation CreateFragranceReport(
     $input: CreateFragranceReportInput!

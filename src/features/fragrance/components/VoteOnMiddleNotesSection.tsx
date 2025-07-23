@@ -29,7 +29,15 @@ const VoteOnMiddleNotesSection = (props: VoteOnMiddleNotesSectionProps) => {
     loadMore: loadMoreFillers
   } = useMiddleFillerFragranceNotes(fragranceId, { first: 12 })
 
-  const handleLoadMore = async () => {}
+  const handleLoadMore = async () => {
+    const fn = hasMoreNotes ? loadMoreNotes : loadMoreFillers
+
+    await fn()
+      .match(
+        () => {},
+        () => {}
+      )
+  }
 
   return (
     <Accordion.Item>
