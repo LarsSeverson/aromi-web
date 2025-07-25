@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import VoteOnAccordsSection from '@/features/fragrance/components/VoteOnAccordsSection'
 import InteractableRatingStars from '@/components/InteractableRatingStars'
 import { Colors } from '@/styles/Colors'
@@ -18,6 +18,8 @@ export interface FragranceReviewPageProps {
 const FragranceReviewPage = (props: FragranceReviewPageProps) => {
   const { fragrance, rating } = props
   const { id, name, brand } = fragrance
+
+  const [currentRating, setCurrentRating] = useState(rating)
 
   return (
     <div
@@ -71,11 +73,12 @@ const FragranceReviewPage = (props: FragranceReviewPageProps) => {
             </h1>
 
             <InteractableRatingStars
-              rating={rating}
+              rating={currentRating}
               size={32}
               emptyColor={Colors.empty2}
               filledColor={Colors.sinopia}
               className='mr-auto text-md flex items-center gap-1 mt-2'
+              onRatingChange={setCurrentRating}
             />
           </div>
 
@@ -91,7 +94,10 @@ const FragranceReviewPage = (props: FragranceReviewPageProps) => {
             fragranceId={id}
           />
 
-          <WriteAReviewSection />
+          <WriteAReviewSection
+            fragranceId={id}
+            rating={currentRating}
+          />
         </Accordion.Root>
       </div>
 

@@ -25,7 +25,7 @@ const LinearScaleBar = (props: LinearScaleBarProps) => {
     >
       <div
         className={clsx(
-          'h-full rounded-full min-w-[3px]'
+          'h-full rounded-full min-w-4'
         )}
         style={{ backgroundColor: color, width: `${value}%` }}
       />

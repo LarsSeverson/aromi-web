@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import NotePreviewCard, { type CardNotePreview } from './NotePreviewCard'
 import { type NoteLayer } from '@/generated/graphql'
 import clsx from 'clsx'
@@ -10,6 +10,8 @@ export interface NotesPyramidRowProps extends React.HTMLAttributes<HTMLDivElemen
 
 const NotesPyramidRow = (props: NotesPyramidRowProps) => {
   const { notes, layer, className, ...rest } = props
+
+  const filteredNotes = useMemo(() => notes.filter(note => note.votes.voteScore > 0), [notes])
 
   if (notes.length === 0) {
     return null
@@ -32,13 +34,14 @@ const NotesPyramidRow = (props: NotesPyramidRowProps) => {
         <div
           className='flex flex-row overflow-x-auto'
         >
-          {notes.map((note, index) => (
-            <NotePreviewCard
-              key={`${note.id}-${index}`}
-              note={note}
-              className='w-[100px] md:w-[144px] flex-none'
-            />
-          ))}
+          {filteredNotes
+            .map((note, index) => (
+              <NotePreviewCard
+                key={`${note.id}-${index}`}
+                note={note}
+                className='w-[100px] md:w-[144px] flex-none'
+              />
+            ))}
         </div>
       </div>
     </div>

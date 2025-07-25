@@ -47,6 +47,7 @@ const VoteOnTopNotesSection = (props: VoteOnTopNotesSectionProps) => {
 
       <VoteOnSectionPanel>
         <VoteOnNotesList
+          fragranceId={fragranceId}
           notes={notes}
           fillers={fillers}
           loading={notesLoading || fillersLoading}

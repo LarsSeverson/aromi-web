@@ -1606,6 +1606,10 @@ video {
   min-width: 9rem;
 }
 
+.min-w-4{
+  min-width: 1rem;
+}
+
 .min-w-44{
   min-width: 11rem;
 }
@@ -1636,10 +1640,6 @@ video {
 
 .min-w-96{
   min-width: 24rem;
-}
-
-.min-w-\[3px\]{
-  min-width: 3px;
 }
 
 .min-w-\[70px\]{
@@ -3347,6 +3347,11 @@ video {
   color: rgb(255 255 255 / var(--tw-text-opacity, 1));
 }
 
+.text-blue-300{
+  --tw-text-opacity: 1;
+  color: rgb(147 197 253 / var(--tw-text-opacity, 1));
+}
+
 .text-opacity-0{
   --tw-text-opacity: 0;
 }
@@ -3377,6 +3382,10 @@ video {
 
 .text-opacity-95{
   --tw-text-opacity: 0.95;
+}
+
+.text-opacity-80{
+  --tw-text-opacity: 0.8;
 }
 
 .underline{
@@ -3889,6 +3898,16 @@ html {
 
 .hover\:brightness-\[\.98\]:hover{
   --tw-brightness: brightness(.98);
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+
+.hover\:brightness-100:hover{
+  --tw-brightness: brightness(1);
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+
+.hover\:brightness-110:hover{
+  --tw-brightness: brightness(1.1);
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
 

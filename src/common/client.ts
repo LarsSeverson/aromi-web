@@ -54,7 +54,9 @@ export const client = new ApolloClient({
           fillerAccords: customRelayStylePagination(),
 
           notes: {
-            merge: true
+            merge (existing = {}, incoming) {
+              return { ...existing, ...incoming }
+            }
           }
         }
       },
@@ -69,6 +71,9 @@ export const client = new ApolloClient({
           bottom: customRelayStylePagination(),
           fillerBottom: customRelayStylePagination()
         }
+      },
+      FragranceNote: {
+        keyFields: ['id', 'layer']
       }
     }
   })

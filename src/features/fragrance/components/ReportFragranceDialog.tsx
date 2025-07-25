@@ -181,6 +181,7 @@ const ReportFragranceDialog = (props: ReportFragranceDialogProps) => {
                   )}
                 >
                   {isLoading && <Spinner />}
+
                   <div
                     className={clsx(isLoading && 'opacity-0')}
                   >

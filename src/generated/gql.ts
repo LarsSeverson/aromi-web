@@ -48,11 +48,13 @@ type Documents = {
     "\n  mutation CreateFragranceCollectionItem(\n    $input: CreateFragranceCollectionItemInput!\n  ) {\n    createFragranceCollectionItem(input: $input) {\n      ...FragranceCollectionItemSummary\n    }\n  }\n": typeof types.CreateFragranceCollectionItemDocument,
     "\n  mutation MoveFragranceCollectionItem(\n    $input: MoveFragranceCollectionItemInput!\n  ) {\n    moveFragranceCollectionItem(input: $input) {\n      ...FragranceCollectionItemSummary\n    }\n  }\n": typeof types.MoveFragranceCollectionItemDocument,
     "\n  mutation DeleteFragranceCollectionItem(\n    $input: DeleteFragranceCollectionItemInput!\n  ) {\n    deleteFragranceCollectionItem(input: $input) {\n      ...FragranceCollectionItemSummary\n    }\n  }\n": typeof types.DeleteFragranceCollectionItemDocument,
-    "\n  mutation LogFragranceView (\n    $input: LogFragranceViewInput!\n  ) {\n    logFragranceView(input: $input)\n  }\n": typeof types.LogFragranceViewDocument,
+    "\n  mutation LogFragranceView(\n    $input: LogFragranceViewInput!\n  ) {\n    logFragranceView(input: $input)\n  }\n": typeof types.LogFragranceViewDocument,
+    "\n  mutation CreateFragranceReview(\n    $input: CreateFragranceReviewInput!\n  ) {\n    createFragranceReview(input: $input) {\n      ...FragranceReviewSummary\n    }\n  }\n": typeof types.CreateFragranceReviewDocument,
     "\n  mutation VoteOnFragrance(\n    $input: VoteOnFragranceInput!\n  ) {\n    voteOnFragrance(input: $input) {\n      id\n    }\n  }\n": typeof types.VoteOnFragranceDocument,
     "\n  mutation VoteOnReview(\n    $input: VoteOnReviewInput!\n  ) {\n    voteOnReview(input: $input) {\n      id\n    }\n  }\n": typeof types.VoteOnReviewDocument,
     "\n  mutation VoteOnTrait(\n    $input: VoteOnTraitInput!\n  ) {\n    voteOnTrait(input: $input) {\n      ...FragranceTraitSummary\n    }\n  }\n": typeof types.VoteOnTraitDocument,
     "\n  mutation VoteOnAccord(\n    $input: VoteOnAccordInput!\n  ) {\n    voteOnAccord(input: $input) {\n      ...FragranceAccordSummary\n    }\n  }\n": typeof types.VoteOnAccordDocument,
+    "\n  mutation VoteOnNote(\n    $input: VoteOnNoteInput!\n  ) {\n    voteOnNote(input: $input) {\n      ...FragranceNoteSummary\n    }\n  }\n": typeof types.VoteOnNoteDocument,
     "\n  mutation CreateFragranceReport(\n    $input: CreateFragranceReportInput!\n  ) {\n    createFragranceReport(input: $input) {\n      id\n    }\n  }\n": typeof types.CreateFragranceReportDocument,
     "\n  mutation CreateReviewReport(\n    $input: CreateReviewReportInput!\n  ) {\n    createReviewReport(input: $input) {\n      id\n    }\n  }\n": typeof types.CreateReviewReportDocument,
     "\n  query Collection(\n    $id: Int!\n  ) {\n    collection(id: $id) {\n      ...FragranceCollectionSummary\n    }\n  }\n": typeof types.CollectionDocument,
@@ -114,11 +116,13 @@ const documents: Documents = {
     "\n  mutation CreateFragranceCollectionItem(\n    $input: CreateFragranceCollectionItemInput!\n  ) {\n    createFragranceCollectionItem(input: $input) {\n      ...FragranceCollectionItemSummary\n    }\n  }\n": types.CreateFragranceCollectionItemDocument,
     "\n  mutation MoveFragranceCollectionItem(\n    $input: MoveFragranceCollectionItemInput!\n  ) {\n    moveFragranceCollectionItem(input: $input) {\n      ...FragranceCollectionItemSummary\n    }\n  }\n": types.MoveFragranceCollectionItemDocument,
     "\n  mutation DeleteFragranceCollectionItem(\n    $input: DeleteFragranceCollectionItemInput!\n  ) {\n    deleteFragranceCollectionItem(input: $input) {\n      ...FragranceCollectionItemSummary\n    }\n  }\n": types.DeleteFragranceCollectionItemDocument,
-    "\n  mutation LogFragranceView (\n    $input: LogFragranceViewInput!\n  ) {\n    logFragranceView(input: $input)\n  }\n": types.LogFragranceViewDocument,
+    "\n  mutation LogFragranceView(\n    $input: LogFragranceViewInput!\n  ) {\n    logFragranceView(input: $input)\n  }\n": types.LogFragranceViewDocument,
+    "\n  mutation CreateFragranceReview(\n    $input: CreateFragranceReviewInput!\n  ) {\n    createFragranceReview(input: $input) {\n      ...FragranceReviewSummary\n    }\n  }\n": types.CreateFragranceReviewDocument,
     "\n  mutation VoteOnFragrance(\n    $input: VoteOnFragranceInput!\n  ) {\n    voteOnFragrance(input: $input) {\n      id\n    }\n  }\n": types.VoteOnFragranceDocument,
     "\n  mutation VoteOnReview(\n    $input: VoteOnReviewInput!\n  ) {\n    voteOnReview(input: $input) {\n      id\n    }\n  }\n": types.VoteOnReviewDocument,
     "\n  mutation VoteOnTrait(\n    $input: VoteOnTraitInput!\n  ) {\n    voteOnTrait(input: $input) {\n      ...FragranceTraitSummary\n    }\n  }\n": types.VoteOnTraitDocument,
     "\n  mutation VoteOnAccord(\n    $input: VoteOnAccordInput!\n  ) {\n    voteOnAccord(input: $input) {\n      ...FragranceAccordSummary\n    }\n  }\n": types.VoteOnAccordDocument,
+    "\n  mutation VoteOnNote(\n    $input: VoteOnNoteInput!\n  ) {\n    voteOnNote(input: $input) {\n      ...FragranceNoteSummary\n    }\n  }\n": types.VoteOnNoteDocument,
     "\n  mutation CreateFragranceReport(\n    $input: CreateFragranceReportInput!\n  ) {\n    createFragranceReport(input: $input) {\n      id\n    }\n  }\n": types.CreateFragranceReportDocument,
     "\n  mutation CreateReviewReport(\n    $input: CreateReviewReportInput!\n  ) {\n    createReviewReport(input: $input) {\n      id\n    }\n  }\n": types.CreateReviewReportDocument,
     "\n  query Collection(\n    $id: Int!\n  ) {\n    collection(id: $id) {\n      ...FragranceCollectionSummary\n    }\n  }\n": types.CollectionDocument,
@@ -299,7 +303,11 @@ export function gql(source: "\n  mutation DeleteFragranceCollectionItem(\n    $i
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\n  mutation LogFragranceView (\n    $input: LogFragranceViewInput!\n  ) {\n    logFragranceView(input: $input)\n  }\n"): (typeof documents)["\n  mutation LogFragranceView (\n    $input: LogFragranceViewInput!\n  ) {\n    logFragranceView(input: $input)\n  }\n"];
+export function gql(source: "\n  mutation LogFragranceView(\n    $input: LogFragranceViewInput!\n  ) {\n    logFragranceView(input: $input)\n  }\n"): (typeof documents)["\n  mutation LogFragranceView(\n    $input: LogFragranceViewInput!\n  ) {\n    logFragranceView(input: $input)\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation CreateFragranceReview(\n    $input: CreateFragranceReviewInput!\n  ) {\n    createFragranceReview(input: $input) {\n      ...FragranceReviewSummary\n    }\n  }\n"): (typeof documents)["\n  mutation CreateFragranceReview(\n    $input: CreateFragranceReviewInput!\n  ) {\n    createFragranceReview(input: $input) {\n      ...FragranceReviewSummary\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -316,6 +324,10 @@ export function gql(source: "\n  mutation VoteOnTrait(\n    $input: VoteOnTraitI
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(source: "\n  mutation VoteOnAccord(\n    $input: VoteOnAccordInput!\n  ) {\n    voteOnAccord(input: $input) {\n      ...FragranceAccordSummary\n    }\n  }\n"): (typeof documents)["\n  mutation VoteOnAccord(\n    $input: VoteOnAccordInput!\n  ) {\n    voteOnAccord(input: $input) {\n      ...FragranceAccordSummary\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation VoteOnNote(\n    $input: VoteOnNoteInput!\n  ) {\n    voteOnNote(input: $input) {\n      ...FragranceNoteSummary\n    }\n  }\n"): (typeof documents)["\n  mutation VoteOnNote(\n    $input: VoteOnNoteInput!\n  ) {\n    voteOnNote(input: $input) {\n      ...FragranceNoteSummary\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

@@ -1,9 +1,11 @@
 import React from 'react'
 import { type IFragranceNoteSummary } from '../types'
-import VoteOnNoteCard from './VoteOnNoteCard'
 import VoteOnNoteCardLoading from './VoteOnNoteCardLoading'
+import VoteOnNoteWrapper from './VoteOnNoteWrapper'
 
 export interface VoteOnNotesListProps {
+  fragranceId: number
+
   notes: IFragranceNoteSummary[]
   fillers: IFragranceNoteSummary[]
 
@@ -17,6 +19,8 @@ export interface VoteOnNotesListProps {
 
 const VoteOnNotesList = (props: VoteOnNotesListProps) => {
   const {
+    fragranceId,
+
     notes,
     fillers,
 
@@ -39,16 +43,18 @@ const VoteOnNotesList = (props: VoteOnNotesListProps) => {
       >
         {notes
           .map(note => (
-            <VoteOnNoteCard
+            <VoteOnNoteWrapper
               key={note.noteId}
+              fragranceId={fragranceId}
               note={note}
             />
           ))}
 
         {!hasMore && fillers
           .map(note => (
-            <VoteOnNoteCard
+            <VoteOnNoteWrapper
               key={note.id}
+              fragranceId={fragranceId}
               note={note}
             />
           ))}

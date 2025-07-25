@@ -64,6 +64,7 @@ const VoteOnAccordCard = (props: VoteOnAccordCardProps) => {
             style={{ backgroundColor }}
           />
         </div>
+
         <div
           className='mx-1 mt-1 flex'
         >
@@ -72,6 +73,7 @@ const VoteOnAccordCard = (props: VoteOnAccordCardProps) => {
           >
             {name}
           </p>
+
           {selectedVotes !== 0 && (
             <p
               className='font-semibold text-sm ml-auto'

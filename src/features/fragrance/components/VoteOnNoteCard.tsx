@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useMemo, useRef, useState } from 'react'
 import BouncyButton, { type BouncyButtonProps } from '@/components/BouncyButton'
 import { type IFragranceNoteSummary } from '../types'
 import { formatNumber } from '@/common/string-utils'
@@ -13,11 +13,12 @@ export interface VoteOnNoteCardProps extends BouncyButtonProps {
 const VoteOnNoteCard = (props: VoteOnNoteCardProps) => {
   const { note, className, onSelected, ...rest } = props
   const { thumbnail = '', name, votes } = note
-  const { voteScore, myVote } = votes
 
-  const [curSelected, setCurSelected] = useState<true | null>(myVote === true ? true : null)
+  const stableVotes = useRef(votes)
+  const [curSelected, setCurSelected] = useState<true | null>(stableVotes.current.myVote === true ? true : null)
 
   const selectedVotes = useMemo(() => {
+    const { voteScore, myVote } = stableVotes.current
     const originallySelected = myVote === true
 
     const addOne = !originallySelected && curSelected === true
@@ -27,7 +28,7 @@ const VoteOnNoteCard = (props: VoteOnNoteCardProps) => {
     if (removeOne) return voteScore - 1
 
     return voteScore
-  }, [curSelected, myVote, voteScore])
+  }, [curSelected])
 
   const handleNotePress = () => {
     const next = curSelected === true ? null : true

@@ -33,7 +33,9 @@ const VoteOnAccordWrapper = (props: VoteOnAccordWrapperProps) => {
   }, 300), [handleVoteOnAccord])
 
   useEffect(() => {
-    return () => { debouncedHandleVoteOnAccord.cancel() }
+    return () => {
+      debouncedHandleVoteOnAccord.cancel()
+    }
   }, [debouncedHandleVoteOnAccord])
 
   return (

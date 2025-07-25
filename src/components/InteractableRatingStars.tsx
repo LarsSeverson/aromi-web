@@ -9,7 +9,7 @@ export interface InteractableRatingStarsProps extends React.HTMLAttributes<HTMLD
   size?: number
   filledColor?: string
   emptyColor?: string
-  onStarClick?: (rating: number) => void
+  onRatingChange?: (rating: number) => void
 }
 
 const InteractableRatingStars = (props: InteractableRatingStarsProps) => {
@@ -18,7 +18,7 @@ const InteractableRatingStars = (props: InteractableRatingStarsProps) => {
     size = 15,
     filledColor = 'black',
     emptyColor = 'black',
-    onStarClick,
+    onRatingChange,
     className,
     ...rest
   } = props
@@ -44,7 +44,7 @@ const InteractableRatingStars = (props: InteractableRatingStarsProps) => {
     e.stopPropagation()
     e.preventDefault()
 
-    onStarClick?.(rating)
+    onRatingChange?.(rating)
   }
 
   const stars = Array.from({ length: 5 }, (_, index) => {
