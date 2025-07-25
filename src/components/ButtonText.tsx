@@ -8,23 +8,19 @@ export interface ButtonTextProps extends BouncyButtonProps {
   loading?: boolean | undefined
 }
 
-const ButtonText = (props: ButtonTextProps) => {
-  const { text, className, loading, ...rest } = props
-
+const ButtonText: React.FC<ButtonTextProps> = ({
+  text,
+  loading,
+  className,
+  ...rest
+}) => {
   const combinedClass = clsx(
-    `
-      items-center 
-      justify-center
-      rounded-xl
-    `,
+    'items-center justify-center rounded-xl',
     className
   )
 
   return (
-    <BouncyButton
-      className={combinedClass}
-      {...rest}
-    >
+    <BouncyButton className={combinedClass} {...rest}>
       <div
         className='font-semibold flex items-center justify-center h-full'
         style={{ opacity: (loading ?? false) ? '0' : '1' }}
