@@ -8,6 +8,8 @@ export const useToastError = () => {
     error: unknown,
     title: string = 'Something went wrong'
   ) => {
+    console.log(error)
+
     const typed = error as ApolloError
     const message = typed.graphQLErrors?.[0]?.message ?? ''
     mngr

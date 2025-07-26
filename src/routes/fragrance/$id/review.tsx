@@ -1,7 +1,10 @@
 import { createFileRoute } from '@tanstack/react-router'
 import React from 'react'
-import FragranceReviewPage from '@/features/fragrance/pages/FragranceReviewPage'
+import FragranceReviewPage from '@/features/review/pages/FragranceReviewPage'
 import { z } from 'zod'
+import topbar from 'topbar'
+import { client } from '@/common/client'
+import { MY_FRAGRANCE_REVIEW_QUERY } from '@/features/review'
 
 export const Route = createFileRoute('/fragrance/$id/review')({
   component: Review,
@@ -9,11 +12,24 @@ export const Route = createFileRoute('/fragrance/$id/review')({
     .object({
       rating: z
         .number()
-        .optional(),
-      showAccords: z
-        .boolean()
+        .int()
         .optional()
+        .transform(val => {
+          if (val == null) return val
+          return Math.max(1, Math.min(5, val))
+        })
     }),
+  beforeLoad: async ({ params }) => {
+    topbar.show()
+
+    await client
+      .query({
+        query: MY_FRAGRANCE_REVIEW_QUERY,
+        variables: { fragranceId: Number(params.id) }
+      })
+
+    topbar.hide()
+  },
   loader: ({ context }) => context
 })
 

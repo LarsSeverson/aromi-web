@@ -1,7 +1,7 @@
 import { type NodeWithEdges } from '@/common/pagination'
 import { useMyContext } from '@/features/user/contexts/MyContext'
 import { type CreateFragranceCollectionMutation } from '@/generated/graphql'
-import { CREATE_FRAGRANCE_COLLECTION_MUTATION } from '@/graphql/mutations/CollectionMutations'
+import { CREATE_FRAGRANCE_COLLECTION_MUTATION } from '../graphql/mutations'
 import { type ApolloCache, type FetchResult, makeReference, type Reference, useMutation } from '@apollo/client'
 
 export const useCreateCollection = () => {

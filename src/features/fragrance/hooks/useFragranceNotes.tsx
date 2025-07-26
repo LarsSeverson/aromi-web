@@ -1,5 +1,5 @@
 import { type ApolloError, NetworkStatus, useQuery } from '@apollo/client'
-import { FRAGRANCE_NOTES_QUERY } from '@/graphql/queries/FragranceQueries'
+import { FRAGRANCE_NOTES_QUERY } from '@/features/fragrance/graphql/queries'
 import { flatten, validatePagination } from '@/common/pagination'
 import { type FragranceNotesQueryVariables, type VotePaginationInput } from '@/generated/graphql'
 import { noRes } from '@/common/util-types'

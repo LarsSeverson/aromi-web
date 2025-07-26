@@ -1,6 +1,6 @@
 import { NetworkStatus, useQuery } from '@apollo/client'
 import { useCallback, useMemo } from 'react'
-import { USER_COLLECTIONS_QUERY } from '@/graphql/queries/UserQueries'
+import { USER_COLLECTIONS_QUERY } from '../graphql/queries'
 import { flatten } from '@/common/pagination'
 import { type PaginationInput } from '@/generated/graphql'
 

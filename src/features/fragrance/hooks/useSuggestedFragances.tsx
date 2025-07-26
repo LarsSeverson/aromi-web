@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import { type ApolloError, NetworkStatus, useQuery } from '@apollo/client'
 import { type PaginationInput } from '../../../generated/graphql'
-import { SUGGESTED_FRAGRANCES_QUERY } from '@/graphql/queries/FragranceQueries'
+import { SUGGESTED_FRAGRANCES_QUERY } from '@/features/fragrance/graphql/queries'
 import { flatten, validatePagination } from '@/common/pagination'
 import { noRes } from '@/common/util-types'
 import { ResultAsync } from 'neverthrow'

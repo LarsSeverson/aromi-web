@@ -1,6 +1,6 @@
 import { type ApolloError, NetworkStatus, useQuery } from '@apollo/client'
 import { useMemo } from 'react'
-import { FRAGRANCE_ACCORDS_QUERY } from '@/graphql/queries/FragranceQueries'
+import { FRAGRANCE_ACCORDS_QUERY } from '@/features/fragrance/graphql/queries'
 import { flatten, validatePagination } from '@/common/pagination'
 import { type FragranceAccordsQueryVariables, type VotePaginationInput } from '@/generated/graphql'
 import { ResultAsync } from 'neverthrow'

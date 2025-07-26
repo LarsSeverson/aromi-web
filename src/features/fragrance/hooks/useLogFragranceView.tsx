@@ -1,4 +1,4 @@
-import { LOG_FRAGRANCE_VIEW_MUTATION } from '@/graphql/mutations/FragranceMutations'
+import { LOG_FRAGRANCE_VIEW_MUTATION } from '../graphql/mutations'
 import { useMutation } from '@apollo/client'
 
 export const useLogFragranceView = () => {

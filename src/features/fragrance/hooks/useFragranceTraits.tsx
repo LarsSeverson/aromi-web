@@ -1,4 +1,4 @@
-import { FRAGRANCE_TRAITS_QUERY } from '@/graphql/queries/FragranceQueries'
+import { FRAGRANCE_TRAITS_QUERY } from '@/features/fragrance/graphql/queries'
 import { useQuery } from '@apollo/client'
 import { useMemo } from 'react'
 import { type FragranceTraitType } from '@/generated/graphql'

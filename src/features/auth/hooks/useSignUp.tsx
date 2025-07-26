@@ -1,4 +1,4 @@
-import { SIGN_UP_MUTATION } from '@/graphql/mutations/AuthMutations'
+import { SIGN_UP_MUTATION } from '../graphql/mutations'
 import { useMutation } from '@apollo/client'
 
 export const useSignUp = () => {

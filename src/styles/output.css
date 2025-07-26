@@ -1543,6 +1543,10 @@ video {
   width: 463px;
 }
 
+.w-\[550px\]{
+  width: 550px;
+}
+
 .w-\[720px\]{
   width: 720px;
 }
@@ -2699,6 +2703,11 @@ video {
   background-color: rgb(248 113 113 / var(--tw-bg-opacity, 1));
 }
 
+.bg-red-700{
+  --tw-bg-opacity: 1;
+  background-color: rgb(185 28 28 / var(--tw-bg-opacity, 1));
+}
+
 .bg-sinopia{
   --tw-bg-opacity: 1;
   background-color: rgb(198 71 29 / var(--tw-bg-opacity, 1));
@@ -3039,6 +3048,10 @@ video {
   padding-bottom: 1rem;
 }
 
+.pb-5{
+  padding-bottom: 1.25rem;
+}
+
 .pb-6{
   padding-bottom: 1.5rem;
 }
@@ -3232,6 +3245,11 @@ video {
   color: rgb(219 234 254 / var(--tw-text-opacity, 1));
 }
 
+.text-blue-300{
+  --tw-text-opacity: 1;
+  color: rgb(147 197 253 / var(--tw-text-opacity, 1));
+}
+
 .text-blue-700{
   --tw-text-opacity: 1;
   color: rgb(29 78 216 / var(--tw-text-opacity, 1));
@@ -3347,11 +3365,6 @@ video {
   color: rgb(255 255 255 / var(--tw-text-opacity, 1));
 }
 
-.text-blue-300{
-  --tw-text-opacity: 1;
-  color: rgb(147 197 253 / var(--tw-text-opacity, 1));
-}
-
 .text-opacity-0{
   --tw-text-opacity: 0;
 }
@@ -3376,16 +3389,16 @@ video {
   --tw-text-opacity: 0.7;
 }
 
+.text-opacity-80{
+  --tw-text-opacity: 0.8;
+}
+
 .text-opacity-90{
   --tw-text-opacity: 0.9;
 }
 
 .text-opacity-95{
   --tw-text-opacity: 0.95;
-}
-
-.text-opacity-80{
-  --tw-text-opacity: 0.8;
 }
 
 .underline{
@@ -3867,6 +3880,10 @@ html {
   text-decoration-line: underline;
 }
 
+.hover\:opacity-100:hover{
+  opacity: 1;
+}
+
 .hover\:shadow-lg:hover{
   --tw-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
   --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
@@ -3898,16 +3915,6 @@ html {
 
 .hover\:brightness-\[\.98\]:hover{
   --tw-brightness: brightness(.98);
-  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
-}
-
-.hover\:brightness-100:hover{
-  --tw-brightness: brightness(1);
-  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
-}
-
-.hover\:brightness-110:hover{
-  --tw-brightness: brightness(1.1);
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
 
@@ -4016,6 +4023,11 @@ html {
 
 .group:hover .group-hover\:flex{
   display: flex;
+}
+
+.group:hover .group-hover\:text-red-700{
+  --tw-text-opacity: 1;
+  color: rgb(185 28 28 / var(--tw-text-opacity, 1));
 }
 
 .group:hover .group-hover\:text-sinopia{

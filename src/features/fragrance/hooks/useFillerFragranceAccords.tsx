@@ -1,7 +1,7 @@
 import { validatePagination, flatten } from '@/common/pagination'
 import { noRes } from '@/common/util-types'
 import { type FillerFragranceAccordsQueryVariables, type PaginationInput } from '@/generated/graphql'
-import { FILLER_FRAGRANCE_ACCORDS_QUERY } from '@/graphql/queries/FragranceQueries'
+import { FILLER_FRAGRANCE_ACCORDS_QUERY } from '@/features/fragrance/graphql/queries'
 import { type ApolloError, NetworkStatus, useQuery } from '@apollo/client'
 import { ResultAsync } from 'neverthrow'
 import { useMemo } from 'react'

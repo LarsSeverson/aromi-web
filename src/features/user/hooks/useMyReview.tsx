@@ -1,4 +1,4 @@
-import { MY_FRAGRANCE_REVIEW_QUERY } from '@/graphql/queries/FragranceQueries'
+import { MY_FRAGRANCE_REVIEW_QUERY } from '@/features/review/graphql/queries'
 import { useQuery } from '@apollo/client'
 
 export const useMyReview = (

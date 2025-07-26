@@ -1,7 +1,7 @@
 import React from 'react'
 import { Outlet, createFileRoute } from '@tanstack/react-router'
 import { client } from '@/common/client'
-import { FRAGRANCE_QUERY } from '@/graphql/queries/FragranceQueries'
+import { FRAGRANCE_QUERY } from '@/features/fragrance/graphql/queries'
 import topbar from 'topbar'
 import { flatten } from '@/common/pagination'
 

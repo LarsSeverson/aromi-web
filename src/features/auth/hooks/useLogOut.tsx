@@ -1,4 +1,4 @@
-import { LOG_OUT_MUTATION } from '@/graphql/mutations/AuthMutations'
+import { LOG_OUT_MUTATION } from '../graphql/mutations'
 import { useMutation } from '@apollo/client'
 
 export const useLogOut = () => {

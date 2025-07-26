@@ -1,7 +1,7 @@
 import { flatten, validatePagination } from '@/common/pagination'
 import { noRes } from '@/common/util-types'
 import { type TopFillerFragranceNotesQueryVariables, type PaginationInput } from '@/generated/graphql'
-import { TOP_FILLER_FRAGRANCE_NOTES_QUERY } from '@/graphql/queries/FragranceQueries'
+import { TOP_FILLER_FRAGRANCE_NOTES_QUERY } from '@/features/fragrance/graphql/queries'
 import { type ApolloError, NetworkStatus, useQuery } from '@apollo/client'
 import { ResultAsync } from 'neverthrow'
 import { useMemo } from 'react'

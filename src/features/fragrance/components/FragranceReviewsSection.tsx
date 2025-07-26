@@ -1,14 +1,13 @@
 import React, { forwardRef, useState } from 'react'
 import PageCategory from '@/components/PageCategory'
-import MyReviewSection from './MyReviewSection'
 import { useMyReview } from '@/features/user'
-import { ReviewsSummary } from './ReviewsSummary'
+import { ReviewsSummary } from '../../review/components/ReviewsSummary'
 import Divider from '@/components/Divider'
-import { ReviewsList } from './ReviewsList'
-import useFragranceReviews from '../hooks/useFragranceReviews'
+import { ReviewsList } from '../../review/components/ReviewsList'
+import useFragranceReviews from '../../review/hooks/useFragranceReviews'
 import { PageNav } from '@/components/PageNav'
 import { type IFragranceSummary } from '../types'
-import StartReviewButton from './StartReviewButton'
+import StartReviewButton from '../../review/components/StartReviewButton'
 
 const REVIEWS_PER_PAGE = 4
 
@@ -23,6 +22,7 @@ const FragranceReviewsSection = forwardRef<HTMLDivElement, FragranceReviewsSecti
   const { data: reviews } = useFragranceReviews(fragrance.id)
 
   const [curReviewPage, setCurReviewPage] = useState(0)
+
   const totalPages = Math.ceil(reviews.length / REVIEWS_PER_PAGE)
 
   return (
@@ -40,17 +40,12 @@ const FragranceReviewsSection = forwardRef<HTMLDivElement, FragranceReviewsSecti
           <div
             className='max-w-4xl w-full'
           >
-            {myReview != null
-              ? (
-                <MyReviewSection
-                  myReview={myReview}
-                />
-                )
-              : (
+            {myReview == null &&
+              (
                 <StartReviewButton
                   fragrance={fragrance}
                 />
-                )}
+              )}
 
             <ReviewsSummary
               rating={fragrance.rating}
@@ -65,6 +60,7 @@ const FragranceReviewsSection = forwardRef<HTMLDivElement, FragranceReviewsSecti
             />
 
             <ReviewsList
+              myReview={myReview}
               reviews={reviews}
               currentPage={curReviewPage}
               reviewsPerPage={4}

@@ -1,4 +1,4 @@
-import { VOTE_ON_FRAGRANCE_MUTATION } from '@/graphql/mutations/FragranceMutations'
+import { VOTE_ON_FRAGRANCE_MUTATION } from '../graphql/mutations'
 import { useMutation } from '@apollo/client'
 
 export const useVoteOnFragrance = () => {

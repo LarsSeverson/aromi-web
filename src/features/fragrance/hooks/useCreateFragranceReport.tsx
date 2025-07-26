@@ -1,4 +1,4 @@
-import { CREATE_FRAGRANCE_REPORT_MUTATION } from '@/graphql/mutations/FragranceMutations'
+import { CREATE_FRAGRANCE_REPORT_MUTATION } from '../graphql/mutations'
 import { useMutation } from '@apollo/client'
 
 export const useCreateFragranceReport = () => {

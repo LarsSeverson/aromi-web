@@ -1,6 +1,6 @@
 import React from 'react'
 import { type FragranceReview, type User } from '@/generated/graphql'
-import { FragranceReviewCard } from '@/features/fragrance/components/FragranceReviewCard'
+import { FragranceReviewCard } from '@/features/review/components/FragranceReviewCard'
 
 export type MyReviewUser = Pick<User, 'username' | 'id'>
 export type MyReviewCardReview = Omit<FragranceReview, 'fragrance' | 'user'> & { user: MyReviewUser }

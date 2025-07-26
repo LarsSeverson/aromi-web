@@ -1,4 +1,4 @@
-import { REFRESH_MUTATION } from '@/graphql/mutations/AuthMutations'
+import { REFRESH_MUTATION } from '../graphql/mutations'
 import { useMutation } from '@apollo/client'
 
 export const useRefresh = () => {

@@ -2,7 +2,7 @@ import { NetworkStatus, useQuery } from '@apollo/client'
 import { useCallback, useMemo } from 'react'
 import { type ControlledPaginationInput } from '@/generated/graphql'
 import { flatten } from '@/common/pagination'
-import { COLLECTION_ITEMS_QUERY } from '@/graphql/queries/CollectionQueries'
+import { COLLECTION_ITEMS_QUERY } from '../graphql/queries'
 
 const useCollectionItems = (
   collectionId: number,

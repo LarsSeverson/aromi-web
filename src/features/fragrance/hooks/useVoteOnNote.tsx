@@ -1,5 +1,5 @@
 import { type VoteOnNoteInput } from '@/generated/graphql'
-import { VOTE_ON_NOTE_MUTATION } from '@/graphql/mutations/FragranceMutations'
+import { VOTE_ON_NOTE_MUTATION } from '../graphql/mutations'
 import { type ApolloError, useMutation } from '@apollo/client'
 import { ResultAsync } from 'neverthrow'
 

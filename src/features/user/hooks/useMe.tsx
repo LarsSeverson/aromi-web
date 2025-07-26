@@ -1,4 +1,4 @@
-import { MY_QUERY } from '@/graphql/queries/UserQueries'
+import { MY_QUERY } from '../graphql/queries'
 import { useQuery } from '@apollo/client'
 
 export const useMe = () => {

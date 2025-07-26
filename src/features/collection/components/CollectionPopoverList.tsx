@@ -1,7 +1,7 @@
 import React from 'react'
 import useUserCollections from '@/features/user/hooks/useUserCollections'
 import CollectionPreviewBarCheck from './CollectionPreviewBarCheck'
-import NewCollectionDialog from '@/features/collection/components/NewCollectionDialog'
+import CreateCollectionDialog from '@/features/collection/components/CreateCollectionDialog'
 import Divider from '@/components/Divider'
 import { type FragrancePreviewCardFragrance } from '@/features/fragrance/components/FragrancePreviewCard'
 
@@ -21,7 +21,7 @@ const CollectionPopoverList = (props: CollectionPopoverListProps) => {
       className='overflow-auto w-full mb-4'
       style={{ scrollbarGutter: 'stable both-edges' }}
     >
-      <NewCollectionDialog
+      <CreateCollectionDialog
         fragrance={fragrance}
       />
 

@@ -1,5 +1,5 @@
 import { useQuery } from '@apollo/client'
-import { USER_QUERY } from '@/graphql/queries/UserQueries'
+import { USER_QUERY } from '../graphql/queries'
 
 const useUser = (
   id: number

@@ -1,5 +1,5 @@
 import { flatten } from '@/common/pagination'
-import { FRAGRANCE_QUERY } from '@/graphql/queries/FragranceQueries'
+import { FRAGRANCE_QUERY } from '@/features/fragrance/graphql/queries'
 import { useQuery } from '@apollo/client'
 
 const useFragrance = (

@@ -1,4 +1,4 @@
-import { MOVE_FRAGRANCE_COLLECTION_ITEM_MUTATION } from '@/graphql/mutations/CollectionMutations'
+import { MOVE_FRAGRANCE_COLLECTION_ITEM_MUTATION } from '../graphql/mutations'
 import { useMutation } from '@apollo/client'
 
 export const useMoveCollectionItem = () => {

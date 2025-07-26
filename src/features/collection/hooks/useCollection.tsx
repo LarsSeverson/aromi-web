@@ -1,5 +1,5 @@
 import { flatten } from '@/common/pagination'
-import { COLLECTION_QUERY } from '@/graphql/queries/CollectionQueries'
+import { COLLECTION_QUERY } from '../graphql/queries'
 import { useQuery } from '@apollo/client'
 
 const useCollection = (

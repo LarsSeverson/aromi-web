@@ -1,4 +1,4 @@
-import { RESEND_SIGN_UP_CONFIRMATION_MUTATION } from '@/graphql/mutations/AuthMutations'
+import { RESEND_SIGN_UP_CONFIRMATION_MUTATION } from '../graphql/mutations'
 import { useMutation } from '@apollo/client'
 
 export const useResendSignUpConfirmationCode = () => {

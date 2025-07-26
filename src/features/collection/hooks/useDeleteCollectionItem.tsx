@@ -1,7 +1,7 @@
 import { type NodeWithEdges } from '@/common/pagination'
 import { useMyContext } from '@/features/user'
 import { type DeleteFragranceCollectionItemMutation } from '@/generated/graphql'
-import { DELETE_FRAGRANCE_COLLECTION_ITEM_MUTATION } from '@/graphql/mutations/CollectionMutations'
+import { DELETE_FRAGRANCE_COLLECTION_ITEM_MUTATION } from '../graphql/mutations'
 import { type ApolloCache, type FetchResult, type Reference, useMutation } from '@apollo/client'
 import { type ReadFieldFunction } from '@apollo/client/cache/core/types/common'
 

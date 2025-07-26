@@ -1,6 +1,6 @@
 import { flatten } from '@/common/pagination'
 import { type PaginationInput } from '@/generated/graphql'
-import { FRAGRANCE_IMAGES_QUERY } from '@/graphql/queries/FragranceQueries'
+import { FRAGRANCE_IMAGES_QUERY } from '@/features/fragrance/graphql/queries'
 import { useQuery } from '@apollo/client'
 
 const useFragranceImages = (
