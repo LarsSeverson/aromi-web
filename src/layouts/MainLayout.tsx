@@ -17,6 +17,7 @@ const MainLayout = () => {
       '
     >
       <SideBar />
+
       <div
         className='
           flex-1

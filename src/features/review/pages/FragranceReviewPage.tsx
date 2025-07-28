@@ -3,7 +3,7 @@ import VoteOnAccordsSection from '@/features/review/components/VoteOnAccordsSect
 import InteractableRatingStars from '@/components/InteractableRatingStars'
 import { Colors } from '@/styles/Colors'
 import Divider from '@/components/Divider'
-import FragranceBackButton from '../../fragrance/components/FragranceBackButton'
+import PageBackButton from '../../../components/PageBackButton'
 import { type IFragranceSummary } from '../../fragrance/types'
 import VoteOnCharacteristicsSection from '../components/VoteOnCharacteristicsSection'
 import { Accordion } from '@base-ui-components/react'
@@ -37,7 +37,7 @@ const FragranceReviewPage = (props: FragranceReviewPageProps) => {
       <div
         className='flex-1'
       >
-        <FragranceBackButton
+        <PageBackButton
           className='sticky top-[87px] ml-auto'
         />
       </div>

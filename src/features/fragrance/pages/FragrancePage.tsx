@@ -6,7 +6,7 @@ import FragranceCharacteristicsSection from '../components/FragranceCharacterist
 import FragranceNotesSection from '../components/FragranceNotesSection'
 import FragranceReviewsSection from '../components/FragranceReviewsSection'
 import { type IFragranceSummary } from '../types'
-import FragranceBackButton from '../components/FragranceBackButton'
+import PageBackButton from '../../../components/PageBackButton'
 
 export interface FragrancePageProps {
   fragrance: IFragranceSummary
@@ -40,9 +40,9 @@ export const FragrancePage = (props: FragrancePageProps) => {
       className='flex flex-wrap gap-5'
     >
       <div
-        className='flex-1'
+        className='flex-1 flex'
       >
-        <FragranceBackButton
+        <PageBackButton
           className='sticky top-[87px] ml-auto'
         />
       </div>

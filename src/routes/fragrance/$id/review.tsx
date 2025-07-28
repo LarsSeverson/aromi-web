@@ -5,6 +5,7 @@ import { z } from 'zod'
 import topbar from 'topbar'
 import { client } from '@/common/client'
 import { MY_FRAGRANCE_REVIEW_QUERY } from '@/features/review'
+import { ResultAsync } from 'neverthrow'
 
 export const Route = createFileRoute('/fragrance/$id/review')({
   component: Review,
@@ -22,11 +23,15 @@ export const Route = createFileRoute('/fragrance/$id/review')({
   beforeLoad: async ({ params }) => {
     topbar.show()
 
-    await client
-      .query({
-        query: MY_FRAGRANCE_REVIEW_QUERY,
-        variables: { fragranceId: Number(params.id) }
-      })
+    await ResultAsync
+      .fromPromise(
+        client
+          .query({
+            query: MY_FRAGRANCE_REVIEW_QUERY,
+            variables: { fragranceId: Number(params.id) }
+          }),
+        error => error
+      )
 
     topbar.hide()
   },
