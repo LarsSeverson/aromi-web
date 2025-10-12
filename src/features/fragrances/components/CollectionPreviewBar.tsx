@@ -2,9 +2,9 @@ import { type FragranceImage, type FragranceCollection } from '@/generated/graph
 import React from 'react'
 import GridImages from '@/components/GridImages'
 import clsx from 'clsx'
-import { type FlattenEdges } from '@/utils/pagination'
+import { type FlattenedConnection } from '@/utils/pagination'
 
-type FlattenedCollection = FlattenEdges<FragranceCollection>
+type FlattenedCollection = FlattenedConnection<FragranceCollection>
 type PartialImage = Pick<FragranceImage, 'id' | 'src'>
 interface PartialFragrance { images: PartialImage[] }
 type PartialItem = Pick<FlattenedCollection['items'][number], 'id'> & { fragrance: PartialFragrance }

@@ -1,46 +1,46 @@
 import type { SearchInput } from '@/generated/graphql'
+
 import { useQuery } from '@apollo/client/react'
-import { SEARCH_ACCORDS_QUERY } from '../graphql/queries'
+import { SEARCH_FRAGRANCES_QUERY } from '../graphql/queries'
 import { flattenAll, validateSearchPagination } from '@/utils/pagination'
 import { noRes } from '@/utils/error'
 import { hasNextPage, isStatusLoadingMore, wrapQuery } from '@/utils/util'
 import { useMemo } from 'react'
 
-export const useSearchAccords = (input?: SearchInput) => {
+export const useSearchFragrances = (input?: SearchInput) => {
   const {
     data, previousData, loading: isLoading, error, networkStatus,
     fetchMore, refetch
-  } = useQuery(SEARCH_ACCORDS_QUERY, { variables: { input } })
+  } = useQuery(SEARCH_FRAGRANCES_QUERY, { variables: { input } })
 
   const loadMore = () => {
-    const endOffset = validateSearchPagination(data?.searchAccords.pageInfo, networkStatus)
-
+    const endOffset = validateSearchPagination(data?.searchFragrances.pageInfo, networkStatus)
     if (endOffset == null) return noRes
 
     const variables = {
       input: {
-        ...(input ?? {}),
-        offset: endOffset
+        ...input,
+        after: endOffset
       }
     }
 
-    return wrapQuery(fetchMore({ variables })).map(data => data.searchAccords)
+    return wrapQuery(fetchMore({ variables })).map(data => data.searchFragrances)
   }
 
   const refresh = (input?: SearchInput) => {
-    return wrapQuery(refetch({ input })).map(data => data.searchAccords)
+    return wrapQuery(refetch({ input })).map(data => data.searchFragrances)
   }
 
-  const accords = useMemo(
-    () => flattenAll(data?.searchAccords ?? previousData?.searchAccords ?? []),
-    [data?.searchAccords]
+  const fragrances = useMemo(
+    () => flattenAll(data?.searchFragrances ?? previousData?.searchFragrances ?? []),
+    [data?.searchFragrances, previousData?.searchFragrances]
   )
 
   const isLoadingMore = isStatusLoadingMore(networkStatus)
-  const hasMore = hasNextPage(data?.searchAccords.pageInfo)
+  const hasMore = hasNextPage(data?.searchFragrances.pageInfo)
 
   return {
-    accords,
+    fragrances,
 
     isLoading,
     isLoadingMore,

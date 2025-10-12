@@ -5,9 +5,9 @@ import { FaPen } from 'react-icons/fa6'
 import BouncyButton from '@/components/BouncyButton'
 import GridImages from '@/components/GridImages'
 import clsx from 'clsx'
-import { type FlattenEdges } from '@/utils/pagination'
+import { type FlattenedConnection } from '@/utils/pagination'
 
-type FlattenedCollection = FlattenEdges<FragranceCollection>
+type FlattenedCollection = FlattenedConnection<FragranceCollection>
 type PartialUser = Pick<FlattenedCollection['user'], 'username'>
 type PartialImage = Pick<FragranceImage, 'id' | 'src'>
 interface PartialFragrance { images: PartialImage[] }

@@ -1,19 +1,20 @@
-import type { BrandPaginationInput } from '@/generated/graphql'
+import type { FragrancePaginationInput } from '@/generated/graphql'
+
 import { useQuery } from '@apollo/client/react'
-import { BRANDS_QUERY } from '../graphql/queries'
+import { FRAGRANCES_QUERY } from '../graphql/queries'
+import { useMemo } from 'react'
 import { flattenAll, validatePagination } from '@/utils/pagination'
 import { noRes } from '@/utils/error'
 import { hasNextPage, isStatusLoadingMore, wrapQuery } from '@/utils/util'
-import { useMemo } from 'react'
 
-export const useBrands = (input?: BrandPaginationInput) => {
+export const useFragrances = (input?: FragrancePaginationInput) => {
   const {
     data, loading: isLoading, error, networkStatus,
     fetchMore
-  } = useQuery(BRANDS_QUERY, { variables: { input } })
+  } = useQuery(FRAGRANCES_QUERY, { variables: { input } })
 
   const loadMore = () => {
-    const endCursor = validatePagination(data?.brands.pageInfo, networkStatus)
+    const endCursor = validatePagination(data?.fragrances.pageInfo, networkStatus)
 
     if (endCursor == null) return noRes
 
@@ -24,19 +25,19 @@ export const useBrands = (input?: BrandPaginationInput) => {
       }
     }
 
-    return wrapQuery(fetchMore({ variables })).map(data => flattenAll(data.brands))
+    return wrapQuery(fetchMore({ variables })).map(data => flattenAll(data.fragrances))
   }
 
-  const brands = useMemo(
-    () => flattenAll(data?.brands ?? []),
-    [data?.brands]
+  const fragrances = useMemo(
+    () => flattenAll(data?.fragrances ?? []),
+    [data?.fragrances]
   )
 
   const isLoadingMore = isStatusLoadingMore(networkStatus)
-  const hasMore = hasNextPage(data?.brands.pageInfo)
+  const hasMore = hasNextPage(data?.fragrances.pageInfo)
 
   return {
-    brands,
+    fragrances,
 
     isLoading,
     isLoadingMore,

@@ -108,11 +108,11 @@ export interface NodeWithEdges<T> {
   }>
 }
 
-export type FlattenEdges<T> =
+export type FlattenedConnection<T> =
   T extends Date ? T :
-    T extends NodeWithEdges<infer N> ? Array<FlattenEdges<N>> :
-      T extends Array<infer U> ? Array<FlattenEdges<U>> :
-        T extends object ? { [K in keyof T]: FlattenEdges<T[K]> } :
+    T extends NodeWithEdges<infer N> ? Array<FlattenedConnection<N>> :
+      T extends Array<infer U> ? Array<FlattenedConnection<U>> :
+        T extends object ? { [K in keyof T]: FlattenedConnection<T[K]> } :
           T
 
 export const isEdgeNodeObject = <T>(value: unknown): value is NodeWithEdges<T> => {
@@ -127,13 +127,13 @@ export const isEdgeNodeObject = <T>(value: unknown): value is NodeWithEdges<T> =
   )
 }
 
-export const flatten = <T>(input: T): FlattenEdges<T> => {
+export const flattenAll = <T>(input: T): FlattenedConnection<T> => {
   if (isEdgeNodeObject(input)) {
-    return input.edges.map(edge => flatten(edge.node)) as FlattenEdges<T>
+    return input.edges.map(edge => flattenAll(edge.node)) as FlattenedConnection<T>
   }
 
   if (Array.isArray(input)) {
-    return input.map(flatten) as FlattenEdges<T>
+    return input.map(flattenAll) as FlattenedConnection<T>
   }
 
   if (typeof input === 'object' && input !== null) {
@@ -143,13 +143,13 @@ export const flatten = <T>(input: T): FlattenEdges<T> => {
       const value = (input as Record<string, unknown>)[key]
       const isValueAnEdgeObject = isEdgeNodeObject(value)
       result[key] = isValueAnEdgeObject
-        ? value.edges.map(edge => flatten(edge.node))
-        : flatten(value)
+        ? value.edges.map(edge => flattenAll(edge.node))
+        : flattenAll(value)
     }
-    return result as FlattenEdges<T>
+    return result as FlattenedConnection<T>
   }
 
-  return input as FlattenEdges<T>
+  return input as FlattenedConnection<T>
 }
 
 export const validatePagination = (

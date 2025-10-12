@@ -1,0 +1,41 @@
+import { useMyContext } from '@/features/users'
+import { useMutation } from '@apollo/client/react'
+import { DELETE_FRAGRANCE_COLLECTION_ITEM_MUTATION } from '../graphql/mutations'
+import type { AllFragranceCollectionItemFragment, DeleteFragranceCollectionItemInput } from '@/generated/graphql'
+import { wrapQuery } from '@/utils/util'
+
+export const useDeleteFragranceCollectionItem = () => {
+  const { me } = useMyContext()
+
+  const [deleteItemInner] = useMutation(DELETE_FRAGRANCE_COLLECTION_ITEM_MUTATION)
+
+  const deleteItem = (input: DeleteFragranceCollectionItemInput) => {
+    return wrapQuery(
+      deleteItemInner({
+        variables: { input },
+        update (cache, { data }) {
+          const deletedItemId = data?.deleteFragranceCollectionItem.id
+          const collectionId = input.collectionId
+
+          if (me == null) return
+          if (deletedItemId == null) return
+
+          cache.modify({
+            id: cache.identify({ __typename: 'FragranceCollection', id: collectionId }),
+            fields: {
+              items: (existing = { edges: [] }, { readField }) => {
+                const typedRefs = existing as AllFragranceCollectionItemFragment[]
+                return typedRefs.filter(ref => readField('id', ref) !== deletedItemId)
+              },
+              hasFragrance: () => false
+            }
+          })
+        }
+      })
+    ).map(data => data.deleteFragranceCollectionItem)
+  }
+
+  return {
+    deleteItem
+  }
+}

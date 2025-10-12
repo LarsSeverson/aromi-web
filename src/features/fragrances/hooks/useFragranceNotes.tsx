@@ -1,19 +1,19 @@
-import type { FragranceReviewPaginationInput } from '@/generated/graphql'
-import { FRAGRANCE_REVIEWS_QUERY } from '../graphql/queries'
+import type { FragranceNotePaginationInput } from '@/generated/graphql'
+import { FRAGRANCE_NOTES_QUERY } from '../graphql/queries'
 import { useQuery } from '@apollo/client/react'
 import { useMemo } from 'react'
 import { flattenAll, validatePagination } from '@/utils/pagination'
 import { noRes } from '@/utils/error'
 import { hasNextPage, isStatusLoadingMore, wrapQuery } from '@/utils/util'
 
-export const useFragranceReviews = (fragranceId: string, input?: FragranceReviewPaginationInput) => {
+export const useFragranceNotes = (fragranceId: string, input?: FragranceNotePaginationInput) => {
   const {
     data, loading: isLoading, error, networkStatus,
     fetchMore
-  } = useQuery(FRAGRANCE_REVIEWS_QUERY, { variables: { fragranceId, input } })
+  } = useQuery(FRAGRANCE_NOTES_QUERY, { variables: { fragranceId, input } })
 
   const loadMore = () => {
-    const endCursor = validatePagination(data?.fragrance.reviews.pageInfo, networkStatus)
+    const endCursor = validatePagination(data?.fragrance.notes.pageInfo, networkStatus)
 
     if (endCursor == null) return noRes
 
@@ -25,19 +25,19 @@ export const useFragranceReviews = (fragranceId: string, input?: FragranceReview
       }
     }
 
-    return wrapQuery(fetchMore({ variables })).map(data => flattenAll(data.fragrance.reviews))
+    return wrapQuery(fetchMore({ variables })).map(data => flattenAll(data.fragrance.notes))
   }
 
-  const reviews = useMemo(
-    () => flattenAll(data?.fragrance.reviews ?? []),
-    [data?.fragrance.reviews]
+  const notes = useMemo(
+    () => flattenAll(data?.fragrance.notes ?? []),
+    [data?.fragrance.notes]
   )
 
   const isLoadingMore = isStatusLoadingMore(networkStatus)
-  const hasMore = hasNextPage(data?.fragrance.reviews.pageInfo)
+  const hasMore = hasNextPage(data?.fragrance.notes.pageInfo)
 
   return {
-    reviews,
+    notes,
 
     isLoading,
     isLoadingMore,

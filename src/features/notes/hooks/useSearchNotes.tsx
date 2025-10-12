@@ -1,7 +1,7 @@
 import type { SearchInput } from '@/generated/graphql'
 import { useQuery } from '@apollo/client/react'
 import { SEARCH_NOTES_QUERY } from '../graphql/queries'
-import { flatten, validateSearchPagination } from '@/utils/pagination'
+import { flattenAll, validateSearchPagination } from '@/utils/pagination'
 import { noRes } from '@/utils/error'
 import { hasNextPage, isStatusLoadingMore, wrapQuery } from '@/utils/util'
 import { useMemo } from 'react'
@@ -32,7 +32,7 @@ export const useSearchNotes = (input?: SearchInput) => {
   }
 
   const notes = useMemo(
-    () => flatten(data?.searchNotes ?? []),
+    () => flattenAll(data?.searchNotes ?? []),
     [data?.searchNotes]
   )
 

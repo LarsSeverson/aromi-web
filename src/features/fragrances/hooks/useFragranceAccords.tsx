@@ -1,19 +1,19 @@
-import type { FragranceReviewPaginationInput } from '@/generated/graphql'
-import { FRAGRANCE_REVIEWS_QUERY } from '../graphql/queries'
+import type { FragranceAccordPaginationInput } from '@/generated/graphql'
+import { FRAGRANCE_ACCORDS_QUERY } from '../graphql/queries'
 import { useQuery } from '@apollo/client/react'
 import { useMemo } from 'react'
 import { flattenAll, validatePagination } from '@/utils/pagination'
 import { noRes } from '@/utils/error'
 import { hasNextPage, isStatusLoadingMore, wrapQuery } from '@/utils/util'
 
-export const useFragranceReviews = (fragranceId: string, input?: FragranceReviewPaginationInput) => {
+export const useFragranceAccords = (fragranceId: string, input?: FragranceAccordPaginationInput) => {
   const {
     data, loading: isLoading, error, networkStatus,
     fetchMore
-  } = useQuery(FRAGRANCE_REVIEWS_QUERY, { variables: { fragranceId, input } })
+  } = useQuery(FRAGRANCE_ACCORDS_QUERY, { variables: { fragranceId, input } })
 
   const loadMore = () => {
-    const endCursor = validatePagination(data?.fragrance.reviews.pageInfo, networkStatus)
+    const endCursor = validatePagination(data?.fragrance.accords.pageInfo, networkStatus)
 
     if (endCursor == null) return noRes
 
@@ -25,19 +25,19 @@ export const useFragranceReviews = (fragranceId: string, input?: FragranceReview
       }
     }
 
-    return wrapQuery(fetchMore({ variables })).map(data => flattenAll(data.fragrance.reviews))
+    return wrapQuery(fetchMore({ variables })).map(data => flattenAll(data.fragrance.accords))
   }
 
-  const reviews = useMemo(
-    () => flattenAll(data?.fragrance.reviews ?? []),
-    [data?.fragrance.reviews]
+  const accords = useMemo(
+    () => flattenAll(data?.fragrance.accords ?? []),
+    [data?.fragrance.accords]
   )
 
   const isLoadingMore = isStatusLoadingMore(networkStatus)
-  const hasMore = hasNextPage(data?.fragrance.reviews.pageInfo)
+  const hasMore = hasNextPage(data?.fragrance.accords.pageInfo)
 
   return {
-    reviews,
+    accords,
 
     isLoading,
     isLoadingMore,

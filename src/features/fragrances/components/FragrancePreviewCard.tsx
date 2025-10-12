@@ -7,14 +7,14 @@ import CollectionPopover from '@/features/collections/components/CollectionPopov
 import { INVALID_ID } from '@/utils/util-types'
 import FragranceImageCard, { type FragranceImageCardImage } from './FragranceImageCard'
 import { useMyContext } from '@/features/user/contexts/MyContext'
-import { type FlattenEdges } from '@/utils/pagination'
+import { type FlattenedConnection } from '@/utils/pagination'
 import { useVoteOnFragrance } from '@/features/fragrance/hooks/useVoteOnFragrance'
 import { ResultAsync } from 'neverthrow'
 import { type ApolloError } from '@apollo/client'
 import ShareFragrancePopover from '@/features/fragrance/components/ShareFragrancePopover'
 import { useToastError } from '@/hooks/useToastError'
 
-export type FragrancePreviewCardFragrance = Pick<FlattenEdges<Fragrance>, 'id' | 'name' | 'brand' | 'votes'> & {
+export type FragrancePreviewCardFragrance = Pick<FlattenedConnection<Fragrance>, 'id' | 'name' | 'brand' | 'votes'> & {
   images: FragranceImageCardImage[]
 }
 

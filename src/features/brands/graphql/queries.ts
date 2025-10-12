@@ -39,20 +39,20 @@ export const SEARCH_BRANDS_QUERY = gql(/* GraphQL */ `
   }
 `)
 
-// export const BRAND_FRAGRANCES_QUERY = gql(/* GraphQL */ `
-//   query BrandFragrances($id: ID!, $input: FragrancePaginationInput) {
-//     brand(id: $id) {
-//       id
-//       fragrances(input: $input) {
-//         edges {
-//           node {
-//             ...FragrancePreview
-//           }
-//         }
-//         pageInfo {
-//           ...AllPageInfo
-//         }
-//       }
-//     }
-//   }
-// `)
+export const BRAND_FRAGRANCES_QUERY = gql(/* GraphQL */ `
+  query BrandFragrances($id: ID!, $input: FragrancePaginationInput) {
+    brand(id: $id) {
+      id
+      fragrances(input: $input) {
+        edges {
+          node {
+            ...FragrancePreview
+          }
+        }
+        pageInfo {
+          ...AllPageInfo
+        }
+      }
+    }
+  }
+`)

@@ -1,7 +1,7 @@
 import type { NotePaginationInput } from '@/generated/graphql'
 import { useQuery } from '@apollo/client/react'
 import { NOTES_QUERY } from '../graphql/queries'
-import { flatten, validatePagination } from '@/utils/pagination'
+import { flattenAll, validatePagination } from '@/utils/pagination'
 import { hasNextPage, isStatusLoadingMore, noRes, wrapQuery } from '@/utils/util'
 import { useMemo } from 'react'
 
@@ -23,11 +23,11 @@ export const useNotes = (input?: NotePaginationInput) => {
       }
     }
 
-    return wrapQuery(fetchMore({ variables })).map(data => flatten(data.notes))
+    return wrapQuery(fetchMore({ variables })).map(data => flattenAll(data.notes))
   }
 
   const notes = useMemo(
-    () => flatten(data?.notes ?? []),
+    () => flattenAll(data?.notes ?? []),
     [data?.notes]
   )
 

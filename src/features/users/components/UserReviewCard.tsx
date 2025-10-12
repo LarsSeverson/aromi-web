@@ -9,9 +9,9 @@ import { HiDotsHorizontal } from 'react-icons/hi'
 import { VoteButton } from '@/components/VoteButton'
 import { Overlay } from '@/components/Overlay'
 import BouncyButton from '@/components/BouncyButton'
-import { type FlattenEdges } from '@/utils/pagination'
+import { type FlattenedConnection } from '@/utils/pagination'
 
-type FlattenedReview = FlattenEdges<FragranceReview>
+type FlattenedReview = FlattenedConnection<FragranceReview>
 type UserReviewFragrance = Pick<FlattenedReview['fragrance'], 'brand' | 'name'> & {
   images: Array<Pick<FragranceImage, 'id' | 'src'>>
 }

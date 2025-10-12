@@ -3,7 +3,7 @@ import { Outlet, createFileRoute } from '@tanstack/react-router'
 import { client } from '@/common/client'
 import { FRAGRANCE_QUERY } from '@/features/fragrance/graphql/queries'
 import topbar from 'topbar'
-import { flatten } from '@/utils/pagination'
+import { flattenAll } from '@/utils/pagination'
 
 export const Route = createFileRoute('/fragrance/$id')({
   component: Fragrance,
@@ -20,7 +20,7 @@ export const Route = createFileRoute('/fragrance/$id')({
 
     if (data.fragrance == null) throw new Error('Fragrance not found')
 
-    const fragrance = flatten(data.fragrance)
+    const fragrance = flattenAll(data.fragrance)
 
     return { fragrance }
   },

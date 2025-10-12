@@ -1,11 +1,10 @@
 import type { SearchInput } from '@/generated/graphql'
 import { useQuery } from '@apollo/client/react'
 import { SEARCH_BRANDS_QUERY } from '../graphql/queries'
-import { flatten, validateSearchPagination } from '@/utils/pagination'
+import { flattenAll, validateSearchPagination } from '@/utils/pagination'
 import { noRes } from '@/utils/error'
 import { hasNextPage, isStatusLoadingMore, wrapQuery } from '@/utils/util'
 import { useMemo } from 'react'
-import type { IBrandPreview } from '../types'
 
 export const useSearchBrands = (input?: SearchInput) => {
   const {
@@ -30,16 +29,16 @@ export const useSearchBrands = (input?: SearchInput) => {
       }
     }
 
-    return wrapQuery(fetchMore({ variables })).map(data => flatten(data.searchBrands))
+    return wrapQuery(fetchMore({ variables })).map(data => flattenAll(data.searchBrands))
   }
 
   const refresh = (input?: SearchInput) => {
     return wrapQuery(refetch({ input })).map(data => data.searchBrands)
   }
 
-  const brands: IBrandPreview[] = useMemo(
-    () => flatten(data?.searchBrands ?? previousData?.searchBrands ?? []),
-    [data?.searchBrands]
+  const brands = useMemo(
+    () => flattenAll(data?.searchBrands ?? previousData?.searchBrands ?? []),
+    [data?.searchBrands, previousData?.searchBrands]
   )
 
   const isLoadingMore = isStatusLoadingMore(networkStatus)

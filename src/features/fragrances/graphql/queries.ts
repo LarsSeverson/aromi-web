@@ -48,9 +48,9 @@ export const SEARCH_FRAGRANCES_QUERY = gql(/* GraphQL */ `
 
 export const FRAGRANCE_IMAGES_QUERY = gql(/* GraphQL */ `
   query FragranceImages(
-    $id: ID!
+    $fragranceId: ID!
   ) {
-    fragrance(id: $id) {
+    fragrance(id: $fragranceId) {
       id
       images {
         ...AllFragranceImage
@@ -61,10 +61,10 @@ export const FRAGRANCE_IMAGES_QUERY = gql(/* GraphQL */ `
 
 export const FRAGRANCE_ACCORDS_QUERY = gql(/* GraphQL */ `
   query FragranceAccords(
-    $id: ID!
+    $fragranceId: ID!
     $input: FragranceAccordPaginationInput
   ) { 
-    fragrance(id: $id) {
+    fragrance(id: $fragranceId) {
       id
       accords(input: $input) {
         edges {
@@ -83,10 +83,10 @@ export const FRAGRANCE_ACCORDS_QUERY = gql(/* GraphQL */ `
 
 export const FRAGRANCE_NOTES_QUERY = gql(/* GraphQL */ `
   query FragranceNotes(
-    $id: ID!
+    $fragranceId: ID!
     $input: FragranceNotePaginationInput
   ) { 
-    fragrance(id: $id) {
+    fragrance(id: $fragranceId) {
       id
       notes(input: $input) {
         edges {
@@ -105,9 +105,9 @@ export const FRAGRANCE_NOTES_QUERY = gql(/* GraphQL */ `
 
 export const FRAGRANCE_TRAITS_QUERY = gql(/* GraphQL */ `
   query FragranceTraits(
-    $id: ID!
+    $fragranceId: ID!
   ) { 
-    fragrance(id: $id) {
+    fragrance(id: $fragranceId) {
       id
       traits {
         ...AllFragranceTrait
@@ -118,10 +118,10 @@ export const FRAGRANCE_TRAITS_QUERY = gql(/* GraphQL */ `
 
 export const FRAGRANCE_REVIEWS_QUERY = gql(/* GraphQL */ `
   query FragranceReviews(
-    $id: ID!
+    $fragranceId: ID!
     $input: FragranceReviewPaginationInput
   ) { 
-    fragrance(id: $id) {
+    fragrance(id: $fragranceId) {
       id
       reviews(input: $input) {
         edges {
@@ -134,6 +134,46 @@ export const FRAGRANCE_REVIEWS_QUERY = gql(/* GraphQL */ `
           ...AllPageInfo
         }
       }
+    }
+  }
+`)
+
+export const FRAGRANCE_COLLECTION_QUERY = gql(/* GraphQL */ `
+  query FragranceCollection(
+    $id: ID!
+  ) { 
+    fragranceCollection(id: $id) {
+      ...AllFragranceCollection
+    }
+  }
+`)
+
+export const FRAGRANCE_COLLECTIONS_QUERY = gql(/* GraphQL */ `
+  query FragranceCollections(
+    $input: FragranceCollectionPaginationInput
+  ) { 
+    fragranceCollections(input: $input) {
+      edges {
+        node {
+          ...AllFragranceCollection
+        }
+        cursor
+      }
+      pageInfo {
+        ...AllPageInfo
+      }
+    }
+  }
+`)
+
+export const FRAGRANCE_COLLECTION_HAS_FRAGRANCE_QUERY = gql(/* GraphQL */ `
+  query FragranceCollectionHasFragrance(
+    $collectionId: ID!
+    $fragranceId: ID!
+  ) { 
+    fragranceCollection(id: $collectionId) { 
+      id
+      hasFragrance(fragranceId: $fragranceId)
     }
   }
 `)
