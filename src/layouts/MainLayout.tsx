@@ -1,13 +1,9 @@
-import React, { useState } from 'react'
-import { ResizeContainer } from '@/components/ResizeContainer'
-import MainLayoutProvider from '@/contexts/MainLayoutContext'
+import React from 'react'
 import { Outlet } from '@tanstack/react-router'
 import SideBar from '@/components/SideBar'
 import TopBar from '@/components/TopBar'
 
 const MainLayout = () => {
-  const [mainContentRect, setMainContextRect] = useState(new DOMRect())
-
   return (
     <div
       className='
@@ -34,20 +30,7 @@ const MainLayout = () => {
           className='fixed top-0 right-0 left-[72px] z-50 bg-white'
         />
 
-        <div
-          className='p-5 h-full'
-        >
-          <ResizeContainer
-            onResize={setMainContextRect}
-            className='h-full'
-          >
-            <MainLayoutProvider
-              mainContentRect={mainContentRect}
-            >
-              <Outlet />
-            </MainLayoutProvider>
-          </ResizeContainer>
-        </div>
+        <Outlet />
       </div>
     </div>
   )

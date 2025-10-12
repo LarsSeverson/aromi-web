@@ -1,94 +1,31 @@
-import { parseForm } from '@/common/schema'
-import { type ApolloError } from '@apollo/client'
-import { Form } from '@base-ui-components/react'
-import { ResultAsync } from 'neverthrow'
-import React, { useEffect, useState } from 'react'
-import { z } from 'zod'
-import VerificationCodeInput from '@/components/VerificationCodeInput'
-import clsx from 'clsx'
+import React, { useState } from 'react'
+import CodeInput from './CodeInput'
 import Spinner from '@/components/Spinner'
-import { useAuthContext } from '@/features/auth'
+import clsx from 'clsx'
+import { Form } from '@base-ui-components/react'
+import { useAuthContext } from '../contexts/AuthContext'
+import SubmitButton from '@/components/SubmitButton'
+import ErrorFeedback from '@/components/ErrorFeedback'
 
 export interface ConfirmSignUpStepProps {
+  text?: string
   email: string
   password: string
-  onContinue: () => void
 }
 
-const confirmSignUpSchema = z
-  .object({
-    confirmationCode: z
-      .string({ required_error: 'Code is required' })
-      .length(6)
-      .trim()
-      .regex(/^\d{6}$/, 'Code must be a 6-digit number')
-  })
+const ConfirmSignUpStep = (props: ConfirmSignUpStepProps) => {
+  const {
+    text = `If “${props.email}” isn’t linked to an account, you’ll get a 6-digit code.`,
+    email,
+    password
+  } = props
 
-export const ConfirmSignUpStep = (props: ConfirmSignUpStepProps) => {
-  const { email, password, onContinue } = props
-
-  const auth = useAuthContext()
+  const { resendSignUpCode, confirmSignUp, logIn } = useAuthContext()
 
   const [error, setError] = useState<string | null>(null)
-  const [errors, setErrors] = useState({})
   const [isLoading, setIsLoading] = useState(false)
-  const [isResendDisabled, setIsResendDisabled] = useState(true)
-  const [showEmailSent, setShowEmailSent] = useState(true)
-
-  const handleAutoLogin = async () => {
-    await ResultAsync
-      .fromPromise(
-        auth.logIn({ variables: { email, password } }),
-        error => error as ApolloError
-      )
-      .match(
-        () => { onContinue() },
-        error => {
-          setError(error.graphQLErrors
-            .map(e => e.message)
-            .join('; ')
-          )
-        }
-      )
-
-    setIsLoading(false)
-  }
-
-  const handleResend = async () => {
-    if (isResendDisabled) return
-
-    setIsResendDisabled(true)
-
-    await ResultAsync
-      .fromPromise(
-        auth.resendSignUpConfirmationCode({ variables: { email } }),
-        error => error as ApolloError
-      )
-      .match(
-        () => {
-          setShowEmailSent(true)
-        },
-        error => {
-          const code = error.graphQLErrors?.[0]?.extensions?.code
-
-          if (['USER_NOT_FOUND', 'NOT_AUTHORIZED', 'INVALID_PARAMETER'].includes(code as string)) {
-            // Suppress user enumeration
-            setError('Something went wrong. Please try again later.')
-            return
-          }
-
-          setError(error.graphQLErrors
-            .map(e => e.message)
-            .join('; ')
-          )
-        }
-      )
-
-    setTimeout(() => {
-      setIsResendDisabled(false)
-      setShowEmailSent(false)
-    }, 7000)
-  }
+  const [isResendLoading, setIsResendLoading] = useState(false)
+  const [isResendDisabled, setIsResendDisabled] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -96,115 +33,109 @@ export const ConfirmSignUpStep = (props: ConfirmSignUpStepProps) => {
     setIsLoading(true)
 
     const formData = new FormData(e.currentTarget)
-    const confirmationCode = Array
-      .from({ length: 6 })
-      .map((_, i) => formData.get(`code-${i}`) ?? '')
-      .join('')
+    const code = formData.get('code') as string
 
-    const response = parseForm(formData, confirmSignUpSchema, () => ({
-      confirmationCode
-    }))
-
-    const valid = Object.values(response).length === 0 &&
-      confirmationCode != null
-
-    if (valid) {
-      await ResultAsync
-        .fromPromise(
-          auth.confirmSignUp({ variables: { email, confirmationCode } }),
-          error => error as ApolloError
-        )
-        .match(
-          () => { void handleAutoLogin() },
-          error => {
-            const code = error.graphQLErrors?.[0]?.extensions?.code
-
-            if (['USER_NOT_FOUND', 'NOT_AUTHORIZED'].includes(code as string)) {
-              // Suppress user enumeration
-              setError('Something went wrong. Please try again later.')
-              return
-            }
-
-            setError(error.graphQLErrors
-              .map(e => e.message)
-              .join('; ')
-            )
-          }
-        )
-    }
+    await confirmSignUp({ email, code })
+      .andThen(() => logIn({ email, password }))
+      .match(
+        () => {
+          window.location.reload()
+        },
+        error => {
+          setError(error.message)
+        }
+      )
 
     setIsLoading(false)
-    setErrors(response)
   }
 
-  useEffect(() => {
+  const handleResend = async (e: React.SyntheticEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+
+    if (isResendDisabled) return
+
+    setIsResendDisabled(true)
+    setIsResendLoading(true)
+
+    await resendSignUpCode({ email })
+      .match(
+        () => {
+          //
+        },
+        error => {
+          setError(error.message)
+        }
+      )
+
+    setIsResendLoading(false)
+
     setTimeout(() => {
-      setShowEmailSent(false)
       setIsResendDisabled(false)
     }, 7000)
-  }, [])
+  }
 
   return (
-    <div
-      className='h-full flex flex-col items-center'
+    <Form
+      onSubmit={(e) => { void handleSubmit(e) }}
     >
       <div
-        className='w-full mb-3'
+        className='w-full my-3 px-2 flex flex-col'
       >
         <h1
-          className='text-2xl font-semibold'
+          className='text-2xl font-semibold text-center'
         >
-          Enter the code from your email
+          Verify Your Account
         </h1>
+
         <div
-          className='mt-3 text-md'
+          className='mt-3 text-md text-center w-[80%] self-center'
         >
-          If “{email}” is not already linked to an account, you’ll receive a 6-digit code.
+          {text}
         </div>
-        {error != null && (
-          <p
-            className='text-red-600 font-pd text-sm text-center mt-3'
-          >
-            {error}
-          </p>
-        )}
+
+        <ErrorFeedback
+          error={error}
+        />
       </div>
 
-      <Form
-        className='w-full flex flex-col'
-        errors={errors}
-        onClearErrors={setErrors}
-        onSubmit={(e) => { void handleSubmit(e) }}
+      <div
+        className='flex flex-col items-center justify-center mt-5 w-full'
       >
-        <VerificationCodeInput />
-
-        <button
-          type='button'
-          disabled={isResendDisabled}
-          className={clsx(
-            'text-sinopia underline mr-auto mt-2 font-semibold text-sm',
-            isResendDisabled && 'opacity-60 cursor-not-allowed'
-          )}
-          onClick={() => { void handleResend() }}
+        <div
+          className='flex flex-col gap-1 my-4'
         >
-          {showEmailSent ? 'Email sent!' : 'Resend code'}
-        </button>
+          <CodeInput />
 
-        <button
-          type='submit'
-          disabled={isLoading}
-          className={clsx(
-            'bg-sinopia text-white font-semibold text-md rounded-md px-3 py-2 mt-5 hover:shadow-lg brightness-100 hover:brightness-105 ml-auto'
-          )}
-        >
-          {isLoading && <Spinner />}
-          <div
-            className={clsx(isLoading && 'opacity-0')}
+          <button
+            type='button'
+            disabled={isResendDisabled}
+            className={clsx(
+              'text-sm hover:underline ml-auto',
+              isResendDisabled && 'opacity-60 hover:no-underline'
+            )}
+            onClick={(e) => { void handleResend(e) }}
           >
-            Submit
-          </div>
-        </button>
-      </Form>
-    </div>
+            {isResendLoading
+              ? (
+                <Spinner
+                  size={5}
+                />
+              )
+              : (
+                <span>
+                  {isResendDisabled ? 'Email sent!' : 'Resend code'}
+                </span>
+              )}
+          </button>
+        </div>
+
+        <SubmitButton
+          isLoading={isLoading}
+        />
+      </div>
+    </Form>
   )
 }
+
+export default ConfirmSignUpStep

@@ -1,17 +1,13 @@
 import { REFRESH_MUTATION } from '../graphql/mutations'
-import { useMutation } from '@apollo/client'
+import { useMutation } from '@apollo/client/react'
+import { wrapQuery } from '@/utils/util'
 
 export const useRefresh = () => {
-  const [
-    refresh,
-    { data, error, loading }
-  ] = useMutation(REFRESH_MUTATION)
+  const [refreshInner] = useMutation(REFRESH_MUTATION)
 
-  return {
-    data,
-    error,
-    loading,
-
-    refresh
+  const refresh = () => {
+    return wrapQuery(refreshInner()).map(data => data.refresh)
   }
+
+  return { refresh }
 }

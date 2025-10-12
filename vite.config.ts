@@ -2,6 +2,7 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from 'path'
 import tanstackRouter from '@tanstack/router-plugin/vite'
+import tailwindcss from '@tailwindcss/vite'
 import { babelOptimizerPlugin } from '@graphql-codegen/client-preset'
 
 export default defineConfig({
@@ -16,7 +17,8 @@ export default defineConfig({
           [babelOptimizerPlugin, { artifactDirectory: './src/generated', gqlTagName: 'gql' }]
         ]
       }
-    })
+    }),
+    tailwindcss()
   ],
   resolve: {
     alias: {

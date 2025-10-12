@@ -1,17 +1,14 @@
+import type { ConfirmForgotPasswordInput } from '@/generated/graphql'
 import { CONFIRM_FORGOT_PASSWORD_MUTATION } from '../graphql/mutations'
-import { useMutation } from '@apollo/client'
+import { useMutation } from '@apollo/client/react'
+import { wrapQuery } from '@/utils/util'
 
 export const useConfirmForgotPassword = () => {
-  const [
-    confirmForgotPassword,
-    { data, loading, error }
-  ] = useMutation(CONFIRM_FORGOT_PASSWORD_MUTATION)
+  const [confirmForgotPasswordInner] = useMutation(CONFIRM_FORGOT_PASSWORD_MUTATION)
 
-  return {
-    data,
-    loading,
-    error,
-
-    confirmForgotPassword
+  const confirmForgotPassword = (input: ConfirmForgotPasswordInput) => {
+    return wrapQuery(confirmForgotPasswordInner({ variables: { input } })).map(data => data.confirmForgotPassword)
   }
+
+  return { confirmForgotPassword }
 }

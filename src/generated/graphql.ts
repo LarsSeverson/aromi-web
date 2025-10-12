@@ -1,7 +1,7 @@
 /* eslint-disable */
 import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/core';
 export type Maybe<T> = T | null;
-export type InputMaybe<T> = Maybe<T>;
+export type InputMaybe<T> = T | null | undefined;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
@@ -16,14 +16,14 @@ export type Scalars = {
   Float: { input: number; output: number; }
   /** A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar. */
   DateTime: { input: Date; output: Date; }
-  JSON: { input: any; output: any; }
+  /** The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). */
+  JSON: { input: JSON; output: JSON; }
 };
 
 export type Accord = {
   __typename?: 'Accord';
-  audit: Audit;
   color: Scalars['String']['output'];
-  id: Scalars['Int']['output'];
+  id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
 };
 
@@ -39,62 +39,296 @@ export type AccordEdge = {
   node: Accord;
 };
 
-export type Asset = {
-  __typename?: 'Asset';
-  alt?: Maybe<Scalars['String']['output']>;
-  audit: Audit;
-  id: Scalars['Int']['output'];
-  src: Scalars['String']['output'];
+export type AccordEdit = {
+  __typename?: 'AccordEdit';
+  accord: Accord;
+  id: Scalars['ID']['output'];
+  proposedColor?: Maybe<Scalars['String']['output']>;
+  proposedDescription?: Maybe<Scalars['String']['output']>;
+  proposedName?: Maybe<Scalars['String']['output']>;
+  reason?: Maybe<Scalars['String']['output']>;
+  reviewer?: Maybe<User>;
+  status: EditStatus;
+  user: User;
 };
 
-export const AssetStatus = {
-  Failed: 'FAILED',
-  Pending: 'PENDING',
-  Uploaded: 'UPLOADED'
+export type AccordEditConnection = {
+  __typename?: 'AccordEditConnection';
+  edges: Array<AccordEditEdge>;
+  pageInfo: PageInfo;
+};
+
+export type AccordEditEdge = {
+  __typename?: 'AccordEditEdge';
+  cursor: Scalars['String']['output'];
+  node: AccordEdit;
+};
+
+export type AccordEditPaginationInput = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  sort?: InputMaybe<AccordEditSortInput>;
+};
+
+export const AccordEditSortBy = {
+  Recent: 'RECENT'
 } as const;
 
-export type AssetStatus = typeof AssetStatus[keyof typeof AssetStatus];
-export type AssetUploadPayload = {
-  __typename?: 'AssetUploadPayload';
-  fields: Scalars['JSON']['output'];
+export type AccordEditSortBy = typeof AccordEditSortBy[keyof typeof AccordEditSortBy];
+export type AccordEditSortInput = {
+  by?: InputMaybe<AccordEditSortBy>;
+  direction?: InputMaybe<SortDirection>;
+};
+
+export type AccordPaginationInput = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  sort?: InputMaybe<AccordSortInput>;
+};
+
+export type AccordRequest = {
+  __typename?: 'AccordRequest';
+  color?: Maybe<Scalars['String']['output']>;
+  description?: Maybe<Scalars['String']['output']>;
+  id: Scalars['ID']['output'];
+  name?: Maybe<Scalars['String']['output']>;
+  requestStatus: RequestStatus;
+  thumbnail?: Maybe<Asset>;
+  user: User;
+  version: Scalars['Int']['output'];
+  votes: VoteInfo;
+};
+
+export type AccordRequestConnection = {
+  __typename?: 'AccordRequestConnection';
+  edges: Array<AccordRequestEdge>;
+  pageInfo: PageInfo;
+};
+
+export type AccordRequestEdge = {
+  __typename?: 'AccordRequestEdge';
+  cursor: Scalars['String']['output'];
+  node: AccordRequest;
+};
+
+export const AccordSortBy = {
+  Recent: 'RECENT'
+} as const;
+
+export type AccordSortBy = typeof AccordSortBy[keyof typeof AccordSortBy];
+export type AccordSortInput = {
+  by?: InputMaybe<AccordSortBy>;
+  direction?: InputMaybe<SortDirection>;
+};
+
+export type Asset = {
+  __typename?: 'Asset';
+  contentType: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
+  name: Scalars['String']['output'];
   s3Key: Scalars['String']['output'];
-  url: Scalars['String']['output'];
+  sizeBytes: Scalars['Int']['output'];
+  url?: Maybe<Scalars['String']['output']>;
 };
 
-export type Audit = {
-  __typename?: 'Audit';
-  createdAt: Scalars['DateTime']['output'];
-  deletedAt?: Maybe<Scalars['DateTime']['output']>;
-  updatedAt: Scalars['DateTime']['output'];
-};
+export const AssetKey = {
+  AccordImages: 'ACCORD_IMAGES',
+  BrandImages: 'BRAND_IMAGES',
+  FragranceImages: 'FRAGRANCE_IMAGES',
+  NoteImages: 'NOTE_IMAGES',
+  UserImages: 'USER_IMAGES'
+} as const;
 
-export type AuthPayload = {
-  __typename?: 'AuthPayload';
-  accessToken: Scalars['String']['output'];
-  expiresIn: Scalars['Int']['output'];
-  idToken: Scalars['String']['output'];
-};
-
-export type CodeDeliveryDetails = {
-  __typename?: 'CodeDeliveryDetails';
+export type AssetKey = typeof AssetKey[keyof typeof AssetKey];
+export type AuthCodeDeliveryDetails = {
+  __typename?: 'AuthCodeDeliveryDetails';
   attribute?: Maybe<Scalars['String']['output']>;
   destination?: Maybe<Scalars['String']['output']>;
   method?: Maybe<Scalars['String']['output']>;
 };
 
-export type ConfirmFragranceImageInput = {
-  fragranceId: Scalars['Int']['input'];
-  s3Key: Scalars['String']['input'];
+export type AuthDeliveryResult = {
+  __typename?: 'AuthDeliveryResult';
+  delivery?: Maybe<AuthCodeDeliveryDetails>;
+  isComplete: Scalars['Boolean']['output'];
 };
 
-export type ControlledPaginationInput = {
+export type AuthTokenPayload = {
+  __typename?: 'AuthTokenPayload';
+  accessToken: Scalars['String']['output'];
+  expiresIn: Scalars['Int']['output'];
+  idToken: Scalars['String']['output'];
+};
+
+export const AvatarStatus = {
+  Failed: 'FAILED',
+  Pending: 'PENDING',
+  Processing: 'PROCESSING',
+  Ready: 'READY'
+} as const;
+
+export type AvatarStatus = typeof AvatarStatus[keyof typeof AvatarStatus];
+export type Brand = {
+  __typename?: 'Brand';
+  avatar?: Maybe<Asset>;
+  description?: Maybe<Scalars['String']['output']>;
+  fragrances: FragranceConnection;
+  id: Scalars['ID']['output'];
+  name: Scalars['String']['output'];
+  votes: VoteInfo;
+  website?: Maybe<Scalars['String']['output']>;
+};
+
+
+export type BrandFragrancesArgs = {
+  input?: InputMaybe<FragrancePaginationInput>;
+};
+
+export type BrandConnection = {
+  __typename?: 'BrandConnection';
+  edges: Array<BrandEdge>;
+  pageInfo: PageInfo;
+};
+
+export type BrandEdge = {
+  __typename?: 'BrandEdge';
+  cursor: Scalars['String']['output'];
+  node: Brand;
+};
+
+export type BrandEdit = {
+  __typename?: 'BrandEdit';
+  brand: Brand;
+  id: Scalars['ID']['output'];
+  proposedAvatar?: Maybe<Asset>;
+  proposedDescription?: Maybe<Scalars['String']['output']>;
+  proposedName?: Maybe<Scalars['String']['output']>;
+  proposedWebsite?: Maybe<Scalars['String']['output']>;
+  reason?: Maybe<Scalars['String']['output']>;
+  reviewer?: Maybe<User>;
+  status: EditStatus;
+  user: User;
+};
+
+export type BrandEditConnection = {
+  __typename?: 'BrandEditConnection';
+  edges: Array<BrandEditEdge>;
+  pageInfo: PageInfo;
+};
+
+export type BrandEditEdge = {
+  __typename?: 'BrandEditEdge';
+  cursor: Scalars['String']['output'];
+  node: BrandEdit;
+};
+
+export type BrandEditPaginationInput = {
   after?: InputMaybe<Scalars['String']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
-  sort?: InputMaybe<ControlledSortByInput>;
+  sort?: InputMaybe<BrandEditSortInput>;
 };
 
-export type ControlledSortByInput = {
+export const BrandEditSortBy = {
+  Recent: 'RECENT'
+} as const;
+
+export type BrandEditSortBy = typeof BrandEditSortBy[keyof typeof BrandEditSortBy];
+export type BrandEditSortInput = {
+  by?: InputMaybe<BrandEditSortBy>;
   direction?: InputMaybe<SortDirection>;
+};
+
+export type BrandPaginationInput = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  sort?: InputMaybe<BrandSortInput>;
+};
+
+export type BrandRequest = {
+  __typename?: 'BrandRequest';
+  avatar?: Maybe<Asset>;
+  description?: Maybe<Scalars['String']['output']>;
+  id: Scalars['ID']['output'];
+  name?: Maybe<Scalars['String']['output']>;
+  requestStatus: RequestStatus;
+  user: User;
+  version: Scalars['Int']['output'];
+  votes: VoteInfo;
+  website?: Maybe<Scalars['String']['output']>;
+};
+
+export type BrandRequestConnection = {
+  __typename?: 'BrandRequestConnection';
+  edges: Array<BrandRequestEdge>;
+  pageInfo: PageInfo;
+};
+
+export type BrandRequestEdge = {
+  __typename?: 'BrandRequestEdge';
+  cursor: Scalars['String']['output'];
+  node: BrandRequest;
+};
+
+export const BrandSortBy = {
+  Recent: 'RECENT'
+} as const;
+
+export type BrandSortBy = typeof BrandSortBy[keyof typeof BrandSortBy];
+export type BrandSortInput = {
+  by?: InputMaybe<BrandSortBy>;
+  direction?: InputMaybe<SortDirection>;
+};
+
+export const Concentration = {
+  BodyMist: 'BODY_MIST',
+  EauFraiche: 'EAU_FRAICHE',
+  Edc: 'EDC',
+  Edp: 'EDP',
+  Edt: 'EDT',
+  Oil: 'OIL',
+  Other: 'OTHER',
+  Parfum: 'PARFUM'
+} as const;
+
+export type Concentration = typeof Concentration[keyof typeof Concentration];
+export type ConfirmForgotPasswordInput = {
+  code: Scalars['String']['input'];
+  email: Scalars['String']['input'];
+  password: Scalars['String']['input'];
+};
+
+export type ConfirmSignUpInput = {
+  code: Scalars['String']['input'];
+  email: Scalars['String']['input'];
+};
+
+export type CreateAccordEditInput = {
+  accordId: Scalars['ID']['input'];
+  proposedColor?: InputMaybe<Scalars['String']['input']>;
+  proposedDescription?: InputMaybe<Scalars['String']['input']>;
+  proposedName?: InputMaybe<Scalars['String']['input']>;
+  reason?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type CreateAccordRequestInput = {
+  color?: InputMaybe<Scalars['String']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type CreateBrandEditInput = {
+  brandId: Scalars['ID']['input'];
+  proposedAvatarId?: InputMaybe<Scalars['ID']['input']>;
+  proposedDescription?: InputMaybe<Scalars['String']['input']>;
+  proposedName?: InputMaybe<Scalars['String']['input']>;
+  proposedWebsite?: InputMaybe<Scalars['String']['input']>;
+  reason?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type CreateBrandRequestInput = {
+  description?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  website?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type CreateFragranceCollectionInput = {
@@ -102,88 +336,143 @@ export type CreateFragranceCollectionInput = {
 };
 
 export type CreateFragranceCollectionItemInput = {
-  collectionId: Scalars['Int']['input'];
-  fragranceId: Scalars['Int']['input'];
+  collectionId: Scalars['ID']['input'];
+  fragranceId: Scalars['ID']['input'];
 };
 
-export type CreateFragranceImageInput = {
-  fileSize: Scalars['Int']['input'];
-  fileType: Scalars['String']['input'];
-  fragranceId: Scalars['Int']['input'];
+export type CreateFragranceEditInput = {
+  fragranceId: Scalars['ID']['input'];
+  proposedBrandId?: InputMaybe<Scalars['ID']['input']>;
+  proposedConcentration?: InputMaybe<Concentration>;
+  proposedDescription?: InputMaybe<Scalars['String']['input']>;
+  proposedImageId?: InputMaybe<Scalars['ID']['input']>;
+  proposedName?: InputMaybe<Scalars['String']['input']>;
+  proposedReleaseYear?: InputMaybe<Scalars['Int']['input']>;
+  proposedStatus?: InputMaybe<FragranceStatus>;
+  reason?: InputMaybe<Scalars['String']['input']>;
 };
 
-export type CreateFragranceReportInput = {
-  fragranceId: Scalars['Int']['input'];
-  report: Scalars['String']['input'];
+export type CreateFragranceRequestInput = {
+  assetId?: InputMaybe<Scalars['ID']['input']>;
+  concentration?: InputMaybe<Concentration>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  releaseYear?: InputMaybe<Scalars['Int']['input']>;
+  status?: InputMaybe<FragranceStatus>;
 };
 
-export type CreateReviewReportInput = {
-  report: Scalars['String']['input'];
-  reviewId: Scalars['Int']['input'];
+export type CreateFragranceReviewInput = {
+  body?: InputMaybe<Scalars['String']['input']>;
+  fragranceId: Scalars['ID']['input'];
+  rating: Scalars['Float']['input'];
+};
+
+export type CreateNoteEditInput = {
+  noteId: Scalars['ID']['input'];
+  proposedDescription?: InputMaybe<Scalars['String']['input']>;
+  proposedName?: InputMaybe<Scalars['String']['input']>;
+  proposedThumbnailId?: InputMaybe<Scalars['String']['input']>;
+  reason?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type CreateNoteRequestInput = {
+  description?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type DeleteAccordRequestInput = {
+  id: Scalars['ID']['input'];
+};
+
+export type DeleteAssetInput = {
+  id: Scalars['ID']['input'];
+};
+
+export type DeleteBrandRequestInput = {
+  id: Scalars['ID']['input'];
+};
+
+export type DeleteFragranceCollectionInput = {
+  collectionId: Scalars['ID']['input'];
 };
 
 export type DeleteFragranceCollectionItemInput = {
-  collectionId: Scalars['Int']['input'];
-  fragranceId: Scalars['Int']['input'];
+  collectionId: Scalars['ID']['input'];
+  itemId: Scalars['ID']['input'];
 };
 
-export type DeleteFragranceReviewInput = {
-  reviewId: Scalars['Int']['input'];
+export type DeleteFragranceRequestInput = {
+  id: Scalars['ID']['input'];
 };
 
-export type DeliveryResult = {
-  __typename?: 'DeliveryResult';
-  complete: Scalars['Boolean']['output'];
-  delivery?: Maybe<CodeDeliveryDetails>;
+export type DeleteNoteRequestInput = {
+  id: Scalars['ID']['input'];
+};
+
+export type EditJob = {
+  __typename?: 'EditJob';
+  error?: Maybe<Scalars['String']['output']>;
+  id: Scalars['ID']['output'];
+  status: EditJobStatus;
+};
+
+export const EditJobStatus = {
+  Failed: 'FAILED',
+  Processing: 'PROCESSING',
+  Queued: 'QUEUED',
+  Success: 'SUCCESS'
+} as const;
+
+export type EditJobStatus = typeof EditJobStatus[keyof typeof EditJobStatus];
+export const EditStatus = {
+  Approved: 'APPROVED',
+  Pending: 'PENDING',
+  Rejected: 'REJECTED'
+} as const;
+
+export type EditStatus = typeof EditStatus[keyof typeof EditStatus];
+export type ForgotPasswordInput = {
+  email: Scalars['String']['input'];
 };
 
 export type Fragrance = {
   __typename?: 'Fragrance';
   accords: FragranceAccordConnection;
-  audit: Audit;
-  brand: Scalars['String']['output'];
-  fillerAccords: FragranceAccordConnection;
-  id: Scalars['Int']['output'];
-  images: FragranceImageConnection;
-  myReview?: Maybe<FragranceReview>;
+  brand: Brand;
+  concentration: Concentration;
+  description?: Maybe<Scalars['String']['output']>;
+  id: Scalars['ID']['output'];
+  images: Array<FragranceImage>;
   name: Scalars['String']['output'];
-  notes: FragranceNotes;
-  rating: Scalars['Float']['output'];
-  reviewDistribution: FragranceReviewDistribution;
+  notes: FragranceNoteConnection;
+  releaseYear: Scalars['Int']['output'];
   reviews: FragranceReviewConnection;
-  reviewsCount: Scalars['Int']['output'];
+  status: FragranceStatus;
+  thumbnail?: Maybe<FragranceImage>;
   traits: Array<FragranceTrait>;
-  votes: VoteSummary;
+  votes: VoteInfo;
 };
 
 
 export type FragranceAccordsArgs = {
-  input?: InputMaybe<VotePaginationInput>;
+  input?: InputMaybe<FragranceAccordPaginationInput>;
 };
 
 
-export type FragranceFillerAccordsArgs = {
-  input?: InputMaybe<PaginationInput>;
-};
-
-
-export type FragranceImagesArgs = {
-  input?: InputMaybe<PaginationInput>;
+export type FragranceNotesArgs = {
+  input?: InputMaybe<FragranceNotePaginationInput>;
 };
 
 
 export type FragranceReviewsArgs = {
-  input?: InputMaybe<VotePaginationInput>;
+  input?: InputMaybe<FragranceReviewPaginationInput>;
 };
 
 export type FragranceAccord = {
   __typename?: 'FragranceAccord';
-  accordId: Scalars['Int']['output'];
-  audit: Audit;
-  color: Scalars['String']['output'];
-  id: Scalars['Int']['output'];
-  name: Scalars['String']['output'];
-  votes: VoteSummary;
+  accord: Accord;
+  id: Scalars['ID']['output'];
+  votes: VoteInfo;
 };
 
 export type FragranceAccordConnection = {
@@ -198,24 +487,35 @@ export type FragranceAccordEdge = {
   node: FragranceAccord;
 };
 
+export type FragranceAccordPaginationInput = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  sort?: InputMaybe<FragranceAccordSortInput>;
+};
+
+export const FragranceAccordSortBy = {
+  Votes: 'VOTES'
+} as const;
+
+export type FragranceAccordSortBy = typeof FragranceAccordSortBy[keyof typeof FragranceAccordSortBy];
+export type FragranceAccordSortInput = {
+  by?: InputMaybe<FragranceAccordSortBy>;
+  direction?: InputMaybe<SortDirection>;
+};
+
 export type FragranceCollection = {
   __typename?: 'FragranceCollection';
-  audit: Audit;
   hasFragrance: Scalars['Boolean']['output'];
-  id: Scalars['Int']['output'];
-  items: FragranceCollectionItemConnection;
+  id: Scalars['ID']['output'];
+  items: Array<FragranceCollectionItem>;
   name: Scalars['String']['output'];
+  previewItems: Array<FragranceCollectionItem>;
   user: User;
 };
 
 
 export type FragranceCollectionHasFragranceArgs = {
-  fragranceId?: InputMaybe<Scalars['Int']['input']>;
-};
-
-
-export type FragranceCollectionItemsArgs = {
-  input?: InputMaybe<ControlledPaginationInput>;
+  fragranceId: Scalars['ID']['input'];
 };
 
 export type FragranceCollectionConnection = {
@@ -232,10 +532,8 @@ export type FragranceCollectionEdge = {
 
 export type FragranceCollectionItem = {
   __typename?: 'FragranceCollectionItem';
-  audit: Audit;
   fragrance: Fragrance;
-  id: Scalars['Int']['output'];
-  rank: Scalars['Float']['output'];
+  id: Scalars['ID']['output'];
 };
 
 export type FragranceCollectionItemConnection = {
@@ -250,6 +548,38 @@ export type FragranceCollectionItemEdge = {
   node: FragranceCollectionItem;
 };
 
+export type FragranceCollectionItemPaginationInput = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  sort?: InputMaybe<FragranceCollectionItemSortInput>;
+};
+
+export const FragranceCollectionItemSortBy = {
+  Position: 'POSITION'
+} as const;
+
+export type FragranceCollectionItemSortBy = typeof FragranceCollectionItemSortBy[keyof typeof FragranceCollectionItemSortBy];
+export type FragranceCollectionItemSortInput = {
+  by?: InputMaybe<FragranceCollectionItemSortBy>;
+  direction?: InputMaybe<SortDirection>;
+};
+
+export type FragranceCollectionPaginationInput = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  sort?: InputMaybe<FragranceCollectionSortInput>;
+};
+
+export const FragranceCollectionSortBy = {
+  Recent: 'RECENT'
+} as const;
+
+export type FragranceCollectionSortBy = typeof FragranceCollectionSortBy[keyof typeof FragranceCollectionSortBy];
+export type FragranceCollectionSortInput = {
+  by?: InputMaybe<FragranceCollectionSortBy>;
+  direction?: InputMaybe<SortDirection>;
+};
+
 export type FragranceConnection = {
   __typename?: 'FragranceConnection';
   edges: Array<FragranceEdge>;
@@ -262,14 +592,57 @@ export type FragranceEdge = {
   node: Fragrance;
 };
 
+export type FragranceEdit = {
+  __typename?: 'FragranceEdit';
+  fragrance: Fragrance;
+  id: Scalars['ID']['output'];
+  proposedBrand?: Maybe<Brand>;
+  proposedConcentration?: Maybe<Concentration>;
+  proposedDescription?: Maybe<Scalars['String']['output']>;
+  proposedImage?: Maybe<Asset>;
+  proposedName?: Maybe<Scalars['String']['output']>;
+  proposedReleaseYear?: Maybe<Scalars['Int']['output']>;
+  proposedStatus?: Maybe<FragranceStatus>;
+  reason?: Maybe<Scalars['String']['output']>;
+  reviewer?: Maybe<User>;
+  status: EditStatus;
+  user: User;
+};
+
+export type FragranceEditConnection = {
+  __typename?: 'FragranceEditConnection';
+  edges: Array<FragranceEditEdge>;
+  pageInfo: PageInfo;
+};
+
+export type FragranceEditEdge = {
+  __typename?: 'FragranceEditEdge';
+  cursor: Scalars['String']['output'];
+  node: FragranceEdit;
+};
+
+export type FragranceEditPaginationInput = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  sort?: InputMaybe<FragranceEditSortInput>;
+};
+
+export const FragranceEditSortBy = {
+  Recent: 'RECENT'
+} as const;
+
+export type FragranceEditSortBy = typeof FragranceEditSortBy[keyof typeof FragranceEditSortBy];
+export type FragranceEditSortInput = {
+  by?: InputMaybe<FragranceEditSortBy>;
+  direction?: InputMaybe<SortDirection>;
+};
+
 export type FragranceImage = {
   __typename?: 'FragranceImage';
-  alt?: Maybe<Scalars['String']['output']>;
-  audit: Audit;
-  bg?: Maybe<Scalars['String']['output']>;
   height: Scalars['Int']['output'];
-  id: Scalars['Int']['output'];
-  src: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
+  primaryColor?: Maybe<Scalars['String']['output']>;
+  url?: Maybe<Scalars['String']['output']>;
   width: Scalars['Int']['output'];
 };
 
@@ -287,13 +660,10 @@ export type FragranceImageEdge = {
 
 export type FragranceNote = {
   __typename?: 'FragranceNote';
-  audit: Audit;
-  id: Scalars['Int']['output'];
+  id: Scalars['ID']['output'];
   layer: NoteLayer;
-  name: Scalars['String']['output'];
-  noteId: Scalars['Int']['output'];
-  thumbnail?: Maybe<Scalars['String']['output']>;
-  votes: VoteSummary;
+  note: Note;
+  votes: VoteInfo;
 };
 
 export type FragranceNoteConnection = {
@@ -308,63 +678,92 @@ export type FragranceNoteEdge = {
   node: FragranceNote;
 };
 
-export type FragranceNotes = {
-  __typename?: 'FragranceNotes';
-  base: FragranceNoteConnection;
-  fillerBase: FragranceNoteConnection;
-  fillerMiddle: FragranceNoteConnection;
-  fillerTop: FragranceNoteConnection;
-  middle: FragranceNoteConnection;
-  top: FragranceNoteConnection;
+export type FragranceNotePaginationInput = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  layer?: InputMaybe<NoteLayer>;
+  sort?: InputMaybe<FragranceNoteSortInput>;
 };
 
+export const FragranceNoteSortBy = {
+  Votes: 'VOTES'
+} as const;
 
-export type FragranceNotesBaseArgs = {
-  input?: InputMaybe<VotePaginationInput>;
+export type FragranceNoteSortBy = typeof FragranceNoteSortBy[keyof typeof FragranceNoteSortBy];
+export type FragranceNoteSortInput = {
+  by?: InputMaybe<FragranceNoteSortBy>;
+  direction?: InputMaybe<SortDirection>;
 };
 
-
-export type FragranceNotesFillerBaseArgs = {
-  input?: InputMaybe<PaginationInput>;
+export type FragrancePaginationInput = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  sort?: InputMaybe<FragranceSortInput>;
 };
 
-
-export type FragranceNotesFillerMiddleArgs = {
-  input?: InputMaybe<PaginationInput>;
-};
-
-
-export type FragranceNotesFillerTopArgs = {
-  input?: InputMaybe<PaginationInput>;
-};
-
-
-export type FragranceNotesMiddleArgs = {
-  input?: InputMaybe<VotePaginationInput>;
-};
-
-
-export type FragranceNotesTopArgs = {
-  input?: InputMaybe<VotePaginationInput>;
-};
-
-export type FragranceReport = {
-  __typename?: 'FragranceReport';
-  fragrance: Fragrance;
-  id: Scalars['Int']['output'];
-  report: Scalars['String']['output'];
+export type FragranceRequest = {
+  __typename?: 'FragranceRequest';
+  accords: Array<Accord>;
+  brand?: Maybe<Brand>;
+  concentration?: Maybe<Concentration>;
+  description?: Maybe<Scalars['String']['output']>;
+  fragranceStatus?: Maybe<FragranceStatus>;
+  id: Scalars['ID']['output'];
+  image?: Maybe<Asset>;
+  name?: Maybe<Scalars['String']['output']>;
+  notes: Array<FragranceRequestNote>;
+  releaseYear?: Maybe<Scalars['Int']['output']>;
+  requestStatus: RequestStatus;
+  trait: FragranceRequestTrait;
+  traits: Array<FragranceRequestTrait>;
   user: User;
+  version: Scalars['Int']['output'];
+  votes: VoteInfo;
+};
+
+
+export type FragranceRequestNotesArgs = {
+  layer: NoteLayer;
+};
+
+
+export type FragranceRequestTraitArgs = {
+  type: TraitTypeEnum;
+};
+
+export type FragranceRequestConnection = {
+  __typename?: 'FragranceRequestConnection';
+  edges: Array<FragranceRequestEdge>;
+  pageInfo: PageInfo;
+};
+
+export type FragranceRequestEdge = {
+  __typename?: 'FragranceRequestEdge';
+  cursor: Scalars['String']['output'];
+  node: FragranceRequest;
+};
+
+export type FragranceRequestNote = {
+  __typename?: 'FragranceRequestNote';
+  id: Scalars['ID']['output'];
+  layer: NoteLayer;
+  note: Note;
+};
+
+export type FragranceRequestTrait = {
+  __typename?: 'FragranceRequestTrait';
+  selectedOption: TraitOption;
+  traitType: TraitTypeEnum;
 };
 
 export type FragranceReview = {
   __typename?: 'FragranceReview';
-  audit: Audit;
+  author: User;
+  body?: Maybe<Scalars['String']['output']>;
   fragrance: Fragrance;
-  id: Scalars['Int']['output'];
-  rating: Scalars['Int']['output'];
-  text: Scalars['String']['output'];
-  user: User;
-  votes: VoteSummary;
+  id: Scalars['ID']['output'];
+  rating: Scalars['Float']['output'];
+  votes: VoteInfo;
 };
 
 export type FragranceReviewConnection = {
@@ -373,120 +772,159 @@ export type FragranceReviewConnection = {
   pageInfo: PageInfo;
 };
 
-export type FragranceReviewDistribution = {
-  __typename?: 'FragranceReviewDistribution';
-  five: Scalars['Int']['output'];
-  four: Scalars['Int']['output'];
-  one: Scalars['Int']['output'];
-  three: Scalars['Int']['output'];
-  two: Scalars['Int']['output'];
-};
-
 export type FragranceReviewEdge = {
   __typename?: 'FragranceReviewEdge';
   cursor: Scalars['String']['output'];
   node: FragranceReview;
 };
 
-export type FragranceTrait = {
-  __typename?: 'FragranceTrait';
-  id: Scalars['Int']['output'];
-  myVote?: Maybe<Scalars['Float']['output']>;
-  type: FragranceTraitType;
-  voteScore: Scalars['Float']['output'];
+export type FragranceReviewPaginationInput = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  sort?: InputMaybe<FragranceReviewSortInput>;
 };
 
-export const FragranceTraitType = {
-  Allure: 'ALLURE',
-  Balance: 'BALANCE',
-  Complexity: 'COMPLEXITY',
-  Gender: 'GENDER',
-  Longevity: 'LONGEVITY',
-  Sillage: 'SILLAGE'
+export const FragranceReviewSortBy = {
+  Recent: 'RECENT'
 } as const;
 
-export type FragranceTraitType = typeof FragranceTraitType[keyof typeof FragranceTraitType];
-export type FragranceVote = {
-  __typename?: 'FragranceVote';
-  audit: Audit;
-  fragrance: Fragrance;
-  id: Scalars['Int']['output'];
-  user: User;
-  vote: Scalars['Int']['output'];
+export type FragranceReviewSortBy = typeof FragranceReviewSortBy[keyof typeof FragranceReviewSortBy];
+export type FragranceReviewSortInput = {
+  by?: InputMaybe<FragranceReviewSortBy>;
+  direction?: InputMaybe<SortDirection>;
 };
 
-export type FragranceVoteConnection = {
-  __typename?: 'FragranceVoteConnection';
-  edges: Array<FragranceVoteEdge>;
-  pageInfo: PageInfo;
+export const FragranceSortBy = {
+  Recent: 'RECENT'
+} as const;
+
+export type FragranceSortBy = typeof FragranceSortBy[keyof typeof FragranceSortBy];
+export type FragranceSortInput = {
+  by?: InputMaybe<FragranceSortBy>;
+  direction?: InputMaybe<SortDirection>;
 };
 
-export type FragranceVoteEdge = {
-  __typename?: 'FragranceVoteEdge';
-  cursor: Scalars['String']['output'];
-  node: FragranceVote;
+export const FragranceStatus = {
+  Current: 'CURRENT',
+  Discontinued: 'DISCONTINUED',
+  Reformulated: 'REFORMULATED'
+} as const;
+
+export type FragranceStatus = typeof FragranceStatus[keyof typeof FragranceStatus];
+export type FragranceTrait = {
+  __typename?: 'FragranceTrait';
+  id: Scalars['ID']['output'];
+  myVote?: Maybe<TraitVote>;
+  name: Scalars['String']['output'];
+  options: Array<TraitOption>;
+  stats?: Maybe<TraitStats>;
+  type: TraitTypeEnum;
 };
 
-export type GenericAuthResult = {
-  __typename?: 'GenericAuthResult';
-  complete: Scalars['Boolean']['output'];
+export type FragranceTraitInput = {
+  type: TraitTypeEnum;
 };
 
-export type LogFragranceViewInput = {
-  fragranceId: Scalars['Int']['input'];
+export type LogInInput = {
+  email: Scalars['String']['input'];
+  password: Scalars['String']['input'];
 };
 
-export type MoveFragranceCollectionItemInput = {
-  collectionId: Scalars['Int']['input'];
-  insertBefore: Scalars['Int']['input'];
+export type MoveFragranceCollectionItemsInput = {
+  collectionId: Scalars['ID']['input'];
+  insertBefore?: InputMaybe<Scalars['ID']['input']>;
   rangeLength?: InputMaybe<Scalars['Int']['input']>;
-  rangeStart: Scalars['Int']['input'];
+  rangeStart: Scalars['ID']['input'];
 };
 
 export type Mutation = {
   __typename?: 'Mutation';
-  confirmForgotPassword: GenericAuthResult;
-  confirmFragranceImage: FragranceImage;
+  confirmForgotPassword: Scalars['Boolean']['output'];
   confirmSignUp: User;
+  createAccordEdit: AccordEdit;
+  createAccordRequest: AccordRequest;
+  createBrandEdit: BrandEdit;
+  createBrandRequest: BrandRequest;
   createFragranceCollection: FragranceCollection;
   createFragranceCollectionItem: FragranceCollectionItem;
-  createFragranceImage: AssetUploadPayload;
-  createFragranceReport: FragranceReport;
-  createReviewReport: ReviewReport;
-  deleteFragranceCollectionItem: Array<FragranceCollectionItem>;
-  deleteFragranceReview: FragranceReview;
-  forgotPassword: DeliveryResult;
-  logFragranceView: Scalars['Boolean']['output'];
-  logIn: AuthPayload;
+  createFragranceEdit: FragranceEdit;
+  createFragranceRequest: FragranceRequest;
+  createFragranceReview: FragranceReview;
+  createNoteEdit: NoteEdit;
+  createNoteRequest: NoteRequest;
+  deleteAccordRequest: AccordRequest;
+  deleteAsset: Scalars['Boolean']['output'];
+  deleteBrandRequest: BrandRequest;
+  deleteFragranceCollection: FragranceCollection;
+  deleteFragranceCollectionItem: FragranceCollectionItem;
+  deleteFragranceRequest: FragranceRequest;
+  deleteNoteRequest: NoteRequest;
+  forgotPassword: AuthDeliveryResult;
+  logIn: AuthTokenPayload;
   logOut: Scalars['Boolean']['output'];
-  moveFragranceCollectionItem: Array<FragranceCollectionItem>;
-  refresh?: Maybe<AuthPayload>;
-  resendSignUpConfirmationCode: DeliveryResult;
-  signUp: DeliveryResult;
-  upsertFragranceReview: FragranceReview;
-  voteOnAccord: FragranceAccord;
-  voteOnFragrance: FragranceVote;
-  voteOnNote: FragranceNote;
-  voteOnReview: FragranceReview;
-  voteOnTrait: FragranceTrait;
+  moveFragranceCollectionItems: Array<FragranceCollectionItem>;
+  refresh?: Maybe<AuthTokenPayload>;
+  resendSignUpCode: AuthDeliveryResult;
+  reviewAccordEdit: AccordEdit;
+  reviewBrandEdit: BrandEdit;
+  reviewFragranceEdit: FragranceEdit;
+  reviewNoteEdit: NoteEdit;
+  setFragranceRequestAccords: FragranceRequest;
+  setFragranceRequestBrand: FragranceRequest;
+  setFragranceRequestNotes: FragranceRequest;
+  setFragranceRequestTrait: FragranceRequest;
+  setMyAvatar: User;
+  signUp: AuthDeliveryResult;
+  stageAsset: PresignedUpload;
+  submitAccordRequest: AccordRequest;
+  submitBrandRequest: BrandRequest;
+  submitFragranceRequest: FragranceRequest;
+  submitNoteRequest: NoteRequest;
+  updateAccordRequest: AccordRequest;
+  updateBrandRequest: BrandRequest;
+  updateFragranceRequest: FragranceRequest;
+  updateMe: User;
+  updateNoteRequest: NoteRequest;
+  voteOnAccordRequest: AccordRequest;
+  voteOnBrand: Brand;
+  voteOnBrandRequest: BrandRequest;
+  voteOnFragrance: Fragrance;
+  voteOnFragranceAccord: Accord;
+  voteOnFragranceNote: Note;
+  voteOnFragranceRequest: FragranceRequest;
+  voteOnFragranceReview: FragranceReview;
+  voteOnFragranceTrait?: Maybe<TraitVote>;
+  voteOnNoteRequest: NoteRequest;
 };
 
 
 export type MutationConfirmForgotPasswordArgs = {
-  confirmationCode: Scalars['String']['input'];
-  email: Scalars['String']['input'];
-  newPassword: Scalars['String']['input'];
-};
-
-
-export type MutationConfirmFragranceImageArgs = {
-  input: ConfirmFragranceImageInput;
+  input: ConfirmForgotPasswordInput;
 };
 
 
 export type MutationConfirmSignUpArgs = {
-  confirmationCode: Scalars['String']['input'];
-  email: Scalars['String']['input'];
+  input: ConfirmSignUpInput;
+};
+
+
+export type MutationCreateAccordEditArgs = {
+  input: CreateAccordEditInput;
+};
+
+
+export type MutationCreateAccordRequestArgs = {
+  input?: InputMaybe<CreateAccordRequestInput>;
+};
+
+
+export type MutationCreateBrandEditArgs = {
+  input: CreateBrandEditInput;
+};
+
+
+export type MutationCreateBrandRequestArgs = {
+  input?: InputMaybe<CreateBrandRequestInput>;
 };
 
 
@@ -500,18 +938,48 @@ export type MutationCreateFragranceCollectionItemArgs = {
 };
 
 
-export type MutationCreateFragranceImageArgs = {
-  input: CreateFragranceImageInput;
+export type MutationCreateFragranceEditArgs = {
+  input: CreateFragranceEditInput;
 };
 
 
-export type MutationCreateFragranceReportArgs = {
-  input: CreateFragranceReportInput;
+export type MutationCreateFragranceRequestArgs = {
+  input?: InputMaybe<CreateFragranceRequestInput>;
 };
 
 
-export type MutationCreateReviewReportArgs = {
-  input: CreateReviewReportInput;
+export type MutationCreateFragranceReviewArgs = {
+  input: CreateFragranceReviewInput;
+};
+
+
+export type MutationCreateNoteEditArgs = {
+  input: CreateNoteEditInput;
+};
+
+
+export type MutationCreateNoteRequestArgs = {
+  input?: InputMaybe<CreateNoteRequestInput>;
+};
+
+
+export type MutationDeleteAccordRequestArgs = {
+  input: DeleteAccordRequestInput;
+};
+
+
+export type MutationDeleteAssetArgs = {
+  input: DeleteAssetInput;
+};
+
+
+export type MutationDeleteBrandRequestArgs = {
+  input: DeleteBrandRequestInput;
+};
+
+
+export type MutationDeleteFragranceCollectionArgs = {
+  input: DeleteFragranceCollectionInput;
 };
 
 
@@ -520,50 +988,148 @@ export type MutationDeleteFragranceCollectionItemArgs = {
 };
 
 
-export type MutationDeleteFragranceReviewArgs = {
-  input: DeleteFragranceReviewInput;
+export type MutationDeleteFragranceRequestArgs = {
+  input: DeleteFragranceRequestInput;
+};
+
+
+export type MutationDeleteNoteRequestArgs = {
+  input: DeleteNoteRequestInput;
 };
 
 
 export type MutationForgotPasswordArgs = {
-  email: Scalars['String']['input'];
-};
-
-
-export type MutationLogFragranceViewArgs = {
-  input: LogFragranceViewInput;
+  input: ForgotPasswordInput;
 };
 
 
 export type MutationLogInArgs = {
-  email: Scalars['String']['input'];
-  password: Scalars['String']['input'];
+  input: LogInInput;
 };
 
 
-export type MutationMoveFragranceCollectionItemArgs = {
-  input: MoveFragranceCollectionItemInput;
+export type MutationMoveFragranceCollectionItemsArgs = {
+  input: MoveFragranceCollectionItemsInput;
 };
 
 
-export type MutationResendSignUpConfirmationCodeArgs = {
-  email: Scalars['String']['input'];
+export type MutationResendSignUpCodeArgs = {
+  input: ResendSignUpCodeInput;
+};
+
+
+export type MutationReviewAccordEditArgs = {
+  input: ReviewAccordEditInput;
+};
+
+
+export type MutationReviewBrandEditArgs = {
+  input: ReviewBrandEditInput;
+};
+
+
+export type MutationReviewFragranceEditArgs = {
+  input: ReviewFragranceEditInput;
+};
+
+
+export type MutationReviewNoteEditArgs = {
+  input: ReviewNoteEditInput;
+};
+
+
+export type MutationSetFragranceRequestAccordsArgs = {
+  input: SetFragranceRequestAccordsInput;
+};
+
+
+export type MutationSetFragranceRequestBrandArgs = {
+  input: SetFragranceRequestBrandInput;
+};
+
+
+export type MutationSetFragranceRequestNotesArgs = {
+  input: SetFragranceRequestNotesInput;
+};
+
+
+export type MutationSetFragranceRequestTraitArgs = {
+  input: SetFragranceRequestTraitInput;
+};
+
+
+export type MutationSetMyAvatarArgs = {
+  input: SetMyAvatarInput;
 };
 
 
 export type MutationSignUpArgs = {
-  email: Scalars['String']['input'];
-  password: Scalars['String']['input'];
+  input: SignUpInput;
 };
 
 
-export type MutationUpsertFragranceReviewArgs = {
-  input: UpsertFragranceReviewInput;
+export type MutationStageAssetArgs = {
+  input: StageAssetInput;
 };
 
 
-export type MutationVoteOnAccordArgs = {
-  input: VoteOnAccordInput;
+export type MutationSubmitAccordRequestArgs = {
+  input: SubmitAccordRequestInput;
+};
+
+
+export type MutationSubmitBrandRequestArgs = {
+  input: SubmitBrandRequestInput;
+};
+
+
+export type MutationSubmitFragranceRequestArgs = {
+  input: SubmitFragranceRequestInput;
+};
+
+
+export type MutationSubmitNoteRequestArgs = {
+  input: SubmitNoteRequestInput;
+};
+
+
+export type MutationUpdateAccordRequestArgs = {
+  input: UpdateAccordRequestInput;
+};
+
+
+export type MutationUpdateBrandRequestArgs = {
+  input: UpdateBrandRequestInput;
+};
+
+
+export type MutationUpdateFragranceRequestArgs = {
+  input: UpdateFragranceRequestInput;
+};
+
+
+export type MutationUpdateMeArgs = {
+  input: UpdateMeInput;
+};
+
+
+export type MutationUpdateNoteRequestArgs = {
+  input: UpdateNoteRequestInput;
+};
+
+
+export type MutationVoteOnAccordRequestArgs = {
+  input: VoteOnAccordRequestInput;
+};
+
+
+export type MutationVoteOnBrandArgs = {
+  input: VoteOnBrandInput;
+};
+
+
+export type MutationVoteOnBrandRequestArgs = {
+  input: VoteOnBrandRequestInput;
 };
 
 
@@ -572,26 +1138,40 @@ export type MutationVoteOnFragranceArgs = {
 };
 
 
-export type MutationVoteOnNoteArgs = {
-  input: VoteOnNoteInput;
+export type MutationVoteOnFragranceAccordArgs = {
+  input: VoteOnFragranceAccordInput;
 };
 
 
-export type MutationVoteOnReviewArgs = {
-  input: VoteOnReviewInput;
+export type MutationVoteOnFragranceNoteArgs = {
+  input: VoteOnFragranceNoteInput;
 };
 
 
-export type MutationVoteOnTraitArgs = {
-  input: VoteOnTraitInput;
+export type MutationVoteOnFragranceRequestArgs = {
+  input: VoteOnFragranceRequestInput;
+};
+
+
+export type MutationVoteOnFragranceReviewArgs = {
+  input: VoteOnFragranceReviewInput;
+};
+
+
+export type MutationVoteOnFragranceTraitArgs = {
+  input: VoteOnFragranceTraitInput;
+};
+
+
+export type MutationVoteOnNoteRequestArgs = {
+  input: VoteOnNoteRequestInput;
 };
 
 export type Note = {
   __typename?: 'Note';
-  audit: Audit;
-  id: Scalars['Int']['output'];
-  name?: Maybe<Scalars['String']['output']>;
-  thumbnail?: Maybe<Scalars['String']['output']>;
+  id: Scalars['ID']['output'];
+  name: Scalars['String']['output'];
+  thumbnail?: Maybe<Asset>;
 };
 
 export type NoteConnection = {
@@ -606,6 +1186,47 @@ export type NoteEdge = {
   node: Note;
 };
 
+export type NoteEdit = {
+  __typename?: 'NoteEdit';
+  id: Scalars['ID']['output'];
+  note: Note;
+  proposedDescription?: Maybe<Scalars['String']['output']>;
+  proposedName?: Maybe<Scalars['String']['output']>;
+  proposedThumbnail?: Maybe<Asset>;
+  reason?: Maybe<Scalars['String']['output']>;
+  reviewer?: Maybe<User>;
+  status: EditStatus;
+  user: User;
+};
+
+export type NoteEditConnection = {
+  __typename?: 'NoteEditConnection';
+  edges: Array<NoteEditEdge>;
+  pageInfo: PageInfo;
+};
+
+export type NoteEditEdge = {
+  __typename?: 'NoteEditEdge';
+  cursor: Scalars['String']['output'];
+  node: NoteEdit;
+};
+
+export type NoteEditPaginationInput = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  sort?: InputMaybe<NoteEditSortInput>;
+};
+
+export const NoteEditSortBy = {
+  Recent: 'RECENT'
+} as const;
+
+export type NoteEditSortBy = typeof NoteEditSortBy[keyof typeof NoteEditSortBy];
+export type NoteEditSortInput = {
+  by?: InputMaybe<NoteEditSortBy>;
+  direction?: InputMaybe<SortDirection>;
+};
+
 export const NoteLayer = {
   Base: 'BASE',
   Middle: 'MIDDLE',
@@ -613,6 +1234,46 @@ export const NoteLayer = {
 } as const;
 
 export type NoteLayer = typeof NoteLayer[keyof typeof NoteLayer];
+export type NotePaginationInput = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  sort?: InputMaybe<NoteSortInput>;
+};
+
+export type NoteRequest = {
+  __typename?: 'NoteRequest';
+  description?: Maybe<Scalars['String']['output']>;
+  id: Scalars['ID']['output'];
+  name?: Maybe<Scalars['String']['output']>;
+  requestStatus: RequestStatus;
+  thumbnail?: Maybe<Asset>;
+  user: User;
+  version: Scalars['Int']['output'];
+  votes: VoteInfo;
+};
+
+export type NoteRequestConnection = {
+  __typename?: 'NoteRequestConnection';
+  edges: Array<NoteRequestEdge>;
+  pageInfo: PageInfo;
+};
+
+export type NoteRequestEdge = {
+  __typename?: 'NoteRequestEdge';
+  cursor: Scalars['String']['output'];
+  node: NoteRequest;
+};
+
+export const NoteSortBy = {
+  Recent: 'RECENT'
+} as const;
+
+export type NoteSortBy = typeof NoteSortBy[keyof typeof NoteSortBy];
+export type NoteSortInput = {
+  by?: InputMaybe<NoteSortBy>;
+  direction?: InputMaybe<SortDirection>;
+};
+
 export type PageInfo = {
   __typename?: 'PageInfo';
   endCursor?: Maybe<Scalars['String']['output']>;
@@ -621,105 +1282,317 @@ export type PageInfo = {
   startCursor?: Maybe<Scalars['String']['output']>;
 };
 
-export type PaginationInput = {
-  after?: InputMaybe<Scalars['String']['input']>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  sort?: InputMaybe<SortByInput>;
+export type PresignedUpload = {
+  __typename?: 'PresignedUpload';
+  assetId: Scalars['ID']['output'];
+  fields: Scalars['JSON']['output'];
+  url: Scalars['String']['output'];
 };
 
 export type Query = {
   __typename?: 'Query';
+  accord: Accord;
+  accordEdit: AccordEdit;
+  accordEdits: AccordEditConnection;
+  accordRequest: AccordRequest;
+  accordRequests: AccordRequestConnection;
   accords: AccordConnection;
-  collection: FragranceCollection;
-  fragrance?: Maybe<Fragrance>;
+  brand?: Maybe<Brand>;
+  brandEdit: BrandEdit;
+  brandEdits: BrandEditConnection;
+  brandRequest: BrandRequest;
+  brandRequests: BrandRequestConnection;
+  brands: BrandConnection;
+  fragrance: Fragrance;
+  fragranceEdit: FragranceEdit;
+  fragranceEdits: FragranceEditConnection;
+  fragranceRequest: FragranceRequest;
+  fragranceRequests: FragranceRequestConnection;
   fragrances: FragranceConnection;
-  me?: Maybe<User>;
+  me: User;
+  note: Note;
+  noteEdit: NoteEdit;
+  noteEdits: NoteEditConnection;
+  noteRequest: NoteRequest;
+  noteRequests: NoteRequestConnection;
   notes: NoteConnection;
-  searchFillerFragranceNotes: FragranceNoteConnection;
-  searchFragranceAccords: FragranceAccordConnection;
-  searchFragranceNotes: FragranceNoteConnection;
-  searchFragrances: FragranceConnection;
-  user?: Maybe<User>;
+  searchAccords: SearchAccordConnection;
+  searchBrands: SearchBrandConnection;
+  searchFragrances: SearchFragranceConnection;
+  searchNotes: SearchNoteConnection;
+  searchUsers: SearchUserConnection;
+  user: User;
+};
+
+
+export type QueryAccordArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type QueryAccordEditArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type QueryAccordEditsArgs = {
+  input?: InputMaybe<AccordEditPaginationInput>;
+};
+
+
+export type QueryAccordRequestArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type QueryAccordRequestsArgs = {
+  input?: InputMaybe<RequestPaginationInput>;
 };
 
 
 export type QueryAccordsArgs = {
-  input?: InputMaybe<PaginationInput>;
+  input?: InputMaybe<AccordPaginationInput>;
 };
 
 
-export type QueryCollectionArgs = {
-  id: Scalars['Int']['input'];
+export type QueryBrandArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type QueryBrandEditArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type QueryBrandEditsArgs = {
+  input?: InputMaybe<BrandEditPaginationInput>;
+};
+
+
+export type QueryBrandRequestArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type QueryBrandRequestsArgs = {
+  input?: InputMaybe<RequestPaginationInput>;
+};
+
+
+export type QueryBrandsArgs = {
+  input?: InputMaybe<BrandPaginationInput>;
 };
 
 
 export type QueryFragranceArgs = {
-  id: Scalars['Int']['input'];
+  id: Scalars['ID']['input'];
+};
+
+
+export type QueryFragranceEditArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type QueryFragranceEditsArgs = {
+  input?: InputMaybe<FragranceEditPaginationInput>;
+};
+
+
+export type QueryFragranceRequestArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type QueryFragranceRequestsArgs = {
+  input?: InputMaybe<RequestPaginationInput>;
 };
 
 
 export type QueryFragrancesArgs = {
-  input?: InputMaybe<PaginationInput>;
+  input?: InputMaybe<FragrancePaginationInput>;
+};
+
+
+export type QueryNoteArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type QueryNoteEditArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type QueryNoteEditsArgs = {
+  input?: InputMaybe<NoteEditPaginationInput>;
+};
+
+
+export type QueryNoteRequestArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type QueryNoteRequestsArgs = {
+  input?: InputMaybe<RequestPaginationInput>;
 };
 
 
 export type QueryNotesArgs = {
-  input?: InputMaybe<PaginationInput>;
+  input?: InputMaybe<NotePaginationInput>;
 };
 
 
-export type QuerySearchFillerFragranceNotesArgs = {
-  input?: InputMaybe<SearchFragranceNotesInput>;
-};
-
-
-export type QuerySearchFragranceAccordsArgs = {
+export type QuerySearchAccordsArgs = {
   input?: InputMaybe<SearchInput>;
 };
 
 
-export type QuerySearchFragranceNotesArgs = {
-  input?: InputMaybe<SearchFragranceNotesInput>;
+export type QuerySearchBrandsArgs = {
+  input?: InputMaybe<SearchInput>;
 };
 
 
 export type QuerySearchFragrancesArgs = {
-  input?: InputMaybe<SearchFragrancesInput>;
+  input?: InputMaybe<SearchInput>;
+};
+
+
+export type QuerySearchNotesArgs = {
+  input?: InputMaybe<SearchInput>;
+};
+
+
+export type QuerySearchUsersArgs = {
+  input?: InputMaybe<SearchInput>;
 };
 
 
 export type QueryUserArgs = {
-  id: Scalars['Int']['input'];
+  id: Scalars['ID']['input'];
 };
 
-export type ReviewReport = {
-  __typename?: 'ReviewReport';
-  id: Scalars['Int']['output'];
-  report: Scalars['String']['output'];
-  review: FragranceReview;
-  user: User;
+export type RequestPaginationInput = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  sort?: InputMaybe<RequestSortInput>;
+  status?: InputMaybe<RequestStatus>;
 };
 
-export type SearchFragranceNotesInput = {
-  layer?: InputMaybe<NoteLayer>;
-  pagination?: InputMaybe<VotePaginationInput>;
-  query?: InputMaybe<Scalars['String']['input']>;
+export const RequestSortBy = {
+  Recent: 'RECENT'
+} as const;
+
+export type RequestSortBy = typeof RequestSortBy[keyof typeof RequestSortBy];
+export type RequestSortInput = {
+  by?: InputMaybe<RequestSortBy>;
+  direction?: InputMaybe<SortDirection>;
 };
 
-export type SearchFragrancesInput = {
-  pagination?: InputMaybe<PaginationInput>;
-  query?: InputMaybe<Scalars['String']['input']>;
+export const RequestStatus = {
+  Accepted: 'ACCEPTED',
+  Draft: 'DRAFT',
+  Pending: 'PENDING',
+  Rejected: 'REJECTED'
+} as const;
+
+export type RequestStatus = typeof RequestStatus[keyof typeof RequestStatus];
+export type ResendSignUpCodeInput = {
+  email: Scalars['String']['input'];
+};
+
+export type ReviewAccordEditInput = {
+  editId: Scalars['ID']['input'];
+  feedback?: InputMaybe<Scalars['String']['input']>;
+  status: EditStatus;
+};
+
+export type ReviewBrandEditInput = {
+  editId: Scalars['ID']['input'];
+  feedback?: InputMaybe<Scalars['String']['input']>;
+  status: EditStatus;
+};
+
+export type ReviewFragranceEditInput = {
+  editId: Scalars['ID']['input'];
+  feedback?: InputMaybe<Scalars['String']['input']>;
+  status: EditStatus;
+};
+
+export type ReviewNoteEditInput = {
+  editId: Scalars['ID']['input'];
+  feedback?: InputMaybe<Scalars['String']['input']>;
+  status: EditStatus;
+};
+
+export type SearchAccordConnection = {
+  __typename?: 'SearchAccordConnection';
+  edges: Array<SearchAccordEdge>;
+  pageInfo: SearchPageInfo;
+};
+
+export type SearchAccordEdge = {
+  __typename?: 'SearchAccordEdge';
+  node: Accord;
+  offset: Scalars['Int']['output'];
+};
+
+export type SearchBrandConnection = {
+  __typename?: 'SearchBrandConnection';
+  edges: Array<SearchBrandEdge>;
+  pageInfo: SearchPageInfo;
+};
+
+export type SearchBrandEdge = {
+  __typename?: 'SearchBrandEdge';
+  node: Brand;
+  offset: Scalars['Int']['output'];
+};
+
+export type SearchFragranceConnection = {
+  __typename?: 'SearchFragranceConnection';
+  edges: Array<SearchFragranceEdge>;
+  pageInfo: SearchPageInfo;
+};
+
+export type SearchFragranceEdge = {
+  __typename?: 'SearchFragranceEdge';
+  node: Fragrance;
+  offset: Scalars['Int']['output'];
 };
 
 export type SearchInput = {
   pagination?: InputMaybe<SearchPaginationInput>;
-  query?: InputMaybe<Scalars['String']['input']>;
+  term?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type SearchNoteConnection = {
+  __typename?: 'SearchNoteConnection';
+  edges: Array<SearchNoteEdge>;
+  pageInfo: SearchPageInfo;
+};
+
+export type SearchNoteEdge = {
+  __typename?: 'SearchNoteEdge';
+  node: Note;
+  offset: Scalars['Int']['output'];
+};
+
+export type SearchPageInfo = {
+  __typename?: 'SearchPageInfo';
+  endOffset: Scalars['Int']['output'];
+  hasNextPage: Scalars['Boolean']['output'];
+  hasPreviousPage: Scalars['Boolean']['output'];
+  pageSize: Scalars['Int']['output'];
+  startOffset: Scalars['Int']['output'];
 };
 
 export type SearchPaginationInput = {
-  after?: InputMaybe<Scalars['String']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
-  sort?: InputMaybe<SearchSortByInput>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  sort?: InputMaybe<SearchSortInput>;
 };
 
 export const SearchSortBy = {
@@ -727,19 +1600,52 @@ export const SearchSortBy = {
 } as const;
 
 export type SearchSortBy = typeof SearchSortBy[keyof typeof SearchSortBy];
-export type SearchSortByInput = {
+export type SearchSortInput = {
   by?: InputMaybe<SearchSortBy>;
+  direction?: InputMaybe<SortDirection>;
 };
 
-export const SortBy = {
-  Id: 'ID',
-  Updated: 'UPDATED'
-} as const;
+export type SearchUserConnection = {
+  __typename?: 'SearchUserConnection';
+  edges: Array<SearchUserEdge>;
+  pageInfo: SearchPageInfo;
+};
 
-export type SortBy = typeof SortBy[keyof typeof SortBy];
-export type SortByInput = {
-  by?: InputMaybe<SortBy>;
-  direction?: InputMaybe<SortDirection>;
+export type SearchUserEdge = {
+  __typename?: 'SearchUserEdge';
+  node: User;
+  offset: Scalars['Int']['output'];
+};
+
+export type SetFragranceRequestAccordsInput = {
+  accordIds: Array<Scalars['ID']['input']>;
+  requestId: Scalars['ID']['input'];
+};
+
+export type SetFragranceRequestBrandInput = {
+  brandId?: InputMaybe<Scalars['ID']['input']>;
+  requestId: Scalars['ID']['input'];
+};
+
+export type SetFragranceRequestNotesInput = {
+  layer: NoteLayer;
+  noteIds: Array<Scalars['ID']['input']>;
+  requestId: Scalars['ID']['input'];
+};
+
+export type SetFragranceRequestTraitInput = {
+  requestId: Scalars['ID']['input'];
+  score: Scalars['Int']['input'];
+  traitType: TraitTypeEnum;
+};
+
+export type SetMyAvatarInput = {
+  assetId: Scalars['ID']['input'];
+};
+
+export type SignUpInput = {
+  email: Scalars['String']['input'];
+  password: Scalars['String']['input'];
 };
 
 export const SortDirection = {
@@ -748,110 +1654,277 @@ export const SortDirection = {
 } as const;
 
 export type SortDirection = typeof SortDirection[keyof typeof SortDirection];
-export type UpsertFragranceReviewInput = {
-  fragranceId: Scalars['Int']['input'];
-  rating: Scalars['Int']['input'];
-  review: Scalars['String']['input'];
+export type StageAssetInput = {
+  contentSize: Scalars['Int']['input'];
+  contentType: Scalars['String']['input'];
+  fileName: Scalars['String']['input'];
+  key: AssetKey;
+};
+
+export type SubmitAccordRequestInput = {
+  id: Scalars['ID']['input'];
+};
+
+export type SubmitBrandRequestInput = {
+  id: Scalars['ID']['input'];
+};
+
+export type SubmitFragranceRequestInput = {
+  id: Scalars['ID']['input'];
+};
+
+export type SubmitNoteRequestInput = {
+  id: Scalars['ID']['input'];
+};
+
+export type TraitOption = {
+  __typename?: 'TraitOption';
+  id: Scalars['ID']['output'];
+  label: Scalars['String']['output'];
+  score: Scalars['Int']['output'];
+};
+
+export type TraitStats = {
+  __typename?: 'TraitStats';
+  averageScore: Scalars['Float']['output'];
+  distribution: Array<TraitVoteDistribution>;
+  totalVotes: Scalars['Int']['output'];
+};
+
+export const TraitTypeEnum = {
+  Appeal: 'APPEAL',
+  Balance: 'BALANCE',
+  Complexity: 'COMPLEXITY',
+  Gender: 'GENDER',
+  Longevity: 'LONGEVITY',
+  Projection: 'PROJECTION'
+} as const;
+
+export type TraitTypeEnum = typeof TraitTypeEnum[keyof typeof TraitTypeEnum];
+export type TraitVote = {
+  __typename?: 'TraitVote';
+  option: TraitOption;
+};
+
+export type TraitVoteDistribution = {
+  __typename?: 'TraitVoteDistribution';
+  option: TraitOption;
+  votes: Scalars['Int']['output'];
+};
+
+export type UpdateAccordRequestInput = {
+  assetId?: InputMaybe<Scalars['ID']['input']>;
+  color?: InputMaybe<Scalars['String']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  id: Scalars['ID']['input'];
+  name?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type UpdateBrandRequestInput = {
+  assetId?: InputMaybe<Scalars['ID']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  id: Scalars['ID']['input'];
+  name?: InputMaybe<Scalars['String']['input']>;
+  website?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type UpdateFragranceRequestInput = {
+  assetId?: InputMaybe<Scalars['ID']['input']>;
+  concentration?: InputMaybe<Concentration>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  id: Scalars['ID']['input'];
+  name?: InputMaybe<Scalars['String']['input']>;
+  releaseYear?: InputMaybe<Scalars['Int']['input']>;
+  status?: InputMaybe<FragranceStatus>;
+};
+
+export type UpdateMeInput = {
+  username?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type UpdateNoteRequestInput = {
+  assetId?: InputMaybe<Scalars['ID']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  id: Scalars['ID']['input'];
+  name?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type User = {
   __typename?: 'User';
-  audit: Audit;
+  accordRequests: AccordRequestConnection;
+  avatar?: Maybe<Asset>;
+  brandRequests: BrandRequestConnection;
+  collection: FragranceCollection;
   collections: FragranceCollectionConnection;
-  email: Scalars['String']['output'];
-  followerCount: Scalars['Int']['output'];
-  followingCount: Scalars['Int']['output'];
-  id: Scalars['Int']['output'];
-  likes: FragranceVoteConnection;
+  email?: Maybe<Scalars['String']['output']>;
+  fragranceRequests: FragranceRequestConnection;
+  id: Scalars['ID']['output'];
+  noteRequests: NoteRequestConnection;
+  review: FragranceReview;
   reviews: FragranceReviewConnection;
   username: Scalars['String']['output'];
 };
 
 
-export type UserCollectionsArgs = {
-  input?: InputMaybe<PaginationInput>;
+export type UserAccordRequestsArgs = {
+  input?: InputMaybe<RequestPaginationInput>;
 };
 
 
-export type UserLikesArgs = {
-  input?: InputMaybe<PaginationInput>;
+export type UserBrandRequestsArgs = {
+  input?: InputMaybe<RequestPaginationInput>;
+};
+
+
+export type UserCollectionArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type UserCollectionsArgs = {
+  input?: InputMaybe<FragranceCollectionPaginationInput>;
+};
+
+
+export type UserFragranceRequestsArgs = {
+  input?: InputMaybe<RequestPaginationInput>;
+};
+
+
+export type UserNoteRequestsArgs = {
+  input?: InputMaybe<RequestPaginationInput>;
+};
+
+
+export type UserReviewArgs = {
+  id: Scalars['ID']['input'];
 };
 
 
 export type UserReviewsArgs = {
-  input?: InputMaybe<PaginationInput>;
+  input?: InputMaybe<FragranceReviewPaginationInput>;
 };
 
-export type VoteOnAccordInput = {
-  accordId: Scalars['Int']['input'];
-  fragranceId: Scalars['Int']['input'];
-  vote?: InputMaybe<Scalars['Boolean']['input']>;
+export type VoteInfo = {
+  __typename?: 'VoteInfo';
+  downvotes: Scalars['Int']['output'];
+  myVote?: Maybe<Scalars['Int']['output']>;
+  score: Scalars['Int']['output'];
+  upvotes: Scalars['Int']['output'];
+};
+
+export type VoteOnAccordRequestInput = {
+  requestId: Scalars['ID']['input'];
+  vote: Scalars['Int']['input'];
+};
+
+export type VoteOnBrandInput = {
+  brandId: Scalars['ID']['input'];
+  vote: Scalars['Int']['input'];
+};
+
+export type VoteOnBrandRequestInput = {
+  requestId: Scalars['ID']['input'];
+  vote: Scalars['Int']['input'];
+};
+
+export type VoteOnFragranceAccordInput = {
+  accordId: Scalars['ID']['input'];
+  fragranceId: Scalars['ID']['input'];
+  vote: Scalars['Int']['input'];
 };
 
 export type VoteOnFragranceInput = {
-  fragranceId: Scalars['Int']['input'];
-  vote?: InputMaybe<Scalars['Boolean']['input']>;
+  fragranceId: Scalars['ID']['input'];
+  vote: Scalars['Int']['input'];
 };
 
-export type VoteOnNoteInput = {
-  fragranceId: Scalars['Int']['input'];
+export type VoteOnFragranceNoteInput = {
+  fragranceId: Scalars['ID']['input'];
   layer: NoteLayer;
-  noteId: Scalars['Int']['input'];
-  vote?: InputMaybe<Scalars['Boolean']['input']>;
+  noteId: Scalars['ID']['input'];
+  vote: Scalars['Int']['input'];
 };
 
-export type VoteOnReviewInput = {
-  reviewId: Scalars['Int']['input'];
-  vote?: InputMaybe<Scalars['Boolean']['input']>;
+export type VoteOnFragranceRequestInput = {
+  requestId: Scalars['ID']['input'];
+  vote: Scalars['Int']['input'];
 };
 
-export type VoteOnTraitInput = {
-  fragranceTraitId: Scalars['Int']['input'];
-  vote: Scalars['Float']['input'];
+export type VoteOnFragranceReviewInput = {
+  reviewId: Scalars['ID']['input'];
+  vote: Scalars['Int']['input'];
 };
 
-export type VotePaginationInput = {
-  after?: InputMaybe<Scalars['String']['input']>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  sort?: InputMaybe<VoteSortByInput>;
+export type VoteOnFragranceTraitInput = {
+  fragranceId: Scalars['ID']['input'];
+  traitOptionId: Scalars['ID']['input'];
+  traitTypeId: Scalars['ID']['input'];
 };
 
-export const VoteSortBy = {
-  Id: 'ID',
-  Updated: 'UPDATED',
-  Votes: 'VOTES'
-} as const;
-
-export type VoteSortBy = typeof VoteSortBy[keyof typeof VoteSortBy];
-export type VoteSortByInput = {
-  by?: InputMaybe<VoteSortBy>;
-  direction?: InputMaybe<SortDirection>;
+export type VoteOnNoteRequestInput = {
+  requestId: Scalars['ID']['input'];
+  vote: Scalars['Int']['input'];
 };
 
-export type VoteSummary = {
-  __typename?: 'VoteSummary';
-  dislikesCount: Scalars['Int']['output'];
-  likesCount: Scalars['Int']['output'];
-  myVote?: Maybe<Scalars['Boolean']['output']>;
-  voteScore: Scalars['Int']['output'];
-};
+export type AllAccordFragment = { __typename?: 'Accord', id: string, name: string, color: string };
 
-export type DeliveryResultBaseFragment = { __typename?: 'DeliveryResult', complete: boolean, delivery?: { __typename?: 'CodeDeliveryDetails', attribute?: string | null, destination?: string | null, method?: string | null } | null };
+export type AccordQueryQueryVariables = Exact<{
+  id: Scalars['ID']['input'];
+}>;
 
-export type AuthPayloadBaseFragment = { __typename?: 'AuthPayload', idToken: string, accessToken: string, expiresIn: number };
+
+export type AccordQueryQuery = { __typename?: 'Query', accord: { __typename?: 'Accord', id: string, name: string, color: string } };
+
+export type AccordsQueryQueryVariables = Exact<{
+  input?: InputMaybe<AccordPaginationInput>;
+}>;
+
+
+export type AccordsQueryQuery = { __typename?: 'Query', accords: { __typename?: 'AccordConnection', edges: Array<{ __typename?: 'AccordEdge', node: { __typename?: 'Accord', id: string, name: string, color: string } }>, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor?: string | null, endCursor?: string | null } } };
+
+export type SearchAccordsQueryQueryVariables = Exact<{
+  input?: InputMaybe<SearchInput>;
+}>;
+
+
+export type SearchAccordsQueryQuery = { __typename?: 'Query', searchAccords: { __typename?: 'SearchAccordConnection', edges: Array<{ __typename?: 'SearchAccordEdge', offset: number, node: { __typename?: 'Accord', id: string, name: string, color: string } }>, pageInfo: { __typename?: 'SearchPageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startOffset: number, endOffset: number, pageSize: number } } };
+
+export type AllAssetFragment = { __typename?: 'Asset', id: string, name: string, contentType: string, sizeBytes: number, url?: string | null };
+
+export type AllPresignedUploadFragment = { __typename?: 'PresignedUpload', assetId: string, url: string, fields: JSON };
+
+export type StageAssetMutationVariables = Exact<{
+  input: StageAssetInput;
+}>;
+
+
+export type StageAssetMutation = { __typename?: 'Mutation', stageAsset: { __typename?: 'PresignedUpload', assetId: string, url: string, fields: JSON } };
+
+export type DeleteAssetMutationVariables = Exact<{
+  input: DeleteAssetInput;
+}>;
+
+
+export type DeleteAssetMutation = { __typename?: 'Mutation', deleteAsset: boolean };
+
+export type AllAuthTokenPayloadFragment = { __typename?: 'AuthTokenPayload', idToken: string, accessToken: string, expiresIn: number };
+
+export type AllAuthCodeDeliveryDetailsFragment = { __typename?: 'AuthCodeDeliveryDetails', method?: string | null, attribute?: string | null, destination?: string | null };
+
+export type AllAuthDeliveryResultFragment = { __typename?: 'AuthDeliveryResult', isComplete: boolean, delivery?: { __typename?: 'AuthCodeDeliveryDetails', method?: string | null, attribute?: string | null, destination?: string | null } | null };
 
 export type RefreshMutationVariables = Exact<{ [key: string]: never; }>;
 
 
-export type RefreshMutation = { __typename?: 'Mutation', refresh?: { __typename?: 'AuthPayload', idToken: string, accessToken: string, expiresIn: number } | null };
+export type RefreshMutation = { __typename?: 'Mutation', refresh?: { __typename?: 'AuthTokenPayload', idToken: string, accessToken: string, expiresIn: number } | null };
 
 export type LogInMutationVariables = Exact<{
-  email: Scalars['String']['input'];
-  password: Scalars['String']['input'];
+  input: LogInInput;
 }>;
 
 
-export type LogInMutation = { __typename?: 'Mutation', logIn: { __typename?: 'AuthPayload', idToken: string, accessToken: string, expiresIn: number } };
+export type LogInMutation = { __typename?: 'Mutation', logIn: { __typename?: 'AuthTokenPayload', idToken: string, accessToken: string, expiresIn: number } };
 
 export type LogOutMutationVariables = Exact<{ [key: string]: never; }>;
 
@@ -859,429 +1932,404 @@ export type LogOutMutationVariables = Exact<{ [key: string]: never; }>;
 export type LogOutMutation = { __typename?: 'Mutation', logOut: boolean };
 
 export type SignUpMutationVariables = Exact<{
-  email: Scalars['String']['input'];
-  password: Scalars['String']['input'];
+  input: SignUpInput;
 }>;
 
 
-export type SignUpMutation = { __typename?: 'Mutation', signUp: { __typename?: 'DeliveryResult', complete: boolean, delivery?: { __typename?: 'CodeDeliveryDetails', attribute?: string | null, destination?: string | null, method?: string | null } | null } };
+export type SignUpMutation = { __typename?: 'Mutation', signUp: { __typename?: 'AuthDeliveryResult', isComplete: boolean, delivery?: { __typename?: 'AuthCodeDeliveryDetails', method?: string | null, attribute?: string | null, destination?: string | null } | null } };
 
 export type ConfirmSignUpMutationVariables = Exact<{
-  email: Scalars['String']['input'];
-  confirmationCode: Scalars['String']['input'];
+  input: ConfirmSignUpInput;
 }>;
 
 
-export type ConfirmSignUpMutation = { __typename?: 'Mutation', confirmSignUp: { __typename?: 'User', id: number, username: string, email: string, followerCount: number, followingCount: number, audit: { __typename?: 'Audit', createdAt: Date, updatedAt: Date, deletedAt?: Date | null } } };
+export type ConfirmSignUpMutation = { __typename?: 'Mutation', confirmSignUp: { __typename?: 'User', id: string, username: string, email?: string | null, avatar?: { __typename?: 'Asset', id: string, name: string, contentType: string, sizeBytes: number, url?: string | null } | null } };
 
-export type ResendSignUpConfirmationCodeMutationVariables = Exact<{
-  email: Scalars['String']['input'];
+export type ResendSignUpCodeMutationVariables = Exact<{
+  input: ResendSignUpCodeInput;
 }>;
 
 
-export type ResendSignUpConfirmationCodeMutation = { __typename?: 'Mutation', resendSignUpConfirmationCode: { __typename?: 'DeliveryResult', complete: boolean, delivery?: { __typename?: 'CodeDeliveryDetails', attribute?: string | null, destination?: string | null, method?: string | null } | null } };
+export type ResendSignUpCodeMutation = { __typename?: 'Mutation', resendSignUpCode: { __typename?: 'AuthDeliveryResult', isComplete: boolean, delivery?: { __typename?: 'AuthCodeDeliveryDetails', method?: string | null, attribute?: string | null, destination?: string | null } | null } };
 
 export type ForgotPasswordMutationVariables = Exact<{
-  email: Scalars['String']['input'];
+  input: ForgotPasswordInput;
 }>;
 
 
-export type ForgotPasswordMutation = { __typename?: 'Mutation', forgotPassword: { __typename?: 'DeliveryResult', complete: boolean, delivery?: { __typename?: 'CodeDeliveryDetails', attribute?: string | null, destination?: string | null, method?: string | null } | null } };
+export type ForgotPasswordMutation = { __typename?: 'Mutation', forgotPassword: { __typename?: 'AuthDeliveryResult', isComplete: boolean, delivery?: { __typename?: 'AuthCodeDeliveryDetails', method?: string | null, attribute?: string | null, destination?: string | null } | null } };
 
 export type ConfirmForgotPasswordMutationVariables = Exact<{
-  email: Scalars['String']['input'];
-  confirmationCode: Scalars['String']['input'];
-  newPassword: Scalars['String']['input'];
+  input: ConfirmForgotPasswordInput;
 }>;
 
 
-export type ConfirmForgotPasswordMutation = { __typename?: 'Mutation', confirmForgotPassword: { __typename?: 'GenericAuthResult', complete: boolean } };
+export type ConfirmForgotPasswordMutation = { __typename?: 'Mutation', confirmForgotPassword: boolean };
 
-export type FragranceCollectionSummaryFragment = { __typename?: 'FragranceCollection', id: number, name: string, user: { __typename?: 'User', id: number, username: string }, items: { __typename?: 'FragranceCollectionItemConnection', edges: Array<{ __typename?: 'FragranceCollectionItemEdge', node: { __typename?: 'FragranceCollectionItem', id: number, rank: number, fragrance: { __typename?: 'Fragrance', id: number, brand: string, name: string, votes: { __typename?: 'VoteSummary', voteScore: number, likesCount: number, dislikesCount: number, myVote?: boolean | null }, images: { __typename?: 'FragranceImageConnection', edges: Array<{ __typename?: 'FragranceImageEdge', node: { __typename?: 'FragranceImage', id: number, src: string, bg?: string | null, width: number, height: number } }> } }, audit: { __typename?: 'Audit', createdAt: Date, updatedAt: Date, deletedAt?: Date | null } } }>, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor?: string | null, endCursor?: string | null } }, audit: { __typename?: 'Audit', createdAt: Date, updatedAt: Date, deletedAt?: Date | null } };
+export type AllBrandFragment = { __typename?: 'Brand', id: string, name: string, website?: string | null, description?: string | null, avatar?: { __typename?: 'Asset', id: string, name: string, contentType: string, sizeBytes: number, url?: string | null } | null, votes: { __typename?: 'VoteInfo', upvotes: number, downvotes: number, score: number, myVote?: number | null } };
 
-export type FragranceCollectionItemSummaryFragment = { __typename?: 'FragranceCollectionItem', id: number, rank: number, fragrance: { __typename?: 'Fragrance', id: number, brand: string, name: string, votes: { __typename?: 'VoteSummary', voteScore: number, likesCount: number, dislikesCount: number, myVote?: boolean | null }, images: { __typename?: 'FragranceImageConnection', edges: Array<{ __typename?: 'FragranceImageEdge', node: { __typename?: 'FragranceImage', id: number, src: string, bg?: string | null, width: number, height: number } }> } }, audit: { __typename?: 'Audit', createdAt: Date, updatedAt: Date, deletedAt?: Date | null } };
+export type BrandPreviewFragment = { __typename?: 'Brand', id: string, name: string, avatar?: { __typename?: 'Asset', id: string, name: string, contentType: string, sizeBytes: number, url?: string | null } | null, votes: { __typename?: 'VoteInfo', upvotes: number, downvotes: number, score: number, myVote?: number | null } };
 
-export type FragranceCollectionConnectionFragment = { __typename?: 'FragranceCollectionConnection', edges: Array<{ __typename?: 'FragranceCollectionEdge', node: { __typename?: 'FragranceCollection', id: number, name: string, user: { __typename?: 'User', id: number, username: string }, items: { __typename?: 'FragranceCollectionItemConnection', edges: Array<{ __typename?: 'FragranceCollectionItemEdge', node: { __typename?: 'FragranceCollectionItem', id: number, rank: number, fragrance: { __typename?: 'Fragrance', id: number, brand: string, name: string, votes: { __typename?: 'VoteSummary', voteScore: number, likesCount: number, dislikesCount: number, myVote?: boolean | null }, images: { __typename?: 'FragranceImageConnection', edges: Array<{ __typename?: 'FragranceImageEdge', node: { __typename?: 'FragranceImage', id: number, src: string, bg?: string | null, width: number, height: number } }> } }, audit: { __typename?: 'Audit', createdAt: Date, updatedAt: Date, deletedAt?: Date | null } } }>, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor?: string | null, endCursor?: string | null } }, audit: { __typename?: 'Audit', createdAt: Date, updatedAt: Date, deletedAt?: Date | null } } }>, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor?: string | null, endCursor?: string | null } };
+export type VoteOnBrandMutationMutationVariables = Exact<{
+  input: VoteOnBrandInput;
+}>;
 
-export type FragranceCollectionItemConnectionFragment = { __typename?: 'FragranceCollectionItemConnection', edges: Array<{ __typename?: 'FragranceCollectionItemEdge', node: { __typename?: 'FragranceCollectionItem', id: number, rank: number, fragrance: { __typename?: 'Fragrance', id: number, brand: string, name: string, votes: { __typename?: 'VoteSummary', voteScore: number, likesCount: number, dislikesCount: number, myVote?: boolean | null }, images: { __typename?: 'FragranceImageConnection', edges: Array<{ __typename?: 'FragranceImageEdge', node: { __typename?: 'FragranceImage', id: number, src: string, bg?: string | null, width: number, height: number } }> } }, audit: { __typename?: 'Audit', createdAt: Date, updatedAt: Date, deletedAt?: Date | null } } }>, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor?: string | null, endCursor?: string | null } };
+
+export type VoteOnBrandMutationMutation = { __typename?: 'Mutation', voteOnBrand: { __typename?: 'Brand', id: string, name: string, avatar?: { __typename?: 'Asset', id: string, name: string, contentType: string, sizeBytes: number, url?: string | null } | null, votes: { __typename?: 'VoteInfo', upvotes: number, downvotes: number, score: number, myVote?: number | null } } };
+
+export type BrandQueryVariables = Exact<{
+  id: Scalars['ID']['input'];
+}>;
+
+
+export type BrandQuery = { __typename?: 'Query', brand?: { __typename?: 'Brand', id: string, name: string, avatar?: { __typename?: 'Asset', id: string, name: string, contentType: string, sizeBytes: number, url?: string | null } | null, votes: { __typename?: 'VoteInfo', upvotes: number, downvotes: number, score: number, myVote?: number | null } } | null };
+
+export type BrandsQueryVariables = Exact<{
+  input?: InputMaybe<BrandPaginationInput>;
+}>;
+
+
+export type BrandsQuery = { __typename?: 'Query', brands: { __typename?: 'BrandConnection', edges: Array<{ __typename?: 'BrandEdge', node: { __typename?: 'Brand', id: string, name: string, avatar?: { __typename?: 'Asset', id: string, name: string, contentType: string, sizeBytes: number, url?: string | null } | null, votes: { __typename?: 'VoteInfo', upvotes: number, downvotes: number, score: number, myVote?: number | null } } }>, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor?: string | null, endCursor?: string | null } } };
+
+export type SearchBrandsQueryVariables = Exact<{
+  input?: InputMaybe<SearchInput>;
+}>;
+
+
+export type SearchBrandsQuery = { __typename?: 'Query', searchBrands: { __typename?: 'SearchBrandConnection', edges: Array<{ __typename?: 'SearchBrandEdge', offset: number, node: { __typename?: 'Brand', id: string, name: string, avatar?: { __typename?: 'Asset', id: string, name: string, contentType: string, sizeBytes: number, url?: string | null } | null, votes: { __typename?: 'VoteInfo', upvotes: number, downvotes: number, score: number, myVote?: number | null } } }>, pageInfo: { __typename?: 'SearchPageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startOffset: number, endOffset: number, pageSize: number } } };
+
+export type FragrancePreviewFragment = { __typename?: 'Fragrance', id: string, name: string, description?: string | null, releaseYear: number, concentration: Concentration, status: FragranceStatus, brand: { __typename?: 'Brand', id: string, name: string, avatar?: { __typename?: 'Asset', id: string, name: string, contentType: string, sizeBytes: number, url?: string | null } | null, votes: { __typename?: 'VoteInfo', upvotes: number, downvotes: number, score: number, myVote?: number | null } }, thumbnail?: { __typename?: 'FragranceImage', id: string, url?: string | null, width: number, height: number, primaryColor?: string | null } | null, votes: { __typename?: 'VoteInfo', upvotes: number, downvotes: number, score: number, myVote?: number | null } };
+
+export type AllFragranceImageFragment = { __typename?: 'FragranceImage', id: string, url?: string | null, width: number, height: number, primaryColor?: string | null };
+
+export type AllFragranceAccordFragment = { __typename?: 'FragranceAccord', id: string, accord: { __typename?: 'Accord', id: string, name: string, color: string }, votes: { __typename?: 'VoteInfo', upvotes: number, downvotes: number, score: number, myVote?: number | null } };
+
+export type AllFragranceNoteFragment = { __typename?: 'FragranceNote', id: string, layer: NoteLayer, note: { __typename?: 'Note', id: string, name: string, thumbnail?: { __typename?: 'Asset', id: string, name: string, contentType: string, sizeBytes: number, url?: string | null } | null }, votes: { __typename?: 'VoteInfo', upvotes: number, downvotes: number, score: number, myVote?: number | null } };
+
+export type AllFragranceTraitFragment = { __typename?: 'FragranceTrait', id: string, type: TraitTypeEnum, name: string, options: Array<{ __typename?: 'TraitOption', id: string, label: string, score: number }>, stats?: { __typename?: 'TraitStats', averageScore: number, totalVotes: number, distribution: Array<{ __typename?: 'TraitVoteDistribution', votes: number, option: { __typename?: 'TraitOption', id: string, label: string, score: number } }> } | null, myVote?: { __typename?: 'TraitVote', option: { __typename?: 'TraitOption', id: string, label: string, score: number } } | null };
+
+export type AllFragranceReviewFragment = { __typename?: 'FragranceReview', id: string, rating: number, body?: string | null, author: { __typename?: 'User', id: string, username: string, avatar?: { __typename?: 'Asset', id: string, name: string, contentType: string, sizeBytes: number, url?: string | null } | null }, fragrance: { __typename?: 'Fragrance', id: string, name: string, description?: string | null, releaseYear: number, concentration: Concentration, status: FragranceStatus, brand: { __typename?: 'Brand', id: string, name: string, avatar?: { __typename?: 'Asset', id: string, name: string, contentType: string, sizeBytes: number, url?: string | null } | null, votes: { __typename?: 'VoteInfo', upvotes: number, downvotes: number, score: number, myVote?: number | null } }, thumbnail?: { __typename?: 'FragranceImage', id: string, url?: string | null, width: number, height: number, primaryColor?: string | null } | null, votes: { __typename?: 'VoteInfo', upvotes: number, downvotes: number, score: number, myVote?: number | null } }, votes: { __typename?: 'VoteInfo', upvotes: number, downvotes: number, score: number, myVote?: number | null } };
+
+export type AllFragranceCollectionFragment = { __typename?: 'FragranceCollection', id: string, name: string, items: Array<{ __typename?: 'FragranceCollectionItem', id: string, fragrance: { __typename?: 'Fragrance', id: string, name: string, description?: string | null, releaseYear: number, concentration: Concentration, status: FragranceStatus, brand: { __typename?: 'Brand', id: string, name: string, avatar?: { __typename?: 'Asset', id: string, name: string, contentType: string, sizeBytes: number, url?: string | null } | null, votes: { __typename?: 'VoteInfo', upvotes: number, downvotes: number, score: number, myVote?: number | null } }, thumbnail?: { __typename?: 'FragranceImage', id: string, url?: string | null, width: number, height: number, primaryColor?: string | null } | null, votes: { __typename?: 'VoteInfo', upvotes: number, downvotes: number, score: number, myVote?: number | null } } }>, user: { __typename?: 'User', id: string, username: string, avatar?: { __typename?: 'Asset', id: string, name: string, contentType: string, sizeBytes: number, url?: string | null } | null } };
+
+export type AllFragranceCollectionItemFragment = { __typename?: 'FragranceCollectionItem', id: string, fragrance: { __typename?: 'Fragrance', id: string, name: string, description?: string | null, releaseYear: number, concentration: Concentration, status: FragranceStatus, brand: { __typename?: 'Brand', id: string, name: string, avatar?: { __typename?: 'Asset', id: string, name: string, contentType: string, sizeBytes: number, url?: string | null } | null, votes: { __typename?: 'VoteInfo', upvotes: number, downvotes: number, score: number, myVote?: number | null } }, thumbnail?: { __typename?: 'FragranceImage', id: string, url?: string | null, width: number, height: number, primaryColor?: string | null } | null, votes: { __typename?: 'VoteInfo', upvotes: number, downvotes: number, score: number, myVote?: number | null } } };
+
+export type CreateFragranceReviewMutationVariables = Exact<{
+  input: CreateFragranceReviewInput;
+}>;
+
+
+export type CreateFragranceReviewMutation = { __typename?: 'Mutation', createFragranceReview: { __typename?: 'FragranceReview', id: string, rating: number, body?: string | null, author: { __typename?: 'User', id: string, username: string, avatar?: { __typename?: 'Asset', id: string, name: string, contentType: string, sizeBytes: number, url?: string | null } | null }, fragrance: { __typename?: 'Fragrance', id: string, name: string, description?: string | null, releaseYear: number, concentration: Concentration, status: FragranceStatus, brand: { __typename?: 'Brand', id: string, name: string, avatar?: { __typename?: 'Asset', id: string, name: string, contentType: string, sizeBytes: number, url?: string | null } | null, votes: { __typename?: 'VoteInfo', upvotes: number, downvotes: number, score: number, myVote?: number | null } }, thumbnail?: { __typename?: 'FragranceImage', id: string, url?: string | null, width: number, height: number, primaryColor?: string | null } | null, votes: { __typename?: 'VoteInfo', upvotes: number, downvotes: number, score: number, myVote?: number | null } }, votes: { __typename?: 'VoteInfo', upvotes: number, downvotes: number, score: number, myVote?: number | null } } };
 
 export type CreateFragranceCollectionMutationVariables = Exact<{
   input: CreateFragranceCollectionInput;
 }>;
 
 
-export type CreateFragranceCollectionMutation = { __typename?: 'Mutation', createFragranceCollection: { __typename?: 'FragranceCollection', id: number, name: string, user: { __typename?: 'User', id: number, username: string }, items: { __typename?: 'FragranceCollectionItemConnection', edges: Array<{ __typename?: 'FragranceCollectionItemEdge', node: { __typename?: 'FragranceCollectionItem', id: number, rank: number, fragrance: { __typename?: 'Fragrance', id: number, brand: string, name: string, votes: { __typename?: 'VoteSummary', voteScore: number, likesCount: number, dislikesCount: number, myVote?: boolean | null }, images: { __typename?: 'FragranceImageConnection', edges: Array<{ __typename?: 'FragranceImageEdge', node: { __typename?: 'FragranceImage', id: number, src: string, bg?: string | null, width: number, height: number } }> } }, audit: { __typename?: 'Audit', createdAt: Date, updatedAt: Date, deletedAt?: Date | null } } }>, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor?: string | null, endCursor?: string | null } }, audit: { __typename?: 'Audit', createdAt: Date, updatedAt: Date, deletedAt?: Date | null } } };
+export type CreateFragranceCollectionMutation = { __typename?: 'Mutation', createFragranceCollection: { __typename?: 'FragranceCollection', id: string, name: string, items: Array<{ __typename?: 'FragranceCollectionItem', id: string, fragrance: { __typename?: 'Fragrance', id: string, name: string, description?: string | null, releaseYear: number, concentration: Concentration, status: FragranceStatus, brand: { __typename?: 'Brand', id: string, name: string, avatar?: { __typename?: 'Asset', id: string, name: string, contentType: string, sizeBytes: number, url?: string | null } | null, votes: { __typename?: 'VoteInfo', upvotes: number, downvotes: number, score: number, myVote?: number | null } }, thumbnail?: { __typename?: 'FragranceImage', id: string, url?: string | null, width: number, height: number, primaryColor?: string | null } | null, votes: { __typename?: 'VoteInfo', upvotes: number, downvotes: number, score: number, myVote?: number | null } } }>, user: { __typename?: 'User', id: string, username: string, avatar?: { __typename?: 'Asset', id: string, name: string, contentType: string, sizeBytes: number, url?: string | null } | null } } };
+
+export type DeleteFragranceCollectionMutationVariables = Exact<{
+  input: DeleteFragranceCollectionInput;
+}>;
+
+
+export type DeleteFragranceCollectionMutation = { __typename?: 'Mutation', deleteFragranceCollection: { __typename?: 'FragranceCollection', id: string, name: string, items: Array<{ __typename?: 'FragranceCollectionItem', id: string, fragrance: { __typename?: 'Fragrance', id: string, name: string, description?: string | null, releaseYear: number, concentration: Concentration, status: FragranceStatus, brand: { __typename?: 'Brand', id: string, name: string, avatar?: { __typename?: 'Asset', id: string, name: string, contentType: string, sizeBytes: number, url?: string | null } | null, votes: { __typename?: 'VoteInfo', upvotes: number, downvotes: number, score: number, myVote?: number | null } }, thumbnail?: { __typename?: 'FragranceImage', id: string, url?: string | null, width: number, height: number, primaryColor?: string | null } | null, votes: { __typename?: 'VoteInfo', upvotes: number, downvotes: number, score: number, myVote?: number | null } } }>, user: { __typename?: 'User', id: string, username: string, avatar?: { __typename?: 'Asset', id: string, name: string, contentType: string, sizeBytes: number, url?: string | null } | null } } };
 
 export type CreateFragranceCollectionItemMutationVariables = Exact<{
   input: CreateFragranceCollectionItemInput;
 }>;
 
 
-export type CreateFragranceCollectionItemMutation = { __typename?: 'Mutation', createFragranceCollectionItem: { __typename?: 'FragranceCollectionItem', id: number, rank: number, fragrance: { __typename?: 'Fragrance', id: number, brand: string, name: string, votes: { __typename?: 'VoteSummary', voteScore: number, likesCount: number, dislikesCount: number, myVote?: boolean | null }, images: { __typename?: 'FragranceImageConnection', edges: Array<{ __typename?: 'FragranceImageEdge', node: { __typename?: 'FragranceImage', id: number, src: string, bg?: string | null, width: number, height: number } }> } }, audit: { __typename?: 'Audit', createdAt: Date, updatedAt: Date, deletedAt?: Date | null } } };
+export type CreateFragranceCollectionItemMutation = { __typename?: 'Mutation', createFragranceCollectionItem: { __typename?: 'FragranceCollectionItem', id: string, fragrance: { __typename?: 'Fragrance', id: string, name: string, description?: string | null, releaseYear: number, concentration: Concentration, status: FragranceStatus, brand: { __typename?: 'Brand', id: string, name: string, avatar?: { __typename?: 'Asset', id: string, name: string, contentType: string, sizeBytes: number, url?: string | null } | null, votes: { __typename?: 'VoteInfo', upvotes: number, downvotes: number, score: number, myVote?: number | null } }, thumbnail?: { __typename?: 'FragranceImage', id: string, url?: string | null, width: number, height: number, primaryColor?: string | null } | null, votes: { __typename?: 'VoteInfo', upvotes: number, downvotes: number, score: number, myVote?: number | null } } } };
 
-export type MoveFragranceCollectionItemMutationVariables = Exact<{
-  input: MoveFragranceCollectionItemInput;
+export type MoveFragranceCollectionItemsMutationVariables = Exact<{
+  input: MoveFragranceCollectionItemsInput;
 }>;
 
 
-export type MoveFragranceCollectionItemMutation = { __typename?: 'Mutation', moveFragranceCollectionItem: Array<{ __typename?: 'FragranceCollectionItem', id: number, rank: number, fragrance: { __typename?: 'Fragrance', id: number, brand: string, name: string, votes: { __typename?: 'VoteSummary', voteScore: number, likesCount: number, dislikesCount: number, myVote?: boolean | null }, images: { __typename?: 'FragranceImageConnection', edges: Array<{ __typename?: 'FragranceImageEdge', node: { __typename?: 'FragranceImage', id: number, src: string, bg?: string | null, width: number, height: number } }> } }, audit: { __typename?: 'Audit', createdAt: Date, updatedAt: Date, deletedAt?: Date | null } }> };
+export type MoveFragranceCollectionItemsMutation = { __typename?: 'Mutation', moveFragranceCollectionItems: Array<{ __typename?: 'FragranceCollectionItem', id: string, fragrance: { __typename?: 'Fragrance', id: string, name: string, description?: string | null, releaseYear: number, concentration: Concentration, status: FragranceStatus, brand: { __typename?: 'Brand', id: string, name: string, avatar?: { __typename?: 'Asset', id: string, name: string, contentType: string, sizeBytes: number, url?: string | null } | null, votes: { __typename?: 'VoteInfo', upvotes: number, downvotes: number, score: number, myVote?: number | null } }, thumbnail?: { __typename?: 'FragranceImage', id: string, url?: string | null, width: number, height: number, primaryColor?: string | null } | null, votes: { __typename?: 'VoteInfo', upvotes: number, downvotes: number, score: number, myVote?: number | null } } }> };
 
 export type DeleteFragranceCollectionItemMutationVariables = Exact<{
   input: DeleteFragranceCollectionItemInput;
 }>;
 
 
-export type DeleteFragranceCollectionItemMutation = { __typename?: 'Mutation', deleteFragranceCollectionItem: Array<{ __typename?: 'FragranceCollectionItem', id: number, rank: number, fragrance: { __typename?: 'Fragrance', id: number, brand: string, name: string, votes: { __typename?: 'VoteSummary', voteScore: number, likesCount: number, dislikesCount: number, myVote?: boolean | null }, images: { __typename?: 'FragranceImageConnection', edges: Array<{ __typename?: 'FragranceImageEdge', node: { __typename?: 'FragranceImage', id: number, src: string, bg?: string | null, width: number, height: number } }> } }, audit: { __typename?: 'Audit', createdAt: Date, updatedAt: Date, deletedAt?: Date | null } }> };
-
-export type CollectionQueryVariables = Exact<{
-  id: Scalars['Int']['input'];
-}>;
-
-
-export type CollectionQuery = { __typename?: 'Query', collection: { __typename?: 'FragranceCollection', id: number, name: string, user: { __typename?: 'User', id: number, username: string }, items: { __typename?: 'FragranceCollectionItemConnection', edges: Array<{ __typename?: 'FragranceCollectionItemEdge', node: { __typename?: 'FragranceCollectionItem', id: number, rank: number, fragrance: { __typename?: 'Fragrance', id: number, brand: string, name: string, votes: { __typename?: 'VoteSummary', voteScore: number, likesCount: number, dislikesCount: number, myVote?: boolean | null }, images: { __typename?: 'FragranceImageConnection', edges: Array<{ __typename?: 'FragranceImageEdge', node: { __typename?: 'FragranceImage', id: number, src: string, bg?: string | null, width: number, height: number } }> } }, audit: { __typename?: 'Audit', createdAt: Date, updatedAt: Date, deletedAt?: Date | null } } }>, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor?: string | null, endCursor?: string | null } }, audit: { __typename?: 'Audit', createdAt: Date, updatedAt: Date, deletedAt?: Date | null } } };
-
-export type CollectionItemsQueryVariables = Exact<{
-  collectionId: Scalars['Int']['input'];
-  input?: InputMaybe<ControlledPaginationInput>;
-}>;
-
-
-export type CollectionItemsQuery = { __typename?: 'Query', collection: { __typename?: 'FragranceCollection', id: number, items: { __typename?: 'FragranceCollectionItemConnection', edges: Array<{ __typename?: 'FragranceCollectionItemEdge', node: { __typename?: 'FragranceCollectionItem', id: number, rank: number, fragrance: { __typename?: 'Fragrance', id: number, brand: string, name: string, votes: { __typename?: 'VoteSummary', voteScore: number, likesCount: number, dislikesCount: number, myVote?: boolean | null }, images: { __typename?: 'FragranceImageConnection', edges: Array<{ __typename?: 'FragranceImageEdge', node: { __typename?: 'FragranceImage', id: number, src: string, bg?: string | null, width: number, height: number } }> } }, audit: { __typename?: 'Audit', createdAt: Date, updatedAt: Date, deletedAt?: Date | null } } }>, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor?: string | null, endCursor?: string | null } } } };
-
-export type FragranceSummaryFragment = { __typename?: 'Fragrance', id: number, brand: string, name: string, votes: { __typename?: 'VoteSummary', voteScore: number, likesCount: number, dislikesCount: number, myVote?: boolean | null }, images: { __typename?: 'FragranceImageConnection', edges: Array<{ __typename?: 'FragranceImageEdge', node: { __typename?: 'FragranceImage', id: number, src: string, bg?: string | null, width: number, height: number } }> } };
-
-export type FragranceImageSummaryFragment = { __typename?: 'FragranceImage', id: number, src: string, bg?: string | null, width: number, height: number };
-
-export type FragranceTraitSummaryFragment = { __typename?: 'FragranceTrait', id: number, type: FragranceTraitType, voteScore: number, myVote?: number | null };
-
-export type FragranceAccordSummaryFragment = { __typename?: 'FragranceAccord', id: number, accordId: number, name: string, color: string, votes: { __typename?: 'VoteSummary', voteScore: number, likesCount: number, dislikesCount: number, myVote?: boolean | null }, audit: { __typename?: 'Audit', createdAt: Date, updatedAt: Date, deletedAt?: Date | null } };
-
-export type FragranceNoteSummaryFragment = { __typename?: 'FragranceNote', id: number, noteId: number, name: string, layer: NoteLayer, thumbnail?: string | null, votes: { __typename?: 'VoteSummary', voteScore: number, likesCount: number, dislikesCount: number, myVote?: boolean | null }, audit: { __typename?: 'Audit', createdAt: Date, updatedAt: Date, deletedAt?: Date | null } };
-
-export type FragranceVoteSummaryFragment = { __typename?: 'FragranceVote', id: number, vote: number, fragrance: { __typename?: 'Fragrance', id: number, brand: string, name: string, votes: { __typename?: 'VoteSummary', voteScore: number, likesCount: number, dislikesCount: number, myVote?: boolean | null }, images: { __typename?: 'FragranceImageConnection', edges: Array<{ __typename?: 'FragranceImageEdge', node: { __typename?: 'FragranceImage', id: number, src: string, bg?: string | null, width: number, height: number } }> } } };
-
-export type FragranceConnectionFragment = { __typename?: 'FragranceConnection', edges: Array<{ __typename?: 'FragranceEdge', node: { __typename?: 'Fragrance', id: number, brand: string, name: string, votes: { __typename?: 'VoteSummary', voteScore: number, likesCount: number, dislikesCount: number, myVote?: boolean | null }, images: { __typename?: 'FragranceImageConnection', edges: Array<{ __typename?: 'FragranceImageEdge', node: { __typename?: 'FragranceImage', id: number, src: string, bg?: string | null, width: number, height: number } }> } } }>, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor?: string | null, endCursor?: string | null } };
-
-export type FragranceImageConnectionFragment = { __typename?: 'FragranceImageConnection', edges: Array<{ __typename?: 'FragranceImageEdge', node: { __typename?: 'FragranceImage', id: number, src: string, bg?: string | null, width: number, height: number } }> };
-
-export type FragranceAccordConnectionFragment = { __typename?: 'FragranceAccordConnection', edges: Array<{ __typename?: 'FragranceAccordEdge', node: { __typename?: 'FragranceAccord', id: number, accordId: number, name: string, color: string, votes: { __typename?: 'VoteSummary', voteScore: number, likesCount: number, dislikesCount: number, myVote?: boolean | null }, audit: { __typename?: 'Audit', createdAt: Date, updatedAt: Date, deletedAt?: Date | null } } }>, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor?: string | null, endCursor?: string | null } };
-
-export type FragranceNoteConnectionFragment = { __typename?: 'FragranceNoteConnection', edges: Array<{ __typename?: 'FragranceNoteEdge', node: { __typename?: 'FragranceNote', id: number, noteId: number, name: string, layer: NoteLayer, thumbnail?: string | null, votes: { __typename?: 'VoteSummary', voteScore: number, likesCount: number, dislikesCount: number, myVote?: boolean | null }, audit: { __typename?: 'Audit', createdAt: Date, updatedAt: Date, deletedAt?: Date | null } } }>, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor?: string | null, endCursor?: string | null } };
-
-export type FragranceVoteConnectionFragment = { __typename?: 'FragranceVoteConnection', edges: Array<{ __typename?: 'FragranceVoteEdge', node: { __typename?: 'FragranceVote', id: number, vote: number, fragrance: { __typename?: 'Fragrance', id: number, brand: string, name: string, votes: { __typename?: 'VoteSummary', voteScore: number, likesCount: number, dislikesCount: number, myVote?: boolean | null }, images: { __typename?: 'FragranceImageConnection', edges: Array<{ __typename?: 'FragranceImageEdge', node: { __typename?: 'FragranceImage', id: number, src: string, bg?: string | null, width: number, height: number } }> } } } }>, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor?: string | null, endCursor?: string | null } };
-
-export type CreateFragranceReportMutationVariables = Exact<{
-  input: CreateFragranceReportInput;
-}>;
-
-
-export type CreateFragranceReportMutation = { __typename?: 'Mutation', createFragranceReport: { __typename?: 'FragranceReport', id: number } };
-
-export type LogFragranceViewMutationVariables = Exact<{
-  input: LogFragranceViewInput;
-}>;
-
-
-export type LogFragranceViewMutation = { __typename?: 'Mutation', logFragranceView: boolean };
+export type DeleteFragranceCollectionItemMutation = { __typename?: 'Mutation', deleteFragranceCollectionItem: { __typename?: 'FragranceCollectionItem', id: string, fragrance: { __typename?: 'Fragrance', id: string, name: string, description?: string | null, releaseYear: number, concentration: Concentration, status: FragranceStatus, brand: { __typename?: 'Brand', id: string, name: string, avatar?: { __typename?: 'Asset', id: string, name: string, contentType: string, sizeBytes: number, url?: string | null } | null, votes: { __typename?: 'VoteInfo', upvotes: number, downvotes: number, score: number, myVote?: number | null } }, thumbnail?: { __typename?: 'FragranceImage', id: string, url?: string | null, width: number, height: number, primaryColor?: string | null } | null, votes: { __typename?: 'VoteInfo', upvotes: number, downvotes: number, score: number, myVote?: number | null } } } };
 
 export type VoteOnFragranceMutationVariables = Exact<{
   input: VoteOnFragranceInput;
 }>;
 
 
-export type VoteOnFragranceMutation = { __typename?: 'Mutation', voteOnFragrance: { __typename?: 'FragranceVote', id: number } };
+export type VoteOnFragranceMutation = { __typename?: 'Mutation', voteOnFragrance: { __typename?: 'Fragrance', id: string, name: string, description?: string | null, releaseYear: number, concentration: Concentration, status: FragranceStatus, brand: { __typename?: 'Brand', id: string, name: string, avatar?: { __typename?: 'Asset', id: string, name: string, contentType: string, sizeBytes: number, url?: string | null } | null, votes: { __typename?: 'VoteInfo', upvotes: number, downvotes: number, score: number, myVote?: number | null } }, thumbnail?: { __typename?: 'FragranceImage', id: string, url?: string | null, width: number, height: number, primaryColor?: string | null } | null, votes: { __typename?: 'VoteInfo', upvotes: number, downvotes: number, score: number, myVote?: number | null } } };
 
-export type VoteOnAccordMutationVariables = Exact<{
-  input: VoteOnAccordInput;
+export type VoteOnFragranceAccordMutationVariables = Exact<{
+  input: VoteOnFragranceAccordInput;
 }>;
 
 
-export type VoteOnAccordMutation = { __typename?: 'Mutation', voteOnAccord: { __typename?: 'FragranceAccord', id: number, accordId: number, name: string, color: string, votes: { __typename?: 'VoteSummary', voteScore: number, likesCount: number, dislikesCount: number, myVote?: boolean | null }, audit: { __typename?: 'Audit', createdAt: Date, updatedAt: Date, deletedAt?: Date | null } } };
+export type VoteOnFragranceAccordMutation = { __typename?: 'Mutation', voteOnFragranceAccord: { __typename?: 'Accord', id: string, name: string, color: string } };
 
-export type VoteOnNoteMutationVariables = Exact<{
-  input: VoteOnNoteInput;
+export type VoteOnFragranceNoteMutationVariables = Exact<{
+  input: VoteOnFragranceNoteInput;
 }>;
 
 
-export type VoteOnNoteMutation = { __typename?: 'Mutation', voteOnNote: { __typename?: 'FragranceNote', id: number, noteId: number, name: string, layer: NoteLayer, thumbnail?: string | null, votes: { __typename?: 'VoteSummary', voteScore: number, likesCount: number, dislikesCount: number, myVote?: boolean | null }, audit: { __typename?: 'Audit', createdAt: Date, updatedAt: Date, deletedAt?: Date | null } } };
+export type VoteOnFragranceNoteMutation = { __typename?: 'Mutation', voteOnFragranceNote: { __typename?: 'Note', id: string, name: string, thumbnail?: { __typename?: 'Asset', id: string, name: string, contentType: string, sizeBytes: number, url?: string | null } | null } };
 
-export type VoteOnTraitMutationVariables = Exact<{
-  input: VoteOnTraitInput;
+export type VoteOnFragranceTraitMutationVariables = Exact<{
+  input: VoteOnFragranceTraitInput;
 }>;
 
 
-export type VoteOnTraitMutation = { __typename?: 'Mutation', voteOnTrait: { __typename?: 'FragranceTrait', id: number, type: FragranceTraitType, voteScore: number, myVote?: number | null } };
+export type VoteOnFragranceTraitMutation = { __typename?: 'Mutation', voteOnFragranceTrait?: { __typename?: 'TraitVote', option: { __typename?: 'TraitOption', id: string, label: string, score: number } } | null };
+
+export type VoteOnFragranceReviewMutationVariables = Exact<{
+  input: VoteOnFragranceReviewInput;
+}>;
+
+
+export type VoteOnFragranceReviewMutation = { __typename?: 'Mutation', voteOnFragranceReview: { __typename?: 'FragranceReview', id: string, rating: number, body?: string | null, author: { __typename?: 'User', id: string, username: string, avatar?: { __typename?: 'Asset', id: string, name: string, contentType: string, sizeBytes: number, url?: string | null } | null }, fragrance: { __typename?: 'Fragrance', id: string, name: string, description?: string | null, releaseYear: number, concentration: Concentration, status: FragranceStatus, brand: { __typename?: 'Brand', id: string, name: string, avatar?: { __typename?: 'Asset', id: string, name: string, contentType: string, sizeBytes: number, url?: string | null } | null, votes: { __typename?: 'VoteInfo', upvotes: number, downvotes: number, score: number, myVote?: number | null } }, thumbnail?: { __typename?: 'FragranceImage', id: string, url?: string | null, width: number, height: number, primaryColor?: string | null } | null, votes: { __typename?: 'VoteInfo', upvotes: number, downvotes: number, score: number, myVote?: number | null } }, votes: { __typename?: 'VoteInfo', upvotes: number, downvotes: number, score: number, myVote?: number | null } } };
 
 export type FragranceQueryVariables = Exact<{
-  id: Scalars['Int']['input'];
+  id: Scalars['ID']['input'];
 }>;
 
 
-export type FragranceQuery = { __typename?: 'Query', fragrance?: { __typename?: 'Fragrance', rating: number, reviewsCount: number, id: number, brand: string, name: string, reviewDistribution: { __typename?: 'FragranceReviewDistribution', one: number, two: number, three: number, four: number, five: number }, votes: { __typename?: 'VoteSummary', voteScore: number, likesCount: number, dislikesCount: number, myVote?: boolean | null }, images: { __typename?: 'FragranceImageConnection', edges: Array<{ __typename?: 'FragranceImageEdge', node: { __typename?: 'FragranceImage', id: number, src: string, bg?: string | null, width: number, height: number } }> } } | null };
+export type FragranceQuery = { __typename?: 'Query', fragrance: { __typename?: 'Fragrance', id: string, name: string, description?: string | null, releaseYear: number, concentration: Concentration, status: FragranceStatus, brand: { __typename?: 'Brand', id: string, name: string, avatar?: { __typename?: 'Asset', id: string, name: string, contentType: string, sizeBytes: number, url?: string | null } | null, votes: { __typename?: 'VoteInfo', upvotes: number, downvotes: number, score: number, myVote?: number | null } }, thumbnail?: { __typename?: 'FragranceImage', id: string, url?: string | null, width: number, height: number, primaryColor?: string | null } | null, votes: { __typename?: 'VoteInfo', upvotes: number, downvotes: number, score: number, myVote?: number | null } } };
 
-export type SuggestedFragrancesQueryVariables = Exact<{
-  input?: InputMaybe<PaginationInput>;
+export type FragrancesQueryVariables = Exact<{
+  input?: InputMaybe<FragrancePaginationInput>;
 }>;
 
 
-export type SuggestedFragrancesQuery = { __typename?: 'Query', fragrances: { __typename?: 'FragranceConnection', edges: Array<{ __typename?: 'FragranceEdge', node: { __typename?: 'Fragrance', id: number, brand: string, name: string, votes: { __typename?: 'VoteSummary', voteScore: number, likesCount: number, dislikesCount: number, myVote?: boolean | null }, images: { __typename?: 'FragranceImageConnection', edges: Array<{ __typename?: 'FragranceImageEdge', node: { __typename?: 'FragranceImage', id: number, src: string, bg?: string | null, width: number, height: number } }> } } }>, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor?: string | null, endCursor?: string | null } } };
+export type FragrancesQuery = { __typename?: 'Query', fragrances: { __typename?: 'FragranceConnection', edges: Array<{ __typename?: 'FragranceEdge', cursor: string, node: { __typename?: 'Fragrance', id: string, name: string, description?: string | null, releaseYear: number, concentration: Concentration, status: FragranceStatus, brand: { __typename?: 'Brand', id: string, name: string, avatar?: { __typename?: 'Asset', id: string, name: string, contentType: string, sizeBytes: number, url?: string | null } | null, votes: { __typename?: 'VoteInfo', upvotes: number, downvotes: number, score: number, myVote?: number | null } }, thumbnail?: { __typename?: 'FragranceImage', id: string, url?: string | null, width: number, height: number, primaryColor?: string | null } | null, votes: { __typename?: 'VoteInfo', upvotes: number, downvotes: number, score: number, myVote?: number | null } } }>, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor?: string | null, endCursor?: string | null } } };
+
+export type SearchFragrancesQueryVariables = Exact<{
+  input?: InputMaybe<SearchInput>;
+}>;
+
+
+export type SearchFragrancesQuery = { __typename?: 'Query', searchFragrances: { __typename?: 'SearchFragranceConnection', edges: Array<{ __typename?: 'SearchFragranceEdge', offset: number, node: { __typename?: 'Fragrance', id: string, name: string, description?: string | null, releaseYear: number, concentration: Concentration, status: FragranceStatus, brand: { __typename?: 'Brand', id: string, name: string, avatar?: { __typename?: 'Asset', id: string, name: string, contentType: string, sizeBytes: number, url?: string | null } | null, votes: { __typename?: 'VoteInfo', upvotes: number, downvotes: number, score: number, myVote?: number | null } }, thumbnail?: { __typename?: 'FragranceImage', id: string, url?: string | null, width: number, height: number, primaryColor?: string | null } | null, votes: { __typename?: 'VoteInfo', upvotes: number, downvotes: number, score: number, myVote?: number | null } } }>, pageInfo: { __typename?: 'SearchPageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startOffset: number, endOffset: number, pageSize: number } } };
 
 export type FragranceImagesQueryVariables = Exact<{
-  fragranceId: Scalars['Int']['input'];
-  input?: InputMaybe<PaginationInput>;
+  id: Scalars['ID']['input'];
 }>;
 
 
-export type FragranceImagesQuery = { __typename?: 'Query', fragrance?: { __typename?: 'Fragrance', id: number, images: { __typename?: 'FragranceImageConnection', edges: Array<{ __typename?: 'FragranceImageEdge', node: { __typename?: 'FragranceImage', id: number, src: string, bg?: string | null, width: number, height: number } }> } } | null };
-
-export type FragranceTraitsQueryVariables = Exact<{
-  fragranceId: Scalars['Int']['input'];
-}>;
-
-
-export type FragranceTraitsQuery = { __typename?: 'Query', fragrance?: { __typename?: 'Fragrance', id: number, traits: Array<{ __typename?: 'FragranceTrait', id: number, type: FragranceTraitType, voteScore: number, myVote?: number | null }> } | null };
+export type FragranceImagesQuery = { __typename?: 'Query', fragrance: { __typename?: 'Fragrance', id: string, images: Array<{ __typename?: 'FragranceImage', id: string, url?: string | null, width: number, height: number, primaryColor?: string | null }> } };
 
 export type FragranceAccordsQueryVariables = Exact<{
-  fragranceId: Scalars['Int']['input'];
-  input?: InputMaybe<VotePaginationInput>;
+  id: Scalars['ID']['input'];
+  input?: InputMaybe<FragranceAccordPaginationInput>;
 }>;
 
 
-export type FragranceAccordsQuery = { __typename?: 'Query', fragrance?: { __typename?: 'Fragrance', id: number, accords: { __typename?: 'FragranceAccordConnection', edges: Array<{ __typename?: 'FragranceAccordEdge', node: { __typename?: 'FragranceAccord', id: number, accordId: number, name: string, color: string, votes: { __typename?: 'VoteSummary', voteScore: number, likesCount: number, dislikesCount: number, myVote?: boolean | null }, audit: { __typename?: 'Audit', createdAt: Date, updatedAt: Date, deletedAt?: Date | null } } }>, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor?: string | null, endCursor?: string | null } } } | null };
-
-export type FillerFragranceAccordsQueryVariables = Exact<{
-  fragranceId: Scalars['Int']['input'];
-  input?: InputMaybe<PaginationInput>;
-}>;
-
-
-export type FillerFragranceAccordsQuery = { __typename?: 'Query', fragrance?: { __typename?: 'Fragrance', id: number, fillerAccords: { __typename?: 'FragranceAccordConnection', edges: Array<{ __typename?: 'FragranceAccordEdge', node: { __typename?: 'FragranceAccord', id: number, accordId: number, name: string, color: string, votes: { __typename?: 'VoteSummary', voteScore: number, likesCount: number, dislikesCount: number, myVote?: boolean | null }, audit: { __typename?: 'Audit', createdAt: Date, updatedAt: Date, deletedAt?: Date | null } } }>, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor?: string | null, endCursor?: string | null } } } | null };
+export type FragranceAccordsQuery = { __typename?: 'Query', fragrance: { __typename?: 'Fragrance', id: string, accords: { __typename?: 'FragranceAccordConnection', edges: Array<{ __typename?: 'FragranceAccordEdge', cursor: string, node: { __typename?: 'FragranceAccord', id: string, accord: { __typename?: 'Accord', id: string, name: string, color: string }, votes: { __typename?: 'VoteInfo', upvotes: number, downvotes: number, score: number, myVote?: number | null } } }>, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor?: string | null, endCursor?: string | null } } } };
 
 export type FragranceNotesQueryVariables = Exact<{
-  fragranceId: Scalars['Int']['input'];
-  topInput?: InputMaybe<VotePaginationInput>;
-  middleInput?: InputMaybe<VotePaginationInput>;
-  baseInput?: InputMaybe<VotePaginationInput>;
+  id: Scalars['ID']['input'];
+  input?: InputMaybe<FragranceNotePaginationInput>;
 }>;
 
 
-export type FragranceNotesQuery = { __typename?: 'Query', fragrance?: { __typename?: 'Fragrance', id: number, notes: { __typename?: 'FragranceNotes', top: { __typename?: 'FragranceNoteConnection', edges: Array<{ __typename?: 'FragranceNoteEdge', node: { __typename?: 'FragranceNote', id: number, noteId: number, name: string, layer: NoteLayer, thumbnail?: string | null, votes: { __typename?: 'VoteSummary', voteScore: number, likesCount: number, dislikesCount: number, myVote?: boolean | null }, audit: { __typename?: 'Audit', createdAt: Date, updatedAt: Date, deletedAt?: Date | null } } }>, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor?: string | null, endCursor?: string | null } }, middle: { __typename?: 'FragranceNoteConnection', edges: Array<{ __typename?: 'FragranceNoteEdge', node: { __typename?: 'FragranceNote', id: number, noteId: number, name: string, layer: NoteLayer, thumbnail?: string | null, votes: { __typename?: 'VoteSummary', voteScore: number, likesCount: number, dislikesCount: number, myVote?: boolean | null }, audit: { __typename?: 'Audit', createdAt: Date, updatedAt: Date, deletedAt?: Date | null } } }>, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor?: string | null, endCursor?: string | null } }, base: { __typename?: 'FragranceNoteConnection', edges: Array<{ __typename?: 'FragranceNoteEdge', node: { __typename?: 'FragranceNote', id: number, noteId: number, name: string, layer: NoteLayer, thumbnail?: string | null, votes: { __typename?: 'VoteSummary', voteScore: number, likesCount: number, dislikesCount: number, myVote?: boolean | null }, audit: { __typename?: 'Audit', createdAt: Date, updatedAt: Date, deletedAt?: Date | null } } }>, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor?: string | null, endCursor?: string | null } } } } | null };
+export type FragranceNotesQuery = { __typename?: 'Query', fragrance: { __typename?: 'Fragrance', id: string, notes: { __typename?: 'FragranceNoteConnection', edges: Array<{ __typename?: 'FragranceNoteEdge', cursor: string, node: { __typename?: 'FragranceNote', id: string, layer: NoteLayer, note: { __typename?: 'Note', id: string, name: string, thumbnail?: { __typename?: 'Asset', id: string, name: string, contentType: string, sizeBytes: number, url?: string | null } | null }, votes: { __typename?: 'VoteInfo', upvotes: number, downvotes: number, score: number, myVote?: number | null } } }>, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor?: string | null, endCursor?: string | null } } } };
 
-export type FillerFragranceNotesQueryVariables = Exact<{
-  fragranceId: Scalars['Int']['input'];
-  topInput?: InputMaybe<PaginationInput>;
-  middleInput?: InputMaybe<PaginationInput>;
-  baseInput?: InputMaybe<PaginationInput>;
+export type FragranceTraitsQueryVariables = Exact<{
+  id: Scalars['ID']['input'];
 }>;
 
 
-export type FillerFragranceNotesQuery = { __typename?: 'Query', fragrance?: { __typename?: 'Fragrance', id: number, notes: { __typename?: 'FragranceNotes', fillerTop: { __typename?: 'FragranceNoteConnection', edges: Array<{ __typename?: 'FragranceNoteEdge', node: { __typename?: 'FragranceNote', id: number, noteId: number, name: string, layer: NoteLayer, thumbnail?: string | null, votes: { __typename?: 'VoteSummary', voteScore: number, likesCount: number, dislikesCount: number, myVote?: boolean | null }, audit: { __typename?: 'Audit', createdAt: Date, updatedAt: Date, deletedAt?: Date | null } } }>, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor?: string | null, endCursor?: string | null } }, fillerMiddle: { __typename?: 'FragranceNoteConnection', edges: Array<{ __typename?: 'FragranceNoteEdge', node: { __typename?: 'FragranceNote', id: number, noteId: number, name: string, layer: NoteLayer, thumbnail?: string | null, votes: { __typename?: 'VoteSummary', voteScore: number, likesCount: number, dislikesCount: number, myVote?: boolean | null }, audit: { __typename?: 'Audit', createdAt: Date, updatedAt: Date, deletedAt?: Date | null } } }>, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor?: string | null, endCursor?: string | null } }, fillerBase: { __typename?: 'FragranceNoteConnection', edges: Array<{ __typename?: 'FragranceNoteEdge', node: { __typename?: 'FragranceNote', id: number, noteId: number, name: string, layer: NoteLayer, thumbnail?: string | null, votes: { __typename?: 'VoteSummary', voteScore: number, likesCount: number, dislikesCount: number, myVote?: boolean | null }, audit: { __typename?: 'Audit', createdAt: Date, updatedAt: Date, deletedAt?: Date | null } } }>, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor?: string | null, endCursor?: string | null } } } } | null };
-
-export type TopFragranceNotesQueryVariables = Exact<{
-  fragranceId: Scalars['Int']['input'];
-  input?: InputMaybe<VotePaginationInput>;
-}>;
-
-
-export type TopFragranceNotesQuery = { __typename?: 'Query', fragrance?: { __typename?: 'Fragrance', id: number, notes: { __typename?: 'FragranceNotes', top: { __typename?: 'FragranceNoteConnection', edges: Array<{ __typename?: 'FragranceNoteEdge', node: { __typename?: 'FragranceNote', id: number, noteId: number, name: string, layer: NoteLayer, thumbnail?: string | null, votes: { __typename?: 'VoteSummary', voteScore: number, likesCount: number, dislikesCount: number, myVote?: boolean | null }, audit: { __typename?: 'Audit', createdAt: Date, updatedAt: Date, deletedAt?: Date | null } } }>, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor?: string | null, endCursor?: string | null } } } } | null };
-
-export type MiddleFragranceNotesQueryVariables = Exact<{
-  fragranceId: Scalars['Int']['input'];
-  input?: InputMaybe<VotePaginationInput>;
-}>;
-
-
-export type MiddleFragranceNotesQuery = { __typename?: 'Query', fragrance?: { __typename?: 'Fragrance', id: number, notes: { __typename?: 'FragranceNotes', middle: { __typename?: 'FragranceNoteConnection', edges: Array<{ __typename?: 'FragranceNoteEdge', node: { __typename?: 'FragranceNote', id: number, noteId: number, name: string, layer: NoteLayer, thumbnail?: string | null, votes: { __typename?: 'VoteSummary', voteScore: number, likesCount: number, dislikesCount: number, myVote?: boolean | null }, audit: { __typename?: 'Audit', createdAt: Date, updatedAt: Date, deletedAt?: Date | null } } }>, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor?: string | null, endCursor?: string | null } } } } | null };
-
-export type BaseFragranceNotesQueryVariables = Exact<{
-  fragranceId: Scalars['Int']['input'];
-  input?: InputMaybe<VotePaginationInput>;
-}>;
-
-
-export type BaseFragranceNotesQuery = { __typename?: 'Query', fragrance?: { __typename?: 'Fragrance', id: number, notes: { __typename?: 'FragranceNotes', base: { __typename?: 'FragranceNoteConnection', edges: Array<{ __typename?: 'FragranceNoteEdge', node: { __typename?: 'FragranceNote', id: number, noteId: number, name: string, layer: NoteLayer, thumbnail?: string | null, votes: { __typename?: 'VoteSummary', voteScore: number, likesCount: number, dislikesCount: number, myVote?: boolean | null }, audit: { __typename?: 'Audit', createdAt: Date, updatedAt: Date, deletedAt?: Date | null } } }>, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor?: string | null, endCursor?: string | null } } } } | null };
-
-export type TopFillerFragranceNotesQueryVariables = Exact<{
-  fragranceId: Scalars['Int']['input'];
-  input?: InputMaybe<PaginationInput>;
-}>;
-
-
-export type TopFillerFragranceNotesQuery = { __typename?: 'Query', fragrance?: { __typename?: 'Fragrance', id: number, notes: { __typename?: 'FragranceNotes', fillerTop: { __typename?: 'FragranceNoteConnection', edges: Array<{ __typename?: 'FragranceNoteEdge', node: { __typename?: 'FragranceNote', id: number, noteId: number, name: string, layer: NoteLayer, thumbnail?: string | null, votes: { __typename?: 'VoteSummary', voteScore: number, likesCount: number, dislikesCount: number, myVote?: boolean | null }, audit: { __typename?: 'Audit', createdAt: Date, updatedAt: Date, deletedAt?: Date | null } } }>, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor?: string | null, endCursor?: string | null } } } } | null };
-
-export type MiddleFillerFragranceNotesQueryVariables = Exact<{
-  fragranceId: Scalars['Int']['input'];
-  input?: InputMaybe<PaginationInput>;
-}>;
-
-
-export type MiddleFillerFragranceNotesQuery = { __typename?: 'Query', fragrance?: { __typename?: 'Fragrance', id: number, notes: { __typename?: 'FragranceNotes', fillerMiddle: { __typename?: 'FragranceNoteConnection', edges: Array<{ __typename?: 'FragranceNoteEdge', node: { __typename?: 'FragranceNote', id: number, noteId: number, name: string, layer: NoteLayer, thumbnail?: string | null, votes: { __typename?: 'VoteSummary', voteScore: number, likesCount: number, dislikesCount: number, myVote?: boolean | null }, audit: { __typename?: 'Audit', createdAt: Date, updatedAt: Date, deletedAt?: Date | null } } }>, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor?: string | null, endCursor?: string | null } } } } | null };
-
-export type BaseFillerFragranceNotesQueryVariables = Exact<{
-  fragranceId: Scalars['Int']['input'];
-  input?: InputMaybe<PaginationInput>;
-}>;
-
-
-export type BaseFillerFragranceNotesQuery = { __typename?: 'Query', fragrance?: { __typename?: 'Fragrance', id: number, notes: { __typename?: 'FragranceNotes', fillerBase: { __typename?: 'FragranceNoteConnection', edges: Array<{ __typename?: 'FragranceNoteEdge', node: { __typename?: 'FragranceNote', id: number, noteId: number, name: string, layer: NoteLayer, thumbnail?: string | null, votes: { __typename?: 'VoteSummary', voteScore: number, likesCount: number, dislikesCount: number, myVote?: boolean | null }, audit: { __typename?: 'Audit', createdAt: Date, updatedAt: Date, deletedAt?: Date | null } } }>, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor?: string | null, endCursor?: string | null } } } } | null };
-
-export type FragranceReviewSummaryFragment = { __typename?: 'FragranceReview', id: number, rating: number, text: string, votes: { __typename?: 'VoteSummary', voteScore: number, likesCount: number, dislikesCount: number, myVote?: boolean | null }, user: { __typename?: 'User', id: number, username: string, email: string, followerCount: number, followingCount: number, audit: { __typename?: 'Audit', createdAt: Date, updatedAt: Date, deletedAt?: Date | null } }, fragrance: { __typename?: 'Fragrance', id: number, brand: string, name: string, votes: { __typename?: 'VoteSummary', voteScore: number, likesCount: number, dislikesCount: number, myVote?: boolean | null }, images: { __typename?: 'FragranceImageConnection', edges: Array<{ __typename?: 'FragranceImageEdge', node: { __typename?: 'FragranceImage', id: number, src: string, bg?: string | null, width: number, height: number } }> } }, audit: { __typename?: 'Audit', createdAt: Date, updatedAt: Date, deletedAt?: Date | null } };
-
-export type FragranceReviewConnectionFragment = { __typename?: 'FragranceReviewConnection', edges: Array<{ __typename?: 'FragranceReviewEdge', node: { __typename?: 'FragranceReview', id: number, rating: number, text: string, votes: { __typename?: 'VoteSummary', voteScore: number, likesCount: number, dislikesCount: number, myVote?: boolean | null }, user: { __typename?: 'User', id: number, username: string, email: string, followerCount: number, followingCount: number, audit: { __typename?: 'Audit', createdAt: Date, updatedAt: Date, deletedAt?: Date | null } }, fragrance: { __typename?: 'Fragrance', id: number, brand: string, name: string, votes: { __typename?: 'VoteSummary', voteScore: number, likesCount: number, dislikesCount: number, myVote?: boolean | null }, images: { __typename?: 'FragranceImageConnection', edges: Array<{ __typename?: 'FragranceImageEdge', node: { __typename?: 'FragranceImage', id: number, src: string, bg?: string | null, width: number, height: number } }> } }, audit: { __typename?: 'Audit', createdAt: Date, updatedAt: Date, deletedAt?: Date | null } } }>, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor?: string | null, endCursor?: string | null } };
-
-export type MyReviewFragmentFragment = { __typename?: 'Fragrance', id: number, myReview?: { __typename?: 'FragranceReview', id: number } | null };
-
-export type UpsertFragranceReviewMutationVariables = Exact<{
-  input: UpsertFragranceReviewInput;
-}>;
-
-
-export type UpsertFragranceReviewMutation = { __typename?: 'Mutation', upsertFragranceReview: { __typename?: 'FragranceReview', id: number, rating: number, text: string, votes: { __typename?: 'VoteSummary', voteScore: number, likesCount: number, dislikesCount: number, myVote?: boolean | null }, user: { __typename?: 'User', id: number, username: string, email: string, followerCount: number, followingCount: number, audit: { __typename?: 'Audit', createdAt: Date, updatedAt: Date, deletedAt?: Date | null } }, fragrance: { __typename?: 'Fragrance', id: number, brand: string, name: string, votes: { __typename?: 'VoteSummary', voteScore: number, likesCount: number, dislikesCount: number, myVote?: boolean | null }, images: { __typename?: 'FragranceImageConnection', edges: Array<{ __typename?: 'FragranceImageEdge', node: { __typename?: 'FragranceImage', id: number, src: string, bg?: string | null, width: number, height: number } }> } }, audit: { __typename?: 'Audit', createdAt: Date, updatedAt: Date, deletedAt?: Date | null } } };
-
-export type DeleteFragranceReviewMutationVariables = Exact<{
-  input: DeleteFragranceReviewInput;
-}>;
-
-
-export type DeleteFragranceReviewMutation = { __typename?: 'Mutation', deleteFragranceReview: { __typename?: 'FragranceReview', id: number, rating: number, text: string, votes: { __typename?: 'VoteSummary', voteScore: number, likesCount: number, dislikesCount: number, myVote?: boolean | null }, user: { __typename?: 'User', id: number, username: string, email: string, followerCount: number, followingCount: number, audit: { __typename?: 'Audit', createdAt: Date, updatedAt: Date, deletedAt?: Date | null } }, fragrance: { __typename?: 'Fragrance', id: number, brand: string, name: string, votes: { __typename?: 'VoteSummary', voteScore: number, likesCount: number, dislikesCount: number, myVote?: boolean | null }, images: { __typename?: 'FragranceImageConnection', edges: Array<{ __typename?: 'FragranceImageEdge', node: { __typename?: 'FragranceImage', id: number, src: string, bg?: string | null, width: number, height: number } }> } }, audit: { __typename?: 'Audit', createdAt: Date, updatedAt: Date, deletedAt?: Date | null } } };
-
-export type VoteOnReviewMutationVariables = Exact<{
-  input: VoteOnReviewInput;
-}>;
-
-
-export type VoteOnReviewMutation = { __typename?: 'Mutation', voteOnReview: { __typename?: 'FragranceReview', id: number } };
-
-export type CreateReviewReportMutationVariables = Exact<{
-  input: CreateReviewReportInput;
-}>;
-
-
-export type CreateReviewReportMutation = { __typename?: 'Mutation', createReviewReport: { __typename?: 'ReviewReport', id: number } };
+export type FragranceTraitsQuery = { __typename?: 'Query', fragrance: { __typename?: 'Fragrance', id: string, traits: Array<{ __typename?: 'FragranceTrait', id: string, type: TraitTypeEnum, name: string, options: Array<{ __typename?: 'TraitOption', id: string, label: string, score: number }>, stats?: { __typename?: 'TraitStats', averageScore: number, totalVotes: number, distribution: Array<{ __typename?: 'TraitVoteDistribution', votes: number, option: { __typename?: 'TraitOption', id: string, label: string, score: number } }> } | null, myVote?: { __typename?: 'TraitVote', option: { __typename?: 'TraitOption', id: string, label: string, score: number } } | null }> } };
 
 export type FragranceReviewsQueryVariables = Exact<{
-  fragranceId: Scalars['Int']['input'];
-  input?: InputMaybe<VotePaginationInput>;
+  id: Scalars['ID']['input'];
+  input?: InputMaybe<FragranceReviewPaginationInput>;
 }>;
 
 
-export type FragranceReviewsQuery = { __typename?: 'Query', fragrance?: { __typename?: 'Fragrance', id: number, reviews: { __typename?: 'FragranceReviewConnection', edges: Array<{ __typename?: 'FragranceReviewEdge', node: { __typename?: 'FragranceReview', id: number, rating: number, text: string, votes: { __typename?: 'VoteSummary', voteScore: number, likesCount: number, dislikesCount: number, myVote?: boolean | null }, user: { __typename?: 'User', id: number, username: string, email: string, followerCount: number, followingCount: number, audit: { __typename?: 'Audit', createdAt: Date, updatedAt: Date, deletedAt?: Date | null } }, fragrance: { __typename?: 'Fragrance', id: number, brand: string, name: string, votes: { __typename?: 'VoteSummary', voteScore: number, likesCount: number, dislikesCount: number, myVote?: boolean | null }, images: { __typename?: 'FragranceImageConnection', edges: Array<{ __typename?: 'FragranceImageEdge', node: { __typename?: 'FragranceImage', id: number, src: string, bg?: string | null, width: number, height: number } }> } }, audit: { __typename?: 'Audit', createdAt: Date, updatedAt: Date, deletedAt?: Date | null } } }>, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor?: string | null, endCursor?: string | null } } } | null };
+export type FragranceReviewsQuery = { __typename?: 'Query', fragrance: { __typename?: 'Fragrance', id: string, reviews: { __typename?: 'FragranceReviewConnection', edges: Array<{ __typename?: 'FragranceReviewEdge', cursor: string, node: { __typename?: 'FragranceReview', id: string, rating: number, body?: string | null, author: { __typename?: 'User', id: string, username: string, avatar?: { __typename?: 'Asset', id: string, name: string, contentType: string, sizeBytes: number, url?: string | null } | null }, fragrance: { __typename?: 'Fragrance', id: string, name: string, description?: string | null, releaseYear: number, concentration: Concentration, status: FragranceStatus, brand: { __typename?: 'Brand', id: string, name: string, avatar?: { __typename?: 'Asset', id: string, name: string, contentType: string, sizeBytes: number, url?: string | null } | null, votes: { __typename?: 'VoteInfo', upvotes: number, downvotes: number, score: number, myVote?: number | null } }, thumbnail?: { __typename?: 'FragranceImage', id: string, url?: string | null, width: number, height: number, primaryColor?: string | null } | null, votes: { __typename?: 'VoteInfo', upvotes: number, downvotes: number, score: number, myVote?: number | null } }, votes: { __typename?: 'VoteInfo', upvotes: number, downvotes: number, score: number, myVote?: number | null } } }>, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor?: string | null, endCursor?: string | null } } } };
 
-export type MyFragranceReviewQueryVariables = Exact<{
-  fragranceId: Scalars['Int']['input'];
+export type AllNoteFragment = { __typename?: 'Note', id: string, name: string, thumbnail?: { __typename?: 'Asset', id: string, name: string, contentType: string, sizeBytes: number, url?: string | null } | null };
+
+export type NotePreviewFragment = { __typename?: 'Note', id: string, name: string, thumbnail?: { __typename?: 'Asset', id: string, name: string, contentType: string, sizeBytes: number, url?: string | null } | null };
+
+export type NoteQueryVariables = Exact<{
+  id: Scalars['ID']['input'];
 }>;
 
 
-export type MyFragranceReviewQuery = { __typename?: 'Query', fragrance?: { __typename?: 'Fragrance', id: number, brand: string, name: string, myReview?: { __typename?: 'FragranceReview', id: number, rating: number, text: string, votes: { __typename?: 'VoteSummary', voteScore: number, likesCount: number, dislikesCount: number, myVote?: boolean | null }, user: { __typename?: 'User', id: number, username: string, email: string, followerCount: number, followingCount: number, audit: { __typename?: 'Audit', createdAt: Date, updatedAt: Date, deletedAt?: Date | null } }, fragrance: { __typename?: 'Fragrance', id: number, brand: string, name: string, votes: { __typename?: 'VoteSummary', voteScore: number, likesCount: number, dislikesCount: number, myVote?: boolean | null }, images: { __typename?: 'FragranceImageConnection', edges: Array<{ __typename?: 'FragranceImageEdge', node: { __typename?: 'FragranceImage', id: number, src: string, bg?: string | null, width: number, height: number } }> } }, audit: { __typename?: 'Audit', createdAt: Date, updatedAt: Date, deletedAt?: Date | null } } | null, votes: { __typename?: 'VoteSummary', voteScore: number, likesCount: number, dislikesCount: number, myVote?: boolean | null }, images: { __typename?: 'FragranceImageConnection', edges: Array<{ __typename?: 'FragranceImageEdge', node: { __typename?: 'FragranceImage', id: number, src: string, bg?: string | null, width: number, height: number } }> } } | null };
+export type NoteQuery = { __typename?: 'Query', note: { __typename?: 'Note', id: string, name: string, thumbnail?: { __typename?: 'Asset', id: string, name: string, contentType: string, sizeBytes: number, url?: string | null } | null } };
 
-export type UserSummaryFragment = { __typename?: 'User', id: number, username: string, email: string, followerCount: number, followingCount: number, audit: { __typename?: 'Audit', createdAt: Date, updatedAt: Date, deletedAt?: Date | null } };
+export type NotesQueryVariables = Exact<{
+  input?: InputMaybe<NotePaginationInput>;
+}>;
+
+
+export type NotesQuery = { __typename?: 'Query', notes: { __typename?: 'NoteConnection', edges: Array<{ __typename?: 'NoteEdge', node: { __typename?: 'Note', id: string, name: string, thumbnail?: { __typename?: 'Asset', id: string, name: string, contentType: string, sizeBytes: number, url?: string | null } | null } }>, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor?: string | null, endCursor?: string | null } } };
+
+export type SearchNotesQueryVariables = Exact<{
+  input?: InputMaybe<SearchInput>;
+}>;
+
+
+export type SearchNotesQuery = { __typename?: 'Query', searchNotes: { __typename?: 'SearchNoteConnection', edges: Array<{ __typename?: 'SearchNoteEdge', offset: number, node: { __typename?: 'Note', id: string, name: string, thumbnail?: { __typename?: 'Asset', id: string, name: string, contentType: string, sizeBytes: number, url?: string | null } | null } }>, pageInfo: { __typename?: 'SearchPageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startOffset: number, endOffset: number, pageSize: number } } };
+
+export type AllTraitOptionFragment = { __typename?: 'TraitOption', id: string, label: string, score: number };
+
+export type AllTraitVoteDistributionFragment = { __typename?: 'TraitVoteDistribution', votes: number, option: { __typename?: 'TraitOption', id: string, label: string, score: number } };
+
+export type AllTraitStatsFragment = { __typename?: 'TraitStats', averageScore: number, totalVotes: number, distribution: Array<{ __typename?: 'TraitVoteDistribution', votes: number, option: { __typename?: 'TraitOption', id: string, label: string, score: number } }> };
+
+export type AllTraitVoteFragment = { __typename?: 'TraitVote', option: { __typename?: 'TraitOption', id: string, label: string, score: number } };
+
+export type MeFragment = { __typename?: 'User', id: string, username: string, email?: string | null, avatar?: { __typename?: 'Asset', id: string, name: string, contentType: string, sizeBytes: number, url?: string | null } | null };
+
+export type UserPreviewFragment = { __typename?: 'User', id: string, username: string, avatar?: { __typename?: 'Asset', id: string, name: string, contentType: string, sizeBytes: number, url?: string | null } | null };
+
+export type UpdateMeMutationVariables = Exact<{
+  input: UpdateMeInput;
+}>;
+
+
+export type UpdateMeMutation = { __typename?: 'Mutation', updateMe: { __typename?: 'User', id: string, username: string, email?: string | null, avatar?: { __typename?: 'Asset', id: string, name: string, contentType: string, sizeBytes: number, url?: string | null } | null } };
+
+export type SetMyAvatarMutationVariables = Exact<{
+  input: SetMyAvatarInput;
+}>;
+
+
+export type SetMyAvatarMutation = { __typename?: 'Mutation', setMyAvatar: { __typename?: 'User', id: string, username: string, email?: string | null, avatar?: { __typename?: 'Asset', id: string, name: string, contentType: string, sizeBytes: number, url?: string | null } | null } };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', id: number, username: string, email: string, followerCount: number, followingCount: number, audit: { __typename?: 'Audit', createdAt: Date, updatedAt: Date, deletedAt?: Date | null } } | null };
+export type MeQuery = { __typename?: 'Query', me: { __typename?: 'User', id: string, username: string, email?: string | null, avatar?: { __typename?: 'Asset', id: string, name: string, contentType: string, sizeBytes: number, url?: string | null } | null } };
 
 export type UserQueryVariables = Exact<{
-  id: Scalars['Int']['input'];
+  id: Scalars['ID']['input'];
 }>;
 
 
-export type UserQuery = { __typename?: 'Query', user?: { __typename?: 'User', id: number, username: string, email: string, followerCount: number, followingCount: number, audit: { __typename?: 'Audit', createdAt: Date, updatedAt: Date, deletedAt?: Date | null } } | null };
+export type UserQuery = { __typename?: 'Query', user: { __typename?: 'User', id: string, username: string, avatar?: { __typename?: 'Asset', id: string, name: string, contentType: string, sizeBytes: number, url?: string | null } | null } };
+
+export type SearchUsersQueryVariables = Exact<{
+  input?: InputMaybe<SearchInput>;
+}>;
+
+
+export type SearchUsersQuery = { __typename?: 'Query', searchUsers: { __typename?: 'SearchUserConnection', edges: Array<{ __typename?: 'SearchUserEdge', offset: number, node: { __typename?: 'User', id: string, username: string, avatar?: { __typename?: 'Asset', id: string, name: string, contentType: string, sizeBytes: number, url?: string | null } | null } }>, pageInfo: { __typename?: 'SearchPageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startOffset: number, endOffset: number, pageSize: number } } };
+
+export type UserCollectionQueryVariables = Exact<{
+  userId: Scalars['ID']['input'];
+  collectionId: Scalars['ID']['input'];
+}>;
+
+
+export type UserCollectionQuery = { __typename?: 'Query', user: { __typename?: 'User', id: string, username: string, collection: { __typename?: 'FragranceCollection', id: string, name: string, items: Array<{ __typename?: 'FragranceCollectionItem', id: string, fragrance: { __typename?: 'Fragrance', id: string, name: string, description?: string | null, releaseYear: number, concentration: Concentration, status: FragranceStatus, brand: { __typename?: 'Brand', id: string, name: string, avatar?: { __typename?: 'Asset', id: string, name: string, contentType: string, sizeBytes: number, url?: string | null } | null, votes: { __typename?: 'VoteInfo', upvotes: number, downvotes: number, score: number, myVote?: number | null } }, thumbnail?: { __typename?: 'FragranceImage', id: string, url?: string | null, width: number, height: number, primaryColor?: string | null } | null, votes: { __typename?: 'VoteInfo', upvotes: number, downvotes: number, score: number, myVote?: number | null } } }>, user: { __typename?: 'User', id: string, username: string, avatar?: { __typename?: 'Asset', id: string, name: string, contentType: string, sizeBytes: number, url?: string | null } | null } }, avatar?: { __typename?: 'Asset', id: string, name: string, contentType: string, sizeBytes: number, url?: string | null } | null } };
 
 export type UserCollectionsQueryVariables = Exact<{
-  userId: Scalars['Int']['input'];
-  fragranceId?: InputMaybe<Scalars['Int']['input']>;
-  input?: InputMaybe<PaginationInput>;
+  userId: Scalars['ID']['input'];
+  input?: InputMaybe<FragranceCollectionPaginationInput>;
 }>;
 
 
-export type UserCollectionsQuery = { __typename?: 'Query', user?: { __typename?: 'User', id: number, collections: { __typename?: 'FragranceCollectionConnection', edges: Array<{ __typename?: 'FragranceCollectionEdge', node: { __typename?: 'FragranceCollection', hasFragrance: boolean, id: number, name: string, user: { __typename?: 'User', id: number, username: string }, items: { __typename?: 'FragranceCollectionItemConnection', edges: Array<{ __typename?: 'FragranceCollectionItemEdge', node: { __typename?: 'FragranceCollectionItem', id: number, rank: number, fragrance: { __typename?: 'Fragrance', id: number, brand: string, name: string, votes: { __typename?: 'VoteSummary', voteScore: number, likesCount: number, dislikesCount: number, myVote?: boolean | null }, images: { __typename?: 'FragranceImageConnection', edges: Array<{ __typename?: 'FragranceImageEdge', node: { __typename?: 'FragranceImage', id: number, src: string, bg?: string | null, width: number, height: number } }> } }, audit: { __typename?: 'Audit', createdAt: Date, updatedAt: Date, deletedAt?: Date | null } } }>, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor?: string | null, endCursor?: string | null } }, audit: { __typename?: 'Audit', createdAt: Date, updatedAt: Date, deletedAt?: Date | null } } }>, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor?: string | null, endCursor?: string | null } } } | null };
+export type UserCollectionsQuery = { __typename?: 'Query', user: { __typename?: 'User', id: string, username: string, collections: { __typename?: 'FragranceCollectionConnection', edges: Array<{ __typename?: 'FragranceCollectionEdge', cursor: string, node: { __typename?: 'FragranceCollection', id: string, name: string, items: Array<{ __typename?: 'FragranceCollectionItem', id: string, fragrance: { __typename?: 'Fragrance', id: string, name: string, description?: string | null, releaseYear: number, concentration: Concentration, status: FragranceStatus, brand: { __typename?: 'Brand', id: string, name: string, avatar?: { __typename?: 'Asset', id: string, name: string, contentType: string, sizeBytes: number, url?: string | null } | null, votes: { __typename?: 'VoteInfo', upvotes: number, downvotes: number, score: number, myVote?: number | null } }, thumbnail?: { __typename?: 'FragranceImage', id: string, url?: string | null, width: number, height: number, primaryColor?: string | null } | null, votes: { __typename?: 'VoteInfo', upvotes: number, downvotes: number, score: number, myVote?: number | null } } }>, user: { __typename?: 'User', id: string, username: string, avatar?: { __typename?: 'Asset', id: string, name: string, contentType: string, sizeBytes: number, url?: string | null } | null } } }>, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor?: string | null, endCursor?: string | null } }, avatar?: { __typename?: 'Asset', id: string, name: string, contentType: string, sizeBytes: number, url?: string | null } | null } };
 
-export type UserLikesQueryVariables = Exact<{
-  userId: Scalars['Int']['input'];
-  input?: InputMaybe<PaginationInput>;
+export type UserReviewQueryVariables = Exact<{
+  userId: Scalars['ID']['input'];
+  reviewId: Scalars['ID']['input'];
 }>;
 
 
-export type UserLikesQuery = { __typename?: 'Query', user?: { __typename?: 'User', id: number, likes: { __typename?: 'FragranceVoteConnection', edges: Array<{ __typename?: 'FragranceVoteEdge', node: { __typename?: 'FragranceVote', id: number, vote: number, fragrance: { __typename?: 'Fragrance', id: number, brand: string, name: string, votes: { __typename?: 'VoteSummary', voteScore: number, likesCount: number, dislikesCount: number, myVote?: boolean | null }, images: { __typename?: 'FragranceImageConnection', edges: Array<{ __typename?: 'FragranceImageEdge', node: { __typename?: 'FragranceImage', id: number, src: string, bg?: string | null, width: number, height: number } }> } } } }>, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor?: string | null, endCursor?: string | null } } } | null };
+export type UserReviewQuery = { __typename?: 'Query', user: { __typename?: 'User', id: string, username: string, review: { __typename?: 'FragranceReview', id: string, rating: number, body?: string | null, author: { __typename?: 'User', id: string, username: string, avatar?: { __typename?: 'Asset', id: string, name: string, contentType: string, sizeBytes: number, url?: string | null } | null }, fragrance: { __typename?: 'Fragrance', id: string, name: string, description?: string | null, releaseYear: number, concentration: Concentration, status: FragranceStatus, brand: { __typename?: 'Brand', id: string, name: string, avatar?: { __typename?: 'Asset', id: string, name: string, contentType: string, sizeBytes: number, url?: string | null } | null, votes: { __typename?: 'VoteInfo', upvotes: number, downvotes: number, score: number, myVote?: number | null } }, thumbnail?: { __typename?: 'FragranceImage', id: string, url?: string | null, width: number, height: number, primaryColor?: string | null } | null, votes: { __typename?: 'VoteInfo', upvotes: number, downvotes: number, score: number, myVote?: number | null } }, votes: { __typename?: 'VoteInfo', upvotes: number, downvotes: number, score: number, myVote?: number | null } }, avatar?: { __typename?: 'Asset', id: string, name: string, contentType: string, sizeBytes: number, url?: string | null } | null } };
 
 export type UserReviewsQueryVariables = Exact<{
-  userId: Scalars['Int']['input'];
-  input?: InputMaybe<PaginationInput>;
+  userId: Scalars['ID']['input'];
+  input?: InputMaybe<FragranceReviewPaginationInput>;
 }>;
 
 
-export type UserReviewsQuery = { __typename?: 'Query', user?: { __typename?: 'User', id: number, reviews: { __typename?: 'FragranceReviewConnection', edges: Array<{ __typename?: 'FragranceReviewEdge', node: { __typename?: 'FragranceReview', id: number, rating: number, text: string, votes: { __typename?: 'VoteSummary', voteScore: number, likesCount: number, dislikesCount: number, myVote?: boolean | null }, user: { __typename?: 'User', id: number, username: string, email: string, followerCount: number, followingCount: number, audit: { __typename?: 'Audit', createdAt: Date, updatedAt: Date, deletedAt?: Date | null } }, fragrance: { __typename?: 'Fragrance', id: number, brand: string, name: string, votes: { __typename?: 'VoteSummary', voteScore: number, likesCount: number, dislikesCount: number, myVote?: boolean | null }, images: { __typename?: 'FragranceImageConnection', edges: Array<{ __typename?: 'FragranceImageEdge', node: { __typename?: 'FragranceImage', id: number, src: string, bg?: string | null, width: number, height: number } }> } }, audit: { __typename?: 'Audit', createdAt: Date, updatedAt: Date, deletedAt?: Date | null } } }>, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor?: string | null, endCursor?: string | null } } } | null };
+export type UserReviewsQuery = { __typename?: 'Query', user: { __typename?: 'User', id: string, username: string, reviews: { __typename?: 'FragranceReviewConnection', edges: Array<{ __typename?: 'FragranceReviewEdge', cursor: string, node: { __typename?: 'FragranceReview', id: string, rating: number, body?: string | null, author: { __typename?: 'User', id: string, username: string, avatar?: { __typename?: 'Asset', id: string, name: string, contentType: string, sizeBytes: number, url?: string | null } | null }, fragrance: { __typename?: 'Fragrance', id: string, name: string, description?: string | null, releaseYear: number, concentration: Concentration, status: FragranceStatus, brand: { __typename?: 'Brand', id: string, name: string, avatar?: { __typename?: 'Asset', id: string, name: string, contentType: string, sizeBytes: number, url?: string | null } | null, votes: { __typename?: 'VoteInfo', upvotes: number, downvotes: number, score: number, myVote?: number | null } }, thumbnail?: { __typename?: 'FragranceImage', id: string, url?: string | null, width: number, height: number, primaryColor?: string | null } | null, votes: { __typename?: 'VoteInfo', upvotes: number, downvotes: number, score: number, myVote?: number | null } }, votes: { __typename?: 'VoteInfo', upvotes: number, downvotes: number, score: number, myVote?: number | null } } }>, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor?: string | null, endCursor?: string | null } }, avatar?: { __typename?: 'Asset', id: string, name: string, contentType: string, sizeBytes: number, url?: string | null } | null } };
 
-export type PageInfoBaseFragment = { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor?: string | null, endCursor?: string | null };
+export type AllPageInfoFragment = { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor?: string | null, endCursor?: string | null };
 
-export type AuditBaseFragment = { __typename?: 'Audit', createdAt: Date, updatedAt: Date, deletedAt?: Date | null };
+export type AllSearchPageInfoFragment = { __typename?: 'SearchPageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startOffset: number, endOffset: number, pageSize: number };
 
-export const DeliveryResultBaseFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"DeliveryResultBase"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"DeliveryResult"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"complete"}},{"kind":"Field","name":{"kind":"Name","value":"delivery"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"attribute"}},{"kind":"Field","name":{"kind":"Name","value":"destination"}},{"kind":"Field","name":{"kind":"Name","value":"method"}}]}}]}}]} as unknown as DocumentNode<DeliveryResultBaseFragment, unknown>;
-export const AuthPayloadBaseFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AuthPayloadBase"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AuthPayload"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"idToken"}},{"kind":"Field","name":{"kind":"Name","value":"accessToken"}},{"kind":"Field","name":{"kind":"Name","value":"expiresIn"}}]}}]} as unknown as DocumentNode<AuthPayloadBaseFragment, unknown>;
-export const FragranceImageSummaryFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceImageSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImage"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"src"}},{"kind":"Field","name":{"kind":"Name","value":"bg"}},{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"height"}}]}}]} as unknown as DocumentNode<FragranceImageSummaryFragment, unknown>;
-export const FragranceImageConnectionFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceImageConnection"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImageConnection"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceImageSummary"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceImageSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImage"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"src"}},{"kind":"Field","name":{"kind":"Name","value":"bg"}},{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"height"}}]}}]} as unknown as DocumentNode<FragranceImageConnectionFragment, unknown>;
-export const FragranceSummaryFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Fragrance"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"brand"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteScore"}},{"kind":"Field","name":{"kind":"Name","value":"likesCount"}},{"kind":"Field","name":{"kind":"Name","value":"dislikesCount"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}},{"kind":"Field","name":{"kind":"Name","value":"images"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"1"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceImageConnection"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceImageSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImage"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"src"}},{"kind":"Field","name":{"kind":"Name","value":"bg"}},{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"height"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceImageConnection"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImageConnection"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceImageSummary"}}]}}]}}]}}]} as unknown as DocumentNode<FragranceSummaryFragment, unknown>;
-export const AuditBaseFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AuditBase"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Audit"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}},{"kind":"Field","name":{"kind":"Name","value":"deletedAt"}}]}}]} as unknown as DocumentNode<AuditBaseFragment, unknown>;
-export const FragranceCollectionItemSummaryFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceCollectionItemSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceCollectionItem"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"rank"}},{"kind":"Field","name":{"kind":"Name","value":"fragrance"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceSummary"}}]}},{"kind":"Field","name":{"kind":"Name","value":"audit"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AuditBase"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceImageSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImage"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"src"}},{"kind":"Field","name":{"kind":"Name","value":"bg"}},{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"height"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceImageConnection"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImageConnection"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceImageSummary"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Fragrance"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"brand"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteScore"}},{"kind":"Field","name":{"kind":"Name","value":"likesCount"}},{"kind":"Field","name":{"kind":"Name","value":"dislikesCount"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}},{"kind":"Field","name":{"kind":"Name","value":"images"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"1"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceImageConnection"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AuditBase"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Audit"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}},{"kind":"Field","name":{"kind":"Name","value":"deletedAt"}}]}}]} as unknown as DocumentNode<FragranceCollectionItemSummaryFragment, unknown>;
-export const PageInfoBaseFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"PageInfoBase"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"PageInfo"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"hasPreviousPage"}},{"kind":"Field","name":{"kind":"Name","value":"hasNextPage"}},{"kind":"Field","name":{"kind":"Name","value":"startCursor"}},{"kind":"Field","name":{"kind":"Name","value":"endCursor"}}]}}]} as unknown as DocumentNode<PageInfoBaseFragment, unknown>;
-export const FragranceCollectionItemConnectionFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceCollectionItemConnection"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceCollectionItemConnection"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceCollectionItemSummary"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"pageInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"PageInfoBase"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceImageSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImage"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"src"}},{"kind":"Field","name":{"kind":"Name","value":"bg"}},{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"height"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceImageConnection"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImageConnection"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceImageSummary"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Fragrance"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"brand"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteScore"}},{"kind":"Field","name":{"kind":"Name","value":"likesCount"}},{"kind":"Field","name":{"kind":"Name","value":"dislikesCount"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}},{"kind":"Field","name":{"kind":"Name","value":"images"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"1"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceImageConnection"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AuditBase"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Audit"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}},{"kind":"Field","name":{"kind":"Name","value":"deletedAt"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceCollectionItemSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceCollectionItem"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"rank"}},{"kind":"Field","name":{"kind":"Name","value":"fragrance"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceSummary"}}]}},{"kind":"Field","name":{"kind":"Name","value":"audit"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AuditBase"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"PageInfoBase"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"PageInfo"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"hasPreviousPage"}},{"kind":"Field","name":{"kind":"Name","value":"hasNextPage"}},{"kind":"Field","name":{"kind":"Name","value":"startCursor"}},{"kind":"Field","name":{"kind":"Name","value":"endCursor"}}]}}]} as unknown as DocumentNode<FragranceCollectionItemConnectionFragment, unknown>;
-export const FragranceCollectionSummaryFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceCollectionSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceCollection"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"username"}}]}},{"kind":"Field","name":{"kind":"Name","value":"items"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"4"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceCollectionItemConnection"}}]}},{"kind":"Field","name":{"kind":"Name","value":"audit"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AuditBase"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceImageSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImage"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"src"}},{"kind":"Field","name":{"kind":"Name","value":"bg"}},{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"height"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceImageConnection"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImageConnection"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceImageSummary"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Fragrance"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"brand"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteScore"}},{"kind":"Field","name":{"kind":"Name","value":"likesCount"}},{"kind":"Field","name":{"kind":"Name","value":"dislikesCount"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}},{"kind":"Field","name":{"kind":"Name","value":"images"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"1"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceImageConnection"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AuditBase"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Audit"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}},{"kind":"Field","name":{"kind":"Name","value":"deletedAt"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceCollectionItemSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceCollectionItem"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"rank"}},{"kind":"Field","name":{"kind":"Name","value":"fragrance"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceSummary"}}]}},{"kind":"Field","name":{"kind":"Name","value":"audit"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AuditBase"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"PageInfoBase"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"PageInfo"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"hasPreviousPage"}},{"kind":"Field","name":{"kind":"Name","value":"hasNextPage"}},{"kind":"Field","name":{"kind":"Name","value":"startCursor"}},{"kind":"Field","name":{"kind":"Name","value":"endCursor"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceCollectionItemConnection"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceCollectionItemConnection"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceCollectionItemSummary"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"pageInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"PageInfoBase"}}]}}]}}]} as unknown as DocumentNode<FragranceCollectionSummaryFragment, unknown>;
-export const FragranceCollectionConnectionFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceCollectionConnection"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceCollectionConnection"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceCollectionSummary"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"pageInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"PageInfoBase"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceImageSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImage"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"src"}},{"kind":"Field","name":{"kind":"Name","value":"bg"}},{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"height"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceImageConnection"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImageConnection"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceImageSummary"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Fragrance"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"brand"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteScore"}},{"kind":"Field","name":{"kind":"Name","value":"likesCount"}},{"kind":"Field","name":{"kind":"Name","value":"dislikesCount"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}},{"kind":"Field","name":{"kind":"Name","value":"images"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"1"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceImageConnection"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AuditBase"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Audit"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}},{"kind":"Field","name":{"kind":"Name","value":"deletedAt"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceCollectionItemSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceCollectionItem"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"rank"}},{"kind":"Field","name":{"kind":"Name","value":"fragrance"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceSummary"}}]}},{"kind":"Field","name":{"kind":"Name","value":"audit"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AuditBase"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"PageInfoBase"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"PageInfo"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"hasPreviousPage"}},{"kind":"Field","name":{"kind":"Name","value":"hasNextPage"}},{"kind":"Field","name":{"kind":"Name","value":"startCursor"}},{"kind":"Field","name":{"kind":"Name","value":"endCursor"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceCollectionItemConnection"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceCollectionItemConnection"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceCollectionItemSummary"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"pageInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"PageInfoBase"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceCollectionSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceCollection"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"username"}}]}},{"kind":"Field","name":{"kind":"Name","value":"items"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"4"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceCollectionItemConnection"}}]}},{"kind":"Field","name":{"kind":"Name","value":"audit"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AuditBase"}}]}}]}}]} as unknown as DocumentNode<FragranceCollectionConnectionFragment, unknown>;
-export const FragranceTraitSummaryFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceTraitSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceTrait"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"voteScore"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}}]} as unknown as DocumentNode<FragranceTraitSummaryFragment, unknown>;
-export const FragranceConnectionFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceConnection"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceConnection"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceSummary"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"pageInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"PageInfoBase"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceImageSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImage"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"src"}},{"kind":"Field","name":{"kind":"Name","value":"bg"}},{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"height"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceImageConnection"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImageConnection"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceImageSummary"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Fragrance"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"brand"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteScore"}},{"kind":"Field","name":{"kind":"Name","value":"likesCount"}},{"kind":"Field","name":{"kind":"Name","value":"dislikesCount"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}},{"kind":"Field","name":{"kind":"Name","value":"images"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"1"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceImageConnection"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"PageInfoBase"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"PageInfo"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"hasPreviousPage"}},{"kind":"Field","name":{"kind":"Name","value":"hasNextPage"}},{"kind":"Field","name":{"kind":"Name","value":"startCursor"}},{"kind":"Field","name":{"kind":"Name","value":"endCursor"}}]}}]} as unknown as DocumentNode<FragranceConnectionFragment, unknown>;
-export const FragranceAccordSummaryFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceAccordSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceAccord"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"accordId"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"color"}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteScore"}},{"kind":"Field","name":{"kind":"Name","value":"likesCount"}},{"kind":"Field","name":{"kind":"Name","value":"dislikesCount"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}},{"kind":"Field","name":{"kind":"Name","value":"audit"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AuditBase"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AuditBase"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Audit"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}},{"kind":"Field","name":{"kind":"Name","value":"deletedAt"}}]}}]} as unknown as DocumentNode<FragranceAccordSummaryFragment, unknown>;
-export const FragranceAccordConnectionFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceAccordConnection"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceAccordConnection"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceAccordSummary"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"pageInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"PageInfoBase"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AuditBase"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Audit"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}},{"kind":"Field","name":{"kind":"Name","value":"deletedAt"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceAccordSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceAccord"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"accordId"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"color"}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteScore"}},{"kind":"Field","name":{"kind":"Name","value":"likesCount"}},{"kind":"Field","name":{"kind":"Name","value":"dislikesCount"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}},{"kind":"Field","name":{"kind":"Name","value":"audit"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AuditBase"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"PageInfoBase"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"PageInfo"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"hasPreviousPage"}},{"kind":"Field","name":{"kind":"Name","value":"hasNextPage"}},{"kind":"Field","name":{"kind":"Name","value":"startCursor"}},{"kind":"Field","name":{"kind":"Name","value":"endCursor"}}]}}]} as unknown as DocumentNode<FragranceAccordConnectionFragment, unknown>;
-export const FragranceNoteSummaryFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceNoteSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceNote"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"noteId"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"layer"}},{"kind":"Field","name":{"kind":"Name","value":"thumbnail"}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteScore"}},{"kind":"Field","name":{"kind":"Name","value":"likesCount"}},{"kind":"Field","name":{"kind":"Name","value":"dislikesCount"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}},{"kind":"Field","name":{"kind":"Name","value":"audit"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AuditBase"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AuditBase"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Audit"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}},{"kind":"Field","name":{"kind":"Name","value":"deletedAt"}}]}}]} as unknown as DocumentNode<FragranceNoteSummaryFragment, unknown>;
-export const FragranceNoteConnectionFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceNoteConnection"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceNoteConnection"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceNoteSummary"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"pageInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"PageInfoBase"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AuditBase"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Audit"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}},{"kind":"Field","name":{"kind":"Name","value":"deletedAt"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceNoteSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceNote"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"noteId"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"layer"}},{"kind":"Field","name":{"kind":"Name","value":"thumbnail"}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteScore"}},{"kind":"Field","name":{"kind":"Name","value":"likesCount"}},{"kind":"Field","name":{"kind":"Name","value":"dislikesCount"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}},{"kind":"Field","name":{"kind":"Name","value":"audit"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AuditBase"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"PageInfoBase"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"PageInfo"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"hasPreviousPage"}},{"kind":"Field","name":{"kind":"Name","value":"hasNextPage"}},{"kind":"Field","name":{"kind":"Name","value":"startCursor"}},{"kind":"Field","name":{"kind":"Name","value":"endCursor"}}]}}]} as unknown as DocumentNode<FragranceNoteConnectionFragment, unknown>;
-export const FragranceVoteSummaryFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceVoteSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceVote"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"vote"}},{"kind":"Field","name":{"kind":"Name","value":"fragrance"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceSummary"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceImageSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImage"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"src"}},{"kind":"Field","name":{"kind":"Name","value":"bg"}},{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"height"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceImageConnection"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImageConnection"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceImageSummary"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Fragrance"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"brand"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteScore"}},{"kind":"Field","name":{"kind":"Name","value":"likesCount"}},{"kind":"Field","name":{"kind":"Name","value":"dislikesCount"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}},{"kind":"Field","name":{"kind":"Name","value":"images"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"1"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceImageConnection"}}]}}]}}]} as unknown as DocumentNode<FragranceVoteSummaryFragment, unknown>;
-export const FragranceVoteConnectionFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceVoteConnection"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceVoteConnection"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceVoteSummary"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"pageInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"PageInfoBase"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceImageSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImage"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"src"}},{"kind":"Field","name":{"kind":"Name","value":"bg"}},{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"height"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceImageConnection"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImageConnection"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceImageSummary"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Fragrance"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"brand"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteScore"}},{"kind":"Field","name":{"kind":"Name","value":"likesCount"}},{"kind":"Field","name":{"kind":"Name","value":"dislikesCount"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}},{"kind":"Field","name":{"kind":"Name","value":"images"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"1"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceImageConnection"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceVoteSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceVote"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"vote"}},{"kind":"Field","name":{"kind":"Name","value":"fragrance"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceSummary"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"PageInfoBase"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"PageInfo"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"hasPreviousPage"}},{"kind":"Field","name":{"kind":"Name","value":"hasNextPage"}},{"kind":"Field","name":{"kind":"Name","value":"startCursor"}},{"kind":"Field","name":{"kind":"Name","value":"endCursor"}}]}}]} as unknown as DocumentNode<FragranceVoteConnectionFragment, unknown>;
-export const UserSummaryFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"UserSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"User"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"followerCount"}},{"kind":"Field","name":{"kind":"Name","value":"followingCount"}},{"kind":"Field","name":{"kind":"Name","value":"audit"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AuditBase"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AuditBase"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Audit"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}},{"kind":"Field","name":{"kind":"Name","value":"deletedAt"}}]}}]} as unknown as DocumentNode<UserSummaryFragment, unknown>;
-export const FragranceReviewSummaryFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceReviewSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceReview"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"rating"}},{"kind":"Field","name":{"kind":"Name","value":"text"}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteScore"}},{"kind":"Field","name":{"kind":"Name","value":"likesCount"}},{"kind":"Field","name":{"kind":"Name","value":"dislikesCount"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"UserSummary"}}]}},{"kind":"Field","name":{"kind":"Name","value":"fragrance"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceSummary"}}]}},{"kind":"Field","name":{"kind":"Name","value":"audit"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AuditBase"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AuditBase"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Audit"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}},{"kind":"Field","name":{"kind":"Name","value":"deletedAt"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceImageSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImage"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"src"}},{"kind":"Field","name":{"kind":"Name","value":"bg"}},{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"height"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceImageConnection"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImageConnection"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceImageSummary"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"UserSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"User"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"followerCount"}},{"kind":"Field","name":{"kind":"Name","value":"followingCount"}},{"kind":"Field","name":{"kind":"Name","value":"audit"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AuditBase"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Fragrance"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"brand"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteScore"}},{"kind":"Field","name":{"kind":"Name","value":"likesCount"}},{"kind":"Field","name":{"kind":"Name","value":"dislikesCount"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}},{"kind":"Field","name":{"kind":"Name","value":"images"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"1"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceImageConnection"}}]}}]}}]} as unknown as DocumentNode<FragranceReviewSummaryFragment, unknown>;
-export const FragranceReviewConnectionFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceReviewConnection"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceReviewConnection"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceReviewSummary"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"pageInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"PageInfoBase"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AuditBase"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Audit"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}},{"kind":"Field","name":{"kind":"Name","value":"deletedAt"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"UserSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"User"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"followerCount"}},{"kind":"Field","name":{"kind":"Name","value":"followingCount"}},{"kind":"Field","name":{"kind":"Name","value":"audit"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AuditBase"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceImageSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImage"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"src"}},{"kind":"Field","name":{"kind":"Name","value":"bg"}},{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"height"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceImageConnection"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImageConnection"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceImageSummary"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Fragrance"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"brand"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteScore"}},{"kind":"Field","name":{"kind":"Name","value":"likesCount"}},{"kind":"Field","name":{"kind":"Name","value":"dislikesCount"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}},{"kind":"Field","name":{"kind":"Name","value":"images"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"1"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceImageConnection"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceReviewSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceReview"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"rating"}},{"kind":"Field","name":{"kind":"Name","value":"text"}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteScore"}},{"kind":"Field","name":{"kind":"Name","value":"likesCount"}},{"kind":"Field","name":{"kind":"Name","value":"dislikesCount"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"UserSummary"}}]}},{"kind":"Field","name":{"kind":"Name","value":"fragrance"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceSummary"}}]}},{"kind":"Field","name":{"kind":"Name","value":"audit"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AuditBase"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"PageInfoBase"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"PageInfo"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"hasPreviousPage"}},{"kind":"Field","name":{"kind":"Name","value":"hasNextPage"}},{"kind":"Field","name":{"kind":"Name","value":"startCursor"}},{"kind":"Field","name":{"kind":"Name","value":"endCursor"}}]}}]} as unknown as DocumentNode<FragranceReviewConnectionFragment, unknown>;
-export const MyReviewFragmentFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"MyReviewFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Fragrance"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"myReview"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<MyReviewFragmentFragment, unknown>;
-export const RefreshDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"Refresh"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"refresh"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AuthPayloadBase"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AuthPayloadBase"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AuthPayload"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"idToken"}},{"kind":"Field","name":{"kind":"Name","value":"accessToken"}},{"kind":"Field","name":{"kind":"Name","value":"expiresIn"}}]}}]} as unknown as DocumentNode<RefreshMutation, RefreshMutationVariables>;
-export const LogInDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"LogIn"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"email"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"password"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"logIn"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"email"},"value":{"kind":"Variable","name":{"kind":"Name","value":"email"}}},{"kind":"Argument","name":{"kind":"Name","value":"password"},"value":{"kind":"Variable","name":{"kind":"Name","value":"password"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AuthPayloadBase"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AuthPayloadBase"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AuthPayload"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"idToken"}},{"kind":"Field","name":{"kind":"Name","value":"accessToken"}},{"kind":"Field","name":{"kind":"Name","value":"expiresIn"}}]}}]} as unknown as DocumentNode<LogInMutation, LogInMutationVariables>;
+export type AllVoteInfoFragment = { __typename?: 'VoteInfo', upvotes: number, downvotes: number, score: number, myVote?: number | null };
+
+export const AllPresignedUploadFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllPresignedUpload"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"PresignedUpload"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"assetId"}},{"kind":"Field","name":{"kind":"Name","value":"url"}},{"kind":"Field","name":{"kind":"Name","value":"fields"}}]}}]} as unknown as DocumentNode<AllPresignedUploadFragment, unknown>;
+export const AllAuthTokenPayloadFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllAuthTokenPayload"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AuthTokenPayload"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"idToken"}},{"kind":"Field","name":{"kind":"Name","value":"accessToken"}},{"kind":"Field","name":{"kind":"Name","value":"expiresIn"}}]}}]} as unknown as DocumentNode<AllAuthTokenPayloadFragment, unknown>;
+export const AllAuthCodeDeliveryDetailsFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllAuthCodeDeliveryDetails"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AuthCodeDeliveryDetails"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"method"}},{"kind":"Field","name":{"kind":"Name","value":"attribute"}},{"kind":"Field","name":{"kind":"Name","value":"destination"}}]}}]} as unknown as DocumentNode<AllAuthCodeDeliveryDetailsFragment, unknown>;
+export const AllAuthDeliveryResultFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllAuthDeliveryResult"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AuthDeliveryResult"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"isComplete"}},{"kind":"Field","name":{"kind":"Name","value":"delivery"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllAuthCodeDeliveryDetails"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllAuthCodeDeliveryDetails"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AuthCodeDeliveryDetails"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"method"}},{"kind":"Field","name":{"kind":"Name","value":"attribute"}},{"kind":"Field","name":{"kind":"Name","value":"destination"}}]}}]} as unknown as DocumentNode<AllAuthDeliveryResultFragment, unknown>;
+export const AllAssetFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllAsset"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Asset"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"contentType"}},{"kind":"Field","name":{"kind":"Name","value":"sizeBytes"}},{"kind":"Field","name":{"kind":"Name","value":"url"}}]}}]} as unknown as DocumentNode<AllAssetFragment, unknown>;
+export const AllVoteInfoFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllVoteInfo"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"VoteInfo"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"upvotes"}},{"kind":"Field","name":{"kind":"Name","value":"downvotes"}},{"kind":"Field","name":{"kind":"Name","value":"score"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}}]} as unknown as DocumentNode<AllVoteInfoFragment, unknown>;
+export const AllBrandFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllBrand"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Brand"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"website"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"avatar"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllAsset"}}]}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllVoteInfo"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllAsset"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Asset"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"contentType"}},{"kind":"Field","name":{"kind":"Name","value":"sizeBytes"}},{"kind":"Field","name":{"kind":"Name","value":"url"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllVoteInfo"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"VoteInfo"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"upvotes"}},{"kind":"Field","name":{"kind":"Name","value":"downvotes"}},{"kind":"Field","name":{"kind":"Name","value":"score"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}}]} as unknown as DocumentNode<AllBrandFragment, unknown>;
+export const AllAccordFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllAccord"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Accord"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"color"}}]}}]} as unknown as DocumentNode<AllAccordFragment, unknown>;
+export const AllFragranceAccordFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllFragranceAccord"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceAccord"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"accord"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllAccord"}}]}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllVoteInfo"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllAccord"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Accord"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"color"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllVoteInfo"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"VoteInfo"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"upvotes"}},{"kind":"Field","name":{"kind":"Name","value":"downvotes"}},{"kind":"Field","name":{"kind":"Name","value":"score"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}}]} as unknown as DocumentNode<AllFragranceAccordFragment, unknown>;
+export const AllNoteFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllNote"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Note"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"thumbnail"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllAsset"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllAsset"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Asset"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"contentType"}},{"kind":"Field","name":{"kind":"Name","value":"sizeBytes"}},{"kind":"Field","name":{"kind":"Name","value":"url"}}]}}]} as unknown as DocumentNode<AllNoteFragment, unknown>;
+export const AllFragranceNoteFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllFragranceNote"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceNote"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"layer"}},{"kind":"Field","name":{"kind":"Name","value":"note"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllNote"}}]}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllVoteInfo"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllAsset"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Asset"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"contentType"}},{"kind":"Field","name":{"kind":"Name","value":"sizeBytes"}},{"kind":"Field","name":{"kind":"Name","value":"url"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllNote"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Note"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"thumbnail"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllAsset"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllVoteInfo"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"VoteInfo"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"upvotes"}},{"kind":"Field","name":{"kind":"Name","value":"downvotes"}},{"kind":"Field","name":{"kind":"Name","value":"score"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}}]} as unknown as DocumentNode<AllFragranceNoteFragment, unknown>;
+export const AllTraitOptionFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllTraitOption"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"TraitOption"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"label"}},{"kind":"Field","name":{"kind":"Name","value":"score"}}]}}]} as unknown as DocumentNode<AllTraitOptionFragment, unknown>;
+export const AllTraitVoteDistributionFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllTraitVoteDistribution"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"TraitVoteDistribution"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"option"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllTraitOption"}}]}},{"kind":"Field","name":{"kind":"Name","value":"votes"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllTraitOption"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"TraitOption"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"label"}},{"kind":"Field","name":{"kind":"Name","value":"score"}}]}}]} as unknown as DocumentNode<AllTraitVoteDistributionFragment, unknown>;
+export const AllTraitStatsFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllTraitStats"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"TraitStats"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"averageScore"}},{"kind":"Field","name":{"kind":"Name","value":"totalVotes"}},{"kind":"Field","name":{"kind":"Name","value":"distribution"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllTraitVoteDistribution"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllTraitOption"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"TraitOption"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"label"}},{"kind":"Field","name":{"kind":"Name","value":"score"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllTraitVoteDistribution"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"TraitVoteDistribution"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"option"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllTraitOption"}}]}},{"kind":"Field","name":{"kind":"Name","value":"votes"}}]}}]} as unknown as DocumentNode<AllTraitStatsFragment, unknown>;
+export const AllTraitVoteFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllTraitVote"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"TraitVote"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"option"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllTraitOption"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllTraitOption"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"TraitOption"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"label"}},{"kind":"Field","name":{"kind":"Name","value":"score"}}]}}]} as unknown as DocumentNode<AllTraitVoteFragment, unknown>;
+export const AllFragranceTraitFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllFragranceTrait"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceTrait"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"options"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllTraitOption"}}]}},{"kind":"Field","name":{"kind":"Name","value":"stats"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllTraitStats"}}]}},{"kind":"Field","name":{"kind":"Name","value":"myVote"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllTraitVote"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllTraitOption"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"TraitOption"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"label"}},{"kind":"Field","name":{"kind":"Name","value":"score"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllTraitVoteDistribution"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"TraitVoteDistribution"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"option"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllTraitOption"}}]}},{"kind":"Field","name":{"kind":"Name","value":"votes"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllTraitStats"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"TraitStats"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"averageScore"}},{"kind":"Field","name":{"kind":"Name","value":"totalVotes"}},{"kind":"Field","name":{"kind":"Name","value":"distribution"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllTraitVoteDistribution"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllTraitVote"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"TraitVote"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"option"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllTraitOption"}}]}}]}}]} as unknown as DocumentNode<AllFragranceTraitFragment, unknown>;
+export const UserPreviewFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"UserPreview"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"User"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"avatar"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllAsset"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllAsset"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Asset"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"contentType"}},{"kind":"Field","name":{"kind":"Name","value":"sizeBytes"}},{"kind":"Field","name":{"kind":"Name","value":"url"}}]}}]} as unknown as DocumentNode<UserPreviewFragment, unknown>;
+export const BrandPreviewFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"BrandPreview"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Brand"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"avatar"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllAsset"}}]}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllVoteInfo"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllAsset"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Asset"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"contentType"}},{"kind":"Field","name":{"kind":"Name","value":"sizeBytes"}},{"kind":"Field","name":{"kind":"Name","value":"url"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllVoteInfo"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"VoteInfo"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"upvotes"}},{"kind":"Field","name":{"kind":"Name","value":"downvotes"}},{"kind":"Field","name":{"kind":"Name","value":"score"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}}]} as unknown as DocumentNode<BrandPreviewFragment, unknown>;
+export const AllFragranceImageFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllFragranceImage"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImage"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"url"}},{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"height"}},{"kind":"Field","name":{"kind":"Name","value":"primaryColor"}}]}}]} as unknown as DocumentNode<AllFragranceImageFragment, unknown>;
+export const FragrancePreviewFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragrancePreview"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Fragrance"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"releaseYear"}},{"kind":"Field","name":{"kind":"Name","value":"concentration"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"brand"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"BrandPreview"}}]}},{"kind":"Field","name":{"kind":"Name","value":"thumbnail"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllFragranceImage"}}]}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllVoteInfo"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllAsset"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Asset"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"contentType"}},{"kind":"Field","name":{"kind":"Name","value":"sizeBytes"}},{"kind":"Field","name":{"kind":"Name","value":"url"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllVoteInfo"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"VoteInfo"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"upvotes"}},{"kind":"Field","name":{"kind":"Name","value":"downvotes"}},{"kind":"Field","name":{"kind":"Name","value":"score"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"BrandPreview"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Brand"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"avatar"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllAsset"}}]}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllVoteInfo"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllFragranceImage"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImage"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"url"}},{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"height"}},{"kind":"Field","name":{"kind":"Name","value":"primaryColor"}}]}}]} as unknown as DocumentNode<FragrancePreviewFragment, unknown>;
+export const AllFragranceReviewFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllFragranceReview"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceReview"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"rating"}},{"kind":"Field","name":{"kind":"Name","value":"body"}},{"kind":"Field","name":{"kind":"Name","value":"author"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"UserPreview"}}]}},{"kind":"Field","name":{"kind":"Name","value":"fragrance"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragrancePreview"}}]}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllVoteInfo"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllAsset"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Asset"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"contentType"}},{"kind":"Field","name":{"kind":"Name","value":"sizeBytes"}},{"kind":"Field","name":{"kind":"Name","value":"url"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllVoteInfo"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"VoteInfo"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"upvotes"}},{"kind":"Field","name":{"kind":"Name","value":"downvotes"}},{"kind":"Field","name":{"kind":"Name","value":"score"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"BrandPreview"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Brand"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"avatar"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllAsset"}}]}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllVoteInfo"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllFragranceImage"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImage"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"url"}},{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"height"}},{"kind":"Field","name":{"kind":"Name","value":"primaryColor"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"UserPreview"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"User"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"avatar"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllAsset"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragrancePreview"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Fragrance"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"releaseYear"}},{"kind":"Field","name":{"kind":"Name","value":"concentration"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"brand"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"BrandPreview"}}]}},{"kind":"Field","name":{"kind":"Name","value":"thumbnail"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllFragranceImage"}}]}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllVoteInfo"}}]}}]}}]} as unknown as DocumentNode<AllFragranceReviewFragment, unknown>;
+export const AllFragranceCollectionItemFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllFragranceCollectionItem"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceCollectionItem"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"fragrance"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragrancePreview"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllAsset"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Asset"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"contentType"}},{"kind":"Field","name":{"kind":"Name","value":"sizeBytes"}},{"kind":"Field","name":{"kind":"Name","value":"url"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllVoteInfo"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"VoteInfo"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"upvotes"}},{"kind":"Field","name":{"kind":"Name","value":"downvotes"}},{"kind":"Field","name":{"kind":"Name","value":"score"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"BrandPreview"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Brand"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"avatar"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllAsset"}}]}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllVoteInfo"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllFragranceImage"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImage"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"url"}},{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"height"}},{"kind":"Field","name":{"kind":"Name","value":"primaryColor"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragrancePreview"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Fragrance"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"releaseYear"}},{"kind":"Field","name":{"kind":"Name","value":"concentration"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"brand"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"BrandPreview"}}]}},{"kind":"Field","name":{"kind":"Name","value":"thumbnail"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllFragranceImage"}}]}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllVoteInfo"}}]}}]}}]} as unknown as DocumentNode<AllFragranceCollectionItemFragment, unknown>;
+export const AllFragranceCollectionFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllFragranceCollection"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceCollection"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"items"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllFragranceCollectionItem"}}]}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"UserPreview"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllAsset"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Asset"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"contentType"}},{"kind":"Field","name":{"kind":"Name","value":"sizeBytes"}},{"kind":"Field","name":{"kind":"Name","value":"url"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllVoteInfo"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"VoteInfo"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"upvotes"}},{"kind":"Field","name":{"kind":"Name","value":"downvotes"}},{"kind":"Field","name":{"kind":"Name","value":"score"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"BrandPreview"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Brand"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"avatar"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllAsset"}}]}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllVoteInfo"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllFragranceImage"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImage"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"url"}},{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"height"}},{"kind":"Field","name":{"kind":"Name","value":"primaryColor"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragrancePreview"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Fragrance"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"releaseYear"}},{"kind":"Field","name":{"kind":"Name","value":"concentration"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"brand"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"BrandPreview"}}]}},{"kind":"Field","name":{"kind":"Name","value":"thumbnail"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllFragranceImage"}}]}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllVoteInfo"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllFragranceCollectionItem"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceCollectionItem"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"fragrance"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragrancePreview"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"UserPreview"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"User"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"avatar"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllAsset"}}]}}]}}]} as unknown as DocumentNode<AllFragranceCollectionFragment, unknown>;
+export const NotePreviewFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"NotePreview"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Note"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"thumbnail"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllAsset"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllAsset"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Asset"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"contentType"}},{"kind":"Field","name":{"kind":"Name","value":"sizeBytes"}},{"kind":"Field","name":{"kind":"Name","value":"url"}}]}}]} as unknown as DocumentNode<NotePreviewFragment, unknown>;
+export const MeFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"Me"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"User"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"avatar"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllAsset"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllAsset"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Asset"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"contentType"}},{"kind":"Field","name":{"kind":"Name","value":"sizeBytes"}},{"kind":"Field","name":{"kind":"Name","value":"url"}}]}}]} as unknown as DocumentNode<MeFragment, unknown>;
+export const AllPageInfoFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllPageInfo"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"PageInfo"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"hasPreviousPage"}},{"kind":"Field","name":{"kind":"Name","value":"hasNextPage"}},{"kind":"Field","name":{"kind":"Name","value":"startCursor"}},{"kind":"Field","name":{"kind":"Name","value":"endCursor"}}]}}]} as unknown as DocumentNode<AllPageInfoFragment, unknown>;
+export const AllSearchPageInfoFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllSearchPageInfo"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"SearchPageInfo"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"hasPreviousPage"}},{"kind":"Field","name":{"kind":"Name","value":"hasNextPage"}},{"kind":"Field","name":{"kind":"Name","value":"startOffset"}},{"kind":"Field","name":{"kind":"Name","value":"endOffset"}},{"kind":"Field","name":{"kind":"Name","value":"pageSize"}}]}}]} as unknown as DocumentNode<AllSearchPageInfoFragment, unknown>;
+export const AccordQueryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"AccordQuery"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"accord"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllAccord"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllAccord"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Accord"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"color"}}]}}]} as unknown as DocumentNode<AccordQueryQuery, AccordQueryQueryVariables>;
+export const AccordsQueryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"AccordsQuery"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"AccordPaginationInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"accords"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllAccord"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"pageInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllPageInfo"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllAccord"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Accord"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"color"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllPageInfo"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"PageInfo"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"hasPreviousPage"}},{"kind":"Field","name":{"kind":"Name","value":"hasNextPage"}},{"kind":"Field","name":{"kind":"Name","value":"startCursor"}},{"kind":"Field","name":{"kind":"Name","value":"endCursor"}}]}}]} as unknown as DocumentNode<AccordsQueryQuery, AccordsQueryQueryVariables>;
+export const SearchAccordsQueryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"SearchAccordsQuery"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"SearchInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"searchAccords"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllAccord"}}]}},{"kind":"Field","name":{"kind":"Name","value":"offset"}}]}},{"kind":"Field","name":{"kind":"Name","value":"pageInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllSearchPageInfo"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllAccord"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Accord"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"color"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllSearchPageInfo"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"SearchPageInfo"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"hasPreviousPage"}},{"kind":"Field","name":{"kind":"Name","value":"hasNextPage"}},{"kind":"Field","name":{"kind":"Name","value":"startOffset"}},{"kind":"Field","name":{"kind":"Name","value":"endOffset"}},{"kind":"Field","name":{"kind":"Name","value":"pageSize"}}]}}]} as unknown as DocumentNode<SearchAccordsQueryQuery, SearchAccordsQueryQueryVariables>;
+export const StageAssetDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"StageAsset"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"StageAssetInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"stageAsset"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllPresignedUpload"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllPresignedUpload"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"PresignedUpload"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"assetId"}},{"kind":"Field","name":{"kind":"Name","value":"url"}},{"kind":"Field","name":{"kind":"Name","value":"fields"}}]}}]} as unknown as DocumentNode<StageAssetMutation, StageAssetMutationVariables>;
+export const DeleteAssetDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"DeleteAsset"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"DeleteAssetInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"deleteAsset"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}]}]}}]} as unknown as DocumentNode<DeleteAssetMutation, DeleteAssetMutationVariables>;
+export const RefreshDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"Refresh"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"refresh"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllAuthTokenPayload"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllAuthTokenPayload"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AuthTokenPayload"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"idToken"}},{"kind":"Field","name":{"kind":"Name","value":"accessToken"}},{"kind":"Field","name":{"kind":"Name","value":"expiresIn"}}]}}]} as unknown as DocumentNode<RefreshMutation, RefreshMutationVariables>;
+export const LogInDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"LogIn"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"LogInInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"logIn"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllAuthTokenPayload"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllAuthTokenPayload"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AuthTokenPayload"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"idToken"}},{"kind":"Field","name":{"kind":"Name","value":"accessToken"}},{"kind":"Field","name":{"kind":"Name","value":"expiresIn"}}]}}]} as unknown as DocumentNode<LogInMutation, LogInMutationVariables>;
 export const LogOutDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"LogOut"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"logOut"}}]}}]} as unknown as DocumentNode<LogOutMutation, LogOutMutationVariables>;
-export const SignUpDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"SignUp"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"email"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"password"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"signUp"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"email"},"value":{"kind":"Variable","name":{"kind":"Name","value":"email"}}},{"kind":"Argument","name":{"kind":"Name","value":"password"},"value":{"kind":"Variable","name":{"kind":"Name","value":"password"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"DeliveryResultBase"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"DeliveryResultBase"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"DeliveryResult"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"complete"}},{"kind":"Field","name":{"kind":"Name","value":"delivery"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"attribute"}},{"kind":"Field","name":{"kind":"Name","value":"destination"}},{"kind":"Field","name":{"kind":"Name","value":"method"}}]}}]}}]} as unknown as DocumentNode<SignUpMutation, SignUpMutationVariables>;
-export const ConfirmSignUpDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"ConfirmSignUp"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"email"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"confirmationCode"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"confirmSignUp"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"email"},"value":{"kind":"Variable","name":{"kind":"Name","value":"email"}}},{"kind":"Argument","name":{"kind":"Name","value":"confirmationCode"},"value":{"kind":"Variable","name":{"kind":"Name","value":"confirmationCode"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"UserSummary"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AuditBase"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Audit"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}},{"kind":"Field","name":{"kind":"Name","value":"deletedAt"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"UserSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"User"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"followerCount"}},{"kind":"Field","name":{"kind":"Name","value":"followingCount"}},{"kind":"Field","name":{"kind":"Name","value":"audit"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AuditBase"}}]}}]}}]} as unknown as DocumentNode<ConfirmSignUpMutation, ConfirmSignUpMutationVariables>;
-export const ResendSignUpConfirmationCodeDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"ResendSignUpConfirmationCode"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"email"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"resendSignUpConfirmationCode"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"email"},"value":{"kind":"Variable","name":{"kind":"Name","value":"email"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"DeliveryResultBase"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"DeliveryResultBase"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"DeliveryResult"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"complete"}},{"kind":"Field","name":{"kind":"Name","value":"delivery"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"attribute"}},{"kind":"Field","name":{"kind":"Name","value":"destination"}},{"kind":"Field","name":{"kind":"Name","value":"method"}}]}}]}}]} as unknown as DocumentNode<ResendSignUpConfirmationCodeMutation, ResendSignUpConfirmationCodeMutationVariables>;
-export const ForgotPasswordDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"ForgotPassword"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"email"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"forgotPassword"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"email"},"value":{"kind":"Variable","name":{"kind":"Name","value":"email"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"DeliveryResultBase"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"DeliveryResultBase"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"DeliveryResult"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"complete"}},{"kind":"Field","name":{"kind":"Name","value":"delivery"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"attribute"}},{"kind":"Field","name":{"kind":"Name","value":"destination"}},{"kind":"Field","name":{"kind":"Name","value":"method"}}]}}]}}]} as unknown as DocumentNode<ForgotPasswordMutation, ForgotPasswordMutationVariables>;
-export const ConfirmForgotPasswordDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"ConfirmForgotPassword"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"email"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"confirmationCode"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"newPassword"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"confirmForgotPassword"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"email"},"value":{"kind":"Variable","name":{"kind":"Name","value":"email"}}},{"kind":"Argument","name":{"kind":"Name","value":"confirmationCode"},"value":{"kind":"Variable","name":{"kind":"Name","value":"confirmationCode"}}},{"kind":"Argument","name":{"kind":"Name","value":"newPassword"},"value":{"kind":"Variable","name":{"kind":"Name","value":"newPassword"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"complete"}}]}}]}}]} as unknown as DocumentNode<ConfirmForgotPasswordMutation, ConfirmForgotPasswordMutationVariables>;
-export const CreateFragranceCollectionDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateFragranceCollection"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateFragranceCollectionInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createFragranceCollection"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceCollectionSummary"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceImageSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImage"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"src"}},{"kind":"Field","name":{"kind":"Name","value":"bg"}},{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"height"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceImageConnection"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImageConnection"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceImageSummary"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Fragrance"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"brand"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteScore"}},{"kind":"Field","name":{"kind":"Name","value":"likesCount"}},{"kind":"Field","name":{"kind":"Name","value":"dislikesCount"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}},{"kind":"Field","name":{"kind":"Name","value":"images"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"1"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceImageConnection"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AuditBase"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Audit"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}},{"kind":"Field","name":{"kind":"Name","value":"deletedAt"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceCollectionItemSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceCollectionItem"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"rank"}},{"kind":"Field","name":{"kind":"Name","value":"fragrance"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceSummary"}}]}},{"kind":"Field","name":{"kind":"Name","value":"audit"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AuditBase"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"PageInfoBase"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"PageInfo"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"hasPreviousPage"}},{"kind":"Field","name":{"kind":"Name","value":"hasNextPage"}},{"kind":"Field","name":{"kind":"Name","value":"startCursor"}},{"kind":"Field","name":{"kind":"Name","value":"endCursor"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceCollectionItemConnection"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceCollectionItemConnection"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceCollectionItemSummary"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"pageInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"PageInfoBase"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceCollectionSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceCollection"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"username"}}]}},{"kind":"Field","name":{"kind":"Name","value":"items"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"4"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceCollectionItemConnection"}}]}},{"kind":"Field","name":{"kind":"Name","value":"audit"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AuditBase"}}]}}]}}]} as unknown as DocumentNode<CreateFragranceCollectionMutation, CreateFragranceCollectionMutationVariables>;
-export const CreateFragranceCollectionItemDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateFragranceCollectionItem"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateFragranceCollectionItemInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createFragranceCollectionItem"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceCollectionItemSummary"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceImageSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImage"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"src"}},{"kind":"Field","name":{"kind":"Name","value":"bg"}},{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"height"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceImageConnection"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImageConnection"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceImageSummary"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Fragrance"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"brand"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteScore"}},{"kind":"Field","name":{"kind":"Name","value":"likesCount"}},{"kind":"Field","name":{"kind":"Name","value":"dislikesCount"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}},{"kind":"Field","name":{"kind":"Name","value":"images"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"1"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceImageConnection"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AuditBase"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Audit"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}},{"kind":"Field","name":{"kind":"Name","value":"deletedAt"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceCollectionItemSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceCollectionItem"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"rank"}},{"kind":"Field","name":{"kind":"Name","value":"fragrance"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceSummary"}}]}},{"kind":"Field","name":{"kind":"Name","value":"audit"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AuditBase"}}]}}]}}]} as unknown as DocumentNode<CreateFragranceCollectionItemMutation, CreateFragranceCollectionItemMutationVariables>;
-export const MoveFragranceCollectionItemDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"MoveFragranceCollectionItem"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"MoveFragranceCollectionItemInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"moveFragranceCollectionItem"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceCollectionItemSummary"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceImageSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImage"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"src"}},{"kind":"Field","name":{"kind":"Name","value":"bg"}},{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"height"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceImageConnection"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImageConnection"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceImageSummary"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Fragrance"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"brand"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteScore"}},{"kind":"Field","name":{"kind":"Name","value":"likesCount"}},{"kind":"Field","name":{"kind":"Name","value":"dislikesCount"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}},{"kind":"Field","name":{"kind":"Name","value":"images"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"1"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceImageConnection"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AuditBase"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Audit"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}},{"kind":"Field","name":{"kind":"Name","value":"deletedAt"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceCollectionItemSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceCollectionItem"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"rank"}},{"kind":"Field","name":{"kind":"Name","value":"fragrance"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceSummary"}}]}},{"kind":"Field","name":{"kind":"Name","value":"audit"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AuditBase"}}]}}]}}]} as unknown as DocumentNode<MoveFragranceCollectionItemMutation, MoveFragranceCollectionItemMutationVariables>;
-export const DeleteFragranceCollectionItemDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"DeleteFragranceCollectionItem"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"DeleteFragranceCollectionItemInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"deleteFragranceCollectionItem"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceCollectionItemSummary"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceImageSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImage"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"src"}},{"kind":"Field","name":{"kind":"Name","value":"bg"}},{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"height"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceImageConnection"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImageConnection"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceImageSummary"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Fragrance"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"brand"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteScore"}},{"kind":"Field","name":{"kind":"Name","value":"likesCount"}},{"kind":"Field","name":{"kind":"Name","value":"dislikesCount"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}},{"kind":"Field","name":{"kind":"Name","value":"images"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"1"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceImageConnection"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AuditBase"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Audit"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}},{"kind":"Field","name":{"kind":"Name","value":"deletedAt"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceCollectionItemSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceCollectionItem"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"rank"}},{"kind":"Field","name":{"kind":"Name","value":"fragrance"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceSummary"}}]}},{"kind":"Field","name":{"kind":"Name","value":"audit"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AuditBase"}}]}}]}}]} as unknown as DocumentNode<DeleteFragranceCollectionItemMutation, DeleteFragranceCollectionItemMutationVariables>;
-export const CollectionDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Collection"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"collection"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceCollectionSummary"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceImageSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImage"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"src"}},{"kind":"Field","name":{"kind":"Name","value":"bg"}},{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"height"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceImageConnection"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImageConnection"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceImageSummary"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Fragrance"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"brand"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteScore"}},{"kind":"Field","name":{"kind":"Name","value":"likesCount"}},{"kind":"Field","name":{"kind":"Name","value":"dislikesCount"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}},{"kind":"Field","name":{"kind":"Name","value":"images"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"1"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceImageConnection"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AuditBase"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Audit"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}},{"kind":"Field","name":{"kind":"Name","value":"deletedAt"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceCollectionItemSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceCollectionItem"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"rank"}},{"kind":"Field","name":{"kind":"Name","value":"fragrance"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceSummary"}}]}},{"kind":"Field","name":{"kind":"Name","value":"audit"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AuditBase"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"PageInfoBase"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"PageInfo"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"hasPreviousPage"}},{"kind":"Field","name":{"kind":"Name","value":"hasNextPage"}},{"kind":"Field","name":{"kind":"Name","value":"startCursor"}},{"kind":"Field","name":{"kind":"Name","value":"endCursor"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceCollectionItemConnection"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceCollectionItemConnection"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceCollectionItemSummary"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"pageInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"PageInfoBase"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceCollectionSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceCollection"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"username"}}]}},{"kind":"Field","name":{"kind":"Name","value":"items"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"4"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceCollectionItemConnection"}}]}},{"kind":"Field","name":{"kind":"Name","value":"audit"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AuditBase"}}]}}]}}]} as unknown as DocumentNode<CollectionQuery, CollectionQueryVariables>;
-export const CollectionItemsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"CollectionItems"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"collectionId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"ControlledPaginationInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"collection"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"collectionId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"items"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceCollectionItemConnection"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceImageSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImage"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"src"}},{"kind":"Field","name":{"kind":"Name","value":"bg"}},{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"height"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceImageConnection"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImageConnection"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceImageSummary"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Fragrance"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"brand"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteScore"}},{"kind":"Field","name":{"kind":"Name","value":"likesCount"}},{"kind":"Field","name":{"kind":"Name","value":"dislikesCount"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}},{"kind":"Field","name":{"kind":"Name","value":"images"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"1"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceImageConnection"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AuditBase"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Audit"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}},{"kind":"Field","name":{"kind":"Name","value":"deletedAt"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceCollectionItemSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceCollectionItem"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"rank"}},{"kind":"Field","name":{"kind":"Name","value":"fragrance"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceSummary"}}]}},{"kind":"Field","name":{"kind":"Name","value":"audit"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AuditBase"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"PageInfoBase"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"PageInfo"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"hasPreviousPage"}},{"kind":"Field","name":{"kind":"Name","value":"hasNextPage"}},{"kind":"Field","name":{"kind":"Name","value":"startCursor"}},{"kind":"Field","name":{"kind":"Name","value":"endCursor"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceCollectionItemConnection"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceCollectionItemConnection"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceCollectionItemSummary"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"pageInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"PageInfoBase"}}]}}]}}]} as unknown as DocumentNode<CollectionItemsQuery, CollectionItemsQueryVariables>;
-export const CreateFragranceReportDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateFragranceReport"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateFragranceReportInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createFragranceReport"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<CreateFragranceReportMutation, CreateFragranceReportMutationVariables>;
-export const LogFragranceViewDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"LogFragranceView"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"LogFragranceViewInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"logFragranceView"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}]}]}}]} as unknown as DocumentNode<LogFragranceViewMutation, LogFragranceViewMutationVariables>;
-export const VoteOnFragranceDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"VoteOnFragrance"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"VoteOnFragranceInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteOnFragrance"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<VoteOnFragranceMutation, VoteOnFragranceMutationVariables>;
-export const VoteOnAccordDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"VoteOnAccord"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"VoteOnAccordInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteOnAccord"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceAccordSummary"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AuditBase"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Audit"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}},{"kind":"Field","name":{"kind":"Name","value":"deletedAt"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceAccordSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceAccord"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"accordId"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"color"}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteScore"}},{"kind":"Field","name":{"kind":"Name","value":"likesCount"}},{"kind":"Field","name":{"kind":"Name","value":"dislikesCount"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}},{"kind":"Field","name":{"kind":"Name","value":"audit"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AuditBase"}}]}}]}}]} as unknown as DocumentNode<VoteOnAccordMutation, VoteOnAccordMutationVariables>;
-export const VoteOnNoteDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"VoteOnNote"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"VoteOnNoteInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteOnNote"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceNoteSummary"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AuditBase"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Audit"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}},{"kind":"Field","name":{"kind":"Name","value":"deletedAt"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceNoteSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceNote"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"noteId"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"layer"}},{"kind":"Field","name":{"kind":"Name","value":"thumbnail"}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteScore"}},{"kind":"Field","name":{"kind":"Name","value":"likesCount"}},{"kind":"Field","name":{"kind":"Name","value":"dislikesCount"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}},{"kind":"Field","name":{"kind":"Name","value":"audit"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AuditBase"}}]}}]}}]} as unknown as DocumentNode<VoteOnNoteMutation, VoteOnNoteMutationVariables>;
-export const VoteOnTraitDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"VoteOnTrait"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"VoteOnTraitInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteOnTrait"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceTraitSummary"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceTraitSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceTrait"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"voteScore"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}}]} as unknown as DocumentNode<VoteOnTraitMutation, VoteOnTraitMutationVariables>;
-export const FragranceDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Fragrance"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"fragrance"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceSummary"}},{"kind":"Field","name":{"kind":"Name","value":"rating"}},{"kind":"Field","name":{"kind":"Name","value":"reviewsCount"}},{"kind":"Field","name":{"kind":"Name","value":"reviewDistribution"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"one"}},{"kind":"Field","name":{"kind":"Name","value":"two"}},{"kind":"Field","name":{"kind":"Name","value":"three"}},{"kind":"Field","name":{"kind":"Name","value":"four"}},{"kind":"Field","name":{"kind":"Name","value":"five"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceImageSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImage"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"src"}},{"kind":"Field","name":{"kind":"Name","value":"bg"}},{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"height"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceImageConnection"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImageConnection"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceImageSummary"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Fragrance"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"brand"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteScore"}},{"kind":"Field","name":{"kind":"Name","value":"likesCount"}},{"kind":"Field","name":{"kind":"Name","value":"dislikesCount"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}},{"kind":"Field","name":{"kind":"Name","value":"images"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"1"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceImageConnection"}}]}}]}}]} as unknown as DocumentNode<FragranceQuery, FragranceQueryVariables>;
-export const SuggestedFragrancesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"SuggestedFragrances"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"PaginationInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"fragrances"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceSummary"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"pageInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"PageInfoBase"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceImageSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImage"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"src"}},{"kind":"Field","name":{"kind":"Name","value":"bg"}},{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"height"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceImageConnection"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImageConnection"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceImageSummary"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Fragrance"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"brand"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteScore"}},{"kind":"Field","name":{"kind":"Name","value":"likesCount"}},{"kind":"Field","name":{"kind":"Name","value":"dislikesCount"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}},{"kind":"Field","name":{"kind":"Name","value":"images"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"1"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceImageConnection"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"PageInfoBase"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"PageInfo"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"hasPreviousPage"}},{"kind":"Field","name":{"kind":"Name","value":"hasNextPage"}},{"kind":"Field","name":{"kind":"Name","value":"startCursor"}},{"kind":"Field","name":{"kind":"Name","value":"endCursor"}}]}}]} as unknown as DocumentNode<SuggestedFragrancesQuery, SuggestedFragrancesQueryVariables>;
-export const FragranceImagesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"FragranceImages"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"fragranceId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"PaginationInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"fragrance"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"fragranceId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"images"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceImageConnection"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceImageSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImage"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"src"}},{"kind":"Field","name":{"kind":"Name","value":"bg"}},{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"height"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceImageConnection"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImageConnection"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceImageSummary"}}]}}]}}]}}]} as unknown as DocumentNode<FragranceImagesQuery, FragranceImagesQueryVariables>;
-export const FragranceTraitsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"FragranceTraits"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"fragranceId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"fragrance"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"fragranceId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"traits"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceTraitSummary"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceTraitSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceTrait"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"voteScore"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}}]} as unknown as DocumentNode<FragranceTraitsQuery, FragranceTraitsQueryVariables>;
-export const FragranceAccordsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"FragranceAccords"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"fragranceId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"VotePaginationInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"fragrance"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"fragranceId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"accords"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceAccordSummary"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"pageInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"PageInfoBase"}}]}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AuditBase"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Audit"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}},{"kind":"Field","name":{"kind":"Name","value":"deletedAt"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceAccordSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceAccord"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"accordId"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"color"}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteScore"}},{"kind":"Field","name":{"kind":"Name","value":"likesCount"}},{"kind":"Field","name":{"kind":"Name","value":"dislikesCount"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}},{"kind":"Field","name":{"kind":"Name","value":"audit"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AuditBase"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"PageInfoBase"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"PageInfo"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"hasPreviousPage"}},{"kind":"Field","name":{"kind":"Name","value":"hasNextPage"}},{"kind":"Field","name":{"kind":"Name","value":"startCursor"}},{"kind":"Field","name":{"kind":"Name","value":"endCursor"}}]}}]} as unknown as DocumentNode<FragranceAccordsQuery, FragranceAccordsQueryVariables>;
-export const FillerFragranceAccordsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"FillerFragranceAccords"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"fragranceId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"PaginationInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"fragrance"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"fragranceId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"fillerAccords"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceAccordSummary"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"pageInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"PageInfoBase"}}]}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AuditBase"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Audit"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}},{"kind":"Field","name":{"kind":"Name","value":"deletedAt"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceAccordSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceAccord"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"accordId"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"color"}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteScore"}},{"kind":"Field","name":{"kind":"Name","value":"likesCount"}},{"kind":"Field","name":{"kind":"Name","value":"dislikesCount"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}},{"kind":"Field","name":{"kind":"Name","value":"audit"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AuditBase"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"PageInfoBase"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"PageInfo"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"hasPreviousPage"}},{"kind":"Field","name":{"kind":"Name","value":"hasNextPage"}},{"kind":"Field","name":{"kind":"Name","value":"startCursor"}},{"kind":"Field","name":{"kind":"Name","value":"endCursor"}}]}}]} as unknown as DocumentNode<FillerFragranceAccordsQuery, FillerFragranceAccordsQueryVariables>;
-export const FragranceNotesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"FragranceNotes"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"fragranceId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"topInput"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"VotePaginationInput"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"middleInput"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"VotePaginationInput"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"baseInput"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"VotePaginationInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"fragrance"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"fragranceId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"notes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"top"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"topInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceNoteSummary"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"pageInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"PageInfoBase"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"middle"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"middleInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceNoteSummary"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"pageInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"PageInfoBase"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"base"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"baseInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceNoteSummary"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"pageInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"PageInfoBase"}}]}}]}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AuditBase"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Audit"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}},{"kind":"Field","name":{"kind":"Name","value":"deletedAt"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceNoteSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceNote"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"noteId"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"layer"}},{"kind":"Field","name":{"kind":"Name","value":"thumbnail"}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteScore"}},{"kind":"Field","name":{"kind":"Name","value":"likesCount"}},{"kind":"Field","name":{"kind":"Name","value":"dislikesCount"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}},{"kind":"Field","name":{"kind":"Name","value":"audit"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AuditBase"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"PageInfoBase"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"PageInfo"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"hasPreviousPage"}},{"kind":"Field","name":{"kind":"Name","value":"hasNextPage"}},{"kind":"Field","name":{"kind":"Name","value":"startCursor"}},{"kind":"Field","name":{"kind":"Name","value":"endCursor"}}]}}]} as unknown as DocumentNode<FragranceNotesQuery, FragranceNotesQueryVariables>;
-export const FillerFragranceNotesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"FillerFragranceNotes"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"fragranceId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"topInput"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"PaginationInput"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"middleInput"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"PaginationInput"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"baseInput"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"PaginationInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"fragrance"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"fragranceId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"notes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"fillerTop"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"topInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceNoteSummary"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"pageInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"PageInfoBase"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"fillerMiddle"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"middleInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceNoteSummary"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"pageInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"PageInfoBase"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"fillerBase"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"baseInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceNoteSummary"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"pageInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"PageInfoBase"}}]}}]}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AuditBase"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Audit"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}},{"kind":"Field","name":{"kind":"Name","value":"deletedAt"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceNoteSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceNote"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"noteId"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"layer"}},{"kind":"Field","name":{"kind":"Name","value":"thumbnail"}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteScore"}},{"kind":"Field","name":{"kind":"Name","value":"likesCount"}},{"kind":"Field","name":{"kind":"Name","value":"dislikesCount"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}},{"kind":"Field","name":{"kind":"Name","value":"audit"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AuditBase"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"PageInfoBase"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"PageInfo"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"hasPreviousPage"}},{"kind":"Field","name":{"kind":"Name","value":"hasNextPage"}},{"kind":"Field","name":{"kind":"Name","value":"startCursor"}},{"kind":"Field","name":{"kind":"Name","value":"endCursor"}}]}}]} as unknown as DocumentNode<FillerFragranceNotesQuery, FillerFragranceNotesQueryVariables>;
-export const TopFragranceNotesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"TopFragranceNotes"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"fragranceId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"VotePaginationInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"fragrance"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"fragranceId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"notes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"top"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceNoteSummary"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"pageInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"PageInfoBase"}}]}}]}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AuditBase"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Audit"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}},{"kind":"Field","name":{"kind":"Name","value":"deletedAt"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceNoteSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceNote"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"noteId"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"layer"}},{"kind":"Field","name":{"kind":"Name","value":"thumbnail"}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteScore"}},{"kind":"Field","name":{"kind":"Name","value":"likesCount"}},{"kind":"Field","name":{"kind":"Name","value":"dislikesCount"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}},{"kind":"Field","name":{"kind":"Name","value":"audit"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AuditBase"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"PageInfoBase"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"PageInfo"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"hasPreviousPage"}},{"kind":"Field","name":{"kind":"Name","value":"hasNextPage"}},{"kind":"Field","name":{"kind":"Name","value":"startCursor"}},{"kind":"Field","name":{"kind":"Name","value":"endCursor"}}]}}]} as unknown as DocumentNode<TopFragranceNotesQuery, TopFragranceNotesQueryVariables>;
-export const MiddleFragranceNotesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"MiddleFragranceNotes"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"fragranceId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"VotePaginationInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"fragrance"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"fragranceId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"notes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"middle"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceNoteSummary"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"pageInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"PageInfoBase"}}]}}]}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AuditBase"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Audit"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}},{"kind":"Field","name":{"kind":"Name","value":"deletedAt"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceNoteSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceNote"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"noteId"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"layer"}},{"kind":"Field","name":{"kind":"Name","value":"thumbnail"}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteScore"}},{"kind":"Field","name":{"kind":"Name","value":"likesCount"}},{"kind":"Field","name":{"kind":"Name","value":"dislikesCount"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}},{"kind":"Field","name":{"kind":"Name","value":"audit"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AuditBase"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"PageInfoBase"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"PageInfo"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"hasPreviousPage"}},{"kind":"Field","name":{"kind":"Name","value":"hasNextPage"}},{"kind":"Field","name":{"kind":"Name","value":"startCursor"}},{"kind":"Field","name":{"kind":"Name","value":"endCursor"}}]}}]} as unknown as DocumentNode<MiddleFragranceNotesQuery, MiddleFragranceNotesQueryVariables>;
-export const BaseFragranceNotesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"BaseFragranceNotes"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"fragranceId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"VotePaginationInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"fragrance"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"fragranceId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"notes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"base"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceNoteSummary"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"pageInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"PageInfoBase"}}]}}]}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AuditBase"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Audit"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}},{"kind":"Field","name":{"kind":"Name","value":"deletedAt"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceNoteSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceNote"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"noteId"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"layer"}},{"kind":"Field","name":{"kind":"Name","value":"thumbnail"}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteScore"}},{"kind":"Field","name":{"kind":"Name","value":"likesCount"}},{"kind":"Field","name":{"kind":"Name","value":"dislikesCount"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}},{"kind":"Field","name":{"kind":"Name","value":"audit"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AuditBase"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"PageInfoBase"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"PageInfo"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"hasPreviousPage"}},{"kind":"Field","name":{"kind":"Name","value":"hasNextPage"}},{"kind":"Field","name":{"kind":"Name","value":"startCursor"}},{"kind":"Field","name":{"kind":"Name","value":"endCursor"}}]}}]} as unknown as DocumentNode<BaseFragranceNotesQuery, BaseFragranceNotesQueryVariables>;
-export const TopFillerFragranceNotesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"TopFillerFragranceNotes"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"fragranceId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"PaginationInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"fragrance"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"fragranceId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"notes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"fillerTop"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceNoteSummary"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"pageInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"PageInfoBase"}}]}}]}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AuditBase"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Audit"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}},{"kind":"Field","name":{"kind":"Name","value":"deletedAt"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceNoteSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceNote"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"noteId"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"layer"}},{"kind":"Field","name":{"kind":"Name","value":"thumbnail"}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteScore"}},{"kind":"Field","name":{"kind":"Name","value":"likesCount"}},{"kind":"Field","name":{"kind":"Name","value":"dislikesCount"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}},{"kind":"Field","name":{"kind":"Name","value":"audit"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AuditBase"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"PageInfoBase"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"PageInfo"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"hasPreviousPage"}},{"kind":"Field","name":{"kind":"Name","value":"hasNextPage"}},{"kind":"Field","name":{"kind":"Name","value":"startCursor"}},{"kind":"Field","name":{"kind":"Name","value":"endCursor"}}]}}]} as unknown as DocumentNode<TopFillerFragranceNotesQuery, TopFillerFragranceNotesQueryVariables>;
-export const MiddleFillerFragranceNotesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"MiddleFillerFragranceNotes"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"fragranceId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"PaginationInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"fragrance"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"fragranceId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"notes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"fillerMiddle"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceNoteSummary"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"pageInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"PageInfoBase"}}]}}]}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AuditBase"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Audit"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}},{"kind":"Field","name":{"kind":"Name","value":"deletedAt"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceNoteSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceNote"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"noteId"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"layer"}},{"kind":"Field","name":{"kind":"Name","value":"thumbnail"}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteScore"}},{"kind":"Field","name":{"kind":"Name","value":"likesCount"}},{"kind":"Field","name":{"kind":"Name","value":"dislikesCount"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}},{"kind":"Field","name":{"kind":"Name","value":"audit"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AuditBase"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"PageInfoBase"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"PageInfo"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"hasPreviousPage"}},{"kind":"Field","name":{"kind":"Name","value":"hasNextPage"}},{"kind":"Field","name":{"kind":"Name","value":"startCursor"}},{"kind":"Field","name":{"kind":"Name","value":"endCursor"}}]}}]} as unknown as DocumentNode<MiddleFillerFragranceNotesQuery, MiddleFillerFragranceNotesQueryVariables>;
-export const BaseFillerFragranceNotesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"BaseFillerFragranceNotes"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"fragranceId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"PaginationInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"fragrance"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"fragranceId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"notes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"fillerBase"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceNoteSummary"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"pageInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"PageInfoBase"}}]}}]}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AuditBase"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Audit"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}},{"kind":"Field","name":{"kind":"Name","value":"deletedAt"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceNoteSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceNote"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"noteId"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"layer"}},{"kind":"Field","name":{"kind":"Name","value":"thumbnail"}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteScore"}},{"kind":"Field","name":{"kind":"Name","value":"likesCount"}},{"kind":"Field","name":{"kind":"Name","value":"dislikesCount"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}},{"kind":"Field","name":{"kind":"Name","value":"audit"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AuditBase"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"PageInfoBase"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"PageInfo"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"hasPreviousPage"}},{"kind":"Field","name":{"kind":"Name","value":"hasNextPage"}},{"kind":"Field","name":{"kind":"Name","value":"startCursor"}},{"kind":"Field","name":{"kind":"Name","value":"endCursor"}}]}}]} as unknown as DocumentNode<BaseFillerFragranceNotesQuery, BaseFillerFragranceNotesQueryVariables>;
-export const UpsertFragranceReviewDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpsertFragranceReview"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UpsertFragranceReviewInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"upsertFragranceReview"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceReviewSummary"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AuditBase"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Audit"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}},{"kind":"Field","name":{"kind":"Name","value":"deletedAt"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"UserSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"User"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"followerCount"}},{"kind":"Field","name":{"kind":"Name","value":"followingCount"}},{"kind":"Field","name":{"kind":"Name","value":"audit"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AuditBase"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceImageSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImage"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"src"}},{"kind":"Field","name":{"kind":"Name","value":"bg"}},{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"height"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceImageConnection"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImageConnection"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceImageSummary"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Fragrance"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"brand"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteScore"}},{"kind":"Field","name":{"kind":"Name","value":"likesCount"}},{"kind":"Field","name":{"kind":"Name","value":"dislikesCount"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}},{"kind":"Field","name":{"kind":"Name","value":"images"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"1"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceImageConnection"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceReviewSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceReview"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"rating"}},{"kind":"Field","name":{"kind":"Name","value":"text"}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteScore"}},{"kind":"Field","name":{"kind":"Name","value":"likesCount"}},{"kind":"Field","name":{"kind":"Name","value":"dislikesCount"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"UserSummary"}}]}},{"kind":"Field","name":{"kind":"Name","value":"fragrance"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceSummary"}}]}},{"kind":"Field","name":{"kind":"Name","value":"audit"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AuditBase"}}]}}]}}]} as unknown as DocumentNode<UpsertFragranceReviewMutation, UpsertFragranceReviewMutationVariables>;
-export const DeleteFragranceReviewDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"DeleteFragranceReview"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"DeleteFragranceReviewInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"deleteFragranceReview"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceReviewSummary"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AuditBase"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Audit"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}},{"kind":"Field","name":{"kind":"Name","value":"deletedAt"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"UserSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"User"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"followerCount"}},{"kind":"Field","name":{"kind":"Name","value":"followingCount"}},{"kind":"Field","name":{"kind":"Name","value":"audit"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AuditBase"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceImageSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImage"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"src"}},{"kind":"Field","name":{"kind":"Name","value":"bg"}},{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"height"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceImageConnection"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImageConnection"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceImageSummary"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Fragrance"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"brand"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteScore"}},{"kind":"Field","name":{"kind":"Name","value":"likesCount"}},{"kind":"Field","name":{"kind":"Name","value":"dislikesCount"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}},{"kind":"Field","name":{"kind":"Name","value":"images"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"1"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceImageConnection"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceReviewSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceReview"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"rating"}},{"kind":"Field","name":{"kind":"Name","value":"text"}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteScore"}},{"kind":"Field","name":{"kind":"Name","value":"likesCount"}},{"kind":"Field","name":{"kind":"Name","value":"dislikesCount"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"UserSummary"}}]}},{"kind":"Field","name":{"kind":"Name","value":"fragrance"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceSummary"}}]}},{"kind":"Field","name":{"kind":"Name","value":"audit"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AuditBase"}}]}}]}}]} as unknown as DocumentNode<DeleteFragranceReviewMutation, DeleteFragranceReviewMutationVariables>;
-export const VoteOnReviewDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"VoteOnReview"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"VoteOnReviewInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteOnReview"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<VoteOnReviewMutation, VoteOnReviewMutationVariables>;
-export const CreateReviewReportDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateReviewReport"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateReviewReportInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createReviewReport"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<CreateReviewReportMutation, CreateReviewReportMutationVariables>;
-export const FragranceReviewsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"FragranceReviews"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"fragranceId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"VotePaginationInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"fragrance"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"fragranceId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"reviews"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceReviewConnection"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AuditBase"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Audit"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}},{"kind":"Field","name":{"kind":"Name","value":"deletedAt"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"UserSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"User"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"followerCount"}},{"kind":"Field","name":{"kind":"Name","value":"followingCount"}},{"kind":"Field","name":{"kind":"Name","value":"audit"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AuditBase"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceImageSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImage"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"src"}},{"kind":"Field","name":{"kind":"Name","value":"bg"}},{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"height"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceImageConnection"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImageConnection"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceImageSummary"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Fragrance"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"brand"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteScore"}},{"kind":"Field","name":{"kind":"Name","value":"likesCount"}},{"kind":"Field","name":{"kind":"Name","value":"dislikesCount"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}},{"kind":"Field","name":{"kind":"Name","value":"images"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"1"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceImageConnection"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceReviewSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceReview"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"rating"}},{"kind":"Field","name":{"kind":"Name","value":"text"}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteScore"}},{"kind":"Field","name":{"kind":"Name","value":"likesCount"}},{"kind":"Field","name":{"kind":"Name","value":"dislikesCount"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"UserSummary"}}]}},{"kind":"Field","name":{"kind":"Name","value":"fragrance"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceSummary"}}]}},{"kind":"Field","name":{"kind":"Name","value":"audit"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AuditBase"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"PageInfoBase"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"PageInfo"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"hasPreviousPage"}},{"kind":"Field","name":{"kind":"Name","value":"hasNextPage"}},{"kind":"Field","name":{"kind":"Name","value":"startCursor"}},{"kind":"Field","name":{"kind":"Name","value":"endCursor"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceReviewConnection"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceReviewConnection"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceReviewSummary"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"pageInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"PageInfoBase"}}]}}]}}]} as unknown as DocumentNode<FragranceReviewsQuery, FragranceReviewsQueryVariables>;
-export const MyFragranceReviewDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"MyFragranceReview"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"fragranceId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"fragrance"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"fragranceId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceSummary"}},{"kind":"Field","name":{"kind":"Name","value":"myReview"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceReviewSummary"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceImageSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImage"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"src"}},{"kind":"Field","name":{"kind":"Name","value":"bg"}},{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"height"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceImageConnection"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImageConnection"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceImageSummary"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AuditBase"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Audit"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}},{"kind":"Field","name":{"kind":"Name","value":"deletedAt"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"UserSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"User"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"followerCount"}},{"kind":"Field","name":{"kind":"Name","value":"followingCount"}},{"kind":"Field","name":{"kind":"Name","value":"audit"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AuditBase"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Fragrance"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"brand"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteScore"}},{"kind":"Field","name":{"kind":"Name","value":"likesCount"}},{"kind":"Field","name":{"kind":"Name","value":"dislikesCount"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}},{"kind":"Field","name":{"kind":"Name","value":"images"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"1"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceImageConnection"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceReviewSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceReview"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"rating"}},{"kind":"Field","name":{"kind":"Name","value":"text"}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteScore"}},{"kind":"Field","name":{"kind":"Name","value":"likesCount"}},{"kind":"Field","name":{"kind":"Name","value":"dislikesCount"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"UserSummary"}}]}},{"kind":"Field","name":{"kind":"Name","value":"fragrance"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceSummary"}}]}},{"kind":"Field","name":{"kind":"Name","value":"audit"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AuditBase"}}]}}]}}]} as unknown as DocumentNode<MyFragranceReviewQuery, MyFragranceReviewQueryVariables>;
-export const MeDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Me"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"me"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"UserSummary"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AuditBase"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Audit"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}},{"kind":"Field","name":{"kind":"Name","value":"deletedAt"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"UserSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"User"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"followerCount"}},{"kind":"Field","name":{"kind":"Name","value":"followingCount"}},{"kind":"Field","name":{"kind":"Name","value":"audit"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AuditBase"}}]}}]}}]} as unknown as DocumentNode<MeQuery, MeQueryVariables>;
-export const UserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"User"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"user"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"UserSummary"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AuditBase"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Audit"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}},{"kind":"Field","name":{"kind":"Name","value":"deletedAt"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"UserSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"User"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"followerCount"}},{"kind":"Field","name":{"kind":"Name","value":"followingCount"}},{"kind":"Field","name":{"kind":"Name","value":"audit"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AuditBase"}}]}}]}}]} as unknown as DocumentNode<UserQuery, UserQueryVariables>;
-export const UserCollectionsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"UserCollections"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"fragranceId"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"PaginationInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"user"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"collections"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceCollectionSummary"}},{"kind":"Field","name":{"kind":"Name","value":"hasFragrance"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"fragranceId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"fragranceId"}}}]}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"pageInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"PageInfoBase"}}]}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceImageSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImage"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"src"}},{"kind":"Field","name":{"kind":"Name","value":"bg"}},{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"height"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceImageConnection"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImageConnection"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceImageSummary"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Fragrance"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"brand"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteScore"}},{"kind":"Field","name":{"kind":"Name","value":"likesCount"}},{"kind":"Field","name":{"kind":"Name","value":"dislikesCount"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}},{"kind":"Field","name":{"kind":"Name","value":"images"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"1"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceImageConnection"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AuditBase"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Audit"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}},{"kind":"Field","name":{"kind":"Name","value":"deletedAt"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceCollectionItemSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceCollectionItem"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"rank"}},{"kind":"Field","name":{"kind":"Name","value":"fragrance"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceSummary"}}]}},{"kind":"Field","name":{"kind":"Name","value":"audit"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AuditBase"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"PageInfoBase"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"PageInfo"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"hasPreviousPage"}},{"kind":"Field","name":{"kind":"Name","value":"hasNextPage"}},{"kind":"Field","name":{"kind":"Name","value":"startCursor"}},{"kind":"Field","name":{"kind":"Name","value":"endCursor"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceCollectionItemConnection"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceCollectionItemConnection"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceCollectionItemSummary"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"pageInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"PageInfoBase"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceCollectionSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceCollection"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"username"}}]}},{"kind":"Field","name":{"kind":"Name","value":"items"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"4"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceCollectionItemConnection"}}]}},{"kind":"Field","name":{"kind":"Name","value":"audit"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AuditBase"}}]}}]}}]} as unknown as DocumentNode<UserCollectionsQuery, UserCollectionsQueryVariables>;
-export const UserLikesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"UserLikes"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"PaginationInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"user"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"likes"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceVoteConnection"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceImageSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImage"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"src"}},{"kind":"Field","name":{"kind":"Name","value":"bg"}},{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"height"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceImageConnection"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImageConnection"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceImageSummary"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Fragrance"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"brand"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteScore"}},{"kind":"Field","name":{"kind":"Name","value":"likesCount"}},{"kind":"Field","name":{"kind":"Name","value":"dislikesCount"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}},{"kind":"Field","name":{"kind":"Name","value":"images"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"1"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceImageConnection"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceVoteSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceVote"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"vote"}},{"kind":"Field","name":{"kind":"Name","value":"fragrance"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceSummary"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"PageInfoBase"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"PageInfo"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"hasPreviousPage"}},{"kind":"Field","name":{"kind":"Name","value":"hasNextPage"}},{"kind":"Field","name":{"kind":"Name","value":"startCursor"}},{"kind":"Field","name":{"kind":"Name","value":"endCursor"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceVoteConnection"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceVoteConnection"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceVoteSummary"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"pageInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"PageInfoBase"}}]}}]}}]} as unknown as DocumentNode<UserLikesQuery, UserLikesQueryVariables>;
-export const UserReviewsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"UserReviews"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"PaginationInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"user"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"reviews"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceReviewConnection"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AuditBase"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Audit"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}},{"kind":"Field","name":{"kind":"Name","value":"deletedAt"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"UserSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"User"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"followerCount"}},{"kind":"Field","name":{"kind":"Name","value":"followingCount"}},{"kind":"Field","name":{"kind":"Name","value":"audit"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AuditBase"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceImageSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImage"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"src"}},{"kind":"Field","name":{"kind":"Name","value":"bg"}},{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"height"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceImageConnection"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImageConnection"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceImageSummary"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Fragrance"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"brand"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteScore"}},{"kind":"Field","name":{"kind":"Name","value":"likesCount"}},{"kind":"Field","name":{"kind":"Name","value":"dislikesCount"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}},{"kind":"Field","name":{"kind":"Name","value":"images"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"1"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceImageConnection"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceReviewSummary"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceReview"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"rating"}},{"kind":"Field","name":{"kind":"Name","value":"text"}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteScore"}},{"kind":"Field","name":{"kind":"Name","value":"likesCount"}},{"kind":"Field","name":{"kind":"Name","value":"dislikesCount"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"UserSummary"}}]}},{"kind":"Field","name":{"kind":"Name","value":"fragrance"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceSummary"}}]}},{"kind":"Field","name":{"kind":"Name","value":"audit"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AuditBase"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"PageInfoBase"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"PageInfo"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"hasPreviousPage"}},{"kind":"Field","name":{"kind":"Name","value":"hasNextPage"}},{"kind":"Field","name":{"kind":"Name","value":"startCursor"}},{"kind":"Field","name":{"kind":"Name","value":"endCursor"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragranceReviewConnection"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceReviewConnection"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragranceReviewSummary"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"pageInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"PageInfoBase"}}]}}]}}]} as unknown as DocumentNode<UserReviewsQuery, UserReviewsQueryVariables>;
+export const SignUpDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"SignUp"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"SignUpInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"signUp"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllAuthDeliveryResult"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllAuthCodeDeliveryDetails"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AuthCodeDeliveryDetails"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"method"}},{"kind":"Field","name":{"kind":"Name","value":"attribute"}},{"kind":"Field","name":{"kind":"Name","value":"destination"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllAuthDeliveryResult"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AuthDeliveryResult"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"isComplete"}},{"kind":"Field","name":{"kind":"Name","value":"delivery"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllAuthCodeDeliveryDetails"}}]}}]}}]} as unknown as DocumentNode<SignUpMutation, SignUpMutationVariables>;
+export const ConfirmSignUpDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"ConfirmSignUp"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ConfirmSignUpInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"confirmSignUp"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"Me"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllAsset"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Asset"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"contentType"}},{"kind":"Field","name":{"kind":"Name","value":"sizeBytes"}},{"kind":"Field","name":{"kind":"Name","value":"url"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"Me"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"User"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"avatar"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllAsset"}}]}}]}}]} as unknown as DocumentNode<ConfirmSignUpMutation, ConfirmSignUpMutationVariables>;
+export const ResendSignUpCodeDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"ResendSignUpCode"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ResendSignUpCodeInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"resendSignUpCode"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllAuthDeliveryResult"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllAuthCodeDeliveryDetails"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AuthCodeDeliveryDetails"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"method"}},{"kind":"Field","name":{"kind":"Name","value":"attribute"}},{"kind":"Field","name":{"kind":"Name","value":"destination"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllAuthDeliveryResult"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AuthDeliveryResult"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"isComplete"}},{"kind":"Field","name":{"kind":"Name","value":"delivery"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllAuthCodeDeliveryDetails"}}]}}]}}]} as unknown as DocumentNode<ResendSignUpCodeMutation, ResendSignUpCodeMutationVariables>;
+export const ForgotPasswordDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"ForgotPassword"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ForgotPasswordInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"forgotPassword"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllAuthDeliveryResult"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllAuthCodeDeliveryDetails"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AuthCodeDeliveryDetails"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"method"}},{"kind":"Field","name":{"kind":"Name","value":"attribute"}},{"kind":"Field","name":{"kind":"Name","value":"destination"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllAuthDeliveryResult"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AuthDeliveryResult"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"isComplete"}},{"kind":"Field","name":{"kind":"Name","value":"delivery"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllAuthCodeDeliveryDetails"}}]}}]}}]} as unknown as DocumentNode<ForgotPasswordMutation, ForgotPasswordMutationVariables>;
+export const ConfirmForgotPasswordDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"ConfirmForgotPassword"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ConfirmForgotPasswordInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"confirmForgotPassword"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}]}]}}]} as unknown as DocumentNode<ConfirmForgotPasswordMutation, ConfirmForgotPasswordMutationVariables>;
+export const VoteOnBrandMutationDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"VoteOnBrandMutation"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"VoteOnBrandInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteOnBrand"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"BrandPreview"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllAsset"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Asset"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"contentType"}},{"kind":"Field","name":{"kind":"Name","value":"sizeBytes"}},{"kind":"Field","name":{"kind":"Name","value":"url"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllVoteInfo"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"VoteInfo"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"upvotes"}},{"kind":"Field","name":{"kind":"Name","value":"downvotes"}},{"kind":"Field","name":{"kind":"Name","value":"score"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"BrandPreview"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Brand"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"avatar"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllAsset"}}]}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllVoteInfo"}}]}}]}}]} as unknown as DocumentNode<VoteOnBrandMutationMutation, VoteOnBrandMutationMutationVariables>;
+export const BrandDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Brand"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"brand"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"BrandPreview"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllAsset"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Asset"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"contentType"}},{"kind":"Field","name":{"kind":"Name","value":"sizeBytes"}},{"kind":"Field","name":{"kind":"Name","value":"url"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllVoteInfo"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"VoteInfo"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"upvotes"}},{"kind":"Field","name":{"kind":"Name","value":"downvotes"}},{"kind":"Field","name":{"kind":"Name","value":"score"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"BrandPreview"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Brand"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"avatar"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllAsset"}}]}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllVoteInfo"}}]}}]}}]} as unknown as DocumentNode<BrandQuery, BrandQueryVariables>;
+export const BrandsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Brands"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"BrandPaginationInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"brands"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"BrandPreview"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"pageInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllPageInfo"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllAsset"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Asset"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"contentType"}},{"kind":"Field","name":{"kind":"Name","value":"sizeBytes"}},{"kind":"Field","name":{"kind":"Name","value":"url"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllVoteInfo"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"VoteInfo"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"upvotes"}},{"kind":"Field","name":{"kind":"Name","value":"downvotes"}},{"kind":"Field","name":{"kind":"Name","value":"score"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"BrandPreview"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Brand"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"avatar"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllAsset"}}]}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllVoteInfo"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllPageInfo"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"PageInfo"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"hasPreviousPage"}},{"kind":"Field","name":{"kind":"Name","value":"hasNextPage"}},{"kind":"Field","name":{"kind":"Name","value":"startCursor"}},{"kind":"Field","name":{"kind":"Name","value":"endCursor"}}]}}]} as unknown as DocumentNode<BrandsQuery, BrandsQueryVariables>;
+export const SearchBrandsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"SearchBrands"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"SearchInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"searchBrands"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"BrandPreview"}}]}},{"kind":"Field","name":{"kind":"Name","value":"offset"}}]}},{"kind":"Field","name":{"kind":"Name","value":"pageInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllSearchPageInfo"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllAsset"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Asset"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"contentType"}},{"kind":"Field","name":{"kind":"Name","value":"sizeBytes"}},{"kind":"Field","name":{"kind":"Name","value":"url"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllVoteInfo"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"VoteInfo"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"upvotes"}},{"kind":"Field","name":{"kind":"Name","value":"downvotes"}},{"kind":"Field","name":{"kind":"Name","value":"score"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"BrandPreview"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Brand"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"avatar"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllAsset"}}]}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllVoteInfo"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllSearchPageInfo"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"SearchPageInfo"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"hasPreviousPage"}},{"kind":"Field","name":{"kind":"Name","value":"hasNextPage"}},{"kind":"Field","name":{"kind":"Name","value":"startOffset"}},{"kind":"Field","name":{"kind":"Name","value":"endOffset"}},{"kind":"Field","name":{"kind":"Name","value":"pageSize"}}]}}]} as unknown as DocumentNode<SearchBrandsQuery, SearchBrandsQueryVariables>;
+export const CreateFragranceReviewDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateFragranceReview"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateFragranceReviewInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createFragranceReview"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllFragranceReview"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllAsset"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Asset"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"contentType"}},{"kind":"Field","name":{"kind":"Name","value":"sizeBytes"}},{"kind":"Field","name":{"kind":"Name","value":"url"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"UserPreview"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"User"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"avatar"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllAsset"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllVoteInfo"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"VoteInfo"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"upvotes"}},{"kind":"Field","name":{"kind":"Name","value":"downvotes"}},{"kind":"Field","name":{"kind":"Name","value":"score"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"BrandPreview"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Brand"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"avatar"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllAsset"}}]}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllVoteInfo"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllFragranceImage"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImage"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"url"}},{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"height"}},{"kind":"Field","name":{"kind":"Name","value":"primaryColor"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragrancePreview"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Fragrance"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"releaseYear"}},{"kind":"Field","name":{"kind":"Name","value":"concentration"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"brand"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"BrandPreview"}}]}},{"kind":"Field","name":{"kind":"Name","value":"thumbnail"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllFragranceImage"}}]}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllVoteInfo"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllFragranceReview"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceReview"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"rating"}},{"kind":"Field","name":{"kind":"Name","value":"body"}},{"kind":"Field","name":{"kind":"Name","value":"author"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"UserPreview"}}]}},{"kind":"Field","name":{"kind":"Name","value":"fragrance"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragrancePreview"}}]}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllVoteInfo"}}]}}]}}]} as unknown as DocumentNode<CreateFragranceReviewMutation, CreateFragranceReviewMutationVariables>;
+export const CreateFragranceCollectionDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateFragranceCollection"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateFragranceCollectionInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createFragranceCollection"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllFragranceCollection"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllAsset"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Asset"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"contentType"}},{"kind":"Field","name":{"kind":"Name","value":"sizeBytes"}},{"kind":"Field","name":{"kind":"Name","value":"url"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllVoteInfo"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"VoteInfo"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"upvotes"}},{"kind":"Field","name":{"kind":"Name","value":"downvotes"}},{"kind":"Field","name":{"kind":"Name","value":"score"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"BrandPreview"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Brand"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"avatar"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllAsset"}}]}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllVoteInfo"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllFragranceImage"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImage"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"url"}},{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"height"}},{"kind":"Field","name":{"kind":"Name","value":"primaryColor"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragrancePreview"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Fragrance"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"releaseYear"}},{"kind":"Field","name":{"kind":"Name","value":"concentration"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"brand"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"BrandPreview"}}]}},{"kind":"Field","name":{"kind":"Name","value":"thumbnail"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllFragranceImage"}}]}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllVoteInfo"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllFragranceCollectionItem"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceCollectionItem"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"fragrance"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragrancePreview"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"UserPreview"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"User"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"avatar"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllAsset"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllFragranceCollection"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceCollection"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"items"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllFragranceCollectionItem"}}]}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"UserPreview"}}]}}]}}]} as unknown as DocumentNode<CreateFragranceCollectionMutation, CreateFragranceCollectionMutationVariables>;
+export const DeleteFragranceCollectionDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"DeleteFragranceCollection"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"DeleteFragranceCollectionInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"deleteFragranceCollection"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllFragranceCollection"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllAsset"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Asset"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"contentType"}},{"kind":"Field","name":{"kind":"Name","value":"sizeBytes"}},{"kind":"Field","name":{"kind":"Name","value":"url"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllVoteInfo"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"VoteInfo"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"upvotes"}},{"kind":"Field","name":{"kind":"Name","value":"downvotes"}},{"kind":"Field","name":{"kind":"Name","value":"score"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"BrandPreview"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Brand"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"avatar"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllAsset"}}]}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllVoteInfo"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllFragranceImage"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImage"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"url"}},{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"height"}},{"kind":"Field","name":{"kind":"Name","value":"primaryColor"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragrancePreview"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Fragrance"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"releaseYear"}},{"kind":"Field","name":{"kind":"Name","value":"concentration"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"brand"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"BrandPreview"}}]}},{"kind":"Field","name":{"kind":"Name","value":"thumbnail"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllFragranceImage"}}]}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllVoteInfo"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllFragranceCollectionItem"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceCollectionItem"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"fragrance"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragrancePreview"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"UserPreview"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"User"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"avatar"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllAsset"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllFragranceCollection"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceCollection"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"items"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllFragranceCollectionItem"}}]}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"UserPreview"}}]}}]}}]} as unknown as DocumentNode<DeleteFragranceCollectionMutation, DeleteFragranceCollectionMutationVariables>;
+export const CreateFragranceCollectionItemDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateFragranceCollectionItem"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateFragranceCollectionItemInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createFragranceCollectionItem"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllFragranceCollectionItem"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllAsset"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Asset"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"contentType"}},{"kind":"Field","name":{"kind":"Name","value":"sizeBytes"}},{"kind":"Field","name":{"kind":"Name","value":"url"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllVoteInfo"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"VoteInfo"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"upvotes"}},{"kind":"Field","name":{"kind":"Name","value":"downvotes"}},{"kind":"Field","name":{"kind":"Name","value":"score"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"BrandPreview"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Brand"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"avatar"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllAsset"}}]}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllVoteInfo"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllFragranceImage"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImage"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"url"}},{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"height"}},{"kind":"Field","name":{"kind":"Name","value":"primaryColor"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragrancePreview"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Fragrance"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"releaseYear"}},{"kind":"Field","name":{"kind":"Name","value":"concentration"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"brand"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"BrandPreview"}}]}},{"kind":"Field","name":{"kind":"Name","value":"thumbnail"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllFragranceImage"}}]}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllVoteInfo"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllFragranceCollectionItem"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceCollectionItem"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"fragrance"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragrancePreview"}}]}}]}}]} as unknown as DocumentNode<CreateFragranceCollectionItemMutation, CreateFragranceCollectionItemMutationVariables>;
+export const MoveFragranceCollectionItemsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"MoveFragranceCollectionItems"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"MoveFragranceCollectionItemsInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"moveFragranceCollectionItems"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllFragranceCollectionItem"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllAsset"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Asset"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"contentType"}},{"kind":"Field","name":{"kind":"Name","value":"sizeBytes"}},{"kind":"Field","name":{"kind":"Name","value":"url"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllVoteInfo"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"VoteInfo"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"upvotes"}},{"kind":"Field","name":{"kind":"Name","value":"downvotes"}},{"kind":"Field","name":{"kind":"Name","value":"score"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"BrandPreview"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Brand"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"avatar"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllAsset"}}]}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllVoteInfo"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllFragranceImage"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImage"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"url"}},{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"height"}},{"kind":"Field","name":{"kind":"Name","value":"primaryColor"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragrancePreview"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Fragrance"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"releaseYear"}},{"kind":"Field","name":{"kind":"Name","value":"concentration"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"brand"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"BrandPreview"}}]}},{"kind":"Field","name":{"kind":"Name","value":"thumbnail"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllFragranceImage"}}]}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllVoteInfo"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllFragranceCollectionItem"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceCollectionItem"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"fragrance"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragrancePreview"}}]}}]}}]} as unknown as DocumentNode<MoveFragranceCollectionItemsMutation, MoveFragranceCollectionItemsMutationVariables>;
+export const DeleteFragranceCollectionItemDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"DeleteFragranceCollectionItem"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"DeleteFragranceCollectionItemInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"deleteFragranceCollectionItem"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllFragranceCollectionItem"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllAsset"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Asset"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"contentType"}},{"kind":"Field","name":{"kind":"Name","value":"sizeBytes"}},{"kind":"Field","name":{"kind":"Name","value":"url"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllVoteInfo"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"VoteInfo"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"upvotes"}},{"kind":"Field","name":{"kind":"Name","value":"downvotes"}},{"kind":"Field","name":{"kind":"Name","value":"score"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"BrandPreview"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Brand"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"avatar"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllAsset"}}]}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllVoteInfo"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllFragranceImage"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImage"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"url"}},{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"height"}},{"kind":"Field","name":{"kind":"Name","value":"primaryColor"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragrancePreview"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Fragrance"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"releaseYear"}},{"kind":"Field","name":{"kind":"Name","value":"concentration"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"brand"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"BrandPreview"}}]}},{"kind":"Field","name":{"kind":"Name","value":"thumbnail"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllFragranceImage"}}]}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllVoteInfo"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllFragranceCollectionItem"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceCollectionItem"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"fragrance"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragrancePreview"}}]}}]}}]} as unknown as DocumentNode<DeleteFragranceCollectionItemMutation, DeleteFragranceCollectionItemMutationVariables>;
+export const VoteOnFragranceDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"VoteOnFragrance"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"VoteOnFragranceInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteOnFragrance"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragrancePreview"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllAsset"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Asset"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"contentType"}},{"kind":"Field","name":{"kind":"Name","value":"sizeBytes"}},{"kind":"Field","name":{"kind":"Name","value":"url"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllVoteInfo"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"VoteInfo"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"upvotes"}},{"kind":"Field","name":{"kind":"Name","value":"downvotes"}},{"kind":"Field","name":{"kind":"Name","value":"score"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"BrandPreview"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Brand"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"avatar"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllAsset"}}]}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllVoteInfo"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllFragranceImage"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImage"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"url"}},{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"height"}},{"kind":"Field","name":{"kind":"Name","value":"primaryColor"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragrancePreview"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Fragrance"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"releaseYear"}},{"kind":"Field","name":{"kind":"Name","value":"concentration"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"brand"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"BrandPreview"}}]}},{"kind":"Field","name":{"kind":"Name","value":"thumbnail"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllFragranceImage"}}]}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllVoteInfo"}}]}}]}}]} as unknown as DocumentNode<VoteOnFragranceMutation, VoteOnFragranceMutationVariables>;
+export const VoteOnFragranceAccordDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"VoteOnFragranceAccord"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"VoteOnFragranceAccordInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteOnFragranceAccord"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllAccord"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllAccord"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Accord"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"color"}}]}}]} as unknown as DocumentNode<VoteOnFragranceAccordMutation, VoteOnFragranceAccordMutationVariables>;
+export const VoteOnFragranceNoteDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"VoteOnFragranceNote"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"VoteOnFragranceNoteInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteOnFragranceNote"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllNote"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllAsset"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Asset"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"contentType"}},{"kind":"Field","name":{"kind":"Name","value":"sizeBytes"}},{"kind":"Field","name":{"kind":"Name","value":"url"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllNote"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Note"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"thumbnail"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllAsset"}}]}}]}}]} as unknown as DocumentNode<VoteOnFragranceNoteMutation, VoteOnFragranceNoteMutationVariables>;
+export const VoteOnFragranceTraitDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"VoteOnFragranceTrait"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"VoteOnFragranceTraitInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteOnFragranceTrait"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllTraitVote"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllTraitOption"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"TraitOption"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"label"}},{"kind":"Field","name":{"kind":"Name","value":"score"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllTraitVote"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"TraitVote"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"option"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllTraitOption"}}]}}]}}]} as unknown as DocumentNode<VoteOnFragranceTraitMutation, VoteOnFragranceTraitMutationVariables>;
+export const VoteOnFragranceReviewDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"VoteOnFragranceReview"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"VoteOnFragranceReviewInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteOnFragranceReview"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllFragranceReview"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllAsset"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Asset"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"contentType"}},{"kind":"Field","name":{"kind":"Name","value":"sizeBytes"}},{"kind":"Field","name":{"kind":"Name","value":"url"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"UserPreview"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"User"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"avatar"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllAsset"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllVoteInfo"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"VoteInfo"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"upvotes"}},{"kind":"Field","name":{"kind":"Name","value":"downvotes"}},{"kind":"Field","name":{"kind":"Name","value":"score"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"BrandPreview"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Brand"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"avatar"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllAsset"}}]}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllVoteInfo"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllFragranceImage"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImage"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"url"}},{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"height"}},{"kind":"Field","name":{"kind":"Name","value":"primaryColor"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragrancePreview"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Fragrance"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"releaseYear"}},{"kind":"Field","name":{"kind":"Name","value":"concentration"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"brand"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"BrandPreview"}}]}},{"kind":"Field","name":{"kind":"Name","value":"thumbnail"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllFragranceImage"}}]}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllVoteInfo"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllFragranceReview"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceReview"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"rating"}},{"kind":"Field","name":{"kind":"Name","value":"body"}},{"kind":"Field","name":{"kind":"Name","value":"author"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"UserPreview"}}]}},{"kind":"Field","name":{"kind":"Name","value":"fragrance"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragrancePreview"}}]}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllVoteInfo"}}]}}]}}]} as unknown as DocumentNode<VoteOnFragranceReviewMutation, VoteOnFragranceReviewMutationVariables>;
+export const FragranceDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Fragrance"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"fragrance"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragrancePreview"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllAsset"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Asset"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"contentType"}},{"kind":"Field","name":{"kind":"Name","value":"sizeBytes"}},{"kind":"Field","name":{"kind":"Name","value":"url"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllVoteInfo"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"VoteInfo"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"upvotes"}},{"kind":"Field","name":{"kind":"Name","value":"downvotes"}},{"kind":"Field","name":{"kind":"Name","value":"score"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"BrandPreview"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Brand"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"avatar"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllAsset"}}]}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllVoteInfo"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllFragranceImage"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImage"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"url"}},{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"height"}},{"kind":"Field","name":{"kind":"Name","value":"primaryColor"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragrancePreview"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Fragrance"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"releaseYear"}},{"kind":"Field","name":{"kind":"Name","value":"concentration"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"brand"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"BrandPreview"}}]}},{"kind":"Field","name":{"kind":"Name","value":"thumbnail"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllFragranceImage"}}]}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllVoteInfo"}}]}}]}}]} as unknown as DocumentNode<FragranceQuery, FragranceQueryVariables>;
+export const FragrancesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Fragrances"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"FragrancePaginationInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"fragrances"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragrancePreview"}}]}},{"kind":"Field","name":{"kind":"Name","value":"cursor"}}]}},{"kind":"Field","name":{"kind":"Name","value":"pageInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllPageInfo"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllAsset"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Asset"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"contentType"}},{"kind":"Field","name":{"kind":"Name","value":"sizeBytes"}},{"kind":"Field","name":{"kind":"Name","value":"url"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllVoteInfo"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"VoteInfo"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"upvotes"}},{"kind":"Field","name":{"kind":"Name","value":"downvotes"}},{"kind":"Field","name":{"kind":"Name","value":"score"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"BrandPreview"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Brand"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"avatar"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllAsset"}}]}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllVoteInfo"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllFragranceImage"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImage"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"url"}},{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"height"}},{"kind":"Field","name":{"kind":"Name","value":"primaryColor"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragrancePreview"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Fragrance"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"releaseYear"}},{"kind":"Field","name":{"kind":"Name","value":"concentration"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"brand"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"BrandPreview"}}]}},{"kind":"Field","name":{"kind":"Name","value":"thumbnail"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllFragranceImage"}}]}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllVoteInfo"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllPageInfo"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"PageInfo"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"hasPreviousPage"}},{"kind":"Field","name":{"kind":"Name","value":"hasNextPage"}},{"kind":"Field","name":{"kind":"Name","value":"startCursor"}},{"kind":"Field","name":{"kind":"Name","value":"endCursor"}}]}}]} as unknown as DocumentNode<FragrancesQuery, FragrancesQueryVariables>;
+export const SearchFragrancesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"SearchFragrances"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"SearchInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"searchFragrances"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragrancePreview"}}]}},{"kind":"Field","name":{"kind":"Name","value":"offset"}}]}},{"kind":"Field","name":{"kind":"Name","value":"pageInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllSearchPageInfo"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllAsset"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Asset"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"contentType"}},{"kind":"Field","name":{"kind":"Name","value":"sizeBytes"}},{"kind":"Field","name":{"kind":"Name","value":"url"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllVoteInfo"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"VoteInfo"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"upvotes"}},{"kind":"Field","name":{"kind":"Name","value":"downvotes"}},{"kind":"Field","name":{"kind":"Name","value":"score"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"BrandPreview"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Brand"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"avatar"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllAsset"}}]}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllVoteInfo"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllFragranceImage"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImage"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"url"}},{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"height"}},{"kind":"Field","name":{"kind":"Name","value":"primaryColor"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragrancePreview"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Fragrance"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"releaseYear"}},{"kind":"Field","name":{"kind":"Name","value":"concentration"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"brand"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"BrandPreview"}}]}},{"kind":"Field","name":{"kind":"Name","value":"thumbnail"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllFragranceImage"}}]}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllVoteInfo"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllSearchPageInfo"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"SearchPageInfo"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"hasPreviousPage"}},{"kind":"Field","name":{"kind":"Name","value":"hasNextPage"}},{"kind":"Field","name":{"kind":"Name","value":"startOffset"}},{"kind":"Field","name":{"kind":"Name","value":"endOffset"}},{"kind":"Field","name":{"kind":"Name","value":"pageSize"}}]}}]} as unknown as DocumentNode<SearchFragrancesQuery, SearchFragrancesQueryVariables>;
+export const FragranceImagesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"FragranceImages"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"fragrance"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"images"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllFragranceImage"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllFragranceImage"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImage"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"url"}},{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"height"}},{"kind":"Field","name":{"kind":"Name","value":"primaryColor"}}]}}]} as unknown as DocumentNode<FragranceImagesQuery, FragranceImagesQueryVariables>;
+export const FragranceAccordsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"FragranceAccords"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceAccordPaginationInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"fragrance"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"accords"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllFragranceAccord"}}]}},{"kind":"Field","name":{"kind":"Name","value":"cursor"}}]}},{"kind":"Field","name":{"kind":"Name","value":"pageInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllPageInfo"}}]}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllAccord"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Accord"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"color"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllVoteInfo"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"VoteInfo"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"upvotes"}},{"kind":"Field","name":{"kind":"Name","value":"downvotes"}},{"kind":"Field","name":{"kind":"Name","value":"score"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllFragranceAccord"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceAccord"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"accord"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllAccord"}}]}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllVoteInfo"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllPageInfo"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"PageInfo"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"hasPreviousPage"}},{"kind":"Field","name":{"kind":"Name","value":"hasNextPage"}},{"kind":"Field","name":{"kind":"Name","value":"startCursor"}},{"kind":"Field","name":{"kind":"Name","value":"endCursor"}}]}}]} as unknown as DocumentNode<FragranceAccordsQuery, FragranceAccordsQueryVariables>;
+export const FragranceNotesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"FragranceNotes"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceNotePaginationInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"fragrance"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"notes"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllFragranceNote"}}]}},{"kind":"Field","name":{"kind":"Name","value":"cursor"}}]}},{"kind":"Field","name":{"kind":"Name","value":"pageInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllPageInfo"}}]}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllAsset"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Asset"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"contentType"}},{"kind":"Field","name":{"kind":"Name","value":"sizeBytes"}},{"kind":"Field","name":{"kind":"Name","value":"url"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllNote"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Note"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"thumbnail"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllAsset"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllVoteInfo"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"VoteInfo"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"upvotes"}},{"kind":"Field","name":{"kind":"Name","value":"downvotes"}},{"kind":"Field","name":{"kind":"Name","value":"score"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllFragranceNote"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceNote"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"layer"}},{"kind":"Field","name":{"kind":"Name","value":"note"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllNote"}}]}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllVoteInfo"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllPageInfo"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"PageInfo"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"hasPreviousPage"}},{"kind":"Field","name":{"kind":"Name","value":"hasNextPage"}},{"kind":"Field","name":{"kind":"Name","value":"startCursor"}},{"kind":"Field","name":{"kind":"Name","value":"endCursor"}}]}}]} as unknown as DocumentNode<FragranceNotesQuery, FragranceNotesQueryVariables>;
+export const FragranceTraitsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"FragranceTraits"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"fragrance"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"traits"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllFragranceTrait"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllTraitOption"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"TraitOption"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"label"}},{"kind":"Field","name":{"kind":"Name","value":"score"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllTraitVoteDistribution"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"TraitVoteDistribution"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"option"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllTraitOption"}}]}},{"kind":"Field","name":{"kind":"Name","value":"votes"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllTraitStats"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"TraitStats"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"averageScore"}},{"kind":"Field","name":{"kind":"Name","value":"totalVotes"}},{"kind":"Field","name":{"kind":"Name","value":"distribution"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllTraitVoteDistribution"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllTraitVote"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"TraitVote"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"option"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllTraitOption"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllFragranceTrait"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceTrait"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"options"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllTraitOption"}}]}},{"kind":"Field","name":{"kind":"Name","value":"stats"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllTraitStats"}}]}},{"kind":"Field","name":{"kind":"Name","value":"myVote"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllTraitVote"}}]}}]}}]} as unknown as DocumentNode<FragranceTraitsQuery, FragranceTraitsQueryVariables>;
+export const FragranceReviewsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"FragranceReviews"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceReviewPaginationInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"fragrance"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"reviews"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllFragranceReview"}}]}},{"kind":"Field","name":{"kind":"Name","value":"cursor"}}]}},{"kind":"Field","name":{"kind":"Name","value":"pageInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllPageInfo"}}]}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllAsset"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Asset"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"contentType"}},{"kind":"Field","name":{"kind":"Name","value":"sizeBytes"}},{"kind":"Field","name":{"kind":"Name","value":"url"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"UserPreview"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"User"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"avatar"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllAsset"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllVoteInfo"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"VoteInfo"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"upvotes"}},{"kind":"Field","name":{"kind":"Name","value":"downvotes"}},{"kind":"Field","name":{"kind":"Name","value":"score"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"BrandPreview"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Brand"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"avatar"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllAsset"}}]}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllVoteInfo"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllFragranceImage"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImage"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"url"}},{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"height"}},{"kind":"Field","name":{"kind":"Name","value":"primaryColor"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragrancePreview"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Fragrance"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"releaseYear"}},{"kind":"Field","name":{"kind":"Name","value":"concentration"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"brand"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"BrandPreview"}}]}},{"kind":"Field","name":{"kind":"Name","value":"thumbnail"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllFragranceImage"}}]}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllVoteInfo"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllFragranceReview"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceReview"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"rating"}},{"kind":"Field","name":{"kind":"Name","value":"body"}},{"kind":"Field","name":{"kind":"Name","value":"author"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"UserPreview"}}]}},{"kind":"Field","name":{"kind":"Name","value":"fragrance"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragrancePreview"}}]}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllVoteInfo"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllPageInfo"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"PageInfo"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"hasPreviousPage"}},{"kind":"Field","name":{"kind":"Name","value":"hasNextPage"}},{"kind":"Field","name":{"kind":"Name","value":"startCursor"}},{"kind":"Field","name":{"kind":"Name","value":"endCursor"}}]}}]} as unknown as DocumentNode<FragranceReviewsQuery, FragranceReviewsQueryVariables>;
+export const NoteDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Note"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"note"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"NotePreview"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllAsset"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Asset"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"contentType"}},{"kind":"Field","name":{"kind":"Name","value":"sizeBytes"}},{"kind":"Field","name":{"kind":"Name","value":"url"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"NotePreview"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Note"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"thumbnail"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllAsset"}}]}}]}}]} as unknown as DocumentNode<NoteQuery, NoteQueryVariables>;
+export const NotesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Notes"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"NotePaginationInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"notes"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"NotePreview"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"pageInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllPageInfo"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllAsset"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Asset"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"contentType"}},{"kind":"Field","name":{"kind":"Name","value":"sizeBytes"}},{"kind":"Field","name":{"kind":"Name","value":"url"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"NotePreview"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Note"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"thumbnail"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllAsset"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllPageInfo"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"PageInfo"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"hasPreviousPage"}},{"kind":"Field","name":{"kind":"Name","value":"hasNextPage"}},{"kind":"Field","name":{"kind":"Name","value":"startCursor"}},{"kind":"Field","name":{"kind":"Name","value":"endCursor"}}]}}]} as unknown as DocumentNode<NotesQuery, NotesQueryVariables>;
+export const SearchNotesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"SearchNotes"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"SearchInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"searchNotes"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"NotePreview"}}]}},{"kind":"Field","name":{"kind":"Name","value":"offset"}}]}},{"kind":"Field","name":{"kind":"Name","value":"pageInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllSearchPageInfo"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllAsset"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Asset"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"contentType"}},{"kind":"Field","name":{"kind":"Name","value":"sizeBytes"}},{"kind":"Field","name":{"kind":"Name","value":"url"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"NotePreview"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Note"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"thumbnail"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllAsset"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllSearchPageInfo"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"SearchPageInfo"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"hasPreviousPage"}},{"kind":"Field","name":{"kind":"Name","value":"hasNextPage"}},{"kind":"Field","name":{"kind":"Name","value":"startOffset"}},{"kind":"Field","name":{"kind":"Name","value":"endOffset"}},{"kind":"Field","name":{"kind":"Name","value":"pageSize"}}]}}]} as unknown as DocumentNode<SearchNotesQuery, SearchNotesQueryVariables>;
+export const UpdateMeDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateMe"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UpdateMeInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateMe"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"Me"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllAsset"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Asset"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"contentType"}},{"kind":"Field","name":{"kind":"Name","value":"sizeBytes"}},{"kind":"Field","name":{"kind":"Name","value":"url"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"Me"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"User"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"avatar"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllAsset"}}]}}]}}]} as unknown as DocumentNode<UpdateMeMutation, UpdateMeMutationVariables>;
+export const SetMyAvatarDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"SetMyAvatar"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"SetMyAvatarInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"setMyAvatar"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"Me"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllAsset"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Asset"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"contentType"}},{"kind":"Field","name":{"kind":"Name","value":"sizeBytes"}},{"kind":"Field","name":{"kind":"Name","value":"url"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"Me"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"User"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"avatar"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllAsset"}}]}}]}}]} as unknown as DocumentNode<SetMyAvatarMutation, SetMyAvatarMutationVariables>;
+export const MeDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Me"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"me"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"Me"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllAsset"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Asset"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"contentType"}},{"kind":"Field","name":{"kind":"Name","value":"sizeBytes"}},{"kind":"Field","name":{"kind":"Name","value":"url"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"Me"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"User"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"avatar"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllAsset"}}]}}]}}]} as unknown as DocumentNode<MeQuery, MeQueryVariables>;
+export const UserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"User"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"user"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"UserPreview"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllAsset"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Asset"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"contentType"}},{"kind":"Field","name":{"kind":"Name","value":"sizeBytes"}},{"kind":"Field","name":{"kind":"Name","value":"url"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"UserPreview"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"User"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"avatar"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllAsset"}}]}}]}}]} as unknown as DocumentNode<UserQuery, UserQueryVariables>;
+export const SearchUsersDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"SearchUsers"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"SearchInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"searchUsers"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"UserPreview"}}]}},{"kind":"Field","name":{"kind":"Name","value":"offset"}}]}},{"kind":"Field","name":{"kind":"Name","value":"pageInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllSearchPageInfo"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllAsset"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Asset"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"contentType"}},{"kind":"Field","name":{"kind":"Name","value":"sizeBytes"}},{"kind":"Field","name":{"kind":"Name","value":"url"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"UserPreview"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"User"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"avatar"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllAsset"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllSearchPageInfo"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"SearchPageInfo"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"hasPreviousPage"}},{"kind":"Field","name":{"kind":"Name","value":"hasNextPage"}},{"kind":"Field","name":{"kind":"Name","value":"startOffset"}},{"kind":"Field","name":{"kind":"Name","value":"endOffset"}},{"kind":"Field","name":{"kind":"Name","value":"pageSize"}}]}}]} as unknown as DocumentNode<SearchUsersQuery, SearchUsersQueryVariables>;
+export const UserCollectionDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"UserCollection"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"collectionId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"user"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"UserPreview"}},{"kind":"Field","name":{"kind":"Name","value":"collection"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"collectionId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllFragranceCollection"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllAsset"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Asset"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"contentType"}},{"kind":"Field","name":{"kind":"Name","value":"sizeBytes"}},{"kind":"Field","name":{"kind":"Name","value":"url"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllVoteInfo"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"VoteInfo"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"upvotes"}},{"kind":"Field","name":{"kind":"Name","value":"downvotes"}},{"kind":"Field","name":{"kind":"Name","value":"score"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"BrandPreview"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Brand"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"avatar"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllAsset"}}]}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllVoteInfo"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllFragranceImage"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImage"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"url"}},{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"height"}},{"kind":"Field","name":{"kind":"Name","value":"primaryColor"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragrancePreview"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Fragrance"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"releaseYear"}},{"kind":"Field","name":{"kind":"Name","value":"concentration"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"brand"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"BrandPreview"}}]}},{"kind":"Field","name":{"kind":"Name","value":"thumbnail"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllFragranceImage"}}]}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllVoteInfo"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllFragranceCollectionItem"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceCollectionItem"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"fragrance"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragrancePreview"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"UserPreview"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"User"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"avatar"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllAsset"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllFragranceCollection"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceCollection"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"items"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllFragranceCollectionItem"}}]}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"UserPreview"}}]}}]}}]} as unknown as DocumentNode<UserCollectionQuery, UserCollectionQueryVariables>;
+export const UserCollectionsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"UserCollections"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceCollectionPaginationInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"user"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"UserPreview"}},{"kind":"Field","name":{"kind":"Name","value":"collections"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllFragranceCollection"}}]}},{"kind":"Field","name":{"kind":"Name","value":"cursor"}}]}},{"kind":"Field","name":{"kind":"Name","value":"pageInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllPageInfo"}}]}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllAsset"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Asset"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"contentType"}},{"kind":"Field","name":{"kind":"Name","value":"sizeBytes"}},{"kind":"Field","name":{"kind":"Name","value":"url"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllVoteInfo"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"VoteInfo"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"upvotes"}},{"kind":"Field","name":{"kind":"Name","value":"downvotes"}},{"kind":"Field","name":{"kind":"Name","value":"score"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"BrandPreview"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Brand"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"avatar"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllAsset"}}]}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllVoteInfo"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllFragranceImage"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImage"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"url"}},{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"height"}},{"kind":"Field","name":{"kind":"Name","value":"primaryColor"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragrancePreview"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Fragrance"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"releaseYear"}},{"kind":"Field","name":{"kind":"Name","value":"concentration"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"brand"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"BrandPreview"}}]}},{"kind":"Field","name":{"kind":"Name","value":"thumbnail"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllFragranceImage"}}]}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllVoteInfo"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllFragranceCollectionItem"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceCollectionItem"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"fragrance"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragrancePreview"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"UserPreview"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"User"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"avatar"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllAsset"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllFragranceCollection"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceCollection"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"items"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllFragranceCollectionItem"}}]}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"UserPreview"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllPageInfo"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"PageInfo"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"hasPreviousPage"}},{"kind":"Field","name":{"kind":"Name","value":"hasNextPage"}},{"kind":"Field","name":{"kind":"Name","value":"startCursor"}},{"kind":"Field","name":{"kind":"Name","value":"endCursor"}}]}}]} as unknown as DocumentNode<UserCollectionsQuery, UserCollectionsQueryVariables>;
+export const UserReviewDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"UserReview"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"reviewId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"user"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"UserPreview"}},{"kind":"Field","name":{"kind":"Name","value":"review"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"reviewId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllFragranceReview"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllAsset"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Asset"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"contentType"}},{"kind":"Field","name":{"kind":"Name","value":"sizeBytes"}},{"kind":"Field","name":{"kind":"Name","value":"url"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"UserPreview"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"User"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"avatar"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllAsset"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllVoteInfo"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"VoteInfo"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"upvotes"}},{"kind":"Field","name":{"kind":"Name","value":"downvotes"}},{"kind":"Field","name":{"kind":"Name","value":"score"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"BrandPreview"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Brand"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"avatar"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllAsset"}}]}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllVoteInfo"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllFragranceImage"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImage"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"url"}},{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"height"}},{"kind":"Field","name":{"kind":"Name","value":"primaryColor"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragrancePreview"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Fragrance"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"releaseYear"}},{"kind":"Field","name":{"kind":"Name","value":"concentration"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"brand"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"BrandPreview"}}]}},{"kind":"Field","name":{"kind":"Name","value":"thumbnail"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllFragranceImage"}}]}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllVoteInfo"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllFragranceReview"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceReview"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"rating"}},{"kind":"Field","name":{"kind":"Name","value":"body"}},{"kind":"Field","name":{"kind":"Name","value":"author"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"UserPreview"}}]}},{"kind":"Field","name":{"kind":"Name","value":"fragrance"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragrancePreview"}}]}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllVoteInfo"}}]}}]}}]} as unknown as DocumentNode<UserReviewQuery, UserReviewQueryVariables>;
+export const UserReviewsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"UserReviews"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceReviewPaginationInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"user"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"UserPreview"}},{"kind":"Field","name":{"kind":"Name","value":"reviews"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllFragranceReview"}}]}},{"kind":"Field","name":{"kind":"Name","value":"cursor"}}]}},{"kind":"Field","name":{"kind":"Name","value":"pageInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllPageInfo"}}]}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllAsset"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Asset"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"contentType"}},{"kind":"Field","name":{"kind":"Name","value":"sizeBytes"}},{"kind":"Field","name":{"kind":"Name","value":"url"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"UserPreview"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"User"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"avatar"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllAsset"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllVoteInfo"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"VoteInfo"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"upvotes"}},{"kind":"Field","name":{"kind":"Name","value":"downvotes"}},{"kind":"Field","name":{"kind":"Name","value":"score"}},{"kind":"Field","name":{"kind":"Name","value":"myVote"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"BrandPreview"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Brand"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"avatar"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllAsset"}}]}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllVoteInfo"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllFragranceImage"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceImage"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"url"}},{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"height"}},{"kind":"Field","name":{"kind":"Name","value":"primaryColor"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FragrancePreview"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Fragrance"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"releaseYear"}},{"kind":"Field","name":{"kind":"Name","value":"concentration"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"brand"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"BrandPreview"}}]}},{"kind":"Field","name":{"kind":"Name","value":"thumbnail"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllFragranceImage"}}]}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllVoteInfo"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllFragranceReview"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FragranceReview"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"rating"}},{"kind":"Field","name":{"kind":"Name","value":"body"}},{"kind":"Field","name":{"kind":"Name","value":"author"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"UserPreview"}}]}},{"kind":"Field","name":{"kind":"Name","value":"fragrance"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FragrancePreview"}}]}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AllVoteInfo"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AllPageInfo"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"PageInfo"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"hasPreviousPage"}},{"kind":"Field","name":{"kind":"Name","value":"hasNextPage"}},{"kind":"Field","name":{"kind":"Name","value":"startCursor"}},{"kind":"Field","name":{"kind":"Name","value":"endCursor"}}]}}]} as unknown as DocumentNode<UserReviewsQuery, UserReviewsQueryVariables>;

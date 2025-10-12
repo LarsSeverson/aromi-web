@@ -3,7 +3,7 @@ import { Outlet, createFileRoute } from '@tanstack/react-router'
 import { client } from '@/common/client'
 import { FRAGRANCE_QUERY } from '@/features/fragrance/graphql/queries'
 import topbar from 'topbar'
-import { flatten } from '@/common/pagination'
+import { flatten } from '@/utils/pagination'
 
 export const Route = createFileRoute('/fragrance/$id')({
   component: Fragrance,

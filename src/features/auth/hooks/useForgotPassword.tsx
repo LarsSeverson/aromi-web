@@ -1,17 +1,14 @@
+import type { ForgotPasswordInput } from '@/generated/graphql'
 import { FORGOT_PASSWORD_MUTATION } from '../graphql/mutations'
-import { useMutation } from '@apollo/client'
+import { useMutation } from '@apollo/client/react'
+import { wrapQuery } from '@/utils/util'
 
 export const useForgotPassword = () => {
-  const [
-    forgotPassword,
-    { data, loading, error }
-  ] = useMutation(FORGOT_PASSWORD_MUTATION)
+  const [forgotPasswordInner] = useMutation(FORGOT_PASSWORD_MUTATION)
 
-  return {
-    data,
-    loading,
-    error,
-
-    forgotPassword
+  const forgotPassword = (input: ForgotPasswordInput) => {
+    return wrapQuery(forgotPasswordInner({ variables: { input } })).map(data => data.forgotPassword)
   }
+
+  return { forgotPassword }
 }

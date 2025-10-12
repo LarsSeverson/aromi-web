@@ -1,5 +1,5 @@
 import useAuth from '@/features/auth/hooks/useAuth'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { AuthContext } from './AuthContext'
 
 interface AuthProviderProps {
@@ -9,6 +9,10 @@ interface AuthProviderProps {
 export const AuthProvider = (props: AuthProviderProps) => {
   const { children } = props
   const auth = useAuth()
+
+  useEffect(() => {
+    auth.initialize()
+  }, [auth])
 
   if (!auth.hasInitialized) return null
 

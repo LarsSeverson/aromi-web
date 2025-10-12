@@ -1,15 +1,13 @@
-import { ApolloClient, ApolloLink, from, HttpLink, InMemoryCache, makeVar } from '@apollo/client'
-import { setContext } from '@apollo/client/link/context'
-import { customRelayStylePagination } from './pagination'
-import { print } from 'graphql'
+import { ApolloClient, ApolloLink, HttpLink, InMemoryCache, makeVar } from '@apollo/client'
+import { SetContextLink } from '@apollo/client/link/context'
 
 export const accessToken = makeVar<string | null>(null)
 
-const authLink = setContext(() => {
+const authLink = new SetContextLink(() => {
   const token = accessToken()
   return {
     headers: {
-      ...(token != null ? { authorization: `Bearer ${token}` } : {})
+      ...(token == null ? {} : { authorization: `Bearer ${token}` })
     }
   }
 })
@@ -19,61 +17,25 @@ const httpLink = new HttpLink({
   credentials: 'include'
 })
 
-const logLink = new ApolloLink((operation, forward) => {
-  const { query, variables, operationName } = operation
-  console.log('▶ GraphQL Request:', {
-    operationName,
-    query: print(query),
-    variables
-  })
-  return forward(operation).map(response => {
-    console.log('◀ GraphQL Response:', response)
-    return response
-  })
-})
+// const logLink = new ApolloLink((operation, forward) => {
+//   const { query, variables, operationName } = operation
+//   console.log('▶ GraphQL Request:', {
+//     operationName,
+//     query: print(query),
+//     variables
+//   })
+//   return forward(operation).map(response => {
+//     console.log('◀ GraphQL Response:', response)
+//     return response
+//   })
+// })
 
 export const client = new ApolloClient({
-  link: from([authLink, /* logLink, */ httpLink]),
+  link: ApolloLink.from([authLink, /* logLink, */ httpLink]),
   cache: new InMemoryCache({
     typePolicies: {
       Query: {
-        fields: {
-          fragrances: customRelayStylePagination(),
-          fragrance: {
-            keyArgs: ['id'],
-            merge (_, incoming) {
-              return incoming
-            }
-          }
-        }
-      },
-      Fragrance: {
-        keyFields: ['id'],
-        fields: {
-          accords: customRelayStylePagination(),
-          fillerAccords: customRelayStylePagination(),
 
-          notes: {
-            merge (existing = {}, incoming) {
-              return { ...existing, ...incoming }
-            }
-          }
-        }
-      },
-      FragranceNotes: {
-        fields: {
-          top: customRelayStylePagination(),
-          fillerTop: customRelayStylePagination(),
-
-          middle: customRelayStylePagination(),
-          fillerMiddle: customRelayStylePagination(),
-
-          bottom: customRelayStylePagination(),
-          fillerBottom: customRelayStylePagination()
-        }
-      },
-      FragranceNote: {
-        keyFields: ['id', 'layer']
       }
     }
   })

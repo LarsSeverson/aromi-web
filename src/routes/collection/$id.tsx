@@ -1,7 +1,7 @@
 import React from 'react'
 import { Outlet, createFileRoute } from '@tanstack/react-router'
 import { client } from '@/common/client'
-import { COLLECTION_QUERY } from '@/features/collection/graphql/queries'
+import { COLLECTION_QUERY } from '@/features/collections/graphql/queries'
 
 export const Route = createFileRoute('/collection/$id')({
   component: Collection,

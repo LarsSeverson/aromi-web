@@ -9,16 +9,7 @@ import { useMyContext } from '@/features/user/contexts/MyContext'
 const SideBar = () => {
   const location = useLocation()
   const myContext = useMyContext()
-  // const { isAuthenticated } = useAuthContext()
 
-  const getInitialActive = () => {
-    if (location.pathname.startsWith('/search')) return 'search'
-    if (location.pathname.startsWith('/user')) return 'profile'
-
-    return 'home'
-  }
-
-  const [active, setActive] = useState(getInitialActive())
 
   return (
     <nav

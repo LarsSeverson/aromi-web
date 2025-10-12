@@ -35,7 +35,6 @@
     "**/*.tsx"
   ],
   "exclude": [
-    "node_modules",
-    "aromi-backend"
+    "node_modules"
   ]
 }

@@ -4,7 +4,7 @@ import { z } from 'zod'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/')({
-  component: Home,
+  component: RouteComponent,
   validateSearch: z
     .object({
       showLogIn: z
@@ -16,7 +16,7 @@ export const Route = createFileRoute('/')({
     })
 })
 
-function Home () {
+function RouteComponent () {
   return (
     <HomePage />
   )

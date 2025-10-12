@@ -1,7 +1,7 @@
 import React, { useMemo, useState, useCallback } from 'react'
 import clsx from 'clsx'
 import { DislikeIcon, FillDislikeIcon, FillLikeIcon, LikeIcon } from './Icons'
-import { formatNumber } from '@/common/string-utils'
+import { formatNumber } from '@/utils/string-utils'
 import BouncyButton from './BouncyButton'
 import Divider from './Divider'
 

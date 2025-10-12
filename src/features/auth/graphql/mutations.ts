@@ -3,22 +3,20 @@ import { gql } from '@/generated'
 export const REFRESH_MUTATION = gql(/* GraphQL */ `
   mutation Refresh {
     refresh {
-      ...AuthPayloadBase 
+      ...AllAuthTokenPayload
     }
   }
 `)
 
 export const LOG_IN_MUTATION = gql(/* GraphQL */ `
   mutation LogIn(
-    $email: String!
-    $password: String!
+    $input: LogInInput!
   ) {
-    logIn(email: $email, password: $password) {
-      ...AuthPayloadBase
+    logIn(input: $input) { 
+      ...AllAuthTokenPayload
     }
   }
 `)
-
 export const LOG_OUT_MUTATION = gql(/* GraphQL */ `
   mutation LogOut {
     logOut
@@ -27,54 +25,48 @@ export const LOG_OUT_MUTATION = gql(/* GraphQL */ `
 
 export const SIGN_UP_MUTATION = gql(/* GraphQL */ `
   mutation SignUp(
-    $email: String!
-    $password: String!
+    $input: SignUpInput!
   ) {
-    signUp(email: $email, password: $password) {
-      ...DeliveryResultBase
+    signUp(input: $input) {
+      ...AllAuthDeliveryResult
     }
   }
 `)
+
 export const CONFIRM_SIGN_UP_MUTATION = gql(/* GraphQL */ `
   mutation ConfirmSignUp(
-    $email: String!
-    $confirmationCode: String!
+    $input: ConfirmSignUpInput!
   ) {
-    confirmSignUp(
-      email: $email
-      confirmationCode: $confirmationCode
-    ) {
-      ...UserSummary
+    confirmSignUp(input: $input) {
+      ...Me
     }
   }
 `)
-export const RESEND_SIGN_UP_CONFIRMATION_MUTATION = gql(/* GraphQL */ `
-  mutation ResendSignUpConfirmationCode(
-    $email: String!
+
+export const RESEND_SIGN_UP_CODE_MUTATION = gql(/* GraphQL */ `
+  mutation ResendSignUpCode(
+    $input: ResendSignUpCodeInput!
   ) {
-    resendSignUpConfirmationCode(email: $email) {
-      ...DeliveryResultBase
+    resendSignUpCode(input: $input) {
+      ...AllAuthDeliveryResult
     }
   }
 `)
+
 export const FORGOT_PASSWORD_MUTATION = gql(/* GraphQL */ `
   mutation ForgotPassword(
-    $email: String!
+    $input: ForgotPasswordInput!
   ) {
-    forgotPassword(email: $email) {
-      ...DeliveryResultBase
+    forgotPassword(input: $input) {
+      ...AllAuthDeliveryResult
     }
   }
 `)
 
 export const CONFIRM_FORGOT_PASSWORD_MUTATION = gql(/* GraphQL */ `
   mutation ConfirmForgotPassword(
-    $email: String!
-    $confirmationCode: String!
-    $newPassword: String!
+    $input: ConfirmForgotPasswordInput!
   ) {
-    confirmForgotPassword(email: $email, confirmationCode: $confirmationCode, newPassword: $newPassword) {
-      complete
-    }
+    confirmForgotPassword(input: $input)
   }
 `)

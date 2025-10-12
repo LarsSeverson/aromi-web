@@ -1,17 +1,13 @@
 import { LOG_OUT_MUTATION } from '../graphql/mutations'
-import { useMutation } from '@apollo/client'
+import { useMutation } from '@apollo/client/react'
+import { wrapQuery } from '@/utils/util'
 
 export const useLogOut = () => {
-  const [
-    logOut,
-    { data, loading, error }
-  ] = useMutation(LOG_OUT_MUTATION)
+  const [logOutInner] = useMutation(LOG_OUT_MUTATION)
 
-  return {
-    data,
-    loading,
-    error,
-
-    logOut
+  const logOut = () => {
+    return wrapQuery(logOutInner()).map(data => data.logOut)
   }
+
+  return { logOut }
 }
