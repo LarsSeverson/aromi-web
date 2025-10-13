@@ -57,7 +57,7 @@ const AssetChip = (props: AssetChipProps) => {
     <div
       className={clsx(
         'border-2 rounded-md p-3 relative max-w-sm min-w-[15rem] flex-1',
-        isError ? 'bg-red-950 bg-opacity-90 border-red-950' : 'bg-surface/30'
+        isError ? 'bg-red-950 bg-opacity-90 border-red-950' : 'bg-empty/30'
       )}
     >
       <div

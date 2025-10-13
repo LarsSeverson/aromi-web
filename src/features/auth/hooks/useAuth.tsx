@@ -68,10 +68,8 @@ const useAuth = () => {
 
   const logIn = (input: LogInInput) => {
     return logInInner(input)
-      .andThrough(() => refreshMe())
-      .andTee(payload => {
+      .andThen(payload => {
         applyNewPayload(payload)
-        setIsAuthenticated(payload != null)
 
         const delay = getAccessTokenExpiration()
 
@@ -83,6 +81,11 @@ const useAuth = () => {
             delay
           )
         }
+
+        return refreshMe()
+      })
+      .andTee(() => {
+        setIsAuthenticated(true)
       })
   }
 

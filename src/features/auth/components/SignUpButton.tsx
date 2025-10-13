@@ -7,9 +7,9 @@ const SignUpButton = () => {
     <Dialog.Trigger
       className={clsx(
         'flex h-[33px] items-center justify-center px-3.5 select-none align-middle',
-        'rounded-md border-2 border-primary',
+        'rounded-md text-white',
         'text-sm font-medium leading-none',
-        'bg-surface hover:bg-surface2 active:bg-surface2',
+        'bg-sinopia cursor-pointer hover:brightness-105',
         'focus-visible:outline-2 focus-visible:-outline-offset-1'
       )}
     >

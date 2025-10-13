@@ -46,7 +46,7 @@ const InformationPasswordStep = (props: InformationPasswordStepProps) => {
 
   return (
     <div
-      className='flex flex-col'
+      className='flex flex-col gap-2'
     >
       <span
         className='text-2xl self-start'
@@ -66,6 +66,7 @@ const InformationPasswordStep = (props: InformationPasswordStepProps) => {
 
       <Form
         onSubmit={handleOnSubmit}
+        className='flex flex-col mt-4 gap-3'
       >
         <EmailInput
           label='Enter your email'

@@ -1,5 +1,48 @@
-import React from 'react'
+import { DynamicList } from '@/components/DynamicList'
+import { ResizeContainer } from '@/components/ResizeContainer'
+import { useFragrances } from '@/features/fragrances'
+import { FragrancePreviewCard } from '@/features/fragrances/components/FragrancePreviewCard'
+import FragrancePreviewCardLoading from '@/features/fragrances/components/FragrancePreviewCardLoading'
+import type { FragrancePreviewFragment } from '@/generated/graphql'
+import { useCallback, useState } from 'react'
 
 export const HomePage = () => {
-  return null
+  const { fragrances, isLoading, isLoadingMore } = useFragrances()
+
+  const [containerRect, setContainerRect] = useState(new DOMRect())
+
+  const onRenderFragrance = useCallback(
+    (fragrance: FragrancePreviewFragment) => (
+      <FragrancePreviewCard
+        key={fragrance.id}
+        fragrance={fragrance}
+      />
+    ),
+    []
+  )
+
+  const onRenderFragranceSkeleton = useCallback(
+    () => (
+      <FragrancePreviewCardLoading />
+    ),
+    []
+  )
+
+  return (
+    <div
+      className='p-4'
+    >
+      <ResizeContainer
+        onResize={setContainerRect}
+      >
+        <DynamicList
+          items={fragrances}
+          containerWidth={containerRect?.width}
+          loading={isLoading || isLoadingMore}
+          onRenderItem={onRenderFragrance}
+          onRenderSkeleton={onRenderFragranceSkeleton}
+        />
+      </ResizeContainer>
+    </div>
+  )
 }

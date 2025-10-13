@@ -2,7 +2,7 @@ import React from 'react'
 import BouncyButton from '@/components/BouncyButton'
 import RatingStars from '@/components/RatingStars'
 import { Colors } from '@/styles/Colors'
-import { VoteButton } from '@/components/VoteButton'
+import { VoteButtonGroup } from '@/components/VoteButtonGroup'
 import { TbMessage2Star } from 'react-icons/tb'
 import { formatNumber } from '@/utils/string-utils'
 import { PiShareFat } from 'react-icons/pi'
@@ -81,7 +81,7 @@ const FragranceInfoSection = (props: FragranceInfoSectionProps) => {
       </div>
 
       <div className='flex flex-row items-end mb-3 gap-3'>
-        <VoteButton
+        <VoteButtonGroup
           votes={voteScore}
           myVote={myVote}
           onVote={handleFragranceVote}

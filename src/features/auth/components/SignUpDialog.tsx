@@ -35,11 +35,17 @@ const SignUpDialog = () => {
 
   useEffect(() => {
     if (showSignUp === true) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setIsOpen(true)
-      void navigate({ from: '/', search: { showSignUp: undefined } })
+      navigate({ from: '/', search: { showSignUp: undefined } })
     }
 
     if (showLogIn === false) {
+      setIsOpen(false)
+      navigate({ from: '/', search: { showSignUp: undefined } })
+    }
+
+    if (showLogIn === true) {
       setIsOpen(false)
     }
   }, [showLogIn, showSignUp, navigate])

@@ -33,7 +33,7 @@ const NewPasswordStep = (props: NewPasswordStepProps) => {
     await confirmForgotPassword({ email, code, password })
       .match(
         () => {
-          toastMessage('Your password has been updated')
+          toastMessage('Password updated', 'Log in with your new password')
           void navigate({ to: '/', search: { showLogIn: true } })
         },
         error => {
@@ -59,7 +59,7 @@ const NewPasswordStep = (props: NewPasswordStepProps) => {
 
   return (
     <div
-      className='flex flex-col'
+      className='flex flex-col gap-3'
     >
       <div
         className='mr-auto mb-3'
@@ -82,7 +82,7 @@ const NewPasswordStep = (props: NewPasswordStepProps) => {
       </span>
 
       <div
-        className='flex flex-col gap-1 my-4'
+        className='flex flex-col gap-1 my-2'
       >
         <span
           className='font-semibold text-md'
@@ -101,7 +101,7 @@ const NewPasswordStep = (props: NewPasswordStepProps) => {
 
           <button
             type='button'
-            className='aspect-square rounded-full p-2 hover:bg-surface2'
+            className='aspect-square rounded-full p-2 hover:bg-black/10'
             onClick={onEditEmail}
           >
             <FiEdit2
@@ -119,6 +119,7 @@ const NewPasswordStep = (props: NewPasswordStepProps) => {
 
       <Form
         onSubmit={handleOnSubmit}
+        className='flex flex-col gap-3'
       >
         <CodeInput />
 

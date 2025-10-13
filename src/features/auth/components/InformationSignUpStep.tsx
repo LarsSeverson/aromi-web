@@ -57,14 +57,18 @@ const InformationSignUpStep = (props: InformationSignUpStepProps) => {
       />
 
       <Form
-        className='flex flex-col mt-4'
+        className='flex flex-col mt-4 gap-3'
         errors={errors}
         onClearErrors={setErrors}
         onSubmit={(e) => { void handleSubmit(e) }}
       >
         <EmailInput />
 
-        <PasswordInput />
+        <div
+          className='mb-3'
+        >
+          <PasswordInput />
+        </div>
 
         <SubmitButton
           isLoading={isLoading}

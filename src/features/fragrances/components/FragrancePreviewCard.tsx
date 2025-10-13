@@ -1,35 +1,21 @@
-import { type Fragrance } from '@/generated/graphql'
+import type { FragrancePreviewFragment } from '@/generated/graphql'
 import clsx from 'clsx'
 import React, { useState } from 'react'
-import { VoteButton } from '@/components/VoteButton'
-import { Link, type LinkProps } from '@tanstack/react-router'
-import CollectionPopover from '@/features/collections/components/CollectionPopover'
-import { INVALID_ID } from '@/utils/util-types'
-import FragranceImageCard, { type FragranceImageCardImage } from './FragranceImageCard'
-import { useMyContext } from '@/features/user/contexts/MyContext'
-import { type FlattenedConnection } from '@/utils/pagination'
-import { useVoteOnFragrance } from '@/features/fragrance/hooks/useVoteOnFragrance'
-import { ResultAsync } from 'neverthrow'
-import { type ApolloError } from '@apollo/client'
-import ShareFragrancePopover from '@/features/fragrance/components/ShareFragrancePopover'
-import { useToastError } from '@/hooks/useToastError'
+import { VoteButtonGroup } from '@/components/VoteButtonGroup'
+import { Link } from '@tanstack/react-router'
+import FragranceImageCard from './FragranceImageCard'
+import { useVoteOnFragrance } from '../hooks/useVoteOnFragrance'
+import ShareFragrancePopover from './ShareFragrancePopover'
 
-export type FragrancePreviewCardFragrance = Pick<FlattenedConnection<Fragrance>, 'id' | 'name' | 'brand' | 'votes'> & {
-  images: FragranceImageCardImage[]
-}
-
-export interface FragrancePreviewCardProps extends LinkProps {
-  fragrance: FragrancePreviewCardFragrance
-  className?: string | undefined
+export interface FragrancePreviewCardProps {
+  fragrance: FragrancePreviewFragment
 }
 
 export const FragrancePreviewCard = (props: FragrancePreviewCardProps) => {
-  const { fragrance, className, to, params, ...rest } = props
+  const { fragrance, ...rest } = props
+  const { id, name, brand, votes } = fragrance
 
-  const myContext = useMyContext()
-
-  const { toastApolloError } = useToastError()
-  const { voteOnFragrance } = useVoteOnFragrance()
+  const { vote } = useVoteOnFragrance()
 
   const [isPopoverOpen, setIsPopoverOpen] = useState(false)
   const [isLinkFocused, setIsLinkFocused] = useState(false)
@@ -38,31 +24,14 @@ export const FragrancePreviewCard = (props: FragrancePreviewCardProps) => {
     setIsLinkFocused(true)
   }
 
-  const handleLinkBlur = () => {
-    // setIsLinkFocused(false)
-  }
+  const handleVoteOnFragrance = async () => {
 
-  const handleVoteOnFragrance = async (vote: boolean | null) => {
-    await ResultAsync
-      .fromPromise(
-        voteOnFragrance({
-          variables: {
-            input: { fragranceId: fragrance.id, vote }
-          }
-        }),
-        error => error as ApolloError
-      )
-      .match(
-        _ => {},
-        toastApolloError
-      )
   }
 
   return (
     <div
       className={clsx(
-        'group hover:cursor-pointer relative flex flex-col h-full',
-        className
+        'group hover:cursor-pointer relative flex flex-col h-full'
       )}
       onMouseEnter={() => { setIsLinkFocused(false) }}
     >
@@ -70,19 +39,19 @@ export const FragrancePreviewCard = (props: FragrancePreviewCardProps) => {
         className='flex-1 flex flex-col rounded-2xl relative pointer-events-none'
       >
         <Link
-          to={to ?? '/fragrance/$id'}
-          params={params ?? { id: String(fragrance.id) }}
+          to='/fragrances/$id'
+          params={{ id }}
           className='flex flex-1 rounded-2xl pointer-events-auto'
           onFocus={handleLinkFocus}
-          onBlur={handleLinkBlur}
           tabIndex={0}
           {...rest}
         >
           <FragranceImageCard
-            active={isLinkFocused || isPopoverOpen}
-            image={fragrance.images.at(0)}
+            isActive={isLinkFocused || isPopoverOpen}
+            fragrance={fragrance}
           />
         </Link>
+
         <div
           className={clsx(
             'absolute inset-0 opacity-0 transition-opacity pointer-events-none',
@@ -93,42 +62,51 @@ export const FragrancePreviewCard = (props: FragrancePreviewCardProps) => {
           <div
             className='pointer-events-auto absolute top-3 right-3'
           >
-            <CollectionPopover
+            {/* <CollectionPopover
               userId={myContext.me?.id ?? INVALID_ID}
               fragrance={fragrance}
               onOpenChangeComplete={setIsPopoverOpen}
-            />
+            /> */}
           </div>
+
           <div
             className='pointer-events-auto'
           >
             <ShareFragrancePopover
-              userId={myContext.me?.id ?? INVALID_ID}
               fragrance={fragrance}
               onOpenChangeComplete={setIsPopoverOpen}
             />
           </div>
         </div>
+
         <div
           className='pointer-events-auto'
         >
-          <VoteButton
-            votes={fragrance.votes.voteScore}
-            myVote={fragrance.votes.myVote}
+          <VoteButtonGroup
+            votes={votes}
             className='absolute bottom-3 right-3 z-10'
             onVote={handleVoteOnFragrance}
           />
         </div>
       </div>
 
-      <div className='px-1 pt-2'>
-        <div className='flex flex-row'>
-          <h5 className='flex-1 truncate font-semibold text-sm'>
-            {fragrance.name}
+      <div
+        className='px-1 pt-2'
+      >
+        <div
+          className='flex flex-row'
+        >
+          <h5
+            className='flex-1 truncate font-semibold text-sm'
+          >
+            {name}
           </h5>
         </div>
-        <h6 className='truncate text-sm'>
-          {fragrance.brand}
+
+        <h6
+          className='truncate text-sm'
+        >
+          {brand.name}
         </h6>
       </div>
     </div>

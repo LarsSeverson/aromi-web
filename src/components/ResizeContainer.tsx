@@ -7,6 +7,7 @@ export interface ResizeContainerProps extends Omit<React.HTMLAttributes<HTMLDivE
 
 export const ResizeContainer = (props: ResizeContainerProps) => {
   const { children, onResize, ...rest } = props
+
   const ref = useRef<HTMLDivElement>(null)
   const resizeTimer = useRef<ReturnType<typeof setTimeout>>(null)
 
@@ -16,7 +17,7 @@ export const ResizeContainer = (props: ResizeContainerProps) => {
 
       resizeTimer.current = setTimeout(() => {
         entries.forEach(entry => onResize?.(entry.contentRect))
-      }, 300)
+      }, 150)
     })
 
     if (ref.current != null) {

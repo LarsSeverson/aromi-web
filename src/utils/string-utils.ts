@@ -9,3 +9,10 @@ export const formatBytes = (bytes: number) => {
   }
   return `${n.toFixed(n < 10 && i > 0 ? 1 : 0)} ${units[i]}`
 }
+
+export const formatNumber = (num: number) => {
+  if (!Number.isFinite(num)) return ''
+  if (num >= 1_000_000) return `${(num / 1_000_000).toFixed(1)}M`
+  if (num >= 1_000) return `${(num / 1_000).toFixed(1)}K`
+  return num.toString()
+}

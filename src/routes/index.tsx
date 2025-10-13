@@ -8,10 +8,10 @@ export const Route = createFileRoute('/')({
   validateSearch: z
     .object({
       showLogIn: z
-        .string()
+        .boolean()
         .optional(),
       showSignUp: z
-        .string()
+        .boolean()
         .optional()
     })
 })

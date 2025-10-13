@@ -1,7 +1,7 @@
 import { Colors } from '@/styles/Colors'
 import React from 'react'
 import { formatDate } from '@/utils/string-utils'
-import { VoteButton } from '@/components/VoteButton'
+import { VoteButtonGroup } from '@/components/VoteButtonGroup'
 import RatingStars from '@/components/RatingStars'
 import clsx from 'clsx'
 import UserAvatar from '@/features/user/components/UserAvatar'
@@ -105,7 +105,7 @@ export const FragranceReviewCard = (props: FragranceReviewCardProps) => {
         </p>
       )}
 
-      <VoteButton
+      <VoteButtonGroup
         votes={votes.voteScore}
         myVote={votes.myVote}
         className='mr-auto'

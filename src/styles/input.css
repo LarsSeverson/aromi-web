@@ -74,7 +74,8 @@
 }
 
 html, body {
-  @apply bg-empty font-inter text-kobicha;
+  @apply font-inter;
+  scrollbar-gutter: stable;
 }
 
 #root {

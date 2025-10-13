@@ -99,7 +99,10 @@ export default [
 
       // React
       'react/jsx-first-prop-new-line': ['error', 'multiline'],
-      'react/jsx-max-props-per-line': ['error', { maximum: 1 }]
+      'react/jsx-max-props-per-line': ['error', { maximum: 1, when: 'always' }],
+      'react/jsx-first-prop-new-line': ['error', 'multiline'],
+      'react/jsx-max-props-per-line': ['error', { maximum: 1 }],
+      'react/jsx-closing-bracket-location': ['error', 'line-aligned']
     }
   }
 ]

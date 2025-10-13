@@ -1,11 +1,10 @@
 import React, { useState } from 'react'
-import { Overlay } from './Overlay'
 import clsx from 'clsx'
 
 export interface ProgressiveImageProps {
   src: string
   alt: string
-  placeholderColor?: string
+  placeholderColor?: string | null
   fallbackImage?: string
 }
 
@@ -13,7 +12,7 @@ const ProgressiveImage = (props: ProgressiveImageProps) => {
   const {
     src,
     alt,
-    placeholderColor = 'white',
+    placeholderColor,
     fallbackImage = ''
   } = props
 
@@ -22,10 +21,10 @@ const ProgressiveImage = (props: ProgressiveImageProps) => {
   return (
     <div
       className={clsx(
-        'w-full h-full relative overflow-hidden'
+        'w-full h-full relative overflow-hidden bg-empty'
       )}
       style={{
-        backgroundColor: placeholderColor,
+        backgroundColor: placeholderColor ?? undefined,
         fontSize: isLoading ? 0 : 14
       }}
     >
@@ -33,14 +32,17 @@ const ProgressiveImage = (props: ProgressiveImageProps) => {
         src={src ?? fallbackImage}
         alt={alt}
         loading='lazy'
-        className='object-cover absolute w-full h-full bg-transparent'
+        className='object-cover absolute w-full h-full'
         onLoad={() => { setIsLoading(false) }}
         onError={({ currentTarget }) => {
           currentTarget.onerror = null
           currentTarget.src = fallbackImage
         }}
       />
-      <Overlay />
+
+      <div
+        className='bg-gray-400 w-full h-full absolute opacity-10'
+      />
     </div>
   )
 }

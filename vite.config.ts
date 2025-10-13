@@ -3,8 +3,6 @@ import react from '@vitejs/plugin-react'
 import path from 'node:path'
 import tanstackRouter from '@tanstack/router-plugin/vite'
 import tailwindcss from '@tailwindcss/vite'
-import { babelOptimizerPlugin } from '@graphql-codegen/client-preset'
-import BabelPluginReactCompiler from 'babel-plugin-react-compiler'
 
 export default defineConfig({
   plugins: [
@@ -16,9 +14,7 @@ export default defineConfig({
       babel: {
         plugins: [
           [
-            BabelPluginReactCompiler,
-            babelOptimizerPlugin,
-            { artifactDirectory: './src/generated', gqlTagName: 'gql' }
+            'babel-plugin-react-compiler'
           ]
         ]
       }

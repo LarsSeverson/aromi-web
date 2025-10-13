@@ -12,7 +12,7 @@ const CodeInput = (props: CodeInputProps) => {
   return (
     <Field.Root
       name='code'
-      className='flex flex-col'
+      className='flex flex-col max-w-3xs'
     >
       <Field.Label
         className='font-semibold text-md mb-1'

@@ -1,26 +1,24 @@
 import clsx from 'clsx'
 import React from 'react'
 
-export interface SpinnerProps {
-  size?: number | undefined
-  color?: string | undefined
+export interface SpinnerProps extends React.ComponentProps<'div'> {
+  size?: number
 }
 
 const Spinner = (props: SpinnerProps) => {
-  const { size = 20, color = 'white' } = props
-
-  const className = clsx(
-    'border-t-2 border-b-2 rounded-full animate-spin',
-    `border-${color}`
-  )
+  const { size = 6, className, ...rest } = props
 
   return (
     <div
-      className='absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none'
+      className='inset-0 flex items-center justify-end'
     >
       <div
-        className={className}
-        style={{ width: size, height: size }}
+        className={clsx(
+          className,
+          'animate-spin rounded-full aspect-square border-t-2 border-black border-solid',
+          `h-${size}`
+        )}
+        {...rest}
       />
     </div>
   )

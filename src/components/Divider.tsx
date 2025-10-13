@@ -2,7 +2,7 @@ import clsx from 'clsx'
 import React from 'react'
 
 export interface DividerProps extends React.HTMLAttributes<HTMLDivElement> {
-  horizontal?: boolean | undefined
+  horizontal?: boolean
 }
 
 const Divider = (props: DividerProps) => {
@@ -11,9 +11,9 @@ const Divider = (props: DividerProps) => {
   return (
     <div
       className={clsx(
-        'w-[1px] h-[1px] bg-gray-200',
-        (horizontal ?? false) ? 'w-full' : 'h-full',
-        className
+        className,
+        'w-[1px] h-[1px] bg-empty',
+        (horizontal ?? false) ? 'w-full' : 'h-full'
       )}
       {...rest}
     />

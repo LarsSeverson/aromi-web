@@ -1,22 +1,25 @@
 import React, { useState, type SyntheticEvent } from 'react'
 import { Popover } from '@base-ui-components/react'
-import { type FragrancePreviewCardFragrance } from './FragrancePreviewCard'
 import { GoShare } from 'react-icons/go'
 import BouncyButton from '@/components/BouncyButton'
 import { HiOutlineLink } from 'react-icons/hi'
 import { useRouter } from '@tanstack/react-router'
 import { ResultAsync } from 'neverthrow'
 import Divider from '@/components/Divider'
+import type { FragrancePreviewFragment } from '@/generated/graphql'
+import { useToastMessage } from '@/hooks/useToastMessage'
 
 export interface ShareFragrancePopoverProps extends Popover.Root.Props {
-  userId: number
-  fragrance: FragrancePreviewCardFragrance
+  fragrance: FragrancePreviewFragment
   onRenderTrigger?: () => React.ReactNode
 }
 
 const ShareFragrancePopover = (props: ShareFragrancePopoverProps) => {
+  const { fragrance, onRenderTrigger, ...rest } = props
+  const { id } = fragrance
+
   const router = useRouter()
-  const { userId, fragrance, onRenderTrigger, ...rest } = props
+  const { toastError } = useToastMessage()
 
   const [isLinkLoading, setIsLinkLoading] = useState(false)
   const [showLinkFeedback, setShowLinkFeedback] = useState(false)
@@ -33,14 +36,12 @@ const ShareFragrancePopover = (props: ShareFragrancePopoverProps) => {
   const handleShareLink = async () => {
     setIsLinkLoading(true)
 
-    const href = router
-      .buildLocation({
-        to: '/fragrance/$id',
-        params: { id: String(fragrance.id) }
-      })
-      .href
+    const location = router.buildLocation({
+      to: '/fragrances/$id',
+      params: { id }
+    })
 
-    const url = `${window.location.origin}${href}`
+    const url = `${window.location.origin}${location.href}`
 
     await ResultAsync
       .fromPromise(
@@ -54,13 +55,12 @@ const ShareFragrancePopover = (props: ShareFragrancePopoverProps) => {
             setShowLinkFeedback(false)
           }, 2500)
         },
-        error => {
-          console.log(error)
+        _ => {
+          toastError('Failed to copy link to clipboard. Please try again.')
         }
       )
-      .finally(() => {
-        setIsLinkLoading(false)
-      })
+
+    setIsLinkLoading(false)
   }
 
   return (
@@ -78,6 +78,7 @@ const ShareFragrancePopover = (props: ShareFragrancePopoverProps) => {
             />
           </Popover.Trigger>
         )}
+
       <Popover.Portal>
         <Popover.Positioner
           sideOffset={8}
@@ -92,17 +93,20 @@ const ShareFragrancePopover = (props: ShareFragrancePopoverProps) => {
               <p>
                 Share
               </p>
+
               <p
                 className='text-sm font-medium text-gray-600'
               >
                 {fragrance.name}
               </p>
+
               <p
                 className='text-xs font-light text-gray-500'
               >
-                {fragrance.brand}
+                {fragrance.brand.name}
               </p>
             </Popover.Title>
+
             <div
               className='overflow-auto w-full mb-4 space-y-4 px-2'
               style={{ scrollbarGutter: 'stable' }}
@@ -122,6 +126,7 @@ const ShareFragrancePopover = (props: ShareFragrancePopoverProps) => {
                       size={20}
                     />
                   </BouncyButton>
+
                   <p
                     className='text-xs'
                   >
@@ -129,6 +134,7 @@ const ShareFragrancePopover = (props: ShareFragrancePopoverProps) => {
                   </p>
                 </div>
               </div>
+
               <div
                 className='px-2'
               >

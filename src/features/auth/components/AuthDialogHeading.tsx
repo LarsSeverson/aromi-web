@@ -1,9 +1,9 @@
 import React from 'react'
-import LogoCubeSvg from '@/components/LogoCubeSvg'
 import { Dialog } from '@base-ui-components/react'
 import clsx from 'clsx'
 import { IoClose } from 'react-icons/io5'
 import ErrorFeedback from '@/components/ErrorFeedback'
+import LogoSvg from '@/components/LogoSvg'
 
 export interface AuthDialogHeadingProps {
   error: string | null
@@ -20,7 +20,7 @@ const AuthDialogHeading = (props: AuthDialogHeadingProps) => {
         <Dialog.Close
           className={clsx(
             'flex h-9 aspect-square items-center justify-center select-none rounded-full',
-            'border border-surface2 bg-surface hover:bg-surface2',
+            'border border-surface2 bg-empty hover:bg-black/10',
             'text-base font-medium',
             'focus-visible:outline-2 focus-visible:-outline-offset-1'
           )}
@@ -34,15 +34,15 @@ const AuthDialogHeading = (props: AuthDialogHeadingProps) => {
       <div
         className='gap-4 flex flex-col justify-center items-center mt-3'
       >
-        <LogoCubeSvg
-          width={38}
-          height={38}
+        <LogoSvg
+          width={48}
+          height={48}
         />
 
         <h1
           className='text-3xl text-center font-jp'
         >
-          Welcome to ondrop
+          Welcome to aromi
         </h1>
 
         <ErrorFeedback

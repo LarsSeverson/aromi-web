@@ -1,58 +1,77 @@
-import React, { useState } from 'react'
-import { CommunityIcon, HomeIcon, Logo, ProfileIcon, SearchIcon } from './Icons'
-import SideBarButton from './SideBarButton'
-import { Link, useLocation } from '@tanstack/react-router'
+import React from 'react'
+import { Link, useRouterState } from '@tanstack/react-router'
 import clsx from 'clsx'
-import { useMyContext } from '@/features/user/contexts/MyContext'
-// import { useAuthContext } from '@/contexts/AuthContext'
+import LogoSvg from './LogoSvg'
+import SearchSvg from './SearchSvg'
+import HomeSvg from './HomeSvg'
+import ProfileSvg from './ProfileSvg'
+import { NAV_HOME, NAV_PROFILE, NAV_SEARCH } from '@/common/nav'
 
 const SideBar = () => {
-  const location = useLocation()
-  const myContext = useMyContext()
-
+  const matches = useRouterState({ select: state => state.matches })
+  const currentPath = matches[matches.length - 1]?.routeId
 
   return (
     <nav
-      className='box-border fixed h-screen w-[72px] bg-white z-50 flex flex-row border-r-[1px]'
+      className='flex flex-col p-3 gap-7 relative border-r h-full'
     >
-      <div
-        className='flex flex-col p-3 gap-7 relative'
+      <Link
+        to='/'
+        className={clsx(
+          'transition-transform active:scale-95 backdrop-brightness-100 hover:backdrop-brightness-90 p-3 flex justify-center items-center select-none relative',
+          'rounded-xl aspect-square'
+        )}
       >
-        <Link
-          to='/'
-          className={clsx(
-            'transition-transform active:scale-95 backdrop-brightness-100 hover:backdrop-brightness-90 p-3 flex justify-center items-center select-none relative',
-            'rounded-xl aspect-square'
-          )}
-          onClick={() => { setActive('home') }}
-        >
-          <Logo />
-        </Link>
-        <SideBarButton
-          to='/'
-          Icon={<HomeIcon />}
-          active={active === 'home'}
-          onClick={() => { setActive('home') }}
+        <LogoSvg
+          width={22}
+          height={22}
         />
-        <SideBarButton
-          to='/search'
-          Icon={<SearchIcon />}
-          active={active === 'search'}
-          onClick={() => { setActive('search') }}
+      </Link>
+
+      <Link
+        to='/'
+        className={clsx(
+          'backdrop-brightness-100 hover:backdrop-brightness-90 p-3 flex justify-center items-center select-none relative',
+          'transition-transform active:scale-95',
+          'rounded-xl aspect-square',
+          NAV_HOME.activePaths.includes(currentPath) && 'bg-black/10'
+        )}
+      >
+        <HomeSvg
+          width={20}
+          height={20}
         />
-        <SideBarButton
-          to='/search'
-          Icon={<CommunityIcon />}
-          active={active === 'community'}
-          onClick={() => { setActive('search') }}
+      </Link>
+
+      <Link
+        to='/search'
+        className={clsx(
+          'backdrop-brightness-100 hover:backdrop-brightness-90 p-3 flex justify-center items-center select-none relative',
+          'transition-transform active:scale-95',
+          'rounded-xl aspect-square',
+          NAV_SEARCH.activePaths.includes(currentPath) && 'bg-black/10'
+        )}
+      >
+        <SearchSvg
+          width={20}
+          height={20}
         />
-        <SideBarButton
-          to={`/user/${myContext.me?.id}`}
-          Icon={<ProfileIcon />}
-          active={active === 'profile'}
-          onClick={() => { setActive('profile') }}
+      </Link>
+
+      <Link
+        to='/users'
+        className={clsx(
+          'backdrop-brightness-100 hover:backdrop-brightness-90 p-3 flex justify-center items-center select-none relative',
+          'transition-transform active:scale-95',
+          'rounded-xl aspect-square',
+          NAV_PROFILE.activePaths.includes(currentPath) && 'bg-black/10'
+        )}
+      >
+        <ProfileSvg
+          width={20}
+          height={20}
         />
-      </div>
+      </Link>
     </nav>
   )
 }

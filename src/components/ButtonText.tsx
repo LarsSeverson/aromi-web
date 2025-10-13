@@ -20,7 +20,10 @@ const ButtonText: React.FC<ButtonTextProps> = ({
   )
 
   return (
-    <BouncyButton className={combinedClass} {...rest}>
+    <BouncyButton
+      className={combinedClass}
+      {...rest}
+    >
       <div
         className='font-semibold flex items-center justify-center h-full'
         style={{ opacity: (loading ?? false) ? '0' : '1' }}

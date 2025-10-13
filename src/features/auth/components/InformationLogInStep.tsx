@@ -66,20 +66,24 @@ const InformationLogInStep = (props: InformationLogInStepProps) => {
         errors={errors}
         onClearErrors={setErrors}
         onSubmit={(e) => { void handleSubmit(e) }}
-        className='flex flex-col mt-4'
+        className='flex flex-col mt-4 gap-3'
       >
         <EmailInput />
 
-        <PasswordInput />
-
-        <Link
-          to='/auth/account-recovery'
-          search={{ showLogIn: false }}
-          className='text-sm hover:underline mt-1'
-          style={{ marginLeft: 'auto' }}
+        <div
+          className='flex flex-col mb-3'
         >
-          Forgot password?
-        </Link>
+          <PasswordInput />
+
+          <Link
+            to='/auth/account-recovery'
+            search={{ showLogIn: false }}
+            className='text-sm hover:underline mt-1'
+            style={{ marginLeft: 'auto' }}
+          >
+            Forgot password?
+          </Link>
+        </div>
 
         <SubmitButton
           isLoading={isLoading}

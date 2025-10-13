@@ -1,21 +1,37 @@
-import React from 'react'
-import { type IUserSummary } from '../types'
+import React, { useState } from 'react'
 import { Colors } from '@/styles/Colors'
-import emptyUserAvatar from '@/assets/avatar-empty.svg'
+import type { UserPreviewFragment } from '@/generated/graphql'
+import EmptyAvatarSvg from '@/components/EmptyAvatarSvg'
+import type { Nullable } from '@/utils/util'
 
 export interface UserAvatarProps {
-  user?: IUserSummary | null | undefined
+  user: Nullable<UserPreviewFragment>
 }
 
 const UserAvatar = (props: UserAvatarProps) => {
-  // const { user } = props
+  const { user } = props
+  const { avatar } = user ?? {}
+
+  const [showAvatar, setShowAvatar] = useState(avatar?.url != null)
 
   return (
-    <img
-      src={emptyUserAvatar}
-      className='rounded-full min-w-16 w-16 aspect-square overflow-hidden object-cover'
-      style={{ backgroundColor: Colors.empty }}
-    />
+    <div
+      className='h-full border-surface2 border rounded-full aspect-square overflow-hidden bg-empty'
+    >
+      {showAvatar
+        ? (
+          <img
+            src={avatar?.url ?? undefined}
+            alt={`Avatar of ${user?.username ?? 'Unknown user'}`}
+            onError={setShowAvatar.bind(null, false)}
+          />
+        )
+        : (
+          <EmptyAvatarSvg
+            color={Colors.empty2}
+          />
+        )}
+    </div>
   )
 }
 

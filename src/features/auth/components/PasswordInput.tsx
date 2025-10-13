@@ -42,7 +42,7 @@ const PasswordInput = (props: PasswordInputProps) => {
           type='button'
           className={clsx(
             'absolute right-2 top-1/2 -translate-y-1/2 p-2',
-            'rounded-md hover:bg-surface'
+            'rounded-md hover:bg-empty'
           )}
           onClick={(e) => {
             e.preventDefault()

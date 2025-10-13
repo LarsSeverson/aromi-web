@@ -48,3 +48,9 @@ export const updateById = <T extends { id: string } >(
 }
 
 export const INVALID_ID = '00000000-0000-0000-0000-000000000000'
+
+export const VOTE_TYPES = {
+  UPVOTE: 1,
+  DOWNVOTE: -1,
+  NOVOTE: 0
+} as const
