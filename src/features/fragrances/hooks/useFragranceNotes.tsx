@@ -2,7 +2,7 @@ import type { FragranceNotePaginationInput } from '@/generated/graphql'
 import { FRAGRANCE_NOTES_QUERY } from '../graphql/queries'
 import { useQuery } from '@apollo/client/react'
 import { useMemo } from 'react'
-import { flattenAll, validatePagination } from '@/utils/pagination'
+import { flattenConnections, validatePagination } from '@/utils/pagination'
 import { noRes } from '@/utils/error'
 import { hasNextPage, isStatusLoadingMore, wrapQuery } from '@/utils/util'
 
@@ -25,11 +25,11 @@ export const useFragranceNotes = (fragranceId: string, input?: FragranceNotePagi
       }
     }
 
-    return wrapQuery(fetchMore({ variables })).map(data => flattenAll(data.fragrance.notes))
+    return wrapQuery(fetchMore({ variables })).map(data => flattenConnections(data.fragrance.notes))
   }
 
   const notes = useMemo(
-    () => flattenAll(data?.fragrance.notes ?? []),
+    () => flattenConnections(data?.fragrance.notes ?? []),
     [data?.fragrance.notes]
   )
 

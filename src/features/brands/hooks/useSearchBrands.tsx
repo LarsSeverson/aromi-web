@@ -1,7 +1,7 @@
 import type { SearchInput } from '@/generated/graphql'
 import { useQuery } from '@apollo/client/react'
 import { SEARCH_BRANDS_QUERY } from '../graphql/queries'
-import { flattenAll, validateSearchPagination } from '@/utils/pagination'
+import { flattenConnections, validateSearchPagination } from '@/utils/pagination'
 import { noRes } from '@/utils/error'
 import { hasNextPage, isStatusLoadingMore, wrapQuery } from '@/utils/util'
 import { useMemo } from 'react'
@@ -29,7 +29,7 @@ export const useSearchBrands = (input?: SearchInput) => {
       }
     }
 
-    return wrapQuery(fetchMore({ variables })).map(data => flattenAll(data.searchBrands))
+    return wrapQuery(fetchMore({ variables })).map(data => flattenConnections(data.searchBrands))
   }
 
   const refresh = (input?: SearchInput) => {
@@ -37,7 +37,7 @@ export const useSearchBrands = (input?: SearchInput) => {
   }
 
   const brands = useMemo(
-    () => flattenAll(data?.searchBrands ?? previousData?.searchBrands ?? []),
+    () => flattenConnections(data?.searchBrands ?? previousData?.searchBrands ?? []),
     [data?.searchBrands, previousData?.searchBrands]
   )
 

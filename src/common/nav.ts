@@ -11,7 +11,7 @@ export const NAV_HOME: NavItem = {
 }
 
 export const NAV_SEARCH: NavItem = {
-  activePaths: ['/search']
+  activePaths: ['/search/']
 }
 
 export const NAV_PROFILE: NavItem = {

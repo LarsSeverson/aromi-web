@@ -1,23 +1,24 @@
 import React from 'react'
 import clsx from 'clsx'
-import emptyFragranceImage from '@/assets/fall-back-fi.svg'
-import collectionImage from '@/assets/collection.svg'
+import blankFragranceThumbnail from '@/assets/blank-fragrance-thumbnail.svg'
+import emptyCollectionThumbnail from '@/assets/empty-collection-thumbnail.svg'
 import { Overlay } from './Overlay'
 
 export interface GridImagesProps extends React.HTMLAttributes<HTMLDivElement> {
-  images: string[]
+  urls: string[]
   fallback?: string
   emptyImage?: string
 }
 
 const GridImages = (props: GridImagesProps) => {
   const {
-    images: urls,
-    fallback = emptyFragranceImage,
-    emptyImage = collectionImage,
+    urls,
+    fallback = blankFragranceThumbnail,
+    emptyImage = emptyCollectionThumbnail,
     className,
     ...rest
   } = props
+
   const itemsShown = urls.slice(0, Math.min(urls.length, 4))
 
   return (
@@ -41,12 +42,14 @@ const GridImages = (props: GridImagesProps) => {
           src={url ?? fallback}
         />
       ))}
+
       {itemsShown.length === 0 && (
         <img
           src={emptyImage}
           className='w-full h-full row-span-2 col-span-2'
         />
       )}
+
       <Overlay />
     </div>
   )

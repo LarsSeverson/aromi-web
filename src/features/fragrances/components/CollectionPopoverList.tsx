@@ -1,20 +1,18 @@
 import React from 'react'
-import useUserCollections from '@/features/user/hooks/useUserCollections'
 import CollectionPreviewBarCheck from './CollectionPreviewBarCheck'
-import CreateCollectionDialog from '@/features/collections/components/CreateCollectionDialog'
 import Divider from '@/components/Divider'
-import { type FragrancePreviewCardFragrance } from '@/features/fragrance/components/FragrancePreviewCard'
+import type { FragrancePreviewFragment } from '@/generated/graphql'
+import { useMyCollections } from '@/features/users/hooks/useMyCollections'
+import CreateCollectionDialog from './CreateCollectionDialog'
 
 export interface CollectionPopoverListProps {
-  userId: number
-  fragrance: FragrancePreviewCardFragrance
-  onCollectionSelected?: (collectionId: number, value: boolean, prevValue: boolean) => void
+  fragrance: FragrancePreviewFragment
 }
 
 const CollectionPopoverList = (props: CollectionPopoverListProps) => {
-  const { userId, fragrance, onCollectionSelected } = props
+  const { fragrance } = props
 
-  const { data } = useUserCollections(userId, undefined, fragrance.id)
+  const { collections } = useMyCollections()
 
   return (
     <div
@@ -29,12 +27,11 @@ const CollectionPopoverList = (props: CollectionPopoverListProps) => {
         horizontal
       />
 
-      {data
+      {collections
         .map(collection => (
           <CollectionPreviewBarCheck
             key={collection.id}
             collection={collection}
-            onCheckedChange={onCollectionSelected}
           />
         ))}
     </div>

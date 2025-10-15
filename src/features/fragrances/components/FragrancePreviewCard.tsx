@@ -6,6 +6,7 @@ import { Link } from '@tanstack/react-router'
 import FragranceImageCard from './FragranceImageCard'
 import { useVoteOnFragrance } from '../hooks/useVoteOnFragrance'
 import ShareFragrancePopover from './ShareFragrancePopover'
+import SaveFragrancePopover from './SaveFragrancePopover'
 
 export interface FragrancePreviewCardProps {
   fragrance: FragrancePreviewFragment
@@ -17,7 +18,7 @@ export const FragrancePreviewCard = (props: FragrancePreviewCardProps) => {
 
   const { vote } = useVoteOnFragrance()
 
-  const [isPopoverOpen, setIsPopoverOpen] = useState(false)
+  const [isSubPopoverOpen, setIsSubPopoverOpen] = useState(false)
   const [isLinkFocused, setIsLinkFocused] = useState(false)
 
   const handleLinkFocus = () => {
@@ -47,7 +48,7 @@ export const FragrancePreviewCard = (props: FragrancePreviewCardProps) => {
           {...rest}
         >
           <FragranceImageCard
-            isActive={isLinkFocused || isPopoverOpen}
+            isActive={isLinkFocused || isSubPopoverOpen}
             fragrance={fragrance}
           />
         </Link>
@@ -56,17 +57,16 @@ export const FragrancePreviewCard = (props: FragrancePreviewCardProps) => {
           className={clsx(
             'absolute inset-0 opacity-0 transition-opacity pointer-events-none',
             'group-hover:opacity-100 group-focus:opacity-100',
-            (isLinkFocused || isPopoverOpen) && 'opacity-100'
+            (isLinkFocused || isSubPopoverOpen) && 'opacity-100'
           )}
         >
           <div
             className='pointer-events-auto absolute top-3 right-3'
           >
-            {/* <CollectionPopover
-              userId={myContext.me?.id ?? INVALID_ID}
+            <SaveFragrancePopover
               fragrance={fragrance}
-              onOpenChangeComplete={setIsPopoverOpen}
-            /> */}
+              onOpenChangeComplete={setIsSubPopoverOpen}
+            />
           </div>
 
           <div
@@ -74,7 +74,7 @@ export const FragrancePreviewCard = (props: FragrancePreviewCardProps) => {
           >
             <ShareFragrancePopover
               fragrance={fragrance}
-              onOpenChangeComplete={setIsPopoverOpen}
+              onOpenChangeComplete={setIsSubPopoverOpen}
             />
           </div>
         </div>

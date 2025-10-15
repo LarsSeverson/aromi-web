@@ -1,7 +1,7 @@
 import type { FragranceReviewPaginationInput } from '@/generated/graphql'
 import { useQuery } from '@apollo/client/react'
 import { USER_REVIEWS_QUERY } from '../graphql/queries'
-import { flattenAll, validatePagination } from '@/utils/pagination'
+import { flattenConnections, validatePagination } from '@/utils/pagination'
 import { noRes } from '@/utils/error'
 import { hasNextPage, isStatusLoadingMore, wrapQuery } from '@/utils/util'
 import { useMemo } from 'react'
@@ -25,11 +25,11 @@ export const useUserReviews = (userId: string, input?: FragranceReviewPagination
       }
     }
 
-    return wrapQuery(fetchMore({ variables })).map(data => flattenAll(data.user.reviews))
+    return wrapQuery(fetchMore({ variables })).map(data => flattenConnections(data.user.reviews))
   }
 
   const reviews = useMemo(
-    () => flattenAll(data?.user.reviews ?? []),
+    () => flattenConnections(data?.user.reviews ?? []),
     [data?.user.reviews]
   )
 

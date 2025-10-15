@@ -1,29 +1,28 @@
 import React, { useState } from 'react'
 import { Checkbox } from '@base-ui-components/react'
-import CollectionPreviewBar, { type CollectionPreviewBarCollection } from './CollectionPreviewBar'
+import CollectionPreviewBar from './CollectionPreviewBar'
 import { BsCheck } from 'react-icons/bs'
 import clsx from 'clsx'
+import type { FragranceCollectionPreviewFragment } from '@/generated/graphql'
 
 export interface CollectionPreviewBarCheckProps {
-  collection: CollectionPreviewBarCollection
-  onCheckedChange?: (collectionId: number, value: boolean, prevValue: boolean) => void
+  defaultChecked?: boolean
+  collection: FragranceCollectionPreviewFragment
 }
 
 const CollectionPreviewBarCheck = (props: CollectionPreviewBarCheckProps) => {
-  const { collection, onCheckedChange } = props
-  const [checked, setChecked] = useState(collection.hasFragrance)
+  const { collection, defaultChecked = false } = props
+  const [isChecked, setIsChecked] = useState(defaultChecked)
 
   const toggleChecked = () => {
-    const prev = collection.hasFragrance
-    const next = !checked
-
-    setChecked(next)
-    onCheckedChange?.(collection.id, next, prev)
+    setIsChecked(prev => !prev)
   }
 
   return (
     <div
-      className='w-full flex items-center px-2 py-0 hover:backdrop-brightness-95 gap-2'
+      role='button'
+      className='w-full flex items-center px-2 pr-4 py-0 hover:backdrop-brightness-95 gap-2 select-none cursor-pointer'
+      tabIndex={0}
       onClick={toggleChecked}
     >
       <CollectionPreviewBar
@@ -32,11 +31,11 @@ const CollectionPreviewBarCheck = (props: CollectionPreviewBarCheckProps) => {
       />
 
       <Checkbox.Root
-        checked={checked}
+        checked={isChecked}
         className={clsx(
-          'shrink-0 w-5 h-5 flex items-center justify-center rounded-full focus-visible:outline focus-visible:outline-2 focus-visible:outline-sinopia focus-visible:outline-offset-2',
+          'shrink-0 w-5 h-5 flex items-center justify-center rounded-full focus-visible:outline-2 focus-visible:outline-sinopia focus-visible:outline-offset-2',
           'data-[unchecked]:border data-[unchecked]:border-gray-300 data-[unchecked]:bg-transparent',
-          'data-[checked]:bg-sinopia ml-auto'
+          'data-[checked]:bg-sinopia ml-auto border-red-400'
         )}
         onClick={(e) => { e.stopPropagation() }}
       >

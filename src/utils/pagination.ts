@@ -127,13 +127,13 @@ export const isEdgeNodeObject = <T>(value: unknown): value is NodeWithEdges<T> =
   )
 }
 
-export const flattenAll = <T>(input: T): FlattenedConnection<T> => {
+export const flattenConnections = <T>(input: T): FlattenedConnection<T> => {
   if (isEdgeNodeObject(input)) {
-    return input.edges.map(edge => flattenAll(edge.node)) as FlattenedConnection<T>
+    return input.edges.map(edge => flattenConnections(edge.node)) as FlattenedConnection<T>
   }
 
   if (Array.isArray(input)) {
-    return input.map(flattenAll) as FlattenedConnection<T>
+    return input.map(flattenConnections) as FlattenedConnection<T>
   }
 
   if (typeof input === 'object' && input !== null) {
@@ -143,8 +143,8 @@ export const flattenAll = <T>(input: T): FlattenedConnection<T> => {
       const value = (input as Record<string, unknown>)[key]
       const isValueAnEdgeObject = isEdgeNodeObject(value)
       result[key] = isValueAnEdgeObject
-        ? value.edges.map(edge => flattenAll(edge.node))
-        : flattenAll(value)
+        ? value.edges.map(edge => flattenConnections(edge.node))
+        : flattenConnections(value)
     }
     return result as FlattenedConnection<T>
   }

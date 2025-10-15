@@ -1,6 +1,6 @@
 import type { FragrancePaginationInput } from '@/generated/graphql'
 import { useQuery } from '@apollo/client/react'
-import { flattenAll, validatePagination } from '@/utils/pagination'
+import { flattenConnections, validatePagination } from '@/utils/pagination'
 import { noRes } from '@/utils/error'
 import { hasNextPage, isStatusLoadingMore, wrapQuery } from '@/utils/util'
 import { useMemo } from 'react'
@@ -25,7 +25,7 @@ export const useBrandFragrances = (id: string, input?: FragrancePaginationInput)
       }
     }
 
-    return wrapQuery(fetchMore({ variables })).map(data => flattenAll(data.brand?.fragrances))
+    return wrapQuery(fetchMore({ variables })).map(data => flattenConnections(data.brand?.fragrances))
   }
 
   const refresh = () => {
@@ -33,7 +33,7 @@ export const useBrandFragrances = (id: string, input?: FragrancePaginationInput)
   }
 
   const fragrances = useMemo(
-    () => flattenAll(data?.brand?.fragrances ?? []),
+    () => flattenConnections(data?.brand?.fragrances ?? []),
     [data?.brand?.fragrances]
   )
 

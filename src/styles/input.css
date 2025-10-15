@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap');
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
 @import url('https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@100..900&display=swap');
 
 @import "tailwindcss";
@@ -47,13 +49,13 @@
   --color-som: #769ae3;
   --color-heart: #e20020;
   --color-empty: #f0f0f0;
-
+  
   --font-inter: "Inter", sans-serif;
   --font-jp: "Noto Sans JP", sans-serif;
   --font-kumbh: "Kumbh Sans", sans-serif;
-
+  
   --text-md: 0.92rem;
-
+  
   --shadow-symmetrical: 0 0 10px rgba(0, 0, 0, 0.15);
 }
 
@@ -75,7 +77,10 @@
 
 html, body {
   @apply font-inter;
-  scrollbar-gutter: stable;
+}
+
+html {
+  scrollbar-gutter: stable !important;
 }
 
 #root {
@@ -94,7 +99,7 @@ input {
   0%, 100% {
     opacity: 1;
   }
-
+  
   50% {
     opacity: 0.5;
   }

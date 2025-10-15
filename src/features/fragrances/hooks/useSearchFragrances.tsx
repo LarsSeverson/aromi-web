@@ -2,7 +2,7 @@ import type { SearchInput } from '@/generated/graphql'
 
 import { useQuery } from '@apollo/client/react'
 import { SEARCH_FRAGRANCES_QUERY } from '../graphql/queries'
-import { flattenAll, validateSearchPagination } from '@/utils/pagination'
+import { flattenConnections, validateSearchPagination } from '@/utils/pagination'
 import { noRes } from '@/utils/error'
 import { hasNextPage, isStatusLoadingMore, wrapQuery } from '@/utils/util'
 import { useMemo } from 'react'
@@ -32,7 +32,7 @@ export const useSearchFragrances = (input?: SearchInput) => {
   }
 
   const fragrances = useMemo(
-    () => flattenAll(data?.searchFragrances ?? previousData?.searchFragrances ?? []),
+    () => flattenConnections(data?.searchFragrances ?? previousData?.searchFragrances ?? []),
     [data?.searchFragrances, previousData?.searchFragrances]
   )
 

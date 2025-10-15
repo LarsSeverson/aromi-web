@@ -29,12 +29,12 @@ export const useToastMessage = () => {
   }
 
   const toastError = (
-    error: string,
+    errorMessage: string,
     title = 'Something went wrong'
   ) => {
     mngr.add({
       title,
-      description: error,
+      description: errorMessage,
       timeout: 7000
     })
   }

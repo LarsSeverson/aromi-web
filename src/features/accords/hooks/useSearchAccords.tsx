@@ -1,7 +1,7 @@
 import type { SearchInput } from '@/generated/graphql'
 import { useQuery } from '@apollo/client/react'
 import { SEARCH_ACCORDS_QUERY } from '../graphql/queries'
-import { flattenAll, validateSearchPagination } from '@/utils/pagination'
+import { flattenConnections, validateSearchPagination } from '@/utils/pagination'
 import { noRes } from '@/utils/error'
 import { hasNextPage, isStatusLoadingMore, wrapQuery } from '@/utils/util'
 import { useMemo } from 'react'
@@ -32,7 +32,7 @@ export const useSearchAccords = (input?: SearchInput) => {
   }
 
   const accords = useMemo(
-    () => flattenAll(data?.searchAccords ?? previousData?.searchAccords ?? []),
+    () => flattenConnections(data?.searchAccords ?? previousData?.searchAccords ?? []),
     [data?.searchAccords]
   )
 

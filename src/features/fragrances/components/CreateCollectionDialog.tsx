@@ -1,61 +1,52 @@
-import React, { useRef, useState, type SyntheticEvent } from 'react'
+import React, { useState } from 'react'
 import { Dialog, Field, Form } from '@base-ui-components/react'
 import clsx from 'clsx'
-import empty from '@/assets/fall-back-fi.svg'
+import blankFragranceThumbnail from '@/assets/blank-fragrance-thumbnail.svg'
 import { Overlay } from '@/components/Overlay'
 import Spinner from '@/components/Spinner'
-import CollectionPreviewBar, { type CollectionPreviewBarCollection } from './CollectionPreviewBar'
-import { INVALID_ID } from '@/utils/util-types'
 import { FiPlus } from 'react-icons/fi'
-import { useCreateCollectionWithItem } from '@/features/collections/hooks/useCreateCollectionWithItem'
-import { type FragrancePreviewCardFragrance } from '@/features/fragrance/components/FragrancePreviewCard'
-import { useToastError } from '@/hooks/useToastError'
-
-const NEW_COLLECTION_PLACEHOLDER = (fragrance: FragrancePreviewCardFragrance): CollectionPreviewBarCollection => ({
-  id: INVALID_ID,
-  name: 'New Collection',
-  items: [{
-    id: INVALID_ID,
-    fragrance
-  }],
-  hasFragrance: false
-})
+import type { FragrancePreviewFragment } from '@/generated/graphql'
+import { useCreateFragranceCollection } from '../hooks/useCreateFragranceCollection'
+import { useToastMessage } from '@/hooks/useToastMessage'
+import GridImages from '@/components/GridImages'
 
 export interface CreateCollectionDialogProps {
-  fragrance: FragrancePreviewCardFragrance
+  fragrance: FragrancePreviewFragment
 }
 
 const CreateCollectionDialog = (props: CreateCollectionDialogProps) => {
   const { fragrance } = props
+  const { id, name, brand, thumbnail } = fragrance
 
-  const { createFragranceCollectionWithItem } = useCreateCollectionWithItem()
-  const { toastApolloError } = useToastError()
-
-  const nameRef = useRef<HTMLInputElement>(null)
+  const { toastError } = useToastMessage()
+  const { createCollectionWithFragrance } = useCreateFragranceCollection()
 
   const [isOpen, setIsOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
-  const handleNewCollectionSubmit = async (event: SyntheticEvent) => {
-    event.preventDefault()
-
+  const handleNewCollection = async (name: string) => {
     setIsLoading(true)
 
-    await createFragranceCollectionWithItem({
-      name: nameRef.current?.value ?? 'My new collection',
-      fragranceId: fragrance.id
-    })
+    await createCollectionWithFragrance(id, name)
       .match(
         () => {
-          //
+          setIsOpen(false)
         },
-        toastApolloError
+        ({ message }) => {
+          toastError(message, 'Failed to create collection')
+        }
       )
-      .finally(() => {
-        setIsOpen(false)
-      })
 
     setIsLoading(false)
+  }
+
+  const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+
+    const formData = new FormData(event.currentTarget)
+    const name = formData.get('name') as string
+
+    handleNewCollection(name)
   }
 
   return (
@@ -64,11 +55,21 @@ const CreateCollectionDialog = (props: CreateCollectionDialogProps) => {
       onOpenChange={setIsOpen}
     >
       <Dialog.Trigger
-        className='w-full flex items-center px-2 py-0 hover:backdrop-brightness-95 gap-2 cursor-pointer justify-between'
+        className='w-full flex items-center px-2 pr-4 py-0 hover:backdrop-brightness-95 gap-2 cursor-pointer justify-between rounded-md'
       >
-        <CollectionPreviewBar
-          collection={NEW_COLLECTION_PLACEHOLDER(fragrance)}
-        />
+        <div
+          className='flex h-16 items-center gap-4 overflow-ellipsis'
+        >
+          <GridImages
+            urls={[thumbnail?.url ?? '']}
+            className='h-12 aspect-square rounded-md shrink-0'
+          />
+
+          <h2>
+            New Collection
+          </h2>
+        </div>
+
         <FiPlus
           size={22}
         />
@@ -90,9 +91,11 @@ const CreateCollectionDialog = (props: CreateCollectionDialogProps) => {
 
           <Form
             className='relative'
-            onSubmit={(event) => { void handleNewCollectionSubmit(event) }}
+            onSubmit={handleFormSubmit}
           >
-            <div className='flex px-8 pb-8 pt-5 gap-8'>
+            <div
+              className='flex px-8 pb-8 pt-5 gap-8'
+            >
               <div
                 className='flex-1 overflow-hidden'
               >
@@ -100,44 +103,47 @@ const CreateCollectionDialog = (props: CreateCollectionDialogProps) => {
                   className='relative rounded-2xl overflow-hidden'
                 >
                   <img
-                    src={fragrance.images.at(0)?.src ?? empty}
-                    alt={fragrance.name}
+                    src={thumbnail?.url ?? blankFragranceThumbnail}
+                    alt={`${name} by ${brand.name}`}
                     className='object-cover aspect-square w-full'
                   />
+
                   <Overlay />
                 </div>
+
                 <p
                   className='mx-2 mt-2 font-medium text-md truncate'
                 >
-                  {fragrance.name}
+                  {name}
                 </p>
+
                 <p
                   className='mx-2 font-light text-md'
                 >
-                  {fragrance.brand}
+                  {brand.name}
                 </p>
               </div>
+
               <div
                 className='flex-[2]'
               >
                 <Field.Root
-                  name='collection'
+                  name='name'
                 >
                   <Field.Label
                     className='font-semibold text-md'
                   >
                     Name
                   </Field.Label>
+
                   <Field.Control
-                    ref={nameRef}
-                    className={({ valid }) =>
-                      clsx(
-                        'w-full h-11 px-2 my-1 border-2 rounded-md outline-2 -outline-offset-1 outline-none focus:outline-sinopia',
-                        !(valid ?? true) && 'focus:outline-red-700'
-                      )}
                     required
                     placeholder='My New Collection'
+                    className={clsx(
+                      'w-full h-11 px-2 my-1 border-2 rounded-md outline-2 -outline-offset-1 outline-none focus:outline-sinopia'
+                    )}
                   />
+
                   <Field.Error
                     className='text-red-700 font-semibold text-sm ml-1'
                     match='valueMissing'
@@ -152,18 +158,23 @@ const CreateCollectionDialog = (props: CreateCollectionDialogProps) => {
               className='flex justify-between px-5 bg-white py-2 shadow-[0_0px_10px_0px_rgba(0,0,0,0.1)]'
             >
               <Dialog.Close
-                className='bg-empty rounded-full px-7 py-3 hover:brightness-95'
+                className='bg-empty rounded-full px-7 py-3 hover:brightness-95 cursor-pointer'
               >
                 Cancel
               </Dialog.Close>
+
               <button
                 type='submit'
                 disabled={isLoading}
                 className={clsx(
-                  'bg-sinopia text-white rounded-full px-7 py-3 hover:shadow-lg brightness-100 hover:brightness-105'
+                  'bg-sinopia text-white rounded-full px-7 py-3 hover:shadow-lg brightness-100 hover:brightness-105',
+                  'cursor-pointer relative flex items-center justify-center'
                 )}
               >
-                {isLoading && <Spinner />}
+                {isLoading && (
+                  <Spinner className='border-white' />
+                )}
+
                 <div
                   className={clsx(isLoading && 'opacity-0')}
                 >

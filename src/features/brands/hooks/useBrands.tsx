@@ -1,7 +1,7 @@
 import type { BrandPaginationInput } from '@/generated/graphql'
 import { useQuery } from '@apollo/client/react'
 import { BRANDS_QUERY } from '../graphql/queries'
-import { flattenAll, validatePagination } from '@/utils/pagination'
+import { flattenConnections, validatePagination } from '@/utils/pagination'
 import { noRes } from '@/utils/error'
 import { hasNextPage, isStatusLoadingMore, wrapQuery } from '@/utils/util'
 import { useMemo } from 'react'
@@ -24,11 +24,11 @@ export const useBrands = (input?: BrandPaginationInput) => {
       }
     }
 
-    return wrapQuery(fetchMore({ variables })).map(data => flattenAll(data.brands))
+    return wrapQuery(fetchMore({ variables })).map(data => flattenConnections(data.brands))
   }
 
   const brands = useMemo(
-    () => flattenAll(data?.brands ?? []),
+    () => flattenConnections(data?.brands ?? []),
     [data?.brands]
   )
 

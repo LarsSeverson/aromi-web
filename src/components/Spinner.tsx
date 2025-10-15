@@ -10,7 +10,7 @@ const Spinner = (props: SpinnerProps) => {
 
   return (
     <div
-      className='inset-0 flex items-center justify-end'
+      className='absolute inset-0 flex items-center justify-center'
     >
       <div
         className={clsx(

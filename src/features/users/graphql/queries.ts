@@ -8,6 +8,27 @@ export const MY_QUERY = gql(/* GraphQL */ `
   }
 `)
 
+export const MY_COLLECTIONS_QUERY = gql(/* GraphQL */`
+  query MyCollections(
+    $input: FragranceCollectionPaginationInput
+  ) {
+    me {
+      ...Me
+      collections(input: $input) {
+        edges {
+          node {
+            ...FragranceCollectionPreview
+          }
+          cursor
+        }
+        pageInfo {
+          ...AllPageInfo
+        }
+      }
+    }
+  }
+`)
+
 export const USER_QUERY = gql(/* GraphQL */`
   query User(
     $id: ID!

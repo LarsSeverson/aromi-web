@@ -36,6 +36,14 @@ export const client = new ApolloClient({
     typePolicies: {
       Query: {
 
+      },
+
+      FragranceCollection: {
+        fields: {
+          previewItems: {
+            merge: false
+          }
+        }
       }
     }
   })

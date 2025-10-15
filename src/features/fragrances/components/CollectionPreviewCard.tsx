@@ -34,7 +34,7 @@ export const CollectionPreviewCard = (props: CollectionPreviewCardProps) => {
       {...rest}
     >
       <GridImages
-        images={items.map(item => item.fragrance.images.at(0)?.src ?? '')}
+        urls={items.map(item => item.fragrance.images.at(0)?.src ?? '')}
       />
       <BouncyButton
         className='absolute top-3 right-3 rounded-full bg-sinopia aspect-square px-[10px] hidden group-hover:flex'

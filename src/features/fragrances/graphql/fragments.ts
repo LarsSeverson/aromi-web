@@ -99,7 +99,23 @@ export const ALL_FRAGRANCE_COLLECTION_FRAGMENT = gql(/* GraphQL */ `
   fragment AllFragranceCollection on FragranceCollection { 
     id
     name
+    previewItems {
+      ...AllFragranceCollectionItem
+    }
     items {
+      ...AllFragranceCollectionItem
+    }
+    user {
+      ...UserPreview
+    }
+  }
+`)
+
+export const FRAGRANCE_COLLECTION_PREVIEW_FRAGMENT = gql(/* GraphQL */ `
+  fragment FragranceCollectionPreview on FragranceCollection { 
+    id
+    name
+    previewItems {
       ...AllFragranceCollectionItem
     }
     user {

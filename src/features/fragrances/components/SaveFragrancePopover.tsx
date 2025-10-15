@@ -1,28 +1,23 @@
 import React, { useRef, useState, type SyntheticEvent } from 'react'
 import { Popover } from '@base-ui-components/react'
 import clsx from 'clsx'
-import CollectionPopoverList from '@/features/collections/components/CollectionPopoverList'
 import BouncyButton from '@/components/BouncyButton'
-import { type FragrancePreviewCardFragrance } from '@/features/fragrance/components/FragrancePreviewCard'
-import { useModifyCollections } from '../hooks/useModifyCollections'
-import { useToastError } from '@/hooks/useToastError'
 import Spinner from '@/components/Spinner'
+import type { FragrancePreviewFragment } from '@/generated/graphql'
+import CollectionPopoverList from './CollectionPopoverList'
 
-export interface CollectionPopoverProps extends Popover.Root.Props {
-  userId: number
-  fragrance: FragrancePreviewCardFragrance
+export interface SaveFragrancePopoverProps extends Popover.Root.Props {
+  fragrance: FragrancePreviewFragment
 }
 
-const CollectionPopover = (props: CollectionPopoverProps) => {
-  const { userId, fragrance, ...rest } = props
-
-  const { modifyCollections } = useModifyCollections()
-  const { toastApolloError } = useToastError()
+const SaveFragrancePopover = (props: SaveFragrancePopoverProps) => {
+  const { fragrance, ...rest } = props
 
   const collectionsModified = useRef(new Map<number, boolean>())
-  const [hasModifiedCollections, setHasModifiedCollections] = useState(false)
+
   const [isOpen, setIsOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [hasModifiedCollections, setHasModifiedCollections] = useState(false)
 
   const handlePopoverTriggerClick = (e: SyntheticEvent) => {
     e.preventDefault()
@@ -70,14 +65,6 @@ const CollectionPopover = (props: CollectionPopoverProps) => {
   const handleOnSubmit = async () => {
     setIsLoading(true)
 
-    await modifyCollections(collectionsModified.current, fragrance.id)
-      .match(
-        () => {
-          //
-        },
-        toastApolloError
-      )
-
     clearCollectionsSelected()
     setIsLoading(false)
   }
@@ -91,12 +78,14 @@ const CollectionPopover = (props: CollectionPopoverProps) => {
       <Popover.Trigger
         tabIndex={0}
         className={clsx(
-          'bg-sinopia text-white rounded-full px-7 py-3 hover:shadow-lg hover:brightness-105'
+          'bg-sinopia text-white rounded-full px-7 py-3 hover:shadow-lg hover:brightness-105',
+          'cursor-pointer'
         )}
         onClick={handlePopoverTriggerClick}
       >
         Save
       </Popover.Trigger>
+
       <Popover.Portal>
         <Popover.Positioner
           sideOffset={8}
@@ -112,9 +101,7 @@ const CollectionPopover = (props: CollectionPopoverProps) => {
             </Popover.Title>
 
             <CollectionPopoverList
-              userId={userId}
               fragrance={fragrance}
-              onCollectionSelected={handleOnCollectionSelected}
             />
 
             <div
@@ -130,12 +117,14 @@ const CollectionPopover = (props: CollectionPopoverProps) => {
                 >
                   Cancel
                 </BouncyButton>
+
                 {hasModifiedCollections && (
                   <BouncyButton
                     className='bg-sinopia rounded-3xl w-20 text-white h-10'
                     onClick={() => { void handleOnSubmit() }}
                   >
                     {isLoading && <Spinner />}
+
                     <span
                       className={clsx(isLoading && 'opacity-0')}
                     >
@@ -152,4 +141,4 @@ const CollectionPopover = (props: CollectionPopoverProps) => {
   )
 }
 
-export default CollectionPopover
+export default SaveFragrancePopover

@@ -3,7 +3,6 @@ import clsx from 'clsx'
 import Divider from './Divider'
 import type { AllVoteInfoFragment } from '@/generated/graphql'
 import { VOTE_TYPES } from '@/utils/util'
-import { HiArrowSmDown, HiArrowSmUp } from 'react-icons/hi'
 import { formatNumber } from '@/utils/string-utils'
 import { TbArrowBigDown, TbArrowBigDownFilled, TbArrowBigUp, TbArrowBigUpFilled } from 'react-icons/tb'
 
@@ -17,7 +16,7 @@ export const VoteButtonGroup = (props: VoteButtonGroupProps) => {
   const { score, myVote } = votes
 
   const [currentVote, setCurrentVote] = useState(myVote ?? VOTE_TYPES.NOVOTE)
-  const currentScore = score + (myVote ?? VOTE_TYPES.NOVOTE)
+  const currentScore = score + currentVote
 
   const onFor = (e: React.SyntheticEvent) => {
     e.preventDefault()

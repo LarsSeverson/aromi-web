@@ -1,7 +1,7 @@
 import type { AccordPaginationInput } from '@/generated/graphql'
 import { useQuery } from '@apollo/client/react'
 import { ACCORDS_QUERY } from '../graphql/queries'
-import { flattenAll, validatePagination } from '@/utils/pagination'
+import { flattenConnections, validatePagination } from '@/utils/pagination'
 import { hasNextPage, isStatusLoadingMore, noRes, wrapQuery } from '@/utils/util'
 import { useMemo } from 'react'
 
@@ -23,11 +23,11 @@ export const useAccords = (input?: AccordPaginationInput) => {
       }
     }
 
-    return wrapQuery(fetchMore({ variables })).map(data => flattenAll(data.accords))
+    return wrapQuery(fetchMore({ variables })).map(data => flattenConnections(data.accords))
   }
 
   const accords = useMemo(
-    () => flattenAll(data?.accords ?? []),
+    () => flattenConnections(data?.accords ?? []),
     [data?.accords]
   )
 
