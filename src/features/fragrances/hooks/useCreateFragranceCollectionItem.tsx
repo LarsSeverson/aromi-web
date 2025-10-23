@@ -3,7 +3,7 @@ import { useMutation } from '@apollo/client/react'
 import { CREATE_FRAGRANCE_COLLECTION_ITEM_MUTATION } from '../graphql/mutations'
 import type { AllFragranceCollectionItemFragment, CreateFragranceCollectionItemInput } from '@/generated/graphql'
 import { wrapQuery } from '@/utils/util'
-import { ALL_FRAGRANCE_COLLECTION_FRAGMENT, ALL_FRAGRANCE_COLLECTION_ITEM_FRAGMENT } from '../graphql/fragments'
+import { ALL_FRAGRANCE_COLLECTION_ITEM_FRAGMENT } from '../graphql/fragments'
 
 export const useCreateFragranceCollectionItem = () => {
   const { me } = useMyContext()
@@ -21,60 +21,40 @@ export const useCreateFragranceCollectionItem = () => {
           if (me == null) return
           if (newItem == null) return
 
+          const newItemRef = cache.writeFragment({
+            data: newItem,
+            broadcast: false,
+            fragment: ALL_FRAGRANCE_COLLECTION_ITEM_FRAGMENT,
+            fragmentName: 'AllFragranceCollectionItem'
+          })
+
           const cacheId = cache.identify({
             __typename: 'FragranceCollection',
             id: collectionId
           })
 
-          console.log('Before:', cache.readFragment({
-            id: cacheId,
-            fragment: ALL_FRAGRANCE_COLLECTION_FRAGMENT,
-            fragmentName: 'AllFragranceCollection'
-          }))
-
           cache.modify({
-            id: cache.identify({
-              __typename: 'FragranceCollection',
-              id: collectionId
-            }),
+            id: cacheId,
             fields: {
-              // items: (existing = [], { readField }) => {
-              //   const fragments = existing as AllFragranceCollectionItemFragment[]
+              items: (existing = [], { readField }) => {
+                const fragments = existing as AllFragranceCollectionItemFragment[]
 
-              //   const alreadyExists = fragments.some(ref => readField('id', ref) === newItem.id)
-              //   if (alreadyExists) return fragments
+                const alreadyExists = fragments.some(ref => readField('id', ref) === newItem.id)
+                if (alreadyExists) return fragments
 
-              //   const newFragment = cache.writeFragment({
-              //     data: newItem,
-              //     fragment: ALL_FRAGRANCE_COLLECTION_ITEM_FRAGMENT,
-              //     fragmentName: 'AllFragranceCollectionItem'
-              //   })
-
-              //   return [newFragment, ...fragments]
-              // },
+                return [newItemRef, ...fragments]
+              },
               previewItems: (existing = [], { readField }) => {
                 const fragments = existing as AllFragranceCollectionItemFragment[]
 
                 const alreadyExists = fragments.some(ref => readField('id', ref) === newItem.id)
                 if (alreadyExists) return fragments
 
-                const newFragment = cache.writeFragment({
-                  data: newItem,
-                  fragment: ALL_FRAGRANCE_COLLECTION_ITEM_FRAGMENT,
-                  fragmentName: 'AllFragranceCollectionItem'
-                })
-
-                return [newFragment, ...fragments]
+                return [newItemRef, ...fragments].slice(0, 4)
               },
               hasFragrance: () => true
             }
           })
-
-          console.log('After:', cache.readFragment({
-            id: cacheId,
-            fragment: ALL_FRAGRANCE_COLLECTION_FRAGMENT,
-            fragmentName: 'AllFragranceCollection'
-          }))
         }
       })
     ).map(data => data.createFragranceCollectionItem)

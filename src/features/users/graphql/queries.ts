@@ -29,6 +29,29 @@ export const MY_COLLECTIONS_QUERY = gql(/* GraphQL */`
   }
 `)
 
+export const MY_COLLECTIONS_HAS_FRAGRANCE_QUERY = gql(/* GraphQL */`
+  query MyCollectionsHasFragrance(
+    $fragranceId: ID!
+    $input: FragranceCollectionPaginationInput
+  ) {
+    me {
+      ...Me
+      collections(input: $input) { 
+        edges {
+          node {
+            ...FragranceCollectionPreview
+            hasFragrance(fragranceId: $fragranceId)
+          }
+          cursor
+        }
+        pageInfo {
+          ...AllPageInfo
+        }
+      }
+    }
+  }
+`)
+
 export const USER_QUERY = gql(/* GraphQL */`
   query User(
     $id: ID!

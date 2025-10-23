@@ -6,6 +6,7 @@ import { useMutation } from '@apollo/client/react'
 import type { Reference } from '@apollo/client'
 import { wrapQuery } from '@/utils/util'
 import { useCreateFragranceCollectionItem } from './useCreateFragranceCollectionItem'
+import { ALL_FRAGRANCE_COLLECTION_FRAGMENT } from '../graphql/fragments'
 
 export const useCreateFragranceCollection = () => {
   const { me } = useMyContext()
@@ -20,27 +21,35 @@ export const useCreateFragranceCollection = () => {
         if (me == null) return
         if (newCollection == null) return
 
-        cache
-          .modify({
-            id: cache.identify(me),
-            fields: {
-              collections: (existing = { edges: [] }, { toReference }) => {
-                const typedExisting = existing as NodeWithEdges<Reference>
+        cache.writeFragment({
+          data: newCollection,
+          fragment: ALL_FRAGRANCE_COLLECTION_FRAGMENT,
+          fragmentName: 'AllFragranceCollection'
+        })
 
-                const newEdge = {
-                  __typename: 'FragranceCollectionEdge',
-                  node: toReference(newCollection)
-                }
+        const meCacheId = cache.identify(me)
 
-                const oldEdges = typedExisting.edges
+        cache.modify({
+          id: meCacheId,
+          fields: {
+            collections: (existing = { edges: [] }, { toReference }) => {
+              const typedExisting = existing as NodeWithEdges<Reference>
 
-                return {
-                  ...typedExisting,
-                  edges: [newEdge, ...oldEdges]
-                }
+              const newEdge = {
+                __typename: 'FragranceCollectionEdge',
+                node: toReference(newCollection),
+                cursor: ''
+              }
+
+              const oldEdges = typedExisting.edges
+
+              return {
+                ...typedExisting,
+                edges: [newEdge, ...oldEdges]
               }
             }
-          })
+          }
+        })
       }
     }
   )

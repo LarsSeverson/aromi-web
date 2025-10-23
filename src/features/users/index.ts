@@ -8,6 +8,8 @@ export * from './context/MyContext'
 export * from './context/MyContextProvider'
 
 export * from './hooks/useMe'
+export * from './hooks/useMyCollections'
+export * from './hooks/useMyCollectionsHasFragrance'
 export * from './hooks/useSearchUsers'
 export * from './hooks/useSetMyAvatar'
 export * from './hooks/useUpdateMe'
