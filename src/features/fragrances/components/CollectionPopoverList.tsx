@@ -3,7 +3,7 @@ import CollectionPreviewBarCheck from './CollectionPreviewBarCheck'
 import Divider from '@/components/Divider'
 import type { FragrancePreviewFragment } from '@/generated/graphql'
 import CreateCollectionDialog from './CreateCollectionDialog'
-import { useMyCollectionsHasFragrance } from '@/features/users'
+import { useSaveFragranceContext } from '../contexts/SaveFragranceContext'
 
 export interface CollectionPopoverListProps {
   fragrance: FragrancePreviewFragment
@@ -12,7 +12,7 @@ export interface CollectionPopoverListProps {
 const CollectionPopoverList = (props: CollectionPopoverListProps) => {
   const { fragrance } = props
 
-  const { collections } = useMyCollectionsHasFragrance(fragrance.id)
+  const { collections } = useSaveFragranceContext()
 
   return (
     <div

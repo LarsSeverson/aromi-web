@@ -3,18 +3,23 @@ import { Checkbox } from '@base-ui-components/react'
 import CollectionPreviewBar from './CollectionPreviewBar'
 import { BsCheck } from 'react-icons/bs'
 import clsx from 'clsx'
-import type { FragranceCollectionPreviewFragment } from '@/generated/graphql'
+import { useSaveFragranceContext } from '../contexts/SaveFragranceContext'
+import type { FragranceCollectionWithHasFragrance } from '../types'
 
 export interface CollectionPreviewBarCheckProps {
   defaultChecked?: boolean
-  collection: FragranceCollectionPreviewFragment
+  collection: FragranceCollectionWithHasFragrance
 }
 
 const CollectionPreviewBarCheck = (props: CollectionPreviewBarCheckProps) => {
   const { collection, defaultChecked = false } = props
+
+  const { toggleSelection } = useSaveFragranceContext()
+
   const [isChecked, setIsChecked] = useState(defaultChecked)
 
   const toggleChecked = () => {
+    toggleSelection(collection)
     setIsChecked(prev => !prev)
   }
 
@@ -35,7 +40,7 @@ const CollectionPreviewBarCheck = (props: CollectionPreviewBarCheckProps) => {
         className={clsx(
           'shrink-0 w-5 h-5 flex items-center justify-center rounded-full focus-visible:outline-2 focus-visible:outline-sinopia focus-visible:outline-offset-2',
           'data-[unchecked]:border data-[unchecked]:border-gray-300 data-[unchecked]:bg-transparent',
-          'data-[checked]:bg-sinopia ml-auto border-red-400'
+          'data-[checked]:bg-sinopia ml-auto border-red-400 cursor-pointer'
         )}
         onClick={(e) => { e.stopPropagation() }}
       >
