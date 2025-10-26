@@ -133,3 +133,10 @@ export const ALL_FRAGRANCE_COLLECTION_ITEM_FRAGMENT = gql(/* GraphQL */ `
     }
   }
 `)
+
+export const HAS_FRAGRANCE_FIELD_FRAGMENT = gql(/* GraphQL */ `
+  fragment HasFragranceField on FragranceCollection { 
+    id
+    hasFragrance(fragranceId: $fragranceId)
+  }
+`)

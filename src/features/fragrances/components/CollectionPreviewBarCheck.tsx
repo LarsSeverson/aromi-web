@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Checkbox } from '@base-ui-components/react'
 import CollectionPreviewBar from './CollectionPreviewBar'
 import { BsCheck } from 'react-icons/bs'
@@ -22,6 +22,13 @@ const CollectionPreviewBarCheck = (props: CollectionPreviewBarCheckProps) => {
     toggleSelection(collection)
     setIsChecked(prev => !prev)
   }
+
+  useEffect(
+    () => {
+      setIsChecked(defaultChecked)
+    },
+    [defaultChecked]
+  )
 
   return (
     <div

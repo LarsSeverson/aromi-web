@@ -5,6 +5,8 @@ import type { FragranceCollectionWithHasFragrance } from '../types'
 export const useFragranceSelection = (collections: FragranceCollectionWithHasFragrance[]) => {
   const added = useRef(new Set<string>())
   const removed = useRef(new Set<string>())
+  const duplicated = useRef(new Set<string>())
+
   const [hasModified, setHasModified] = useState(false)
 
   const originalMap = useMemo(() => {
@@ -24,10 +26,15 @@ export const useFragranceSelection = (collections: FragranceCollectionWithHasFra
     const originallyHad = originalMap.get(id) ?? false
     const wasAdded = added.current.has(id)
     const wasRemoved = removed.current.has(id)
+    const wasDuplicated = duplicated.current.has(id)
 
     if (originallyHad) {
       if (wasRemoved) removed.current.delete(id)
       else removed.current.add(id)
+
+      if (wasRemoved && !wasDuplicated) duplicated.current.add(id)
+      else if (!wasRemoved && wasDuplicated) duplicated.current.delete(id)
+
       return
     }
 
@@ -41,5 +48,5 @@ export const useFragranceSelection = (collections: FragranceCollectionWithHasFra
     setHasModified(false)
   }
 
-  return { added, removed, hasModified, toggleSelection, clearModifications }
+  return { added, removed, duplicated, hasModified, toggleSelection, clearModifications }
 }

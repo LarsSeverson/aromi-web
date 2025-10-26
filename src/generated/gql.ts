@@ -49,6 +49,7 @@ type Documents = {
     "\n  fragment AllFragranceCollection on FragranceCollection { \n    id\n    __typename\n    name\n    previewItems {\n      ...AllFragranceCollectionItem\n    }\n    items {\n      ...AllFragranceCollectionItem\n    }\n    user {\n      ...UserPreview\n    }\n  }\n": typeof types.AllFragranceCollectionFragmentDoc,
     "\n  fragment FragranceCollectionPreview on FragranceCollection { \n    id\n    name\n    previewItems {\n      ...AllFragranceCollectionItem\n    }\n    user {\n      ...UserPreview\n    }\n  }\n": typeof types.FragranceCollectionPreviewFragmentDoc,
     "\n  fragment AllFragranceCollectionItem on FragranceCollectionItem { \n    id\n    fragrance {\n      ...FragrancePreview\n    }\n  }\n": typeof types.AllFragranceCollectionItemFragmentDoc,
+    "\n  fragment HasFragranceField on FragranceCollection { \n    id\n    hasFragrance(fragranceId: $fragranceId)\n  }\n": typeof types.HasFragranceFieldFragmentDoc,
     "\n  mutation CreateFragranceReview(\n    $input: CreateFragranceReviewInput!\n  ) {\n    createFragranceReview(input: $input) {\n      ...AllFragranceReview\n    }\n  }\n": typeof types.CreateFragranceReviewDocument,
     "\n  mutation CreateFragranceCollection(\n    $input: CreateFragranceCollectionInput!\n  ) {\n    createFragranceCollection(input: $input) {\n      ...AllFragranceCollection\n    }\n  }\n": typeof types.CreateFragranceCollectionDocument,
     "\n  mutation DeleteFragranceCollection(\n    $input: DeleteFragranceCollectionInput!\n  ) {\n    deleteFragranceCollection(input: $input) {\n      ...AllFragranceCollection\n    }\n  }\n": typeof types.DeleteFragranceCollectionDocument,
@@ -133,6 +134,7 @@ const documents: Documents = {
     "\n  fragment AllFragranceCollection on FragranceCollection { \n    id\n    __typename\n    name\n    previewItems {\n      ...AllFragranceCollectionItem\n    }\n    items {\n      ...AllFragranceCollectionItem\n    }\n    user {\n      ...UserPreview\n    }\n  }\n": types.AllFragranceCollectionFragmentDoc,
     "\n  fragment FragranceCollectionPreview on FragranceCollection { \n    id\n    name\n    previewItems {\n      ...AllFragranceCollectionItem\n    }\n    user {\n      ...UserPreview\n    }\n  }\n": types.FragranceCollectionPreviewFragmentDoc,
     "\n  fragment AllFragranceCollectionItem on FragranceCollectionItem { \n    id\n    fragrance {\n      ...FragrancePreview\n    }\n  }\n": types.AllFragranceCollectionItemFragmentDoc,
+    "\n  fragment HasFragranceField on FragranceCollection { \n    id\n    hasFragrance(fragranceId: $fragranceId)\n  }\n": types.HasFragranceFieldFragmentDoc,
     "\n  mutation CreateFragranceReview(\n    $input: CreateFragranceReviewInput!\n  ) {\n    createFragranceReview(input: $input) {\n      ...AllFragranceReview\n    }\n  }\n": types.CreateFragranceReviewDocument,
     "\n  mutation CreateFragranceCollection(\n    $input: CreateFragranceCollectionInput!\n  ) {\n    createFragranceCollection(input: $input) {\n      ...AllFragranceCollection\n    }\n  }\n": types.CreateFragranceCollectionDocument,
     "\n  mutation DeleteFragranceCollection(\n    $input: DeleteFragranceCollectionInput!\n  ) {\n    deleteFragranceCollection(input: $input) {\n      ...AllFragranceCollection\n    }\n  }\n": types.DeleteFragranceCollectionDocument,
@@ -336,6 +338,10 @@ export function gql(source: "\n  fragment FragranceCollectionPreview on Fragranc
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(source: "\n  fragment AllFragranceCollectionItem on FragranceCollectionItem { \n    id\n    fragrance {\n      ...FragrancePreview\n    }\n  }\n"): (typeof documents)["\n  fragment AllFragranceCollectionItem on FragranceCollectionItem { \n    id\n    fragrance {\n      ...FragrancePreview\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  fragment HasFragranceField on FragranceCollection { \n    id\n    hasFragrance(fragranceId: $fragranceId)\n  }\n"): (typeof documents)["\n  fragment HasFragranceField on FragranceCollection { \n    id\n    hasFragrance(fragranceId: $fragranceId)\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

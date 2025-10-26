@@ -46,6 +46,12 @@ export const client = new ApolloClient({
         fields: {
           previewItems: {
             merge: false
+          },
+          hasFragrance: {
+            keyArgs: ['fragranceId'],
+            read (existing) {
+              return existing as boolean ?? false
+            }
           }
         }
       }

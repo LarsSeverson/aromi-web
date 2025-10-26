@@ -1,9 +1,11 @@
 import { useMyCollectionsHasFragrance } from '@/features/users'
 import type { Nullable } from '@/utils/util'
-import { createContext, useContext, useMemo, useRef, useState } from 'react'
+import { createContext, useContext } from 'react'
 import type { FragranceCollectionWithHasFragrance } from '../types'
-import type { FragranceCollectionPreviewFragment, FragrancePreviewFragment } from '@/generated/graphql'
+import type { FragrancePreviewFragment } from '@/generated/graphql'
 import { useFragranceSelection } from '../hooks/useFragranceSelection'
+import { useCreateFragranceCollectionItem } from '../hooks/useCreateFragranceCollectionItem'
+import { useDeleteFragranceCollectionItem } from '../hooks/useDeleteFragranceCollectionItem'
 
 export interface SaveFragranceContextValue extends ReturnType<typeof useMyCollectionsHasFragrance> {
   fragrance: FragrancePreviewFragment
@@ -34,10 +36,24 @@ export const SaveFragranceProvider = (props: SaveFragranceProviderProps) => {
   const myCollections = useMyCollectionsHasFragrance(fragrance.id)
 
   const {
+    added,
+    removed,
+    duplicated,
     hasModified,
     toggleSelection,
     clearModifications
   } = useFragranceSelection(myCollections.collections)
+
+  const { createItem } = useCreateFragranceCollectionItem()
+  const { deleteItem } = useDeleteFragranceCollectionItem()
+
+  const submitChanges = async () => {
+    const addedIds = Array.from(added.current)
+    const dupedIds = Array.from(duplicated.current)
+    const removedIds = Array.from(removed.current)
+
+    const toAddIds = addedIds.concat(dupedIds)
+  }
 
   return (
     <SaveFragranceContext.Provider

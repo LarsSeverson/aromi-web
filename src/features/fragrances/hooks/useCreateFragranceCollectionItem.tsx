@@ -3,7 +3,7 @@ import { useMutation } from '@apollo/client/react'
 import { CREATE_FRAGRANCE_COLLECTION_ITEM_MUTATION } from '../graphql/mutations'
 import type { AllFragranceCollectionItemFragment, CreateFragranceCollectionItemInput } from '@/generated/graphql'
 import { wrapQuery } from '@/utils/util'
-import { ALL_FRAGRANCE_COLLECTION_ITEM_FRAGMENT } from '../graphql/fragments'
+import { ALL_FRAGRANCE_COLLECTION_ITEM_FRAGMENT, HAS_FRAGRANCE_FIELD_FRAGMENT } from '../graphql/fragments'
 
 export const useCreateFragranceCollectionItem = () => {
   const { me } = useMyContext()
@@ -31,6 +31,13 @@ export const useCreateFragranceCollectionItem = () => {
           const cacheId = cache.identify({
             __typename: 'FragranceCollection',
             id: collectionId
+          })
+
+          cache.writeFragment({
+            id: cacheId,
+            fragment: HAS_FRAGRANCE_FIELD_FRAGMENT,
+            data: { id: collectionId, hasFragrance: true },
+            variables: { fragranceId: input.fragranceId }
           })
 
           cache.modify({
