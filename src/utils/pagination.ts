@@ -30,7 +30,7 @@ export const customRelayStylePagination = <TNode extends Reference = Reference> 
   return {
     keyArgs,
 
-    read (existing, { canRead, readField, toReference }) {
+    read (existing, { canRead }) {
       if (existing == null) return existing
 
       const edges: Array<RelayEdge<TNode>> = []
@@ -38,9 +38,8 @@ export const customRelayStylePagination = <TNode extends Reference = Reference> 
       let lastEdgeCursor = ''
 
       existing.edges.forEach(edge => {
-        const ref = toReference(edge.node)
-        const node = readField('node', ref)
-        if (canRead(node)) {
+        const ref = edge.node
+        if (canRead(ref)) {
           edges.push(edge)
           if (edge.cursor != null) {
             firstEdgeCursor ||= edge.cursor
@@ -82,11 +81,8 @@ export const customRelayStylePagination = <TNode extends Reference = Reference> 
       const lastEdge = incomingEdges[incomingEdges.length - 1]
       const { startCursor, endCursor } = incoming.pageInfo ?? {}
 
-      const startLength = startCursor?.length ?? 0
-      const endLength = endCursor?.length ?? 0
-
-      if (firstEdge != null && startLength > 0) firstEdge.cursor = startCursor
-      if (lastEdge != null && endLength > 0) lastEdge.cursor = endCursor
+      if (firstEdge != null && startCursor != null) firstEdge.cursor = startCursor
+      if (lastEdge != null && endCursor != null) lastEdge.cursor = endCursor
 
       const edges = existing.edges.concat(incomingEdges)
       const pageInfo: PageInfo = { ...existing.pageInfo, ...incoming.pageInfo }

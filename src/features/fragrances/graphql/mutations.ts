@@ -33,9 +33,14 @@ export const DELETE_FRAGRANCE_COLLECTION_MUTATION = gql(/* GraphQL */ `
 export const CREATE_FRAGRANCE_COLLECTION_ITEM_MUTATION = gql(/* GraphQL */ `
   mutation CreateFragranceCollectionItem(
     $input: CreateFragranceCollectionItemInput!
+    $fragranceId: ID!
   ) {
     createFragranceCollectionItem(input: $input) {
       ...AllFragranceCollectionItem
+      collection {
+        id
+        hasFragrance(fragranceId: $fragranceId)
+      }
     }
   }
 `)
@@ -53,9 +58,44 @@ export const MOVE_FRAGRANCE_COLLECTION_ITEMS_MUTATION = gql(/* GraphQL */ `
 export const DELETE_FRAGRANCE_COLLECTION_ITEM_MUTATION = gql(/* GraphQL */ `
   mutation DeleteFragranceCollectionItem(
     $input: DeleteFragranceCollectionItemInput!
+    $fragranceId: ID!
   ) {
     deleteFragranceCollectionItem(input: $input) {
       ...AllFragranceCollectionItem
+      collection {
+        id
+        hasFragrance(fragranceId: $fragranceId)
+      }
+    }
+  }
+`)
+
+export const ADD_FRAGRANCE_TO_COLLECTIONS_MUTATION = gql(/* GraphQL */ `
+  mutation AddFragranceToCollections(
+    $input: AddFragranceToCollectionsInput!
+    $fragranceId: ID!
+  ) {
+    addFragranceToCollections(input: $input) {
+      ...AllFragranceCollectionItem 
+      collection {
+        id
+        hasFragrance(fragranceId: $fragranceId)
+      }
+    }
+  }
+`)
+
+export const REMOVE_FRAGRANCE_FROM_COLLECTIONS_MUTATION = gql(/* GraphQL */ `
+  mutation RemoveFragranceFromCollections(
+    $input: RemoveFragranceFromCollectionsInput!
+    $fragranceId: ID!
+  ) {
+    removeFragranceFromCollections(input: $input) {
+      ...AllFragranceCollectionItem 
+      collection {
+        id
+        hasFragrance(fragranceId: $fragranceId)
+      }
     }
   }
 `)

@@ -12,13 +12,15 @@ export const useDeleteFragranceCollectionItem = () => {
   const deleteItem = (input: DeleteFragranceCollectionItemInput) => {
     return wrapQuery(
       deleteItemInner({
-        variables: { input },
+        variables: { input, fragranceId: input.fragranceId },
         update (cache, { data }) {
-          const deletedItemId = data?.deleteFragranceCollectionItem.id
-          const collectionId = input.collectionId
+          const deletedItem = data?.deleteFragranceCollectionItem
 
+          if (deletedItem == null) return
           if (me == null) return
-          if (deletedItemId == null) return
+
+          const deletedItemId = deletedItem.id
+          const collectionId = input.collectionId
 
           cache.modify({
             id: cache.identify({ __typename: 'FragranceCollection', id: collectionId }),
@@ -27,7 +29,7 @@ export const useDeleteFragranceCollectionItem = () => {
                 const typedRefs = existing as AllFragranceCollectionItemFragment[]
                 return typedRefs.filter(ref => readField('id', ref) !== deletedItemId)
               },
-              hasFragrance: () => false
+              hasFragrance: () => deletedItem.collection.hasFragrance
             }
           })
         }

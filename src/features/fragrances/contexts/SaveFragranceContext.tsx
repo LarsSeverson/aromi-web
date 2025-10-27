@@ -4,14 +4,16 @@ import { createContext, useContext } from 'react'
 import type { FragranceCollectionWithHasFragrance } from '../types'
 import type { FragrancePreviewFragment } from '@/generated/graphql'
 import { useFragranceSelection } from '../hooks/useFragranceSelection'
-import { useCreateFragranceCollectionItem } from '../hooks/useCreateFragranceCollectionItem'
-import { useDeleteFragranceCollectionItem } from '../hooks/useDeleteFragranceCollectionItem'
+import { useAddFragranceToCollections } from '../hooks/useAddFragranceToCollections'
+import { useRemoveFragranceFromCollections } from '../hooks/useRemoveFragranceFromCollections'
+import { useToastMessage } from '@/hooks/useToastMessage'
 
 export interface SaveFragranceContextValue extends ReturnType<typeof useMyCollectionsHasFragrance> {
   fragrance: FragrancePreviewFragment
   hasModified: boolean
   toggleSelection: (collection: FragranceCollectionWithHasFragrance) => void
   clearModifications: () => void
+  submitChanges: () => Promise<void>
 }
 
 export interface SaveFragranceProviderProps {
@@ -33,6 +35,8 @@ export const useSaveFragranceContext = () => {
 export const SaveFragranceProvider = (props: SaveFragranceProviderProps) => {
   const { fragrance, children } = props
 
+  const { toastMessage, toastError } = useToastMessage()
+
   const myCollections = useMyCollectionsHasFragrance(fragrance.id)
 
   const {
@@ -44,15 +48,41 @@ export const SaveFragranceProvider = (props: SaveFragranceProviderProps) => {
     clearModifications
   } = useFragranceSelection(myCollections.collections)
 
-  const { createItem } = useCreateFragranceCollectionItem()
-  const { deleteItem } = useDeleteFragranceCollectionItem()
+  const { addFragrance } = useAddFragranceToCollections()
+  const { removeFragrance } = useRemoveFragranceFromCollections()
 
   const submitChanges = async () => {
     const addedIds = Array.from(added.current)
     const dupedIds = Array.from(duplicated.current)
-    const removedIds = Array.from(removed.current)
 
     const toAddIds = addedIds.concat(dupedIds)
+    const toRemoveIds = Array.from(removed.current)
+
+    if (toAddIds.length > 0) {
+      const addRes = await addFragrance({ fragranceId: fragrance.id, collectionIds: toAddIds })
+
+      addRes.match(
+        () => {
+          toastMessage('Changes saved')
+        },
+        error => {
+          toastError(error.message)
+        }
+      )
+    }
+
+    if (toRemoveIds.length > 0) {
+      const removeRes = await removeFragrance({ fragranceId: fragrance.id, collectionIds: toRemoveIds })
+
+      removeRes.match(
+        () => {
+          toastMessage('Changes saved')
+        },
+        error => {
+          toastError(error.message)
+        }
+      )
+    }
   }
 
   return (
@@ -62,7 +92,8 @@ export const SaveFragranceProvider = (props: SaveFragranceProviderProps) => {
         fragrance,
         hasModified,
         toggleSelection,
-        clearModifications
+        clearModifications,
+        submitChanges
       }}
     >
       {children}

@@ -1,4 +1,3 @@
-import { useMyContext } from '@/features/users'
 import { useMutation } from '@apollo/client/react'
 import { CREATE_FRAGRANCE_COLLECTION_ITEM_MUTATION } from '../graphql/mutations'
 import type { AllFragranceCollectionItemFragment, CreateFragranceCollectionItemInput } from '@/generated/graphql'
@@ -6,20 +5,18 @@ import { wrapQuery } from '@/utils/util'
 import { ALL_FRAGRANCE_COLLECTION_ITEM_FRAGMENT, HAS_FRAGRANCE_FIELD_FRAGMENT } from '../graphql/fragments'
 
 export const useCreateFragranceCollectionItem = () => {
-  const { me } = useMyContext()
-
   const [createItemInner] = useMutation(CREATE_FRAGRANCE_COLLECTION_ITEM_MUTATION)
 
   const createItem = (input: CreateFragranceCollectionItemInput) => {
     return wrapQuery(
       createItemInner({
-        variables: { input },
+        variables: { input, fragranceId: input.fragranceId },
         update (cache, { data }) {
           const newItem = data?.createFragranceCollectionItem
-          const collectionId = input.collectionId
 
-          if (me == null) return
           if (newItem == null) return
+
+          const collectionId = input.collectionId
 
           const newItemRef = cache.writeFragment({
             data: newItem,
@@ -59,12 +56,12 @@ export const useCreateFragranceCollectionItem = () => {
 
                 return [newItemRef, ...fragments].slice(0, 4)
               },
-              hasFragrance: () => true
+              hasFragrance: () => newItem.collection.hasFragrance
             }
           })
         }
       })
-    ).map(data => data.createFragranceCollectionItem)
+    )
   }
 
   return {

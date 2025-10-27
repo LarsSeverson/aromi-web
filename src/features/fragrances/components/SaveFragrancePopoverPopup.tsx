@@ -14,7 +14,12 @@ export interface SaveFragrancePopoverPopupProps extends Popover.Popup.Props {
 const SaveFragrancePopoverPopup = (props: SaveFragrancePopoverPopupProps) => {
   const { onCancel, onSubmit } = props
 
-  const { fragrance, hasModified, clearModifications: clearSelections } = useSaveFragranceContext()
+  const {
+    fragrance,
+    hasModified,
+    clearModifications,
+    submitChanges
+  } = useSaveFragranceContext()
 
   const [isLoading, setIsLoading] = useState(false)
 
@@ -22,21 +27,22 @@ const SaveFragrancePopoverPopup = (props: SaveFragrancePopoverPopupProps) => {
     e.stopPropagation()
   }
 
-  const clearCollectionsSelected = () => {
-    clearSelections()
-  }
-
   const handleOnCancel = () => {
-    clearCollectionsSelected()
+    clearModifications()
     onCancel?.()
   }
 
-  const handleOnSubmit = () => {
+  const handleSubmitChanges = async () => {
     setIsLoading(true)
-    clearCollectionsSelected()
+    await submitChanges()
     setIsLoading(false)
 
+    clearModifications()
     onSubmit?.()
+  }
+
+  const handleOnSubmit = () => {
+    handleSubmitChanges()
   }
 
   return (
@@ -74,7 +80,11 @@ const SaveFragrancePopoverPopup = (props: SaveFragrancePopoverPopupProps) => {
                 className='bg-sinopia rounded-3xl w-20 text-white h-10'
                 onClick={handleOnSubmit}
               >
-                {isLoading && <Spinner />}
+                {isLoading && (
+                  <Spinner
+                    className='border-white'
+                  />
+                )}
 
                 <span
                   className={clsx(isLoading && 'opacity-0')}

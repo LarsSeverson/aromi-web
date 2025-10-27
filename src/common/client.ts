@@ -1,7 +1,6 @@
 import { customRelayStylePagination } from '@/utils/pagination'
 import { ApolloClient, ApolloLink, HttpLink, InMemoryCache, makeVar } from '@apollo/client'
 import { SetContextLink } from '@apollo/client/link/context'
-import { relayStylePagination } from '@apollo/client/utilities'
 
 export const accessToken = makeVar<string | null>(null)
 
@@ -36,9 +35,12 @@ export const client = new ApolloClient({
   link: ApolloLink.from([authLink, /* logLink, */ httpLink]),
   cache: new InMemoryCache({
     typePolicies: {
-      Me: {
+      User: {
         fields: {
-          collections: customRelayStylePagination()
+          collections: customRelayStylePagination((_, { variables }) => {
+            const { fragranceId } = variables ?? {}
+            return fragranceId == null ? false : `fragranceId:${fragranceId}`
+          })
         }
       },
 
@@ -51,7 +53,8 @@ export const client = new ApolloClient({
             keyArgs: ['fragranceId'],
             read (existing) {
               return existing as boolean ?? false
-            }
+            },
+            merge: false
           }
         }
       }

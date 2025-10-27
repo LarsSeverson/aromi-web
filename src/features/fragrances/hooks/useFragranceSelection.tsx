@@ -45,6 +45,7 @@ export const useFragranceSelection = (collections: FragranceCollectionWithHasFra
   const clearModifications = () => {
     added.current.clear()
     removed.current.clear()
+    duplicated.current.clear()
     setHasModified(false)
   }
 
