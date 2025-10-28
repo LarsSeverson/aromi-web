@@ -1,5 +1,7 @@
+'use no memo'
+
 import { useWindowVirtualizer } from '@tanstack/react-virtual'
-import React, { useEffect } from 'react'
+import React, { useEffect, useLayoutEffect } from 'react'
 
 interface Identifiable { id: string | number }
 
@@ -46,11 +48,11 @@ export const DynamicList = <T extends Identifiable, >(props: DynamicListProps<T>
   const skeletonCount = loading ? (remaining === 0 ? 0 : colCount - remaining) + colCount : 0
   const total = items.length + skeletonCount
   const rowCount = Math.ceil(total / colCount)
+
   const effectiveWidth = Math.min(
     maxWidth,
     (containerWidth - (colCount - 1) * gap) / colCount
   )
-
   const effectiveHeight = effectiveWidth * ratio
 
   const rowVirtualizer = useWindowVirtualizer({
@@ -73,14 +75,14 @@ export const DynamicList = <T extends Identifiable, >(props: DynamicListProps<T>
     return () => { window.removeEventListener('scroll', handleScroll) }
   }, [onEndReached, onEndReachedThreshold])
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     rowVirtualizer.measure()
   }, [effectiveHeight, rowVirtualizer])
 
   return (
     <div
       {...rest}
-      className='relative transition-[height] duration-300'
+      className='relative'
       style={{ height: `${rowVirtualizer.getTotalSize()}px` }}
     >
       {rowVirtualizer
@@ -99,7 +101,7 @@ export const DynamicList = <T extends Identifiable, >(props: DynamicListProps<T>
               const y = virtualRow.start
               const isSkeleton = loading && idx >= items.length
               const key = idx < items.length
-                ? `item-${items[idx].id}`
+                ? items[idx].id
                 : `skeleton-${rowIndex}-${colIndex}`
 
               return (

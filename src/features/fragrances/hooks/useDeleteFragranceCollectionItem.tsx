@@ -1,12 +1,10 @@
-import { useMyContext } from '@/features/users'
 import { useMutation } from '@apollo/client/react'
 import { DELETE_FRAGRANCE_COLLECTION_ITEM_MUTATION } from '../graphql/mutations'
 import type { AllFragranceCollectionItemFragment, DeleteFragranceCollectionItemInput } from '@/generated/graphql'
 import { wrapQuery } from '@/utils/util'
+import { HAS_FRAGRANCE_FIELD_FRAGMENT } from '../graphql/fragments'
 
 export const useDeleteFragranceCollectionItem = () => {
-  const { me } = useMyContext()
-
   const [deleteItemInner] = useMutation(DELETE_FRAGRANCE_COLLECTION_ITEM_MUTATION)
 
   const deleteItem = (input: DeleteFragranceCollectionItemInput) => {
@@ -15,26 +13,37 @@ export const useDeleteFragranceCollectionItem = () => {
         variables: { input, fragranceId: input.fragranceId },
         update (cache, { data }) {
           const deletedItem = data?.deleteFragranceCollectionItem
-
           if (deletedItem == null) return
-          if (me == null) return
 
-          const deletedItemId = deletedItem.id
           const collectionId = input.collectionId
+          const fragranceId = deletedItem.fragrance.id
+          const cachedCollectionId = cache.identify({ __typename: 'FragranceCollection', id: collectionId })
+
+          cache.writeFragment({
+            id: cachedCollectionId,
+            fragment: HAS_FRAGRANCE_FIELD_FRAGMENT,
+            fragmentName: 'HasFragranceField',
+            data: { hasFragrance: false, id: collectionId },
+            variables: { fragranceId },
+            broadcast: false
+          })
 
           cache.modify({
-            id: cache.identify({ __typename: 'FragranceCollection', id: collectionId }),
+            id: cachedCollectionId,
             fields: {
               items: (existing = { edges: [] }, { readField }) => {
                 const typedRefs = existing as AllFragranceCollectionItemFragment[]
-                return typedRefs.filter(ref => readField('id', ref) !== deletedItemId)
+                return typedRefs.filter(ref => readField('id', ref) !== deletedItem.id)
               },
-              hasFragrance: () => deletedItem.collection.hasFragrance
+              previewItems: (existing = { edges: [] }, { readField }) => {
+                const typedRefs = existing as AllFragranceCollectionItemFragment[]
+                return typedRefs.filter(ref => readField('id', ref) !== deletedItem.id)
+              }
             }
           })
         }
       })
-    ).map(data => data.deleteFragranceCollectionItem)
+    )
   }
 
   return {

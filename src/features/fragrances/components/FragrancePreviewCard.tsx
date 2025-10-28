@@ -7,6 +7,8 @@ import FragranceImageCard from './FragranceImageCard'
 import { useVoteOnFragrance } from '../hooks/useVoteOnFragrance'
 import ShareFragrancePopover from './ShareFragrancePopover'
 import SaveFragrancePopover from './SaveFragrancePopover'
+import { useToastMessage } from '@/hooks/useToastMessage'
+import { useDebounce } from '@/hooks/useDebounce'
 
 export interface FragrancePreviewCardProps {
   fragrance: FragrancePreviewFragment
@@ -15,6 +17,8 @@ export interface FragrancePreviewCardProps {
 export const FragrancePreviewCard = (props: FragrancePreviewCardProps) => {
   const { fragrance, ...rest } = props
   const { id, name, brand, votes } = fragrance
+
+  const { toastError } = useToastMessage()
 
   const { vote } = useVoteOnFragrance()
 
@@ -25,8 +29,23 @@ export const FragrancePreviewCard = (props: FragrancePreviewCardProps) => {
     setIsLinkFocused(true)
   }
 
-  const handleVoteOnFragrance = async () => {
+  const handleVoteOnFragrance = useDebounce(
+    async (userVote: number) => {
+      const res = await vote({ fragranceId: id, vote: userVote })
 
+      res.match(
+        () => {
+          //
+        },
+        () => {
+          toastError('', 'Something went wrong')
+        }
+      )
+    }
+  )
+
+  const handleOnVote = (vote: number) => {
+    handleVoteOnFragrance(vote)
   }
 
   return (
@@ -34,7 +53,7 @@ export const FragrancePreviewCard = (props: FragrancePreviewCardProps) => {
       className={clsx(
         'group hover:cursor-pointer relative flex flex-col h-full'
       )}
-      onMouseEnter={() => { setIsLinkFocused(false) }}
+      onMouseEnter={setIsLinkFocused.bind(null, false)}
     >
       <div
         className='flex-1 flex flex-col rounded-2xl relative pointer-events-none'
@@ -85,7 +104,7 @@ export const FragrancePreviewCard = (props: FragrancePreviewCardProps) => {
           <VoteButtonGroup
             votes={votes}
             className='absolute bottom-3 right-3 z-10'
-            onVote={handleVoteOnFragrance}
+            onVote={handleOnVote}
           />
         </div>
       </div>

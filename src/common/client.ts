@@ -35,6 +35,12 @@ export const client = new ApolloClient({
   link: ApolloLink.from([authLink, /* logLink, */ httpLink]),
   cache: new InMemoryCache({
     typePolicies: {
+      Query: {
+        fields: {
+          fragrances: customRelayStylePagination()
+        }
+      },
+
       User: {
         fields: {
           collections: customRelayStylePagination((_, { variables }) => {

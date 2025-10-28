@@ -70,7 +70,8 @@ const ShareFragrancePopover = (props: ShareFragrancePopoverProps) => {
       {onRenderTrigger?.() ??
         (
           <Popover.Trigger
-            className='rounded-full p-2 bg-white border-[1px] left-3 bottom-3 absolute text-center hover:brightness-95 cursor-pointer'
+            className='rounded-full p-2 bg-white border-[1px] left-3 bottom-3 absolute text-center hover:bg-empty cursor-pointer'
+            disabled={showLinkFeedback}
             onClick={handlePopoverTriggerClick}
           >
             <GoShare

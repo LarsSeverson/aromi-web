@@ -42,7 +42,7 @@ export const customRelayStylePagination = <TNode extends Reference = Reference> 
         if (canRead(ref)) {
           edges.push(edge)
           if (edge.cursor != null) {
-            firstEdgeCursor ||= edge.cursor
+            firstEdgeCursor ??= edge.cursor
             lastEdgeCursor = edge.cursor
           }
         }
@@ -77,8 +77,8 @@ export const customRelayStylePagination = <TNode extends Reference = Reference> 
           return copy
         }) ?? []
 
-      const firstEdge = incomingEdges[0]
-      const lastEdge = incomingEdges[incomingEdges.length - 1]
+      const firstEdge = incomingEdges.at(0)
+      const lastEdge = incomingEdges.at(-1)
       const { startCursor, endCursor } = incoming.pageInfo ?? {}
 
       if (firstEdge != null && startCursor != null) firstEdge.cursor = startCursor
@@ -153,7 +153,7 @@ export const validatePagination = (
   networkStatus: NetworkStatus
 ) => {
   if (
-    networkStatus === NetworkStatus.fetchMore ||
+    networkStatus !== NetworkStatus.ready ||
     pageInfo?.endCursor == null ||
     !pageInfo.hasNextPage
   ) return null

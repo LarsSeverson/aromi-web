@@ -33,7 +33,7 @@ const CollectionPreviewBarCheck = (props: CollectionPreviewBarCheckProps) => {
   return (
     <div
       role='button'
-      className='w-full flex items-center px-2 pr-4 py-0 hover:backdrop-brightness-95 gap-2 select-none cursor-pointer'
+      className='w-full h-full flex items-center px-2 pr-4 py-0 hover:bg-gray-100 gap-2 select-none cursor-pointer '
       tabIndex={0}
       onClick={toggleChecked}
     >

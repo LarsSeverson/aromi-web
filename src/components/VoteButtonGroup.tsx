@@ -8,15 +8,17 @@ import { TbArrowBigDown, TbArrowBigDownFilled, TbArrowBigUp, TbArrowBigUpFilled 
 
 export interface VoteButtonGroupProps extends React.HTMLAttributes<HTMLDivElement> {
   votes: AllVoteInfoFragment
-  onVote?: (vote: number | null) => void | Promise<void>
+  onVote?: (vote: number) => void | Promise<void>
 }
 
 export const VoteButtonGroup = (props: VoteButtonGroupProps) => {
   const { votes, onVote, className, ...rest } = props
   const { score, myVote } = votes
 
+  const [initialScore] = useState(score - (myVote ?? VOTE_TYPES.NOVOTE))
   const [currentVote, setCurrentVote] = useState(myVote ?? VOTE_TYPES.NOVOTE)
-  const currentScore = score + currentVote
+
+  const currentScore = initialScore + currentVote
 
   const onFor = (e: React.SyntheticEvent) => {
     e.preventDefault()

@@ -7,7 +7,7 @@ import type { FragrancePreviewFragment } from '@/generated/graphql'
 import { useCallback, useState } from 'react'
 
 export const HomePage = () => {
-  const { fragrances, isLoading, isLoadingMore } = useFragrances()
+  const { fragrances, isLoading, isLoadingMore, loadMore } = useFragrances()
 
   const [containerRect, setContainerRect] = useState(new DOMRect())
 
@@ -28,6 +28,13 @@ export const HomePage = () => {
     []
   )
 
+  const handleOnEndReached = useCallback(
+    () => {
+      loadMore()
+    },
+    [loadMore]
+  )
+
   return (
     <div
       className='p-4'
@@ -41,6 +48,7 @@ export const HomePage = () => {
           loading={isLoading || isLoadingMore}
           onRenderItem={onRenderFragrance}
           onRenderSkeleton={onRenderFragranceSkeleton}
+          onEndReached={handleOnEndReached}
         />
       </ResizeContainer>
     </div>

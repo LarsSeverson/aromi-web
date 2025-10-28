@@ -4,8 +4,8 @@ import { useQuery } from '@apollo/client/react'
 import { FRAGRANCES_QUERY } from '../graphql/queries'
 import { useMemo } from 'react'
 import { flattenConnections, validatePagination } from '@/utils/pagination'
-import { noRes } from '@/utils/error'
 import { hasNextPage, isStatusLoadingMore, wrapQuery } from '@/utils/util'
+import { noRes } from '@/utils/error'
 
 export const useFragrances = (input?: FragrancePaginationInput) => {
   const {

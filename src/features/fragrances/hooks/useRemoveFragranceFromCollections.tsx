@@ -2,7 +2,7 @@ import { useMutation } from '@apollo/client/react'
 import { REMOVE_FRAGRANCE_FROM_COLLECTIONS_MUTATION } from '../graphql/mutations'
 import type { ApolloCache } from '@apollo/client'
 import type { RemoveFragranceFromCollectionsInput, RemoveFragranceFromCollectionsMutation } from '@/generated/graphql'
-import { wrapQuery } from '@/utils/util'
+import { type Nullable, wrapQuery } from '@/utils/util'
 import { HAS_FRAGRANCE_FIELD_FRAGMENT } from '../graphql/fragments'
 
 export const useRemoveFragranceFromCollections = () => {
@@ -10,7 +10,7 @@ export const useRemoveFragranceFromCollections = () => {
 
   const handleUpdateCache = (
     cache: ApolloCache,
-    data: RemoveFragranceFromCollectionsMutation | null | undefined
+    data: Nullable<RemoveFragranceFromCollectionsMutation>
   ) => {
     const removedItems = data?.removeFragranceFromCollections
     if (removedItems == null) return

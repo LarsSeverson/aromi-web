@@ -33,7 +33,7 @@ export const useSearchAccords = (input?: SearchInput) => {
 
   const accords = useMemo(
     () => flattenConnections(data?.searchAccords ?? previousData?.searchAccords ?? []),
-    [data?.searchAccords]
+    [data?.searchAccords, previousData?.searchAccords]
   )
 
   const isLoadingMore = isStatusLoadingMore(networkStatus)

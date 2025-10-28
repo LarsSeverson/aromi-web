@@ -21,50 +21,55 @@ export const Toaster = () => {
               key={toast.id}
               toast={toast}
               className={clsx(
-                'absolute left-0 right-0 bottom-0 mx-auto mr-0 w-full',
-                'box-border p-4 rounded-lg shadow-md',
-                'bg-white text-light border border-surface',
-                'bg-clip-padding',
-                'select-none cursor-default',
-                'transition-[transform,opacity] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]',
+                '[--gap:0.75rem]',
+                '[--peek:0.75rem]',
+                '[--scale:calc(max(0,1-(var(--toast-index)*0.1)))]',
+                '[--shrink:calc(1-var(--scale))]',
+                '[--height:var(--toast-frontmost-height,var(--toast-height))]',
+                '[--offset-y:calc(var(--toast-offset-y)*-1+calc(var(--toast-index)*var(--gap)*-1)+var(--toast-swipe-movement-y))]',
+                'absolute right-0 bottom-0 left-auto',
                 'z-[calc(1000-var(--toast-index))]',
-                'data-[expanded]:translate-x-[var(--toast-swipe-movement-x)]',
-                'data-[expanded]:translate-y-[calc(var(--toast-offset-y)*-1+var(--toast-index)*-0.75rem+var(--toast-swipe-movement-y))]',
-                'data-[starting-style]:translate-y-[150%]',
-                'data-[ending-style]:translate-y-[150%]',
-                'data-[limited]:opacity-0',
+                'mr-0 w-full origin-bottom',
+                '[transform:translateX(var(--toast-swipe-movement-x))_translateY(calc(var(--toast-swipe-movement-y)-(var(--toast-index)*var(--peek))-(var(--shrink)*var(--height))))_scale(var(--scale))]',
+                'rounded-lg border border-surface bg-white text-light bg-clip-padding p-4 shadow-md select-none',
+                'after:absolute after:top-full after:left-0 after:h-[calc(var(--gap)+1px)] after:w-full after:content-[\'\']',
                 'data-[ending-style]:opacity-0',
-                'data-[ending-style][data-swipe-direction=up]:translate-y-[calc(var(--toast-swipe-movement-y)-150%)]',
-                'data-[ending-style][data-swipe-direction=down]:translate-y-[calc(var(--toast-swipe-movement-y)+150%)]',
-                'data-[ending-style][data-swipe-direction=left]:translate-x-[calc(var(--toast-swipe-movement-x)-150%)]',
-                'data-[ending-style][data-swipe-direction=right]:translate-x-[calc(var(--toast-swipe-movement-x)+150%)]'
+                'data-[expanded]:[transform:translateX(var(--toast-swipe-movement-x))_translateY(calc(var(--offset-y)))]',
+                'data-[limited]:opacity-0',
+                'data-[starting-style]:[transform:translateY(150%)]',
+                '[&[data-ending-style]:not([data-limited]):not([data-swipe-direction])]:[transform:translateY(150%)]',
+                'data-[ending-style]:data-[swipe-direction=down]:[transform:translateY(calc(var(--toast-swipe-movement-y)+150%))]',
+                'data-[expanded]:data-[ending-style]:data-[swipe-direction=down]:[transform:translateY(calc(var(--toast-swipe-movement-y)+150%))]',
+                'data-[ending-style]:data-[swipe-direction=left]:[transform:translateX(calc(var(--toast-swipe-movement-x)-150%))_translateY(var(--offset-y))]',
+                'data-[expanded]:data-[ending-style]:data-[swipe-direction=left]:[transform:translateX(calc(var(--toast-swipe-movement-x)-150%))_translateY(var(--offset-y))]',
+                'data-[ending-style]:data-[swipe-direction=right]:[transform:translateX(calc(var(--toast-swipe-movement-x)+150%))_translateY(var(--offset-y))]',
+                'data-[expanded]:data-[ending-style]:data-[swipe-direction=right]:[transform:translateX(calc(var(--toast-swipe-movement-x)+150%))_translateY(var(--offset-y))]',
+                'data-[ending-style]:data-[swipe-direction=up]:[transform:translateY(calc(var(--toast-swipe-movement-y)-150%))]',
+                'data-[expanded]:data-[ending-style]:data-[swipe-direction=up]:[transform:translateY(calc(var(--toast-swipe-movement-y)-150%))]',
+                'h-[var(--height)] data-[expanded]:h-[var(--toast-height)]',
+                '[transition:transform_0.5s_cubic-bezier(0.22,1,0.36,1),opacity_0.5s,height_0.15s]'
               )}
-              style={{
-                transform: 'translateX(var(--toast-swipe-movement-x)) translateY(calc(var(--toast-swipe-movement-y) + (min(var(--toast-index), 10) * -20%))) scale(calc(max(0, 1 - (var(--toast-index) * 0.1))))'
-              }}
             >
 
-              <Toast.Title
-                className='text-light font-medium text-[0.975rem] leading-5 m-0'
-              />
-
-              <Toast.Description
-                className='text-light3 text-[0.925rem] leading-5 m-0'
-              />
-
-              <Toast.Close
-                aria-label='Close'
+              <Toast.Content
                 className={clsx(
-                  'absolute top-2 right-2',
-                  'w-5 h-5 flex items-center justify-center',
-                  'border-none bg-transparent rounded',
-                  'hover:bg-black/10'
+                  'overflow-hidden transition-opacity [transition-duration:250ms]',
+                  'data-[behind]:pointer-events-none data-[behind]:opacity-0',
+                  'data-[expanded]:pointer-events-auto data-[expanded]:opacity-100'
                 )}
               >
-                <CgClose
-                  size={14}
-                />
-              </Toast.Close>
+                <Toast.Title className='text-[0.975rem] leading-5 font-medium text-light' />
+                <Toast.Description className='text-[0.925rem] leading-5 text-light3' />
+                <Toast.Close
+                  aria-label='Close'
+                  className={clsx(
+                    'absolute top-2 right-2 flex h-5 w-5 items-center justify-center rounded border-none bg-transparent',
+                    'hover:bg-black/10'
+                  )}
+                >
+                  <CgClose size={14} />
+                </Toast.Close>
+              </Toast.Content>
             </Toast.Root>
           ))}
       </Toast.Viewport>

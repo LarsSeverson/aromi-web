@@ -13,32 +13,30 @@ export const useCreateFragranceCollectionItem = () => {
         variables: { input, fragranceId: input.fragranceId },
         update (cache, { data }) {
           const newItem = data?.createFragranceCollectionItem
-
           if (newItem == null) return
 
           const collectionId = input.collectionId
-
-          const newItemRef = cache.writeFragment({
-            data: newItem,
-            broadcast: false,
-            fragment: ALL_FRAGRANCE_COLLECTION_ITEM_FRAGMENT,
-            fragmentName: 'AllFragranceCollectionItem'
-          })
-
-          const cacheId = cache.identify({
-            __typename: 'FragranceCollection',
-            id: collectionId
-          })
+          const fragranceId = newItem.fragrance.id
+          const cachedCollectionId = cache.identify({ __typename: 'FragranceCollection', id: collectionId })
 
           cache.writeFragment({
-            id: cacheId,
+            id: cachedCollectionId,
             fragment: HAS_FRAGRANCE_FIELD_FRAGMENT,
-            data: { id: collectionId, hasFragrance: true },
-            variables: { fragranceId: input.fragranceId }
+            fragmentName: 'HasFragranceField',
+            data: { hasFragrance: true, id: collectionId },
+            variables: { fragranceId },
+            broadcast: false
+          })
+
+          const newItemRef = cache.writeFragment({
+            fragment: ALL_FRAGRANCE_COLLECTION_ITEM_FRAGMENT,
+            fragmentName: 'AllFragranceCollectionItem',
+            data: newItem,
+            broadcast: false
           })
 
           cache.modify({
-            id: cacheId,
+            id: cachedCollectionId,
             fields: {
               items: (existing = [], { readField }) => {
                 const fragments = existing as AllFragranceCollectionItemFragment[]
@@ -55,8 +53,7 @@ export const useCreateFragranceCollectionItem = () => {
                 if (alreadyExists) return fragments
 
                 return [newItemRef, ...fragments].slice(0, 4)
-              },
-              hasFragrance: () => newItem.collection.hasFragrance
+              }
             }
           })
         }

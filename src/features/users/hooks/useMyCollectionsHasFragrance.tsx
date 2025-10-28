@@ -3,7 +3,8 @@ import { MY_COLLECTIONS_HAS_FRAGRANCE_QUERY } from '../graphql/queries'
 import { useQuery } from '@apollo/client/react'
 import { hasNextPage, isStatusLoadingMore, wrapQuery } from '@/utils/util'
 import { useMemo } from 'react'
-import { flattenConnections } from '@/utils/pagination'
+import { flattenConnections, validatePagination } from '@/utils/pagination'
+import { noRes } from '@/utils/error'
 
 export const useMyCollectionsHasFragrance = (fragranceId: string, input?: FragranceCollectionPaginationInput) => {
   const {
@@ -12,9 +13,9 @@ export const useMyCollectionsHasFragrance = (fragranceId: string, input?: Fragra
   } = useQuery(MY_COLLECTIONS_HAS_FRAGRANCE_QUERY, { variables: { fragranceId, input } })
 
   const loadMore = () => {
-    const endCursor = data?.me.collections.pageInfo.endCursor
+    const endCursor = validatePagination(data?.me.collections.pageInfo, networkStatus)
 
-    if (endCursor == null) return
+    if (endCursor == null) return noRes
 
     const variables = {
       fragranceId,
