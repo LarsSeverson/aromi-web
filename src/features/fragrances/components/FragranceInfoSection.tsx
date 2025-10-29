@@ -9,40 +9,54 @@ import { PiShareFat } from 'react-icons/pi'
 import Divider from '@/components/Divider'
 import PageCategory from '@/components/PageCategory'
 import AccordsLadder from './AccordsLadder'
-import useFragranceAccords from '../hooks/useFragranceAccords'
-import { type IFragranceSummary } from '../types'
 import { useVoteOnFragrance } from '../hooks/useVoteOnFragrance'
 import ShareFragrancePopover from './ShareFragrancePopover'
-import { useMyContext } from '@/features/user'
-import { INVALID_ID } from '@/utils/util-types'
 import { Popover } from '@base-ui-components/react'
-import CollectionPopover from '@/features/collections/components/CollectionPopover'
 import MoreOptionsFragrancePopover from './MoreOptionsFragrancePopover'
+import type { FragranceDetailFragment } from '@/generated/graphql'
+import SaveFragrancePopover from './SaveFragrancePopover'
+import { useFragranceAccords } from '../hooks/useFragranceAccords'
+import { useDebounce } from '@/hooks/useDebounce'
+import { useToastMessage } from '@/hooks/useToastMessage'
 
 export interface FragranceInfoSectionProps {
-  fragrance: IFragranceSummary
+  fragrance: FragranceDetailFragment
   onScrollToReview?: () => void
 }
 
 const FragranceInfoSection = (props: FragranceInfoSectionProps) => {
   const { fragrance, onScrollToReview } = props
+  const { id, name, brand, votes, reviewInfo } = fragrance
+  const { averageRating, count } = reviewInfo
 
-  const { id, name, brand, rating, votes, reviewsCount } = fragrance
-  const { voteScore, myVote } = votes
+  const { toastError } = useToastMessage()
 
-  const myContext = useMyContext()
+  const { accords } = useFragranceAccords(id, { first: 10 })
+  const { vote } = useVoteOnFragrance()
 
-  const { data: accords } = useFragranceAccords(id, { first: 10 })
-  const { voteOnFragrance } = useVoteOnFragrance()
+  const handleVoteOnFragrance = useDebounce(
+    async (userVote: number) => {
+      const res = await vote({ fragranceId: id, vote: userVote })
 
-  const handleFragranceVote = (vote: boolean | null) => {
-    void voteOnFragrance({ variables: { input: { fragranceId: fragrance.id, vote } } })
+      res.match(
+        () => {
+          //
+        },
+        () => {
+          toastError('', 'Something went wrong')
+        }
+      )
+    }
+  )
+
+  const handleOnVote = (vote: number) => {
+    handleVoteOnFragrance(vote)
   }
 
   return (
 
     <div
-      className='flex flex-1 flex-col min-w-44'
+      className='flex flex-1 flex-col max-w-md '
     >
 
       <div
@@ -62,12 +76,12 @@ const FragranceInfoSection = (props: FragranceInfoSectionProps) => {
       <h2
         className='font-p text-xl'
       >
-        {brand}
+        {brand.name}
       </h2>
 
       <div className='flex flex-row items-center mt-4 mb-2'>
         <RatingStars
-          rating={rating}
+          rating={averageRating}
           size={20}
           filledColor={Colors.sinopia}
           emptyColor={Colors.empty2}
@@ -76,15 +90,14 @@ const FragranceInfoSection = (props: FragranceInfoSectionProps) => {
         <p
           className='font-semibold text-sm opacity-80 ml-1'
         >
-          ({rating} / 5.0)
+          ({averageRating ?? 0} / 5.0)
         </p>
       </div>
 
       <div className='flex flex-row items-end mb-3 gap-3'>
         <VoteButtonGroup
-          votes={voteScore}
-          myVote={myVote}
-          onVote={handleFragranceVote}
+          votes={votes}
+          onVote={handleOnVote}
         />
 
         <BouncyButton
@@ -101,28 +114,27 @@ const FragranceInfoSection = (props: FragranceInfoSectionProps) => {
           <p
             className='font-semibold text-sm'
           >
-            {formatNumber(reviewsCount)}
+            {formatNumber(count)}
           </p>
         </BouncyButton>
 
         <ShareFragrancePopover
           fragrance={fragrance}
-          userId={myContext.me?.id ?? INVALID_ID}
           onRenderTrigger={() => (
             <Popover.Trigger>
               <div
-                className='rounded-full px-3 h-[34px] flex items-center justify-center border gap-1 group hover:brightness-95 bg-white'
+                className='rounded-full px-3 h-[34px] flex items-center justify-center border gap-1 group hover:brightness-95 bg-white cursor-pointer'
               >
                 <PiShareFat
                   className='group-hover:text-sinopia'
                   size={18}
                 />
+
                 <p
                   className='font-semibold text-sm'
                 >
                   Share
                 </p>
-
               </div>
             </Popover.Trigger>
           )}
@@ -131,9 +143,8 @@ const FragranceInfoSection = (props: FragranceInfoSectionProps) => {
         <div
           className='flex ml-auto'
         >
-          <CollectionPopover
+          <SaveFragrancePopover
             fragrance={fragrance}
-            userId={myContext.me?.id ?? INVALID_ID}
           />
         </div>
       </div>
@@ -156,7 +167,7 @@ const FragranceInfoSection = (props: FragranceInfoSectionProps) => {
           >
             <AccordsLadder
               accords={accords}
-              maxVote={accords.at(0)?.votes.voteScore ?? 0}
+              maxVote={accords.at(0)?.votes.score ?? 0}
             />
           </PageCategory>
         </div>

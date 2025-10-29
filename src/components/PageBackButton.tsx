@@ -29,7 +29,7 @@ const PageBackButton = (props: PageBackButtonProps) => {
         onClick={handleGoBack}
       >
         <IoMdArrowRoundBack
-          size={32}
+          size={28}
         />
       </BouncyButton>
     </div>

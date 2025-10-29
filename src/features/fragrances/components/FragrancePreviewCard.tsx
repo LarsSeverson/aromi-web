@@ -1,6 +1,6 @@
 import type { FragrancePreviewFragment } from '@/generated/graphql'
 import clsx from 'clsx'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { VoteButtonGroup } from '@/components/VoteButtonGroup'
 import { Link } from '@tanstack/react-router'
 import FragranceImageCard from './FragranceImageCard'
@@ -47,6 +47,12 @@ export const FragrancePreviewCard = (props: FragrancePreviewCardProps) => {
   const handleOnVote = (vote: number) => {
     handleVoteOnFragrance(vote)
   }
+
+  useEffect(() => {
+    if (fragrance.name === 'Of the Immortals') {
+      console.log(fragrance.votes)
+    }
+  }, [fragrance])
 
   return (
     <div

@@ -537,9 +537,6 @@
   .h-12 {
     height: calc(var(--spacing) * 12);
   }
-  .h-15 {
-    height: calc(var(--spacing) * 15);
-  }
   .h-16 {
     height: calc(var(--spacing) * 16);
   }
@@ -1019,9 +1016,6 @@
   .border-red-400 {
     border-color: var(--color-red-400);
   }
-  .border-red-500 {
-    border-color: var(--color-red-500);
-  }
   .border-red-950 {
     border-color: var(--color-red-950);
   }
@@ -1124,9 +1118,6 @@
   }
   .fill-gray-200 {
     fill: var(--color-gray-200);
-  }
-  .object-contain {
-    object-fit: contain;
   }
   .object-cover {
     object-fit: cover;
@@ -1379,6 +1370,9 @@
   .text-gray-900 {
     color: var(--color-gray-900);
   }
+  .text-red-500 {
+    color: var(--color-red-500);
+  }
   .text-red-600 {
     color: var(--color-red-600);
   }
@@ -1579,6 +1573,10 @@
   .duration-150 {
     --tw-duration: 150ms;
     transition-duration: 150ms;
+  }
+  .duration-200 {
+    --tw-duration: 200ms;
+    transition-duration: 200ms;
   }
   .duration-300 {
     --tw-duration: 300ms;
@@ -2414,11 +2412,6 @@
   .dark\:fill-none {
     @media (prefers-color-scheme: dark) {
       fill: none;
-    }
-  }
-  .dark\:opacity-70 {
-    @media (prefers-color-scheme: dark) {
-      opacity: 70%;
     }
   }
   .pointer-coarse\:py-2\.5 {

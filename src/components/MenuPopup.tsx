@@ -14,7 +14,7 @@ const MenuPopup = (props: MenuPopupProps) => {
       className={clsx(
         'origin-[var(--transform-origin)]',
         'rounded-lg py-1',
-        'text-gray-900',
+        'text-gray-900 bg-white',
         'shadow-symmetrical shadow-black/10',
         'border',
         'transition-[transform,scale,opacity]',

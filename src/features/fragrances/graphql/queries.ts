@@ -5,7 +5,7 @@ export const FRAGRANCE_QUERY = gql(/* GraphQL */ `
     $id: ID!
   ) {
     fragrance(id: $id) {
-      ...FragrancePreview
+      ...FragranceDetail
     }
   }
 `)

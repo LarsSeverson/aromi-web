@@ -1,46 +1,36 @@
-import React, { useEffect, useRef } from 'react'
-import { FragranceImagesSection } from '@/features/fragrance/components/FragranceImagesSection'
-import { useLogFragranceView } from '@/features/fragrance/hooks/useLogFragranceView'
+import React, { useRef } from 'react'
 import FragranceInfoSection from '../components/FragranceInfoSection'
 import FragranceCharacteristicsSection from '../components/FragranceCharacteristicsSection'
 import FragranceNotesSection from '../components/FragranceNotesSection'
 import FragranceReviewsSection from '../components/FragranceReviewsSection'
-import { type IFragranceSummary } from '../types'
 import PageBackButton from '../../../components/PageBackButton'
+import type { FragranceDetailFragment } from '@/generated/graphql'
+import { FragranceImagesSection } from '../components/FragranceImagesSection'
 
 export interface FragrancePageProps {
-  fragrance: IFragranceSummary
+  fragrance: FragranceDetailFragment
 }
 
 export const FragrancePage = (props: FragrancePageProps) => {
   const { fragrance } = props
-  const { id: fragranceId } = fragrance
 
-  const { logFragranceView } = useLogFragranceView()
-
-  const reviewRef = useRef<HTMLDivElement>(null)
+  const reviewSectionRef = useRef<HTMLDivElement>(null)
 
   const scrollToReview = () => {
-    if (reviewRef.current != null) {
+    if (reviewSectionRef.current != null) {
       window.scrollTo({
-        top: reviewRef.current.offsetTop - 100,
+        top: reviewSectionRef.current.offsetTop - 100,
         behavior: 'smooth'
       })
     }
   }
 
-  useEffect(() => {
-    if (process.env.NODE_ENV === 'production') {
-      void logFragranceView({ variables: { input: { fragranceId } } })
-    }
-  }, [fragranceId, logFragranceView])
-
   return (
     <div
-      className='flex flex-wrap gap-5'
+      className='flex flex-wrap gap-5 h-full w-full'
     >
       <div
-        className='flex-1 flex'
+        className='flex pl-4'
       >
         <PageBackButton
           className='sticky top-[87px] ml-auto'
@@ -48,13 +38,13 @@ export const FragrancePage = (props: FragrancePageProps) => {
       </div>
 
       <div
-        className='flex-[6] w-full'
+        className='flex-1 flex'
       >
         <div
           className='flex-1 flex flex-wrap gap-5'
         >
           <div
-            className='border flex-1 rounded-xl flex'
+            className='flex-1 rounded-xl flex'
           >
             <FragranceImagesSection
               fragrance={fragrance}
@@ -71,7 +61,7 @@ export const FragrancePage = (props: FragrancePageProps) => {
           </div>
         </div>
 
-        <div
+        {/* <div
           className='w-full flex justify-center mt-10'
         >
           <div
@@ -86,16 +76,12 @@ export const FragrancePage = (props: FragrancePageProps) => {
             />
 
             <FragranceReviewsSection
-              ref={reviewRef}
+              ref={reviewSectionRef}
               fragrance={fragrance}
             />
           </div>
-        </div>
+        </div> */}
       </div>
-
-      <div
-        className='flex-1'
-      />
     </div>
   )
 }

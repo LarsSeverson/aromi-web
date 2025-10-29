@@ -7,9 +7,7 @@ export const useVoteOnFragrance = () => {
   const [voteInner] = useMutation(VOTE_ON_FRAGRANCE_MUTATION)
 
   const vote = (input: VoteOnFragranceInput) => {
-    return wrapQuery(
-      voteInner({ variables: { input } })
-    ).map(data => data.voteOnFragrance)
+    return wrapQuery(voteInner({ variables: { input } }))
   }
 
   return {

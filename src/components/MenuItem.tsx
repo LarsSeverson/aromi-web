@@ -13,7 +13,7 @@ const MenuItem = (props: MenuItemProps) => {
     <Menu.Item
       {...rest}
       className={clsx(
-        'outline-none cursor-default select-none',
+        'outline-none cursor-pointer select-none',
         'py-2 pl-4 pr-8 flex text-sm leading-4 relative items-center',
         'data-[highlighted]:z-0 ',
         'data-[highlighted]:before:content-[""] data-[highlighted]:before:absolute',

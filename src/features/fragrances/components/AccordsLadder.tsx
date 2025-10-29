@@ -1,18 +1,16 @@
 import React, { useCallback, useMemo } from 'react'
 import LinearScaleBar from '@/components/LinearScaleBar'
-import { type FragranceAccord } from '@/generated/graphql'
-
-export type BarFragranceAccord = Pick<FragranceAccord, 'id' | 'name' | 'color' | 'votes'>
+import type { AllFragranceAccordFragment } from '@/generated/graphql'
 
 export interface AccordBarsProps extends React.HTMLAttributes<HTMLDivElement> {
-  accords: BarFragranceAccord[]
+  accords: AllFragranceAccordFragment[]
   maxVote: number
 }
 
 const AccordsLadder = (props: AccordBarsProps) => {
   const { accords, maxVote, ...rest } = props
 
-  const filteredAccords = useMemo(() => accords.filter(accord => accord.votes.voteScore > 0), [accords])
+  const filteredAccords = useMemo(() => accords.filter(accord => accord.votes.score > 0), [accords])
 
   const getWidth = useCallback((votes: number) => {
     return votes / maxVote * 100
@@ -26,7 +24,7 @@ const AccordsLadder = (props: AccordBarsProps) => {
         className='flex flex-col gap-2'
       >
         {filteredAccords
-          .map((accord, index) => {
+          .map((fAccord, index) => {
             return (
               <div
                 key={index}
@@ -34,13 +32,13 @@ const AccordsLadder = (props: AccordBarsProps) => {
                 <p
                   className='font-pd text-gray-800 mx-3'
                 >
-                  {accord.name}
+                  {fAccord.accord.name}
                 </p>
 
                 <LinearScaleBar
                   key={index}
-                  value={getWidth(accord.votes.voteScore)}
-                  color={accord.color}
+                  value={getWidth(fAccord.votes.score)}
+                  color={fAccord.accord.color}
                 />
               </div>
             )

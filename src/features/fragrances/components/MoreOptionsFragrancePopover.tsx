@@ -2,10 +2,10 @@ import React from 'react'
 import { Popover } from '@base-ui-components/react'
 import { HiDotsHorizontal } from 'react-icons/hi'
 import ReportFragranceDialog from './ReportFragranceDialog'
-import { type IFragrancePreviewSummary } from '../types'
+import type { FragranceDetailFragment } from '@/generated/graphql'
 
 export interface MoreOptionsFragrancePopoverProps {
-  fragrance: IFragrancePreviewSummary
+  fragrance: FragranceDetailFragment
 }
 
 const MoreOptionsFragrancePopover = (props: MoreOptionsFragrancePopoverProps) => {
@@ -14,7 +14,7 @@ const MoreOptionsFragrancePopover = (props: MoreOptionsFragrancePopoverProps) =>
   return (
     <Popover.Root>
       <Popover.Trigger
-        className='rounded-full p-2 aspect-square bg-white hover:brightness-95'
+        className='rounded-full p-2 aspect-square bg-white hover:brightness-95 cursor-pointer'
       >
         <HiDotsHorizontal
           size={20}

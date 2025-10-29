@@ -1,3 +1,4 @@
+import type { Nullable } from '@/utils/util'
 import clsx from 'clsx'
 import React, { useCallback, useState } from 'react'
 import { FaStar, FaRegStar } from 'react-icons/fa'
@@ -12,7 +13,7 @@ export const ratingMap = {
 }
 
 export interface RatingStarsProps extends React.HTMLAttributes<HTMLDivElement> {
-  rating: number
+  rating: Nullable<number>
   size?: number
   filledColor?: string
   emptyColor?: string
@@ -33,7 +34,7 @@ const RatingStars = (props: RatingStarsProps) => {
   } = props
 
   const [hoveredRating, setHoveredRating] = useState<number | null>(null)
-  const effectiveRating = interactable && hoveredRating !== null ? hoveredRating : rating
+  const effectiveRating = interactable && hoveredRating !== null ? hoveredRating : rating ?? 0
 
   const transformFillPercentage = useCallback((percentage: number): number => {
     const center = 50
@@ -97,8 +98,11 @@ const RatingStars = (props: RatingStarsProps) => {
       >
         {stars}
       </div>
+
       {interactable && (
-        <p className='font-medium opacity-50'>
+        <p
+          className='font-medium opacity-50'
+        >
           {ratingMap[effectiveRating as keyof typeof ratingMap] ?? ratingMap[0]}
         </p>
       )}

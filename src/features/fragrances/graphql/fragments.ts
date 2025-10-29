@@ -23,6 +23,20 @@ export const FRAGRANCE_PREVIEW_FRAGMENT = gql(/* GraphQL */ `
   }
 `)
 
+export const FRAGRANCE_DETAIL_FRAGMENT = gql(/* GraphQL */ `
+  fragment FragranceDetail on Fragrance { 
+    ...FragrancePreview
+
+    images {
+      ...AllFragranceImage
+    }
+    
+    reviewInfo {
+      ...AllFragranceReviewInfo
+    }
+  }
+`)
+
 export const ALL_FRAGRANCE_IMAGE_FRAGMENT = gql(/* GraphQL */ `
   fragment AllFragranceImage on FragranceImage {
     id
@@ -91,6 +105,17 @@ export const ALL_FRAGRANCE_REVIEW_FRAGMENT = gql(/* GraphQL */ `
 
     votes {
       ...AllVoteInfo
+    }
+  }
+`)
+
+export const ALL_FRAGRANCE_REVIEW_INFO_FRAGMENT = gql(/* GraphQL */ `
+  fragment AllFragranceReviewInfo on FragranceReviewInfo { 
+    count
+    averageRating
+    distribution {
+      rating
+      count
     }
   }
 `)
