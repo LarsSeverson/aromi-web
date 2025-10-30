@@ -1,32 +1,36 @@
 import PageCategory from '@/components/PageCategory'
 import React from 'react'
 import NotesPyramid from './NotesPyramid'
-import useFragranceNotes from '../hooks/useFragranceNotes'
-import { NoteLayer } from '@/generated/graphql'
-import { type IFragranceSummary } from '../types'
+import { type FragranceDetailFragment, NoteLayer } from '@/generated/graphql'
+import { useFragranceNotes } from '../hooks/useFragranceNotes'
 
 export interface FragranceNotesSectionProps {
-  fragrance: IFragranceSummary
+  fragrance: FragranceDetailFragment
 }
 
 const FragranceNotesSection = (props: FragranceNotesSectionProps) => {
   const { fragrance } = props
 
-  const { top, middle, base } = useFragranceNotes(fragrance.id)
+  const { notes: topNotes, isLoading: isTopLoading } = useFragranceNotes(fragrance.id, { layer: NoteLayer.Top })
+  const { notes: middleNotes, isLoading: isMiddleLoading } = useFragranceNotes(fragrance.id, { layer: NoteLayer.Middle })
+  const { notes: baseNotes, isLoading: isBaseLoading } = useFragranceNotes(fragrance.id, { layer: NoteLayer.Base })
+
   const layers = [
     {
       layer: NoteLayer.Top,
-      notes: top
+      notes: topNotes
     },
     {
       layer: NoteLayer.Middle,
-      notes: middle
+      notes: middleNotes
     },
     {
       layer: NoteLayer.Base,
-      notes: base
+      notes: baseNotes
     }
   ].filter(item => item.notes.length > 0)
+
+  if (isTopLoading || isMiddleLoading || isBaseLoading) return null
 
   return (
     <PageCategory
@@ -40,7 +44,7 @@ const FragranceNotesSection = (props: FragranceNotesSectionProps) => {
       >
         <NotesPyramid
           layers={layers}
-          className='mx-5 w-full max-w-4xl flex-1'
+          className='w-full flex-1'
         />
       </div>
     </PageCategory>

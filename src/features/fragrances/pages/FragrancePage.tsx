@@ -1,11 +1,12 @@
 import React, { useRef } from 'react'
 import FragranceInfoSection from '../components/FragranceInfoSection'
-import FragranceCharacteristicsSection from '../components/FragranceCharacteristicsSection'
-import FragranceNotesSection from '../components/FragranceNotesSection'
-import FragranceReviewsSection from '../components/FragranceReviewsSection'
 import PageBackButton from '../../../components/PageBackButton'
 import type { FragranceDetailFragment } from '@/generated/graphql'
 import { FragranceImagesSection } from '../components/FragranceImagesSection'
+import FragranceGenderSection from '../components/FragranceGenderSection'
+import Divider from '@/components/Divider'
+import FragranceNotesSection from '../components/FragranceNotesSection'
+import FragranceTraitsSection from '../components/FragranceTraitsSection'
 
 export interface FragrancePageProps {
   fragrance: FragranceDetailFragment
@@ -33,12 +34,12 @@ export const FragrancePage = (props: FragrancePageProps) => {
         className='flex pl-4'
       >
         <PageBackButton
-          className='sticky top-[87px] ml-auto'
+          className='sticky top-[64px] ml-auto mb-auto'
         />
       </div>
 
       <div
-        className='flex-1 flex'
+        className='flex-1 flex flex-col'
       >
         <div
           className='flex-1 flex flex-wrap gap-5'
@@ -61,26 +62,26 @@ export const FragrancePage = (props: FragrancePageProps) => {
           </div>
         </div>
 
-        {/* <div
-          className='w-full flex justify-center mt-10'
+        <div
+          className='self-center mt-10 max-w-4xl w-full flex flex-col gap-7'
         >
-          <div
-            className='max-w-6xl w-full space-y-7'
-          >
-            <FragranceCharacteristicsSection
-              fragrance={fragrance}
-            />
+          <Divider
+            horizontal
+            className='mb-5'
+          />
 
-            <FragranceNotesSection
-              fragrance={fragrance}
-            />
+          <FragranceGenderSection
+            fragrance={fragrance}
+          />
 
-            <FragranceReviewsSection
-              ref={reviewSectionRef}
-              fragrance={fragrance}
-            />
-          </div>
-        </div> */}
+          <FragranceNotesSection
+            fragrance={fragrance}
+          />
+
+          <FragranceTraitsSection
+            fragrance={fragrance}
+          />
+        </div>
       </div>
     </div>
   )

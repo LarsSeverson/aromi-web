@@ -63,7 +63,7 @@ const FragranceInfoSection = (props: FragranceInfoSectionProps) => {
         className='flex justify-between items-center'
       >
         <h2
-          className='font-pd text-2xl truncate'
+          className='font-semibold text-2xl truncate'
         >
           {name}
         </h2>
@@ -74,12 +74,14 @@ const FragranceInfoSection = (props: FragranceInfoSectionProps) => {
       </div>
 
       <h2
-        className='font-p text-xl'
+        className='text-xl'
       >
         {brand.name}
       </h2>
 
-      <div className='flex flex-row items-center mt-4 mb-2'>
+      <div
+        className='flex flex-row items-center mt-4 mb-2'
+      >
         <RatingStars
           rating={averageRating}
           size={20}
@@ -94,7 +96,9 @@ const FragranceInfoSection = (props: FragranceInfoSectionProps) => {
         </p>
       </div>
 
-      <div className='flex flex-row items-end mb-3 gap-3'>
+      <div
+        className='flex flex-row items-end mb-3 gap-3'
+      >
         <VoteButtonGroup
           votes={votes}
           onVote={handleOnVote}

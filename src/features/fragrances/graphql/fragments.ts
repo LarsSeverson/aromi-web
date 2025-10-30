@@ -174,3 +174,12 @@ export const HAS_FRAGRANCE_FIELD_FRAGMENT = gql(/* GraphQL */ `
     hasFragrance(fragranceId: $fragranceId)
   }
 `)
+
+export const FRAGRANCE_VOTE_INFO_FRAGMENT = gql(/* GraphQL */ `
+  fragment FragranceVoteInfo on Fragrance { 
+    id
+    votes {
+      ...AllVoteInfo
+    }
+  }
+`)

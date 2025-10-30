@@ -1,23 +1,22 @@
 import clsx from 'clsx'
 import React, { useState } from 'react'
 
-export interface SegmentedVoteLineOption {
+export interface BucketInputOption {
   label: string
   score: number
 }
 
-export interface SegmentedVoteLineProps<T extends SegmentedVoteLineOption> {
+export interface BucketInputProps<T extends BucketInputOption> {
   options: T[]
   value?: T['score'] | null
   defaultValue?: T['score'] | null
   onOptionChange?: (option: T) => void
-  className?: string
 }
 
-const SegmentedVoteLine = <T extends SegmentedVoteLineOption, >(
-  props: SegmentedVoteLineProps<T>
+const BucketInput = <T extends BucketInputOption, >(
+  props: BucketInputProps<T>
 ) => {
-  const { options, value, defaultValue = null, onOptionChange, className } = props
+  const { options, value, defaultValue = null, onOptionChange } = props
   const [internal, setInternal] = useState<T['score'] | null>(defaultValue)
   const selected = value ?? internal
 
@@ -30,13 +29,12 @@ const SegmentedVoteLine = <T extends SegmentedVoteLineOption, >(
   return (
     <div
       className={clsx(
-        'w-full',
-        className
+        'w-full'
       )}
     >
       <div
         role='radiogroup'
-        className='flex rounded-md overflow-hidden outline outline-1 outline-surface2'
+        className='flex rounded-md overflow-hidden outline outline-surface2'
       >
         {options
           .map((o, i) => {
@@ -48,7 +46,7 @@ const SegmentedVoteLine = <T extends SegmentedVoteLineOption, >(
                 role='radio'
                 aria-checked={checked}
                 aria-label={o.label}
-                onClick={() => { handleSelect(o.score) }}
+                onClick={handleSelect.bind(null, o.score)}
                 className={clsx(
                   'h-8 flex-1 min-w-0 transition-colors',
                   checked ? 'bg-sinopia border-primary' : 'bg-black/10/30 hover:bg-black/10/60',
@@ -77,4 +75,4 @@ const SegmentedVoteLine = <T extends SegmentedVoteLineOption, >(
   )
 }
 
-export default SegmentedVoteLine
+export default BucketInput

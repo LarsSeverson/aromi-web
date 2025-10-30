@@ -48,12 +48,6 @@ export const FragrancePreviewCard = (props: FragrancePreviewCardProps) => {
     handleVoteOnFragrance(vote)
   }
 
-  useEffect(() => {
-    if (fragrance.name === 'Of the Immortals') {
-      console.log(fragrance.votes)
-    }
-  }, [fragrance])
-
   return (
     <div
       className={clsx(

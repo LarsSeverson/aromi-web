@@ -1,26 +1,25 @@
 import { Overlay } from '@/components/Overlay'
-import { type FragranceNote } from '@/generated/graphql'
+import type { AllFragranceNoteFragment } from '@/generated/graphql'
 import clsx from 'clsx'
 import React from 'react'
 
-export type CardNotePreview = Pick<FragranceNote, 'id' | 'layer' | 'noteId' | 'name' | 'votes' | 'thumbnail'>
-
 export interface NotePreviewCardProps extends React.HTMLAttributes<HTMLDivElement> {
-  note: CardNotePreview
+  fragranceNote: AllFragranceNoteFragment
   showVotes?: boolean | undefined
   headingClass?: string | undefined
 }
 
 const NotePreviewCard = (props: NotePreviewCardProps) => {
   const {
-    note,
+    fragranceNote,
     showVotes,
     headingClass,
     className,
     ...rest
   } = props
 
-  const { name, votes, thumbnail } = note
+  const { note, votes } = fragranceNote
+  const { name, thumbnail } = note
 
   return (
     <div
@@ -33,12 +32,12 @@ const NotePreviewCard = (props: NotePreviewCardProps) => {
       <div
         className='w-full aspect-square rounded-xl overflow-hidden bg-gray-200'
       >
-        {thumbnail != null && (
+        {thumbnail?.url != null && (
           <div
             className='relative'
           >
             <img
-              src={thumbnail}
+              src={thumbnail.url}
               className='object-cover'
             />
 
@@ -46,18 +45,20 @@ const NotePreviewCard = (props: NotePreviewCardProps) => {
           </div>
         )}
       </div>
+
       <div
         className={clsx(
-          'flex flex-row justify-between mx-1 overflow-hidden',
+          'flex flex-row justify-between m-1 overflow-hidden',
           headingClass
         )}
       >
         <p
-          className='truncate font-pd text-[15px] opacity-85'
+          className='truncate text-sm font-medium text-black/80'
         >
           {name}
         </p>
-        {(showVotes ?? false) && votes.voteScore > 0 && <p>{votes.voteScore}</p>}
+
+        {(showVotes ?? false) && votes.score > 0 && <p>{votes.score}</p>}
       </div>
     </div>
   )

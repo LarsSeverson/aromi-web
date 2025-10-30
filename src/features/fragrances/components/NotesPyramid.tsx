@@ -1,13 +1,12 @@
-import { type NoteLayer } from '@/generated/graphql'
 import clsx from 'clsx'
 import React from 'react'
-import NotesPyramidRow from '@/features/fragrance/components/NotesPyramidRow'
-import { type CardNotePreview } from './NotePreviewCard'
 import Divider from '@/components/Divider'
+import type { AllFragranceNoteFragment, NoteLayer } from '@/generated/graphql'
+import NotesPyramidRow from './NotesPyramidRow'
 
 export interface NotesPyramidLayer {
   layer: NoteLayer
-  notes: CardNotePreview[]
+  notes: AllFragranceNoteFragment[]
 }
 
 export interface NotesPyramidProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -32,13 +31,14 @@ const NotesPyramid = (props: NotesPyramidProps) => {
               notes={layer.notes}
               layer={layer.layer}
             />
+
             {index < layers.length - 1 && (
               <div
                 className='flex flex-col items-center my-3'
               >
                 <Divider
                   horizontal
-                  className='bg-transparent border-[1px] border-dashed'
+                  className='bg-transparent border border-dashed'
                 />
               </div>
             )}
