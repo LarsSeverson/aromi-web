@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import clsx from 'clsx'
 import Divider from './Divider'
 import type { AllVoteInfoFragment } from '@/generated/graphql'
@@ -14,9 +14,19 @@ export interface VoteButtonGroupProps extends React.HTMLAttributes<HTMLDivElemen
 export const VoteButtonGroup = (props: VoteButtonGroupProps) => {
   const { votes, onVote, className, ...rest } = props
   const { score, myVote } = votes
+  const myVoteNormalized = myVote ?? VOTE_TYPES.NOVOTE
 
-  const [initialScore] = useState(score - (myVote ?? VOTE_TYPES.NOVOTE))
-  const [currentVote, setCurrentVote] = useState(myVote ?? VOTE_TYPES.NOVOTE)
+  const initialScore = useMemo(
+    () => (score - myVoteNormalized),
+    [score, myVoteNormalized]
+  )
+
+  const [currentVote, setCurrentVote] = useState(myVoteNormalized)
+  const [userHasInteracted, setUserHasInteracted] = useState(false)
+
+  if (!userHasInteracted && myVoteNormalized !== currentVote) {
+    setCurrentVote(myVoteNormalized)
+  }
 
   const currentScore = initialScore + currentVote
 
@@ -24,6 +34,7 @@ export const VoteButtonGroup = (props: VoteButtonGroupProps) => {
     e.preventDefault()
     e.stopPropagation()
 
+    setUserHasInteracted(true)
     setCurrentVote(prev => {
       const newValue = prev === VOTE_TYPES.UPVOTE ? VOTE_TYPES.NOVOTE : VOTE_TYPES.UPVOTE
       onVote?.(newValue)
@@ -35,6 +46,7 @@ export const VoteButtonGroup = (props: VoteButtonGroupProps) => {
     e.preventDefault()
     e.stopPropagation()
 
+    setUserHasInteracted(true)
     setCurrentVote(prev => {
       const newValue = prev === VOTE_TYPES.DOWNVOTE ? VOTE_TYPES.NOVOTE : VOTE_TYPES.DOWNVOTE
       onVote?.(newValue)

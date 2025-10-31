@@ -7,6 +7,7 @@ import ProjectionSvg from './ProjectionSvg'
 import BalanceSvg from './BalanceSvg'
 import ComplexitySvg from './ComplexitySvg'
 import AppealSvg from './AppealSvg'
+import { Tooltip } from '@base-ui-components/react'
 
 export interface TraitBucketProps {
   trait: AllFragranceTraitFragment
@@ -89,28 +90,30 @@ const TraitBuckets = (props: TraitBucketProps) => {
           </span>
         )}
 
-        <div
-          className='flex w-full'
-        >
-          {distribution.map(
-            (bucket, index) => (
-              <div
-                key={bucket.option.id}
-                className='flex flex-col w-full'
-              >
-                <TraitBucket
-                  bucket={bucket}
-                  maxScore={maxScore}
-                  className={clsx(
-                    index === 0 && 'rounded-l-md',
-                    index === distribution.length - 1 && 'rounded-r-md',
-                    index !== 0 && 'border-l border-sinopia/15'
-                  )}
-                />
-              </div>
-            )
-          )}
-        </div>
+        <Tooltip.Provider>
+          <div
+            className='flex w-full'
+          >
+            {distribution.map(
+              (bucket, index) => (
+                <div
+                  key={bucket.option.id}
+                  className='flex flex-col w-full'
+                >
+                  <TraitBucket
+                    bucket={bucket}
+                    maxScore={maxScore}
+                    className={clsx(
+                      index === 0 && 'rounded-l-md',
+                      index === distribution.length - 1 && 'rounded-r-md',
+                      index !== 0 && 'border-l border-sinopia/15'
+                    )}
+                  />
+                </div>
+              )
+            )}
+          </div>
+        </Tooltip.Provider>
       </div>
     </div>
   )

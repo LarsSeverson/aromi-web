@@ -46,7 +46,8 @@ const FragranceInfoSection = (props: FragranceInfoSectionProps) => {
           toastError('', 'Something went wrong')
         }
       )
-    }
+    },
+    150
   )
 
   const handleOnVote = (vote: number) => {

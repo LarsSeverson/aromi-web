@@ -2,7 +2,7 @@ import React, { useMemo, useRef, useState } from 'react'
 import { formatNumber } from '@/utils/string-utils'
 import clsx from 'clsx'
 import BouncyButton, { type BouncyButtonProps } from '@/components/BouncyButton'
-import { type IFragranceAccordSummary } from '../../fragrance/types'
+import type { IFragranceAccordSummary } from '../../fragrance/types'
 
 export interface VoteOnAccordCardProps extends BouncyButtonProps {
   accord: IFragranceAccordSummary

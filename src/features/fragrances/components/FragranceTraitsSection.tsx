@@ -23,9 +23,10 @@ const FragranceTraitsSection = (props: FragranceTraitsSectionProps) => {
   return (
     <PageCategory
       title='Traits'
+      className='flex flex-col'
     >
       <div
-        className='flex flex-col gap-10'
+        className='flex flex-col gap-15 mt-6 max-w-4xl w-full self-center'
       >
         <TraitBuckets
           trait={traitMap.get(TraitTypeEnum.Longevity)!}

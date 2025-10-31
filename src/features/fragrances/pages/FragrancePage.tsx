@@ -42,10 +42,10 @@ export const FragrancePage = (props: FragrancePageProps) => {
         className='flex-1 flex flex-col'
       >
         <div
-          className='flex-1 flex flex-wrap gap-5'
+          className='flex-1 flex flex-wrap gap-8'
         >
           <div
-            className='flex-1 rounded-xl flex'
+            className='flex-1 rounded-xl flex items-start'
           >
             <FragranceImagesSection
               fragrance={fragrance}
@@ -63,7 +63,7 @@ export const FragrancePage = (props: FragrancePageProps) => {
         </div>
 
         <div
-          className='self-center mt-10 max-w-4xl w-full flex flex-col gap-7'
+          className='self-center mt-10 max-w-5xl w-full flex flex-col gap-7'
         >
           <Divider
             horizontal

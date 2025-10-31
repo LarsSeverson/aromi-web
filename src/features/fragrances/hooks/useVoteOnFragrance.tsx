@@ -24,6 +24,7 @@ export const useVoteOnFragrance = () => {
 
     cache.modify({
       id: cachedFragranceId,
+      broadcast: false,
       fields: {
         votes: (existing) => {
           const typed = existing as AllVoteInfoFragment

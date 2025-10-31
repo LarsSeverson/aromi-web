@@ -1,6 +1,6 @@
 import type { FragrancePreviewFragment } from '@/generated/graphql'
 import clsx from 'clsx'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { VoteButtonGroup } from '@/components/VoteButtonGroup'
 import { Link } from '@tanstack/react-router'
 import FragranceImageCard from './FragranceImageCard'
@@ -41,7 +41,8 @@ export const FragrancePreviewCard = (props: FragrancePreviewCardProps) => {
           toastError('', 'Something went wrong')
         }
       )
-    }
+    },
+    150
   )
 
   const handleOnVote = (vote: number) => {

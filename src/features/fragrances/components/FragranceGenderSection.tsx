@@ -23,9 +23,10 @@ const FragranceGenderSection = (props: FragranceGenderSectionProps) => {
   return (
     <PageCategory
       title='Gender'
+      className='flex flex-col'
     >
       <div
-        className='flex flex-col'
+        className='flex flex-col max-w-4xl w-full self-center mt-6'
       >
         <TraitBuckets
           trait={traitMap.get(TraitTypeEnum.Gender)!}
