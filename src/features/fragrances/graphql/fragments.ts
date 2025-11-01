@@ -106,6 +106,8 @@ export const ALL_FRAGRANCE_REVIEW_FRAGMENT = gql(/* GraphQL */ `
     votes {
       ...AllVoteInfo
     }
+    
+    createdAt
   }
 `)
 

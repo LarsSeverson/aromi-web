@@ -1,22 +1,20 @@
 import React, { forwardRef, useState } from 'react'
 import PageCategory from '@/components/PageCategory'
-import { useMyReview } from '@/features/user'
-import { ReviewsSummary } from '../../review/components/ReviewsSummary'
 import Divider from '@/components/Divider'
-import { ReviewsList } from '../../review/components/ReviewsList'
-import useFragranceReviews from '../../review/hooks/useFragranceReviews'
 import { PageNav } from '@/components/PageNav'
-import { type IFragranceSummary } from '../types'
-import StartReviewButton from '../../review/components/StartReviewButton'
+import type { FragranceDetailFragment } from '@/generated/graphql'
+import StartReviewButton from './StartReviewButton'
+import { ReviewsSummary } from './ReviewsSummary'
 
 const REVIEWS_PER_PAGE = 4
 
 export interface FragranceReviewsSectionProps extends React.HTMLAttributes<HTMLDivElement> {
-  fragrance: IFragranceSummary
+  fragrance: FragranceDetailFragment
 }
 
 const FragranceReviewsSection = forwardRef<HTMLDivElement, FragranceReviewsSectionProps>((props, ref) => {
   const { fragrance, ...rest } = props
+  const { reviewInfo } = fragrance
 
   const { data: myReview } = useMyReview(fragrance.id)
   const { data: reviews } = useFragranceReviews(fragrance.id)
@@ -48,9 +46,7 @@ const FragranceReviewsSection = forwardRef<HTMLDivElement, FragranceReviewsSecti
               )}
 
             <ReviewsSummary
-              rating={fragrance.rating}
-              reviewCount={fragrance.reviewsCount}
-              reviewDistribution={fragrance.reviewDistribution}
+              info={reviewInfo}
               className='w-full max-w-4xl mt-3'
             />
 

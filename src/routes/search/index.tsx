@@ -5,5 +5,21 @@ export const Route = createFileRoute('/search/')({
 })
 
 function RouteComponent () {
-  return <div>Hello "/search/"!</div>
+  return (
+    <div
+      className='w-full'
+    >
+      <div
+        className='flex overflow-x-auto w-full'
+      >
+        {Array.from({ length: 100 }).map((_, index) => (
+          <div
+            key={index}
+          >
+            Search Result {index + 1}
+          </div>
+        ))}
+      </div>
+    </div>
+  )
 }

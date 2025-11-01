@@ -1,4 +1,5 @@
 export type * from './types'
+export * from './utils/placeholders'
 
 export * from './graphql/fragments'
 export * from './graphql/mutations'

@@ -6,22 +6,20 @@ import TopBar from '@/components/TopBar'
 const MainLayout = () => {
   return (
     <div
-      className='w-full min-h-screen flex flex-row'
+      className='min-h-screen'
     >
       <aside
-        className='sticky top-0 max-w-[72px] h-screen shrink-0'
+        className='fixed top-0 w-[72px] h-screen shrink-0'
       >
         <SideBar />
       </aside>
 
       <div
-        className='flex-1 h-full w-full'
+        className='pl-[72px]'
       >
         <TopBar />
 
-        <main
-          className='flex-1'
-        >
+        <main>
           <Outlet />
         </main>
       </div>

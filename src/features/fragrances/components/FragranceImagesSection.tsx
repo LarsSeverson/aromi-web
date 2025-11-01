@@ -36,7 +36,7 @@ export const FragranceImagesSection = (props: FragranceImagesSectionProps) => {
       className='flex flex-1 items-center justify-end'
     >
       <div
-        className='rounded-2xl overflow-hidden group w-full max-w-md'
+        className='rounded-2xl overflow-hidden group w-full max-w-md min-w-3xs'
       >
         <div
           className={clsx(
@@ -46,7 +46,6 @@ export const FragranceImagesSection = (props: FragranceImagesSectionProps) => {
           style={{ aspectRatio: `${images.at(0)?.width} / ${images.at(0)?.height}` }}
           {...rest}
         >
-
           <ProgressiveImage
             src={images.at(curImage)?.url ?? blankFragranceThumbnail}
             alt={fragrance.name}
@@ -59,7 +58,7 @@ export const FragranceImagesSection = (props: FragranceImagesSectionProps) => {
           >
             {showBackButton && (
               <BouncyButton
-                className='bg-white drop-shadow-md rounded-xl px-[6px] py-[6px] opacity-0 group-hover:opacity-85 transition-opacity duration-200 ease-in-out'
+                className='bg-white drop-shadow-md rounded-xl px-1.5 py-1.5 opacity-0 group-hover:opacity-85 transition-opacity duration-200 ease-in-out'
                 onClick={handleOnBackImage}
               >
                 <HiChevronLeft
@@ -70,7 +69,7 @@ export const FragranceImagesSection = (props: FragranceImagesSectionProps) => {
 
             {showForwardButton && (
               <BouncyButton
-                className='bg-white drop-shadow-md rounded-xl px-[6px] py-[6px] opacity-0 group-hover:opacity-85 transition-opacity duration-200 ease-in-out'
+                className='bg-white drop-shadow-md rounded-xl px-1.5 py-1.5 opacity-0 group-hover:opacity-85 transition-opacity duration-200 ease-in-out'
                 onClick={handleOnForwardImage}
               >
                 <HiChevronRight

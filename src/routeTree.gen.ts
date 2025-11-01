@@ -20,6 +20,8 @@ import { Route as AuthAccountRecoveryRouteImport } from './routes/auth/account-r
 import { Route as FragrancesIdRouteRouteImport } from './routes/fragrances/$id/route'
 import { Route as UsersIdIndexRouteImport } from './routes/users/$id/index'
 import { Route as FragrancesIdIndexRouteImport } from './routes/fragrances/$id/index'
+import { Route as FragrancesIdReviewRouteRouteImport } from './routes/fragrances/$id/review/route'
+import { Route as FragrancesIdReviewIndexRouteImport } from './routes/fragrances/$id/review/index'
 
 const UsersRouteRoute = UsersRouteRouteImport.update({
   id: '/users',
@@ -76,6 +78,16 @@ const FragrancesIdIndexRoute = FragrancesIdIndexRouteImport.update({
   path: '/',
   getParentRoute: () => FragrancesIdRouteRoute,
 } as any)
+const FragrancesIdReviewRouteRoute = FragrancesIdReviewRouteRouteImport.update({
+  id: '/review',
+  path: '/review',
+  getParentRoute: () => FragrancesIdRouteRoute,
+} as any)
+const FragrancesIdReviewIndexRoute = FragrancesIdReviewIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => FragrancesIdReviewRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -87,8 +99,10 @@ export interface FileRoutesByFullPath {
   '/fragrances/': typeof FragrancesIndexRoute
   '/search/': typeof SearchIndexRoute
   '/users/': typeof UsersIndexRoute
+  '/fragrances/$id/review': typeof FragrancesIdReviewRouteRouteWithChildren
   '/fragrances/$id/': typeof FragrancesIdIndexRoute
   '/users/$id': typeof UsersIdIndexRoute
+  '/fragrances/$id/review/': typeof FragrancesIdReviewIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -98,6 +112,7 @@ export interface FileRoutesByTo {
   '/users': typeof UsersIndexRoute
   '/fragrances/$id': typeof FragrancesIdIndexRoute
   '/users/$id': typeof UsersIdIndexRoute
+  '/fragrances/$id/review': typeof FragrancesIdReviewIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -110,8 +125,10 @@ export interface FileRoutesById {
   '/fragrances/': typeof FragrancesIndexRoute
   '/search/': typeof SearchIndexRoute
   '/users/': typeof UsersIndexRoute
+  '/fragrances/$id/review': typeof FragrancesIdReviewRouteRouteWithChildren
   '/fragrances/$id/': typeof FragrancesIdIndexRoute
   '/users/$id/': typeof UsersIdIndexRoute
+  '/fragrances/$id/review/': typeof FragrancesIdReviewIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -125,8 +142,10 @@ export interface FileRouteTypes {
     | '/fragrances/'
     | '/search/'
     | '/users/'
+    | '/fragrances/$id/review'
     | '/fragrances/$id/'
     | '/users/$id'
+    | '/fragrances/$id/review/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -136,6 +155,7 @@ export interface FileRouteTypes {
     | '/users'
     | '/fragrances/$id'
     | '/users/$id'
+    | '/fragrances/$id/review'
   id:
     | '__root__'
     | '/'
@@ -147,8 +167,10 @@ export interface FileRouteTypes {
     | '/fragrances/'
     | '/search/'
     | '/users/'
+    | '/fragrances/$id/review'
     | '/fragrances/$id/'
     | '/users/$id/'
+    | '/fragrances/$id/review/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -238,14 +260,44 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FragrancesIdIndexRouteImport
       parentRoute: typeof FragrancesIdRouteRoute
     }
+    '/fragrances/$id/review': {
+      id: '/fragrances/$id/review'
+      path: '/review'
+      fullPath: '/fragrances/$id/review'
+      preLoaderRoute: typeof FragrancesIdReviewRouteRouteImport
+      parentRoute: typeof FragrancesIdRouteRoute
+    }
+    '/fragrances/$id/review/': {
+      id: '/fragrances/$id/review/'
+      path: '/'
+      fullPath: '/fragrances/$id/review/'
+      preLoaderRoute: typeof FragrancesIdReviewIndexRouteImport
+      parentRoute: typeof FragrancesIdReviewRouteRoute
+    }
   }
 }
 
+interface FragrancesIdReviewRouteRouteChildren {
+  FragrancesIdReviewIndexRoute: typeof FragrancesIdReviewIndexRoute
+}
+
+const FragrancesIdReviewRouteRouteChildren: FragrancesIdReviewRouteRouteChildren =
+  {
+    FragrancesIdReviewIndexRoute: FragrancesIdReviewIndexRoute,
+  }
+
+const FragrancesIdReviewRouteRouteWithChildren =
+  FragrancesIdReviewRouteRoute._addFileChildren(
+    FragrancesIdReviewRouteRouteChildren,
+  )
+
 interface FragrancesIdRouteRouteChildren {
+  FragrancesIdReviewRouteRoute: typeof FragrancesIdReviewRouteRouteWithChildren
   FragrancesIdIndexRoute: typeof FragrancesIdIndexRoute
 }
 
 const FragrancesIdRouteRouteChildren: FragrancesIdRouteRouteChildren = {
+  FragrancesIdReviewRouteRoute: FragrancesIdReviewRouteRouteWithChildren,
   FragrancesIdIndexRoute: FragrancesIdIndexRoute,
 }
 

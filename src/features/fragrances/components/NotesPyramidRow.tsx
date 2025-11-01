@@ -21,7 +21,7 @@ const NotesPyramidRow = (props: NotesPyramidRowProps) => {
   return (
     <div
       className={clsx(
-        'flex flex-col justify-center',
+        'flex flex-col justify-center w-full min-w-0',
         className
       )}
       {...rest}
@@ -32,16 +32,18 @@ const NotesPyramidRow = (props: NotesPyramidRowProps) => {
         {layer}
       </h6>
 
-      <div className='flex flex-row justify-center'>
+      <div
+        className='flex justify-center'
+      >
         <div
-          className='flex flex-row overflow-x-auto'
+          className='flex overflow-x-auto'
         >
           {filteredNotes
             .map(note => (
               <NotePreviewCard
                 key={note.id}
                 fragranceNote={note}
-                className='w-[100px] md:w-[144px] flex-none'
+                className='max-w-40 min-w-28 w-full'
               />
             ))}
         </div>

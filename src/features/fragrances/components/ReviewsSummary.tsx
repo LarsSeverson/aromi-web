@@ -1,4 +1,4 @@
-import { type FragranceReviewDistribution } from '@/generated/graphql'
+import type { AllFragranceReviewInfoFragment } from '@/generated/graphql'
 import React from 'react'
 import RatingStars from '@/components/RatingStars'
 import { Colors } from '@/styles/Colors'
@@ -7,19 +7,18 @@ import { formatNumber } from '@/utils/string-utils'
 import ReviewDistributionLadder from './ReviewDistributionLadder'
 
 export interface ReviewSummaryProps extends React.HTMLAttributes<HTMLDivElement> {
-  rating: number
-  reviewCount: number
-  reviewDistribution: FragranceReviewDistribution
+  info: AllFragranceReviewInfoFragment
 }
 
 export const ReviewsSummary = (props: ReviewSummaryProps) => {
-  const { rating, reviewCount, reviewDistribution, className, ...rest } = props
+  const { info, ...rest } = props
+  const { count, averageRating, distribution } = info
 
   return (
     <div
       className={clsx(
         'flex flex-row flex-wrap',
-        className
+        rest.className
       )}
       {...rest}
     >
@@ -29,11 +28,11 @@ export const ReviewsSummary = (props: ReviewSummaryProps) => {
         <h5
           className='font-pd text-xl'
         >
-          {rating.toFixed(1)}
+          {(averageRating ?? 0).toFixed(1)}
         </h5>
 
         <RatingStars
-          rating={rating}
+          rating={averageRating}
           filledColor={Colors.sinopia}
           emptyColor='#f0f0f0'
           size={32}
@@ -42,13 +41,13 @@ export const ReviewsSummary = (props: ReviewSummaryProps) => {
         <p
           className='font-pd opacity-60'
         >
-          {formatNumber(reviewCount)} {reviewCount === 1 ? 'review' : 'reviews'}
+          {formatNumber(count)} {count === 1 ? 'review' : 'reviews'}
         </p>
       </div>
 
       <ReviewDistributionLadder
-        reviewDistribution={reviewDistribution}
-        className='flex-[3]'
+        distribution={distribution}
+        className='flex-3'
       />
     </div>
   )

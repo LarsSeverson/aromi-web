@@ -1,32 +1,30 @@
 import React from 'react'
 import { Link, useNavigate } from '@tanstack/react-router'
-import { type IFragrancePreviewSummary } from '../../fragrance/types'
 import InteractableRatingStars from '@/components/InteractableRatingStars'
 import { Colors } from '@/styles/Colors'
-import { useMyContext } from '@/features/user'
-import UserAvatar from '@/features/user/components/UserAvatar'
-import { PLACEHOLDER_USER } from '@/features/user/types'
+import type { FragranceDetailFragment } from '@/generated/graphql'
+import { PLACEHOLDER_USER, useMyContext } from '@/features/users'
+import UserAvatar from '@/features/users/components/UserAvatar'
 import { formatDate } from '@/utils/string-utils'
 
 export interface StartReviewButtonProps {
-  fragrance: IFragrancePreviewSummary
+  fragrance: FragranceDetailFragment
 }
 
 const StartReviewButton = (props: StartReviewButtonProps) => {
   const { fragrance } = props
+  const { id } = fragrance
 
   const navigate = useNavigate()
-  const myContext = useMyContext()
+  const { me } = useMyContext()
 
-  const user = myContext.me ?? PLACEHOLDER_USER
+  const user = me ?? PLACEHOLDER_USER
 
-  const handleRouteToReview = (rating?: number | undefined) => {
-    void navigate({
-      from: '/fragrance/$id',
-      to: 'review',
-      search: {
-        rating
-      }
+  const handleRouteToReview = (rating?: number) => {
+    navigate({
+      to: '/fragrances/$id/review',
+      params: { id },
+      search: { rating }
     })
   }
 
@@ -42,12 +40,12 @@ const StartReviewButton = (props: StartReviewButtonProps) => {
           className='flex flex-row gap-5'
         >
           <UserAvatar
-            user={myContext.me}
+            user={me}
           />
 
           <Link
-            to='/fragrance/$id/review'
-            params={{ id: String(fragrance.id) }}
+            to='/fragrances/$id/review'
+            params={{ id }}
             className='flex flex-col gap-1'
           >
             <div

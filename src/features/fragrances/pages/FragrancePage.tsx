@@ -30,17 +30,19 @@ export const FragrancePage = (props: FragrancePageProps) => {
     <div
       className='flex flex-wrap gap-5 h-full w-full'
     >
+
       <div
         className='flex pl-4'
       >
         <PageBackButton
-          className='sticky top-[64px] ml-auto mb-auto'
+          className='sticky top-16 ml-auto mb-auto'
         />
       </div>
 
       <div
-        className='flex-1 flex flex-col'
+        className='flex-1 flex flex-col w-full'
       >
+
         <div
           className='flex-1 flex flex-wrap gap-8'
         >

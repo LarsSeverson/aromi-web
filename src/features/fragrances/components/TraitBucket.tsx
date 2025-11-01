@@ -5,6 +5,9 @@ import { Tooltip } from '@base-ui-components/react'
 import clsx from 'clsx'
 import React from 'react'
 
+const MIN_OPACITY = 0.08
+const MAX_OPACITY = 1.0
+
 export interface TraitBucketProps {
   bucket: AllTraitVoteDistributionFragment
   maxScore: number
@@ -15,14 +18,14 @@ const TraitBucket = (props: TraitBucketProps) => {
   const { bucket, maxScore, className } = props
   const { votes } = bucket
 
-  const opacity = Math.max(0.08, Math.min(100, votes / maxScore))
+  const opacity = Math.max(MIN_OPACITY, Math.min(MAX_OPACITY, votes / maxScore))
 
   return (
     <Tooltip.Root>
       <Tooltip.Trigger
         className={clsx(
           className,
-          'h-8 w-full cursor-pointer overflow-hidden group'
+          'h-8 min-w-0 w-full overflow-hidden group'
         )}
       >
         <div

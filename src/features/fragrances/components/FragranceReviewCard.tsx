@@ -4,45 +4,27 @@ import { formatDate } from '@/utils/string-utils'
 import { VoteButtonGroup } from '@/components/VoteButtonGroup'
 import RatingStars from '@/components/RatingStars'
 import clsx from 'clsx'
-import UserAvatar from '@/features/user/components/UserAvatar'
-import { useVoteOnReview } from '../../reviews/hooks/useVoteOnReview'
-import { useToastError } from '@/hooks/useToastError'
-import { type IFragranceReviewSummary } from '@/features/review/types'
-import MoreOptionsReviewPopover from '../../reviews/components/MoreOptionsReviewPopover'
+import type { AllFragranceReviewFragment } from '@/generated/graphql'
+import { useToastMessage } from '@/hooks/useToastMessage'
+import UserAvatar from '@/features/users/components/UserAvatar'
 
 export interface FragranceReviewCardProps extends React.HTMLAttributes<HTMLDivElement> {
-  review: IFragranceReviewSummary
-  isMyReview?: boolean | null | undefined
+  review: AllFragranceReviewFragment
 }
 
 export const FragranceReviewCard = (props: FragranceReviewCardProps) => {
-  const {
-    review,
-    isMyReview,
+  const { review, ...rest } = props
 
-    className,
-    ...rest
-  } = props
+  const { author, rating, body, votes, createdAt } = review
+  const { username } = author
 
-  const { user, rating, text, votes, audit } = review
-  const { username } = user
-
-  const { toastApolloError } = useToastError()
-  const { voteOnReview } = useVoteOnReview()
-
-  const handleVoteOnReview = async (vote: boolean | null) => {
-    await voteOnReview({ reviewId: review.id, vote })
-      .match(
-        () => {},
-        toastApolloError
-      )
-  }
+  const { toastError } = useToastMessage()
 
   return (
     <div
       className={clsx(
         'flex flex-col w-full gap-5 p-5',
-        className
+        rest.className
       )}
       {...rest}
     >
@@ -50,7 +32,7 @@ export const FragranceReviewCard = (props: FragranceReviewCardProps) => {
         className='flex flex-row gap-5'
       >
         <UserAvatar
-          user={user}
+          user={author}
         />
 
         <div
@@ -73,7 +55,7 @@ export const FragranceReviewCard = (props: FragranceReviewCardProps) => {
               <span
                 className='text-xs'
               >
-                {formatDate(audit.createdAt)}
+                {formatDate(createdAt)}
               </span>
             </p>
           </div>
