@@ -1,18 +1,15 @@
-import React, { useEffect, useState } from 'react'
-import VoteOnAccordsSection from '@/features/review/components/VoteOnAccordsSection'
-import InteractableRatingStars from '@/components/InteractableRatingStars'
+import React, { useState } from 'react'
 import { Colors } from '@/styles/Colors'
 import Divider from '@/components/Divider'
-import PageBackButton from '../../../components/PageBackButton'
-import { type IFragranceSummary } from '../../fragrance/types'
-import VoteOnCharacteristicsSection from '../components/VoteOnCharacteristicsSection'
 import { Accordion } from '@base-ui-components/react'
-import VoteOnNotesSection from '../components/VoteOnNotesSection'
-import WriteAReviewSection from '../components/WriteAReviewSection'
-import { useMyReview } from '@/features/user'
+import type { FragranceDetailFragment } from '@/generated/graphql'
+import { useMyFragranceReview } from '../hooks/useMyFragranceReview'
+import PageBackButton from '@/components/PageBackButton'
+import InteractableRatingStars from '@/components/InteractableRatingStars'
+import VoteOnGenderSection from '../components/VoteOnGenderSection'
 
 export interface FragranceReviewPageProps {
-  fragrance: IFragranceSummary
+  fragrance: FragranceDetailFragment
   rating: number
 }
 
@@ -20,22 +17,16 @@ const FragranceReviewPage = (props: FragranceReviewPageProps) => {
   const { fragrance, rating } = props
   const { id, name, brand } = fragrance
 
-  const { data: myReview } = useMyReview(id)
+  const { myReview } = useMyFragranceReview(id)
 
-  const [currentRating, setCurrentRating] = useState(rating)
-
-  useEffect(() => {
-    if (myReview != null && rating === 0) {
-      setCurrentRating(myReview.rating)
-    }
-  }, [rating, myReview])
+  const [currentRating, setCurrentRating] = useState(myReview?.rating ?? rating)
 
   return (
     <div
       className='flex flex-wrap gap-5'
     >
       <div
-        className='flex-1'
+        className='flex-1 pl-4'
       >
         <PageBackButton
           className='sticky top-[87px] ml-auto'
@@ -43,7 +34,7 @@ const FragranceReviewPage = (props: FragranceReviewPageProps) => {
       </div>
 
       <div
-        className='flex-[6] flex-col gap-5 w-full max-w-3xl'
+        className='flex-6 flex-col gap-5 w-full max-w-4xl'
       >
         <div
           className='px-4'
@@ -57,7 +48,7 @@ const FragranceReviewPage = (props: FragranceReviewPageProps) => {
           <p
             className='font-light text-lg'
           >
-            {brand}
+            {brand.name}
           </p>
         </div>
 
@@ -70,7 +61,8 @@ const FragranceReviewPage = (props: FragranceReviewPageProps) => {
         </div>
 
         <Accordion.Root
-          className='flex flex-col'
+          className='flex flex-col gap-7'
+          defaultValue={['gender']}
         >
           <div
             className='p-4'
@@ -82,16 +74,20 @@ const FragranceReviewPage = (props: FragranceReviewPageProps) => {
             </h1>
 
             <InteractableRatingStars
-              rating={currentRating}
               size={32}
+              rating={currentRating}
               emptyColor={Colors.empty2}
               filledColor={Colors.sinopia}
-              className='mr-auto text-md flex items-center gap-1 mt-2'
+              className='mr-auto flex items-center justify-center w-fit text-md gap-3 mt-2'
               onRatingChange={setCurrentRating}
             />
           </div>
 
-          <VoteOnAccordsSection
+          <VoteOnGenderSection
+            fragrance={fragrance}
+          />
+
+          {/* <VoteOnAccordsSection
             fragranceId={id}
           />
 
@@ -106,14 +102,13 @@ const FragranceReviewPage = (props: FragranceReviewPageProps) => {
           <WriteAReviewSection
             fragranceId={id}
             rating={currentRating}
-          />
+          /> */}
         </Accordion.Root>
       </div>
 
       <div
         className='flex-1'
       />
-
     </div>
   )
 }

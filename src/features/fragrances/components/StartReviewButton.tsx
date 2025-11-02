@@ -39,9 +39,13 @@ const StartReviewButton = (props: StartReviewButtonProps) => {
         <div
           className='flex flex-row gap-5'
         >
-          <UserAvatar
-            user={me}
-          />
+          <div
+            className='h-16'
+          >
+            <UserAvatar
+              user={me}
+            />
+          </div>
 
           <Link
             to='/fragrances/$id/review'
@@ -55,7 +59,7 @@ const StartReviewButton = (props: StartReviewButtonProps) => {
                 className='truncate'
               >
                 <span
-                  className='font-pd text-xl'
+                  className='font-semibold text-black/80'
                 >
                   {user.username}
                 </span>
@@ -63,7 +67,7 @@ const StartReviewButton = (props: StartReviewButtonProps) => {
                 <span> • </span>
 
                 <span
-                  className='text-xs'
+                  className='text-sm text-black/70'
                 >
                   {formatDate(new Date())}
                 </span>
@@ -71,7 +75,7 @@ const StartReviewButton = (props: StartReviewButtonProps) => {
             </div>
 
             <span
-              className='text-tawny font-semibold text-md truncate group-hover:underline flex-1'
+              className='text-tawny font-medium text-md truncate group-hover:underline flex-1'
             >
               Start your review of {fragrance.name}
             </span>

@@ -10,12 +10,13 @@ const MAX_OPACITY = 1.0
 
 export interface TraitBucketProps {
   bucket: AllTraitVoteDistributionFragment
-  maxScore: number
+  maxScore?: number
   className?: string
+  onBucketClick?: (optionId: string) => void
 }
 
 const TraitBucket = (props: TraitBucketProps) => {
-  const { bucket, maxScore, className } = props
+  const { bucket, maxScore = 1, className, onBucketClick } = props
   const { votes } = bucket
 
   const opacity = Math.max(MIN_OPACITY, Math.min(MAX_OPACITY, votes / maxScore))
@@ -27,11 +28,12 @@ const TraitBucket = (props: TraitBucketProps) => {
           className,
           'h-8 min-w-0 w-full overflow-hidden group'
         )}
+        onClick={onBucketClick?.bind(null, bucket.option.id)}
       >
         <div
           className={clsx(
             'h-8 w-full transition-colors',
-            'bg-sinopia'
+            'bg-sinopia transition-opacity ease-in-out duration-300'
           )}
           style={{ opacity }}
         />

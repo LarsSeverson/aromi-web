@@ -45,7 +45,8 @@ type Documents = {
     "\n  fragment AllFragranceImage on FragranceImage {\n    id\n    url\n    width\n    height\n    primaryColor\n  } \n": typeof types.AllFragranceImageFragmentDoc,
     "\n  fragment AllFragranceAccord on FragranceAccord {\n    id\n    accord {\n      ...AllAccord\n    }\n    votes {\n      ...AllVoteInfo\n    }\n  }\n": typeof types.AllFragranceAccordFragmentDoc,
     "\n  fragment AllFragranceNote on FragranceNote { \n    id\n    layer\n    note {\n      ...AllNote\n    }\n    votes {\n      ...AllVoteInfo\n    }\n  }\n": typeof types.AllFragranceNoteFragmentDoc,
-    "\n  fragment AllFragranceTrait on FragranceTrait { \n    id\n    type\n    name\n    options {\n      ...AllTraitOption\n    } \n    stats {\n      ...AllTraitStats\n    }\n    myVote {\n      ...AllTraitVote\n    }\n  }\n": typeof types.AllFragranceTraitFragmentDoc,
+    "\n  fragment AllFragranceTraitVote on FragranceTraitVote { \n    id\n    type\n    option {\n      ...AllTraitOption\n    }\n  }\n": typeof types.AllFragranceTraitVoteFragmentDoc,
+    "\n  fragment AllFragranceTrait on FragranceTrait { \n    id\n    type\n    name\n    options {\n      ...AllTraitOption\n    } \n    stats {\n      ...AllTraitStats\n    }\n    myVote {\n      ...AllFragranceTraitVote\n    }\n  }\n": typeof types.AllFragranceTraitFragmentDoc,
     "\n  fragment AllFragranceReview on FragranceReview { \n    id\n    rating\n    body\n\n    author {\n      ...UserPreview\n    }\n\n    fragrance {\n      ...FragrancePreview\n    }\n\n    votes {\n      ...AllVoteInfo\n    }\n    \n    createdAt\n  }\n": typeof types.AllFragranceReviewFragmentDoc,
     "\n  fragment AllFragranceReviewInfo on FragranceReviewInfo { \n    count\n    averageRating\n    distribution {\n      rating\n      count\n    }\n  }\n": typeof types.AllFragranceReviewInfoFragmentDoc,
     "\n  fragment AllFragranceCollection on FragranceCollection { \n    id\n    __typename\n    name\n    previewItems {\n      ...AllFragranceCollectionItem\n    }\n    items {\n      ...AllFragranceCollectionItem\n    }\n    user {\n      ...UserPreview\n    }\n  }\n": typeof types.AllFragranceCollectionFragmentDoc,
@@ -65,16 +66,20 @@ type Documents = {
     "\n  mutation VoteOnFragrance(\n    $input: VoteOnFragranceInput!\n  ) {\n    voteOnFragrance(input: $input) {\n      ...FragrancePreview\n    }\n  }\n": typeof types.VoteOnFragranceDocument,
     "\n  mutation VoteOnFragranceAccord(\n    $input: VoteOnFragranceAccordInput!\n  ) {\n    voteOnFragranceAccord(input: $input) {\n      ...AllAccord\n    }\n  }\n": typeof types.VoteOnFragranceAccordDocument,
     "\n  mutation VoteOnFragranceNote(\n    $input: VoteOnFragranceNoteInput!\n  ) {\n    voteOnFragranceNote(input: $input) {\n      ...AllNote\n    }\n  }\n": typeof types.VoteOnFragranceNoteDocument,
-    "\n  mutation VoteOnFragranceTrait(\n    $input: VoteOnFragranceTraitInput!\n  ) {\n    voteOnFragranceTrait(input: $input) {\n      ...AllTraitVote\n    }\n  }\n": typeof types.VoteOnFragranceTraitDocument,
+    "\n  mutation VoteOnFragranceTrait(\n    $input: VoteOnFragranceTraitInput!\n  ) {\n    voteOnFragranceTrait(input: $input) {\n      ...AllFragranceTraitVote\n    }\n  }\n": typeof types.VoteOnFragranceTraitDocument,
     "\n  mutation VoteOnFragranceReview(\n    $input: VoteOnFragranceReviewInput!\n  ) {\n    voteOnFragranceReview(input: $input) {\n      ...AllFragranceReview\n    }\n  }\n": typeof types.VoteOnFragranceReviewDocument,
     "\n  mutation CreateFragranceReport(\n    $input: CreateFragranceReportInput!\n  ) {\n    createFragranceReport(input: $input) {\n      id\n    }\n  }\n": typeof types.CreateFragranceReportDocument,
     "\n  query Fragrance(\n    $id: ID!\n  ) {\n    fragrance(id: $id) {\n      ...FragranceDetail\n    }\n  }\n": typeof types.FragranceDocument,
     "\n  query Fragrances(\n    $input: FragrancePaginationInput\n  ) {\n    fragrances(input: $input) { \n      edges {\n        node {\n          ...FragrancePreview\n        }\n        cursor\n      }\n      pageInfo {\n        ...AllPageInfo\n      }\n    }\n  }\n": typeof types.FragrancesDocument,
     "\n  query SearchFragrances(\n    $input: SearchInput\n  ) {\n    searchFragrances(input: $input) { \n      edges {\n        node { \n          ...FragrancePreview\n        }\n        offset\n      }\n      pageInfo {\n        ...AllSearchPageInfo\n      }\n    }\n  }\n": typeof types.SearchFragrancesDocument,
     "\n  query FragranceImages(\n    $fragranceId: ID!\n  ) {\n    fragrance(id: $fragranceId) {\n      id\n      images {\n        ...AllFragranceImage\n      }\n    }\n  }\n": typeof types.FragranceImagesDocument,
+    "\n  query MyFragranceAccords(\n    $fragranceId: ID!\n  ) { \n    fragrance(id: $fragranceId) {\n      id\n      myAccords {\n        ...AllFragranceAccord\n      }\n    }\n  }\n": typeof types.MyFragranceAccordsDocument,
     "\n  query FragranceAccords(\n    $fragranceId: ID!\n    $input: FragranceAccordPaginationInput\n  ) { \n    fragrance(id: $fragranceId) {\n      id\n      accords(input: $input) {\n        edges {\n          node {\n            ...AllFragranceAccord\n          }\n          cursor\n        }\n        pageInfo {\n          ...AllPageInfo\n        }\n      }\n    }\n  }\n": typeof types.FragranceAccordsDocument,
+    "\n  query MyFragranceNotes(\n    $fragranceId: ID!\n  ) { \n    fragrance(id: $fragranceId) {\n      id\n      myNotes {\n        ...AllFragranceNote\n      }\n    }\n  }\n": typeof types.MyFragranceNotesDocument,
     "\n  query FragranceNotes(\n    $fragranceId: ID!\n    $input: FragranceNotePaginationInput\n  ) { \n    fragrance(id: $fragranceId) {\n      id\n      notes(input: $input) {\n        edges {\n          node {\n            ...AllFragranceNote\n          }\n          cursor\n        }\n        pageInfo {\n          ...AllPageInfo\n        }\n      }\n    }\n  }\n": typeof types.FragranceNotesDocument,
+    "\n  query MyFragranceTraits(\n    $fragranceId: ID!\n  ) { \n    fragrance(id: $fragranceId) {\n      id\n      myTraits {\n        ...AllFragranceTraitVote\n      }\n    }\n  }\n": typeof types.MyFragranceTraitsDocument,
     "\n  query FragranceTraits(\n    $fragranceId: ID!\n  ) { \n    fragrance(id: $fragranceId) {\n      id\n      traits {\n        ...AllFragranceTrait\n      }\n    }\n  }\n": typeof types.FragranceTraitsDocument,
+    "\n  query MyFragranceReview(\n    $fragranceId: ID!\n  ) { \n    fragrance(id: $fragranceId) {\n      id\n      myReview {\n        ...AllFragranceReview\n      }\n    }\n  }\n": typeof types.MyFragranceReviewDocument,
     "\n  query FragranceReviews(\n    $fragranceId: ID!\n    $input: FragranceReviewPaginationInput\n  ) { \n    fragrance(id: $fragranceId) {\n      id\n      reviews(input: $input) {\n        edges {\n          node {\n            ...AllFragranceReview\n          }\n          cursor\n        }\n        pageInfo {\n          ...AllPageInfo\n        }\n      }\n    }\n  }\n": typeof types.FragranceReviewsDocument,
     "\n  query FragranceCollection(\n    $id: ID!\n  ) { \n    fragranceCollection(id: $id) {\n      ...AllFragranceCollection\n    }\n  }\n": typeof types.FragranceCollectionDocument,
     "\n  query FragranceCollections(\n    $input: FragranceCollectionPaginationInput\n  ) { \n    fragranceCollections(input: $input) {\n      edges {\n        node {\n          ...FragranceCollectionPreview\n        }\n        cursor\n      }\n      pageInfo {\n        ...AllPageInfo\n      }\n    }\n  }\n": typeof types.FragranceCollectionsDocument,
@@ -87,7 +92,6 @@ type Documents = {
     "\n  fragment AllTraitOption on TraitOption {\n    id\n    label\n    score\n  }\n": typeof types.AllTraitOptionFragmentDoc,
     "\n  fragment AllTraitVoteDistribution on TraitVoteDistribution {\n    option {\n      ...AllTraitOption\n    }\n    votes\n  }\n": typeof types.AllTraitVoteDistributionFragmentDoc,
     "\n  fragment AllTraitStats on TraitStats {\n    averageScore \n    totalVotes\n    distribution {\n      ...AllTraitVoteDistribution\n    }\n  }\n": typeof types.AllTraitStatsFragmentDoc,
-    "\n  fragment AllTraitVote on TraitVote {\n    option {\n      ...AllTraitOption\n    } \n  }\n": typeof types.AllTraitVoteFragmentDoc,
     "\n  fragment Me on User {\n    id\n    username\n    email\n    avatar {\n      ...AllAsset\n    }\n  }\n": typeof types.MeFragmentDoc,
     "\n  fragment UserPreview on User {\n    id\n    username\n    avatar {\n      ...AllAsset\n    }\n  }\n": typeof types.UserPreviewFragmentDoc,
     "\n  mutation UpdateMe(\n    $input: UpdateMeInput!\n  ) {\n    updateMe(input: $input) {\n      ...Me\n    }\n  }\n": typeof types.UpdateMeDocument,
@@ -137,7 +141,8 @@ const documents: Documents = {
     "\n  fragment AllFragranceImage on FragranceImage {\n    id\n    url\n    width\n    height\n    primaryColor\n  } \n": types.AllFragranceImageFragmentDoc,
     "\n  fragment AllFragranceAccord on FragranceAccord {\n    id\n    accord {\n      ...AllAccord\n    }\n    votes {\n      ...AllVoteInfo\n    }\n  }\n": types.AllFragranceAccordFragmentDoc,
     "\n  fragment AllFragranceNote on FragranceNote { \n    id\n    layer\n    note {\n      ...AllNote\n    }\n    votes {\n      ...AllVoteInfo\n    }\n  }\n": types.AllFragranceNoteFragmentDoc,
-    "\n  fragment AllFragranceTrait on FragranceTrait { \n    id\n    type\n    name\n    options {\n      ...AllTraitOption\n    } \n    stats {\n      ...AllTraitStats\n    }\n    myVote {\n      ...AllTraitVote\n    }\n  }\n": types.AllFragranceTraitFragmentDoc,
+    "\n  fragment AllFragranceTraitVote on FragranceTraitVote { \n    id\n    type\n    option {\n      ...AllTraitOption\n    }\n  }\n": types.AllFragranceTraitVoteFragmentDoc,
+    "\n  fragment AllFragranceTrait on FragranceTrait { \n    id\n    type\n    name\n    options {\n      ...AllTraitOption\n    } \n    stats {\n      ...AllTraitStats\n    }\n    myVote {\n      ...AllFragranceTraitVote\n    }\n  }\n": types.AllFragranceTraitFragmentDoc,
     "\n  fragment AllFragranceReview on FragranceReview { \n    id\n    rating\n    body\n\n    author {\n      ...UserPreview\n    }\n\n    fragrance {\n      ...FragrancePreview\n    }\n\n    votes {\n      ...AllVoteInfo\n    }\n    \n    createdAt\n  }\n": types.AllFragranceReviewFragmentDoc,
     "\n  fragment AllFragranceReviewInfo on FragranceReviewInfo { \n    count\n    averageRating\n    distribution {\n      rating\n      count\n    }\n  }\n": types.AllFragranceReviewInfoFragmentDoc,
     "\n  fragment AllFragranceCollection on FragranceCollection { \n    id\n    __typename\n    name\n    previewItems {\n      ...AllFragranceCollectionItem\n    }\n    items {\n      ...AllFragranceCollectionItem\n    }\n    user {\n      ...UserPreview\n    }\n  }\n": types.AllFragranceCollectionFragmentDoc,
@@ -157,16 +162,20 @@ const documents: Documents = {
     "\n  mutation VoteOnFragrance(\n    $input: VoteOnFragranceInput!\n  ) {\n    voteOnFragrance(input: $input) {\n      ...FragrancePreview\n    }\n  }\n": types.VoteOnFragranceDocument,
     "\n  mutation VoteOnFragranceAccord(\n    $input: VoteOnFragranceAccordInput!\n  ) {\n    voteOnFragranceAccord(input: $input) {\n      ...AllAccord\n    }\n  }\n": types.VoteOnFragranceAccordDocument,
     "\n  mutation VoteOnFragranceNote(\n    $input: VoteOnFragranceNoteInput!\n  ) {\n    voteOnFragranceNote(input: $input) {\n      ...AllNote\n    }\n  }\n": types.VoteOnFragranceNoteDocument,
-    "\n  mutation VoteOnFragranceTrait(\n    $input: VoteOnFragranceTraitInput!\n  ) {\n    voteOnFragranceTrait(input: $input) {\n      ...AllTraitVote\n    }\n  }\n": types.VoteOnFragranceTraitDocument,
+    "\n  mutation VoteOnFragranceTrait(\n    $input: VoteOnFragranceTraitInput!\n  ) {\n    voteOnFragranceTrait(input: $input) {\n      ...AllFragranceTraitVote\n    }\n  }\n": types.VoteOnFragranceTraitDocument,
     "\n  mutation VoteOnFragranceReview(\n    $input: VoteOnFragranceReviewInput!\n  ) {\n    voteOnFragranceReview(input: $input) {\n      ...AllFragranceReview\n    }\n  }\n": types.VoteOnFragranceReviewDocument,
     "\n  mutation CreateFragranceReport(\n    $input: CreateFragranceReportInput!\n  ) {\n    createFragranceReport(input: $input) {\n      id\n    }\n  }\n": types.CreateFragranceReportDocument,
     "\n  query Fragrance(\n    $id: ID!\n  ) {\n    fragrance(id: $id) {\n      ...FragranceDetail\n    }\n  }\n": types.FragranceDocument,
     "\n  query Fragrances(\n    $input: FragrancePaginationInput\n  ) {\n    fragrances(input: $input) { \n      edges {\n        node {\n          ...FragrancePreview\n        }\n        cursor\n      }\n      pageInfo {\n        ...AllPageInfo\n      }\n    }\n  }\n": types.FragrancesDocument,
     "\n  query SearchFragrances(\n    $input: SearchInput\n  ) {\n    searchFragrances(input: $input) { \n      edges {\n        node { \n          ...FragrancePreview\n        }\n        offset\n      }\n      pageInfo {\n        ...AllSearchPageInfo\n      }\n    }\n  }\n": types.SearchFragrancesDocument,
     "\n  query FragranceImages(\n    $fragranceId: ID!\n  ) {\n    fragrance(id: $fragranceId) {\n      id\n      images {\n        ...AllFragranceImage\n      }\n    }\n  }\n": types.FragranceImagesDocument,
+    "\n  query MyFragranceAccords(\n    $fragranceId: ID!\n  ) { \n    fragrance(id: $fragranceId) {\n      id\n      myAccords {\n        ...AllFragranceAccord\n      }\n    }\n  }\n": types.MyFragranceAccordsDocument,
     "\n  query FragranceAccords(\n    $fragranceId: ID!\n    $input: FragranceAccordPaginationInput\n  ) { \n    fragrance(id: $fragranceId) {\n      id\n      accords(input: $input) {\n        edges {\n          node {\n            ...AllFragranceAccord\n          }\n          cursor\n        }\n        pageInfo {\n          ...AllPageInfo\n        }\n      }\n    }\n  }\n": types.FragranceAccordsDocument,
+    "\n  query MyFragranceNotes(\n    $fragranceId: ID!\n  ) { \n    fragrance(id: $fragranceId) {\n      id\n      myNotes {\n        ...AllFragranceNote\n      }\n    }\n  }\n": types.MyFragranceNotesDocument,
     "\n  query FragranceNotes(\n    $fragranceId: ID!\n    $input: FragranceNotePaginationInput\n  ) { \n    fragrance(id: $fragranceId) {\n      id\n      notes(input: $input) {\n        edges {\n          node {\n            ...AllFragranceNote\n          }\n          cursor\n        }\n        pageInfo {\n          ...AllPageInfo\n        }\n      }\n    }\n  }\n": types.FragranceNotesDocument,
+    "\n  query MyFragranceTraits(\n    $fragranceId: ID!\n  ) { \n    fragrance(id: $fragranceId) {\n      id\n      myTraits {\n        ...AllFragranceTraitVote\n      }\n    }\n  }\n": types.MyFragranceTraitsDocument,
     "\n  query FragranceTraits(\n    $fragranceId: ID!\n  ) { \n    fragrance(id: $fragranceId) {\n      id\n      traits {\n        ...AllFragranceTrait\n      }\n    }\n  }\n": types.FragranceTraitsDocument,
+    "\n  query MyFragranceReview(\n    $fragranceId: ID!\n  ) { \n    fragrance(id: $fragranceId) {\n      id\n      myReview {\n        ...AllFragranceReview\n      }\n    }\n  }\n": types.MyFragranceReviewDocument,
     "\n  query FragranceReviews(\n    $fragranceId: ID!\n    $input: FragranceReviewPaginationInput\n  ) { \n    fragrance(id: $fragranceId) {\n      id\n      reviews(input: $input) {\n        edges {\n          node {\n            ...AllFragranceReview\n          }\n          cursor\n        }\n        pageInfo {\n          ...AllPageInfo\n        }\n      }\n    }\n  }\n": types.FragranceReviewsDocument,
     "\n  query FragranceCollection(\n    $id: ID!\n  ) { \n    fragranceCollection(id: $id) {\n      ...AllFragranceCollection\n    }\n  }\n": types.FragranceCollectionDocument,
     "\n  query FragranceCollections(\n    $input: FragranceCollectionPaginationInput\n  ) { \n    fragranceCollections(input: $input) {\n      edges {\n        node {\n          ...FragranceCollectionPreview\n        }\n        cursor\n      }\n      pageInfo {\n        ...AllPageInfo\n      }\n    }\n  }\n": types.FragranceCollectionsDocument,
@@ -179,7 +188,6 @@ const documents: Documents = {
     "\n  fragment AllTraitOption on TraitOption {\n    id\n    label\n    score\n  }\n": types.AllTraitOptionFragmentDoc,
     "\n  fragment AllTraitVoteDistribution on TraitVoteDistribution {\n    option {\n      ...AllTraitOption\n    }\n    votes\n  }\n": types.AllTraitVoteDistributionFragmentDoc,
     "\n  fragment AllTraitStats on TraitStats {\n    averageScore \n    totalVotes\n    distribution {\n      ...AllTraitVoteDistribution\n    }\n  }\n": types.AllTraitStatsFragmentDoc,
-    "\n  fragment AllTraitVote on TraitVote {\n    option {\n      ...AllTraitOption\n    } \n  }\n": types.AllTraitVoteFragmentDoc,
     "\n  fragment Me on User {\n    id\n    username\n    email\n    avatar {\n      ...AllAsset\n    }\n  }\n": types.MeFragmentDoc,
     "\n  fragment UserPreview on User {\n    id\n    username\n    avatar {\n      ...AllAsset\n    }\n  }\n": types.UserPreviewFragmentDoc,
     "\n  mutation UpdateMe(\n    $input: UpdateMeInput!\n  ) {\n    updateMe(input: $input) {\n      ...Me\n    }\n  }\n": types.UpdateMeDocument,
@@ -339,7 +347,11 @@ export function gql(source: "\n  fragment AllFragranceNote on FragranceNote { \n
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\n  fragment AllFragranceTrait on FragranceTrait { \n    id\n    type\n    name\n    options {\n      ...AllTraitOption\n    } \n    stats {\n      ...AllTraitStats\n    }\n    myVote {\n      ...AllTraitVote\n    }\n  }\n"): (typeof documents)["\n  fragment AllFragranceTrait on FragranceTrait { \n    id\n    type\n    name\n    options {\n      ...AllTraitOption\n    } \n    stats {\n      ...AllTraitStats\n    }\n    myVote {\n      ...AllTraitVote\n    }\n  }\n"];
+export function gql(source: "\n  fragment AllFragranceTraitVote on FragranceTraitVote { \n    id\n    type\n    option {\n      ...AllTraitOption\n    }\n  }\n"): (typeof documents)["\n  fragment AllFragranceTraitVote on FragranceTraitVote { \n    id\n    type\n    option {\n      ...AllTraitOption\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  fragment AllFragranceTrait on FragranceTrait { \n    id\n    type\n    name\n    options {\n      ...AllTraitOption\n    } \n    stats {\n      ...AllTraitStats\n    }\n    myVote {\n      ...AllFragranceTraitVote\n    }\n  }\n"): (typeof documents)["\n  fragment AllFragranceTrait on FragranceTrait { \n    id\n    type\n    name\n    options {\n      ...AllTraitOption\n    } \n    stats {\n      ...AllTraitStats\n    }\n    myVote {\n      ...AllFragranceTraitVote\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -419,7 +431,7 @@ export function gql(source: "\n  mutation VoteOnFragranceNote(\n    $input: Vote
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\n  mutation VoteOnFragranceTrait(\n    $input: VoteOnFragranceTraitInput!\n  ) {\n    voteOnFragranceTrait(input: $input) {\n      ...AllTraitVote\n    }\n  }\n"): (typeof documents)["\n  mutation VoteOnFragranceTrait(\n    $input: VoteOnFragranceTraitInput!\n  ) {\n    voteOnFragranceTrait(input: $input) {\n      ...AllTraitVote\n    }\n  }\n"];
+export function gql(source: "\n  mutation VoteOnFragranceTrait(\n    $input: VoteOnFragranceTraitInput!\n  ) {\n    voteOnFragranceTrait(input: $input) {\n      ...AllFragranceTraitVote\n    }\n  }\n"): (typeof documents)["\n  mutation VoteOnFragranceTrait(\n    $input: VoteOnFragranceTraitInput!\n  ) {\n    voteOnFragranceTrait(input: $input) {\n      ...AllFragranceTraitVote\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -447,7 +459,15 @@ export function gql(source: "\n  query FragranceImages(\n    $fragranceId: ID!\n
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
+export function gql(source: "\n  query MyFragranceAccords(\n    $fragranceId: ID!\n  ) { \n    fragrance(id: $fragranceId) {\n      id\n      myAccords {\n        ...AllFragranceAccord\n      }\n    }\n  }\n"): (typeof documents)["\n  query MyFragranceAccords(\n    $fragranceId: ID!\n  ) { \n    fragrance(id: $fragranceId) {\n      id\n      myAccords {\n        ...AllFragranceAccord\n      }\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
 export function gql(source: "\n  query FragranceAccords(\n    $fragranceId: ID!\n    $input: FragranceAccordPaginationInput\n  ) { \n    fragrance(id: $fragranceId) {\n      id\n      accords(input: $input) {\n        edges {\n          node {\n            ...AllFragranceAccord\n          }\n          cursor\n        }\n        pageInfo {\n          ...AllPageInfo\n        }\n      }\n    }\n  }\n"): (typeof documents)["\n  query FragranceAccords(\n    $fragranceId: ID!\n    $input: FragranceAccordPaginationInput\n  ) { \n    fragrance(id: $fragranceId) {\n      id\n      accords(input: $input) {\n        edges {\n          node {\n            ...AllFragranceAccord\n          }\n          cursor\n        }\n        pageInfo {\n          ...AllPageInfo\n        }\n      }\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  query MyFragranceNotes(\n    $fragranceId: ID!\n  ) { \n    fragrance(id: $fragranceId) {\n      id\n      myNotes {\n        ...AllFragranceNote\n      }\n    }\n  }\n"): (typeof documents)["\n  query MyFragranceNotes(\n    $fragranceId: ID!\n  ) { \n    fragrance(id: $fragranceId) {\n      id\n      myNotes {\n        ...AllFragranceNote\n      }\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -455,7 +475,15 @@ export function gql(source: "\n  query FragranceNotes(\n    $fragranceId: ID!\n 
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
+export function gql(source: "\n  query MyFragranceTraits(\n    $fragranceId: ID!\n  ) { \n    fragrance(id: $fragranceId) {\n      id\n      myTraits {\n        ...AllFragranceTraitVote\n      }\n    }\n  }\n"): (typeof documents)["\n  query MyFragranceTraits(\n    $fragranceId: ID!\n  ) { \n    fragrance(id: $fragranceId) {\n      id\n      myTraits {\n        ...AllFragranceTraitVote\n      }\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
 export function gql(source: "\n  query FragranceTraits(\n    $fragranceId: ID!\n  ) { \n    fragrance(id: $fragranceId) {\n      id\n      traits {\n        ...AllFragranceTrait\n      }\n    }\n  }\n"): (typeof documents)["\n  query FragranceTraits(\n    $fragranceId: ID!\n  ) { \n    fragrance(id: $fragranceId) {\n      id\n      traits {\n        ...AllFragranceTrait\n      }\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  query MyFragranceReview(\n    $fragranceId: ID!\n  ) { \n    fragrance(id: $fragranceId) {\n      id\n      myReview {\n        ...AllFragranceReview\n      }\n    }\n  }\n"): (typeof documents)["\n  query MyFragranceReview(\n    $fragranceId: ID!\n  ) { \n    fragrance(id: $fragranceId) {\n      id\n      myReview {\n        ...AllFragranceReview\n      }\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -504,10 +532,6 @@ export function gql(source: "\n  fragment AllTraitVoteDistribution on TraitVoteD
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(source: "\n  fragment AllTraitStats on TraitStats {\n    averageScore \n    totalVotes\n    distribution {\n      ...AllTraitVoteDistribution\n    }\n  }\n"): (typeof documents)["\n  fragment AllTraitStats on TraitStats {\n    averageScore \n    totalVotes\n    distribution {\n      ...AllTraitVoteDistribution\n    }\n  }\n"];
-/**
- * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
- */
-export function gql(source: "\n  fragment AllTraitVote on TraitVote {\n    option {\n      ...AllTraitOption\n    } \n  }\n"): (typeof documents)["\n  fragment AllTraitVote on TraitVote {\n    option {\n      ...AllTraitOption\n    } \n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

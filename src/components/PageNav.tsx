@@ -14,9 +14,12 @@ export const PageNav = (props: PageNavProps) => {
   const { totalPages, curPage, pagesShown = 5, onPageChange, className, ...rest } = props
 
   const btnClassName = clsx(
-    'w-8 px-[9px] aspect-square rounded-full text-sm font-semibold',
-    'bg-gray-200 outline outline-2 outline-offset-0 outline-none hover:outline-sinopia'
+    'w-9 h-9 px-[9px] rounded-full text-sm font-semibold flex items-center justify-center',
+    'bg-gray-200 outline-2 outline-offset-0 outline-none hover:outline-sinopia'
   )
+
+  const showBackButton = curPage > 0
+  const showForwardButton = curPage < (totalPages - 1)
 
   return (
     <nav
@@ -26,44 +29,49 @@ export const PageNav = (props: PageNavProps) => {
       )}
       {...rest}
     >
-      <BouncyButton
+      <button
         className={clsx(
           btnClassName,
-          curPage === 0 && 'hover:outline-transparent'
+          !showBackButton && 'hover:outline-transparent opacity-50'
         )}
-        disabled={curPage === 0}
-        onClick={() => { onPageChange?.(curPage - 1) }}
+        disabled={!showBackButton}
+        onClick={onPageChange?.bind(null, curPage - 1)}
       >
         <TiArrowLeftThick />
-      </BouncyButton>
-      {Array.from({ length: Math.min(pagesShown, totalPages) }).map((_, index) => {
-        const halfPages = Math.floor(pagesShown / 2)
-        const pageIndex = Math.max(0, Math.min(curPage - halfPages, totalPages - pagesShown)) + index
+      </button>
 
-        return (
-          <BouncyButton
-            key={index}
-            className={clsx(
-              btnClassName,
-              curPage === pageIndex && 'outline-black',
-              !(curPage === pageIndex) && 'outline-none'
-            )}
-            onClick={() => { onPageChange?.(pageIndex) }}
-          >
-            {pageIndex + 1}
-          </BouncyButton>
-        )
-      })}
-      <BouncyButton
+      {Array
+        .from({ length: Math.min(pagesShown, totalPages) })
+        .map((_, index) => {
+          const halfPages = Math.floor(pagesShown / 2)
+          const pageIndex = Math.max(0, Math.min(curPage - halfPages, totalPages - pagesShown)) + index
+
+          return (
+            <BouncyButton
+              key={index}
+              className={clsx(
+                btnClassName,
+                curPage === pageIndex && 'outline-black',
+                !(curPage === pageIndex) && 'outline-none'
+              )}
+              onClick={onPageChange?.bind(null, pageIndex)}
+            >
+              {pageIndex + 1}
+            </BouncyButton>
+          )
+        })
+      }
+
+      <button
         className={clsx(
           btnClassName,
-          curPage === totalPages - 1 && 'hover:outline-transparent'
+          !showForwardButton && 'hover:outline-transparent cursor-default opacity-50'
         )}
-        disabled={curPage === totalPages - 1}
-        onClick={() => { onPageChange?.(curPage + 1) }}
+        disabled={!showForwardButton}
+        onClick={onPageChange?.bind(null, curPage + 1)}
       >
         <TiArrowRightThick />
-      </BouncyButton>
+      </button>
     </nav>
   )
 }

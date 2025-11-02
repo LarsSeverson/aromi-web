@@ -1,86 +1,78 @@
-import { Field } from '@base-ui-components/react/field'
-import BucketInput, { type BucketInputOption, type BucketInputProps } from '@/components/BucketInput'
+import ArrowSvg from '@/components/ArrowSvg'
+import type { AllTraitVoteDistributionFragment } from '@/generated/graphql'
+import { formatNumber } from '@/utils/string-utils'
+import { Tooltip } from '@base-ui-components/react'
 import clsx from 'clsx'
-import React, { useId, useRef } from 'react'
+import React from 'react'
 
-export interface TraitBucketInputProps<T extends BucketInputOption> extends BucketInputProps<T> {
-  name: string
-  label?: string
-  icon?: React.ReactNode
-  required?: boolean
+export interface TraitBucketInputProps {
+  bucket: AllTraitVoteDistributionFragment
+  isSelected?: boolean
+  maxScore?: number
   className?: string
+  onBucketClick?: (optionId: string) => void
 }
 
-const TraitBucketInput = <T extends BucketInputOption, >(
-  props: TraitBucketInputProps<T>
-) => {
-  const {
-    options,
-    name,
-    label,
-    icon,
-    required = false,
-    className,
-    onOptionChange,
-    ...rest
-  } = props
-
-  const id = useId()
-  const controlRef = useRef<HTMLInputElement>(null)
-
-  const handleOptionChange = (o: T) => {
-    if (controlRef.current != null) {
-      controlRef.current.value = o.label
-      controlRef.current.dispatchEvent(new Event('input', { bubbles: true }))
-      controlRef.current.dispatchEvent(new Event('change', { bubbles: true }))
-    }
-
-    onOptionChange?.(o)
-  }
+const TraitBucketInput = (props: TraitBucketInputProps) => {
+  const { bucket, isSelected = false, className, onBucketClick } = props
+  const { votes } = bucket
 
   return (
-    <Field.Root
-      name={name}
-      className={clsx(
-        'flex flex-col gap-3',
-        className
-      )}
-    >
-      <Field.Label
-        id={`${id}-label`}
+    <Tooltip.Root>
+      <Tooltip.Trigger
         className={clsx(
-          'font-semibold text-md text-light flex flex-col items-center gap-1 self-center'
+          className,
+          'h-8 min-w-0 w-full overflow-hidden group',
+          'cursor-pointer'
         )}
+        onClick={onBucketClick?.bind(null, bucket.option.id)}
       >
-        {icon}
-
-        {label}
-      </Field.Label>
-
-      <div
-        aria-labelledby={`${id}-label`}
-      >
-        <BucketInput
-          {...rest}
-          options={options}
-          onOptionChange={handleOptionChange}
+        <div
+          className={clsx(
+            'h-8 w-full transition-colors',
+            'bg-sinopia opacity-8 hover:opacity-100 transition-opacity ease-in-out duration-100',
+            isSelected && 'opacity-100'
+          )}
         />
-      </div>
+      </Tooltip.Trigger>
 
-      <Field.Control
-        ref={controlRef}
-        type='text'
-        required={required}
-        defaultValue=''
-        className='sr-only'
-      />
+      <Tooltip.Portal>
+        <Tooltip.Positioner
+          sideOffset={10}
+        >
+          <Tooltip.Popup
+            className={clsx(
+              'flex flex-col rounded-md px-2 py-1 text-sm outline outline-gray-200 bg-white',
+              'data-ending-style:scale-90 data-ending-style:opacity-0 data-instant:duration-0 data-starting-style:scale-90 data-starting-style:opacity-0',
+              'origin-(--transform-origin) transition-[transform,scale,opacity]',
+              'shadow-lg shadow-gray-200'
+            )}
+          >
+            <Tooltip.Arrow
+              className="data-[side=bottom]:top-[-9px] data-[side=left]:right-[-13px] data-[side=left]:rotate-90 data-[side=right]:left-[-13px] data-[side=right]:-rotate-90 data-[side=top]:bottom-[-9px] data-[side=top]:rotate-180"
+            >
+              <ArrowSvg />
+            </Tooltip.Arrow>
 
-      <Field.Error
-        className={clsx(
-          'text-red-600 font-pd text-sm ml-1'
-        )}
-      />
-    </Field.Root>
+            {formatNumber(votes)} {votes === 1 ? 'vote' : 'votes'}
+          </Tooltip.Popup>
+        </Tooltip.Positioner>
+      </Tooltip.Portal>
+
+      <span
+        className='mt-2 text-sm min-w-0 text-center truncate'
+      >
+        {bucket.option.label}
+      </span>
+
+      {votes > 0 && (
+        <span
+          className='text-xs font-medium text-black/50 min-w-0 text-center truncate'
+        >
+          {formatNumber(votes)} {votes === 1 ? 'vote' : 'votes'}
+        </span>
+      )}
+    </Tooltip.Root>
   )
 }
 

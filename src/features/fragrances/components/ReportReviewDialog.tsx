@@ -1,27 +1,18 @@
 import React, { useRef, useState } from 'react'
-import { type IFragranceReviewSummary } from '@/features/review/types'
 import { Dialog, Form } from '@base-ui-components/react'
 import { TbFlag } from 'react-icons/tb'
 import clsx from 'clsx'
 import Spinner from '@/components/Spinner'
-import { useToastError } from '@/hooks/useToastError'
-import { useToastMessage } from '@/hooks/useToastMessage'
-import { useCreateReviewReport } from '../../reviews/hooks/useCreateReviewReport'
+import type { AllFragranceReviewFragment } from '@/generated/graphql'
 
 const MIN_LENGTH = 100
 const MAX_LENGTH = 1000
 
 export interface ReportReviewDialogProps {
-  review: IFragranceReviewSummary
+  review: AllFragranceReviewFragment
 }
 
 const ReportReviewDialog = (props: ReportReviewDialogProps) => {
-  const { review } = props
-
-  const { toastMessage } = useToastMessage()
-  const { toastApolloError } = useToastError()
-  const { createReviewReport } = useCreateReviewReport()
-
   const reportRef = useRef<HTMLTextAreaElement>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [isReportEmpty, setIsReportEmpty] = useState(true)
@@ -32,7 +23,7 @@ const ReportReviewDialog = (props: ReportReviewDialogProps) => {
     const value = event.currentTarget.value
     const length = value.length
 
-    setCharacterCount(prev => (prev !== length ? length : prev))
+    setCharacterCount(prev => (prev === length ? prev : length))
     setIsReportEmpty(length === 0)
   }
 
@@ -41,18 +32,6 @@ const ReportReviewDialog = (props: ReportReviewDialogProps) => {
     event.stopPropagation()
 
     setIsLoading(true)
-
-    const reviewId = review.id
-    const report = reportRef.current?.value ?? ''
-
-    await createReviewReport({ reviewId, report })
-      .match(
-        () => {
-          setIsDialogOpen(false)
-          toastMessage("Thanks, we'll look into it.")
-        },
-        toastApolloError
-      )
 
     setIsLoading(false)
   }
@@ -96,7 +75,7 @@ const ReportReviewDialog = (props: ReportReviewDialogProps) => {
           >
             <div className='flex px-8 pb-8 pt-5 gap-8 flex-1'>
               <div
-                className='flex-[2] flex flex-col gap-2'
+                className='flex-2 flex flex-col gap-2'
               >
                 <textarea
                   ref={reportRef}

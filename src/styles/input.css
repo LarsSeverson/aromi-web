@@ -67,6 +67,17 @@
   .shadow-sym {
     box-shadow: var(--shadow-symmetrical);
   }
+  
+  [data-bucket] {
+    opacity: var(--bucket-opacity);
+    transition: opacity 0.05s ease-in-out;
+  }
+  
+  [data-bucket]:not([data-readonly]) {
+    &:hover {
+      opacity: 1;
+    }
+  }
 }
 
 @layer base {

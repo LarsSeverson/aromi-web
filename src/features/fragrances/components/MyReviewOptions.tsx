@@ -1,21 +1,22 @@
 import React from 'react'
-import { type IFragranceReviewSummary } from '@/features/review/types'
 import { MdOutlineRateReview } from 'react-icons/md'
 import DeleteReviewDialog from './DeleteReviewDialog'
-import { useNavigate, useParams } from '@tanstack/react-router'
+import { useNavigate } from '@tanstack/react-router'
+import type { AllFragranceReviewFragment } from '@/generated/graphql'
 
 export interface MyReviewOptionsProps {
-  myReview: IFragranceReviewSummary
+  review: AllFragranceReviewFragment
 }
 
 const MyReviewOptions = (props: MyReviewOptionsProps) => {
-  const { myReview } = props
+  const { review } = props
+  const { fragrance } = review
+  const { id } = fragrance
 
   const navigate = useNavigate()
-  const { id } = useParams({ from: '/fragrance/$id' })
 
   const handleEditReviewClick = () => {
-    void navigate({ to: '/fragrance/$id/review', params: { id } })
+    navigate({ to: '/fragrances/$id/review', params: { id } })
   }
 
   return (
@@ -38,7 +39,7 @@ const MyReviewOptions = (props: MyReviewOptionsProps) => {
       </button>
 
       <DeleteReviewDialog
-        myReview={myReview}
+        review={review}
       />
     </div>
   )

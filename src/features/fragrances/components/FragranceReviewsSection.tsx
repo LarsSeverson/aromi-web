@@ -5,6 +5,9 @@ import { PageNav } from '@/components/PageNav'
 import type { FragranceDetailFragment } from '@/generated/graphql'
 import StartReviewButton from './StartReviewButton'
 import { ReviewsSummary } from './ReviewsSummary'
+import { useFragranceReviews } from '../hooks/useFragranceReviews'
+import { useMyFragranceReview } from '../hooks/useMyFragranceReview'
+import { ReviewsList } from './ReviewsList'
 
 const REVIEWS_PER_PAGE = 4
 
@@ -14,10 +17,10 @@ export interface FragranceReviewsSectionProps extends React.HTMLAttributes<HTMLD
 
 const FragranceReviewsSection = forwardRef<HTMLDivElement, FragranceReviewsSectionProps>((props, ref) => {
   const { fragrance, ...rest } = props
-  const { reviewInfo } = fragrance
+  const { id, reviewInfo } = fragrance
 
-  const { data: myReview } = useMyReview(fragrance.id)
-  const { data: reviews } = useFragranceReviews(fragrance.id)
+  const { myReview } = useMyFragranceReview(id)
+  const { reviews } = useFragranceReviews(id)
 
   const [curReviewPage, setCurReviewPage] = useState(0)
 
@@ -28,7 +31,6 @@ const FragranceReviewsSection = forwardRef<HTMLDivElement, FragranceReviewsSecti
       ref={ref}
       {...rest}
     >
-
       <PageCategory
         title='Reviews'
       >
@@ -36,13 +38,17 @@ const FragranceReviewsSection = forwardRef<HTMLDivElement, FragranceReviewsSecti
           className='w-full flex flex-col items-center'
         >
           <div
-            className='max-w-4xl w-full'
+            className='max-w-4xl w-full flex flex-col'
           >
             {myReview == null &&
               (
-                <StartReviewButton
-                  fragrance={fragrance}
-                />
+                <div
+                  className='max-w-3xl w-full self-center my-10'
+                >
+                  <StartReviewButton
+                    fragrance={fragrance}
+                  />
+                </div>
               )}
 
             <ReviewsSummary
@@ -59,7 +65,7 @@ const FragranceReviewsSection = forwardRef<HTMLDivElement, FragranceReviewsSecti
               myReview={myReview}
               reviews={reviews}
               currentPage={curReviewPage}
-              reviewsPerPage={4}
+              reviewsPerPage={REVIEWS_PER_PAGE}
             />
 
             <PageNav

@@ -11,19 +11,19 @@ export interface ReviewSummaryProps extends React.HTMLAttributes<HTMLDivElement>
 }
 
 export const ReviewsSummary = (props: ReviewSummaryProps) => {
-  const { info, ...rest } = props
+  const { info, className, ...rest } = props
   const { count, averageRating, distribution } = info
 
   return (
     <div
       className={clsx(
-        'flex flex-row flex-wrap',
-        rest.className
+        'flex flex-row',
+        className
       )}
       {...rest}
     >
       <div
-        className='flex flex-col items-center justify-center px-14 gap-3 flex-1'
+        className='flex flex-col items-center justify-center gap-3 flex-1'
       >
         <h5
           className='font-pd text-xl'

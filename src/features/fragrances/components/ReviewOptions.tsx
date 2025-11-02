@@ -1,9 +1,9 @@
 import React from 'react'
 import ReportReviewDialog from './ReportReviewDialog'
-import { type IFragranceReviewSummary } from '@/features/review/types'
+import type { AllFragranceReviewFragment } from '@/generated/graphql'
 
 export interface ReviewOptionsProps {
-  review: IFragranceReviewSummary
+  review: AllFragranceReviewFragment
 }
 
 const ReviewOptions = (props: ReviewOptionsProps) => {

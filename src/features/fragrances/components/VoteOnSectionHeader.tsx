@@ -28,7 +28,7 @@ const VoteOnSectionHeader = (props: VoteOnSectionHeaderProps) => {
           size={22}
           className={clsx([
             'ml-auto transition-transform duration-150 ease-out',
-            'group-data-[panel-open]:rotate-45 group-data-[panel-open]:scale-[1.1]'
+            'group-data-panel-open:rotate-45 group-data-panel-open:scale-[1.1]'
           ])}
         />
       </Accordion.Trigger>

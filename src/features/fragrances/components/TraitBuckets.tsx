@@ -1,74 +1,17 @@
-import { type AllFragranceTraitFragment, TraitTypeEnum } from '@/generated/graphql'
+import type { AllFragranceTraitFragment } from '@/generated/graphql'
 import TraitBucket from './TraitBucket'
 import clsx from 'clsx'
-import GenderSvg from './GenderSvg'
-import LongevitySvg from './LongevitySvg'
-import ProjectionSvg from './ProjectionSvg'
-import BalanceSvg from './BalanceSvg'
-import ComplexitySvg from './ComplexitySvg'
-import AppealSvg from './AppealSvg'
 import { Tooltip } from '@base-ui-components/react'
+import { getTraitIcon } from '../utils/icons'
 
-export interface TraitBucketProps {
+export interface TraitBucketsProps {
   trait: AllFragranceTraitFragment
   showLabel?: boolean
 }
 
-const getIcon = (traitType: TraitTypeEnum) => {
-  switch (traitType) {
-    case TraitTypeEnum.Gender:
-      return (
-        <GenderSvg
-          width={30}
-          height={30}
-        />
-      )
-
-    case TraitTypeEnum.Longevity:
-      return (
-        <LongevitySvg
-          width={21}
-          height={21}
-        />
-      )
-
-    case TraitTypeEnum.Projection:
-      return (
-        <ProjectionSvg
-          width={22}
-          height={22}
-        />
-      )
-
-    case TraitTypeEnum.Balance:
-      return (
-        <BalanceSvg
-          width={22}
-          height={22}
-        />
-      )
-
-    case TraitTypeEnum.Complexity:
-      return (
-        <ComplexitySvg
-          width={22}
-          height={22}
-        />
-      )
-
-    case TraitTypeEnum.Appeal:
-      return (
-        <AppealSvg
-          width={22}
-          height={22}
-        />
-      )
-  }
-}
-
-const TraitBuckets = (props: TraitBucketProps) => {
+const TraitBuckets = (props: TraitBucketsProps) => {
   const { trait, showLabel = true } = props
-  const { name, stats } = trait
+  const { name, type, stats } = trait
   const { distribution } = stats
 
   const maxScore = Math.max(...distribution.map(d => d.votes), 1)
@@ -80,7 +23,7 @@ const TraitBuckets = (props: TraitBucketProps) => {
       <div
         className='flex flex-col items-center gap-3'
       >
-        {getIcon(trait.type)}
+        {getTraitIcon(type)}
 
         {showLabel && (
           <span

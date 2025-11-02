@@ -7,6 +7,7 @@ import FragranceGenderSection from '../components/FragranceGenderSection'
 import Divider from '@/components/Divider'
 import FragranceNotesSection from '../components/FragranceNotesSection'
 import FragranceTraitsSection from '../components/FragranceTraitsSection'
+import FragranceReviewsSection from '../components/FragranceReviewsSection'
 
 export interface FragrancePageProps {
   fragrance: FragranceDetailFragment
@@ -81,6 +82,11 @@ export const FragrancePage = (props: FragrancePageProps) => {
           />
 
           <FragranceTraitsSection
+            fragrance={fragrance}
+          />
+
+          <FragranceReviewsSection
+            ref={reviewSectionRef}
             fragrance={fragrance}
           />
         </div>

@@ -1,9 +1,11 @@
 import React from 'react'
 import clsx from 'clsx'
 import type { AllFragranceReviewFragment } from '@/generated/graphql'
+import { FragranceReviewCard } from './FragranceReviewCard'
+import type { Nullable } from '@/utils/util'
 
 export interface ReviewsListProps extends React.HTMLAttributes<HTMLDivElement> {
-  myReview?: AllFragranceReviewFragment | null | undefined
+  myReview?: Nullable<AllFragranceReviewFragment>
   reviews: AllFragranceReviewFragment[]
   currentPage: number
   reviewsPerPage?: number
@@ -36,7 +38,6 @@ export const ReviewsList = (props: ReviewsListProps) => {
       {showMyReview && (
         <FragranceReviewCard
           review={myReview}
-          isMyReview
         />
       )}
 

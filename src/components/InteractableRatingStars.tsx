@@ -2,7 +2,7 @@ import clsx from 'clsx'
 import React, { useCallback, useState } from 'react'
 import { FaStar, FaRegStar } from 'react-icons/fa'
 import BouncyButton from './BouncyButton'
-import { ratingMap } from '@/features/fragrance'
+import { ratingMap } from './RatingStars'
 
 export interface InteractableRatingStarsProps extends React.HTMLAttributes<HTMLDivElement> {
   rating: number
@@ -59,7 +59,7 @@ const InteractableRatingStars = (props: InteractableRatingStarsProps) => {
           'relative px-0 py-0 hover:backdrop-opacity-0'
         )}
         style={{ width: size, height: size, marginRight: 2 }}
-        onMouseEnter={() => { setHoveredRating(startNumber) }}
+        onMouseEnter={setHoveredRating.bind(null, startNumber)}
         onClick={(e) => { handleStarClick(e, startNumber) }}
       >
         <FaRegStar
@@ -82,22 +82,18 @@ const InteractableRatingStars = (props: InteractableRatingStarsProps) => {
 
   return (
     <div
-      className={clsx(
-        className
-      )}
+      className={className}
       {...rest}
     >
       <div
-        className={clsx(
-          'flex'
-        )}
-        onMouseLeave={() => { setHoveredRating(null) }}
+        className='flex'
+        onMouseLeave={setHoveredRating.bind(null, null)}
       >
         {stars}
       </div>
 
       <p
-        className='opacity-50'
+        className='text-black/60'
       >
         {ratingMap[effectiveRating as keyof typeof ratingMap] ?? ratingMap[0]}
       </p>

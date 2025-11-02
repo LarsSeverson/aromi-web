@@ -13,14 +13,13 @@ const VoteOnSectionPanel = (props: VoteOnSectionPanelProps) => {
   return (
     <Accordion.Panel
       className={clsx([
-        'flex flex-col items-center mb-3 overflow-hidden',
-        'h-[var(--accordion-panel-height)] transition-[height] duration-150 ease-out',
-        'data-[starting-style]:h-0 data-[ending-style]:h-0'
+        'flex flex-col items-center overflow-hidden',
+        'h-(--accordion-panel-height) transition-[height] duration-150 ease-out',
+        'data-starting-style:h-0 data-ending-style:h-0'
       ])}
     >
-
       <div
-        className='px-3 w-full my-2'
+        className='px-3 w-full mt-2 mb-10'
       >
         <Divider
           horizontal

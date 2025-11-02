@@ -5,8 +5,8 @@ import { VoteButtonGroup } from '@/components/VoteButtonGroup'
 import RatingStars from '@/components/RatingStars'
 import clsx from 'clsx'
 import type { AllFragranceReviewFragment } from '@/generated/graphql'
-import { useToastMessage } from '@/hooks/useToastMessage'
 import UserAvatar from '@/features/users/components/UserAvatar'
+import MoreOptionsReviewPopover from './MoreOptionsReviewPopover'
 
 export interface FragranceReviewCardProps extends React.HTMLAttributes<HTMLDivElement> {
   review: AllFragranceReviewFragment
@@ -14,11 +14,10 @@ export interface FragranceReviewCardProps extends React.HTMLAttributes<HTMLDivEl
 
 export const FragranceReviewCard = (props: FragranceReviewCardProps) => {
   const { review, ...rest } = props
-
   const { author, rating, body, votes, createdAt } = review
   const { username } = author
 
-  const { toastError } = useToastMessage()
+  const showBody = body != null && body.length > 0
 
   return (
     <div
@@ -73,25 +72,21 @@ export const FragranceReviewCard = (props: FragranceReviewCardProps) => {
         >
           <MoreOptionsReviewPopover
             review={review}
-            isMyReview={isMyReview}
           />
         </div>
 
       </div>
 
-      {text.length > 0 && (
+      {showBody && (
         <p
           className='px-5'
         >
-          {text}
+          {body}
         </p>
       )}
 
       <VoteButtonGroup
-        votes={votes.voteScore}
-        myVote={votes.myVote}
-        className='mr-auto'
-        onVote={handleVoteOnReview}
+        votes={votes}
       />
     </div>
   )

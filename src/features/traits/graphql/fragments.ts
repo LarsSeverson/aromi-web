@@ -26,11 +26,3 @@ export const ALL_TRAIT_STATS_FRAGMENT = gql(/* GraphQL */`
     }
   }
 `)
-
-export const ALL_TRAIT_VOTE_FRAGMENT = gql(/* GraphQL */`
-  fragment AllTraitVote on TraitVote {
-    option {
-      ...AllTraitOption
-    } 
-  }
-`)
