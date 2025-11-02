@@ -1,4 +1,4 @@
-import { customRelayStylePagination } from '@/utils/pagination'
+import { customRelayPagination, customSearchPagination } from '@/utils/pagination'
 import { ApolloClient, ApolloLink, HttpLink, InMemoryCache, makeVar } from '@apollo/client'
 import { SetContextLink } from '@apollo/client/link/context'
 
@@ -37,13 +37,14 @@ export const client = new ApolloClient({
     typePolicies: {
       Query: {
         fields: {
-          fragrances: customRelayStylePagination()
+          fragrances: customRelayPagination(),
+          searchAccords: customSearchPagination()
         }
       },
 
       User: {
         fields: {
-          collections: customRelayStylePagination((_, { variables }) => {
+          collections: customRelayPagination((_, { variables }) => {
             const { fragranceId } = variables ?? {}
             return fragranceId == null ? false : `fragranceId:${fragranceId}`
           })

@@ -66,7 +66,7 @@ export const MY_FRAGRANCE_ACCORDS_QUERY = gql(/* GraphQL */ `
     fragrance(id: $fragranceId) {
       id
       myAccords {
-        ...AllFragranceAccord
+        ...AllAccord
       }
     }
   }

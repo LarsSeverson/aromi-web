@@ -7,9 +7,20 @@ export interface RelayEdge<TNode> {
   __typename?: string
 }
 
+export interface SearchEdge<TNode> {
+  node: TNode
+  offset?: number
+  __typename?: string
+}
+
 export interface RelayConnection<TNode> {
   edges: Array<RelayEdge<TNode>>
   pageInfo: PageInfo
+}
+
+export interface SearchConnection<TNode> {
+  edges: Array<SearchEdge<TNode>>
+  pageInfo: SearchPageInfo
 }
 
 export const getExtras = (_: unknown): object => ({})
@@ -24,7 +35,18 @@ export const makeEmptyData = () => ({
   }
 })
 
-export const customRelayStylePagination = <TNode extends Reference = Reference> (
+export const makeEmptySearchData = () => ({
+  edges: [],
+  pageInfo: {
+    hasPreviousPage: false,
+    hasNextPage: true,
+    startOffset: 0,
+    endOffset: 0,
+    pageSize: 0
+  }
+})
+
+export const customRelayPagination = <TNode extends Reference = Reference> (
   keyArgs: FieldPolicy<RelayConnection<TNode>>['keyArgs'] = false
 ): FieldPolicy<RelayConnection<TNode>> => {
   return {
@@ -86,6 +108,75 @@ export const customRelayStylePagination = <TNode extends Reference = Reference> 
 
       const edges = existing.edges.concat(incomingEdges)
       const pageInfo: PageInfo = { ...existing.pageInfo, ...incoming.pageInfo }
+
+      return {
+        ...getExtras(existing),
+        ...getExtras(incoming),
+        edges,
+        pageInfo
+      }
+    }
+  }
+}
+
+export const customSearchPagination = <TNode extends Reference = Reference> (
+  keyArgs: FieldPolicy<SearchConnection<TNode>>['keyArgs'] = false
+): FieldPolicy<SearchConnection<TNode>> => {
+  return {
+    keyArgs,
+
+    read (existing, { canRead }) {
+      if (existing == null) return existing
+
+      const edges: Array<SearchEdge<TNode>> = []
+      let firstOffset = 0
+      let lastOffset = 0
+
+      existing.edges.forEach(edge => {
+        const ref = edge.node
+        if (canRead(ref)) {
+          edges.push(edge)
+          if (typeof edge.offset === 'number') {
+            if (firstOffset === 0) firstOffset = edge.offset
+            lastOffset = edge.offset
+          }
+        }
+      })
+
+      const { startOffset, endOffset } = existing.pageInfo ?? {}
+
+      return {
+        ...getExtras(existing),
+        edges,
+        pageInfo: {
+          ...existing.pageInfo,
+          startOffset: startOffset ?? firstOffset,
+          endOffset: endOffset ?? lastOffset
+        }
+      }
+    },
+
+    merge (existing, incoming, { isReference, readField }) {
+      existing ??= makeEmptySearchData()
+
+      if (incoming == null) return existing
+
+      const incomingEdges = incoming.edges?.map(
+        edge => {
+          const copy = { ...edge }
+          if (isReference(copy)) copy.offset = readField('offset', copy)
+          return copy
+        }) ?? []
+
+      const firstEdge = incomingEdges.at(0)
+      const lastEdge = incomingEdges.at(-1)
+      const { startOffset, endOffset } = incoming.pageInfo ?? {}
+
+      if (firstEdge != null && startOffset != null) firstEdge.offset = startOffset
+      if (lastEdge != null && endOffset != null) lastEdge.offset = endOffset
+
+      const edges = existing.edges.concat(incomingEdges)
+      const pageInfo: SearchPageInfo = { ...existing.pageInfo, ...incoming.pageInfo }
 
       return {
         ...getExtras(existing),
@@ -166,7 +257,7 @@ export const validateSearchPagination = (
   networkStatus: NetworkStatus
 ) => {
   if (
-    networkStatus === NetworkStatus.fetchMore ||
+    networkStatus !== NetworkStatus.ready ||
     pageInfo?.endOffset == null ||
     !pageInfo.hasNextPage
   ) return null

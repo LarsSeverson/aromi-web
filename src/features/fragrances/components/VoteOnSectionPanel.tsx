@@ -26,7 +26,11 @@ const VoteOnSectionPanel = (props: VoteOnSectionPanelProps) => {
         />
       </div>
 
-      {children}
+      <div
+        className='flex flex-col w-full px-7'
+      >
+        {children}
+      </div>
     </Accordion.Panel>
   )
 }

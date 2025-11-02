@@ -20,7 +20,10 @@ export const useSearchAccords = (input?: SearchInput) => {
     const variables = {
       input: {
         ...(input ?? {}),
-        offset: endOffset
+        pagination: {
+          ...(input?.pagination ?? {}),
+          after: endOffset
+        }
       }
     }
 

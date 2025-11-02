@@ -26,7 +26,6 @@ const CollectionPopoverList = (props: CollectionPopoverListProps) => {
   const skeletonCount = isLoading || isLoadingMore ? SKELETON_COUNT : 0
   const totalCount = collections.length + skeletonCount
 
-  // eslint-disable-next-line react-hooks/incompatible-library
   const rowVirtualizer = useVirtualizer({
     count: totalCount,
     getScrollElement: () => parentRef.current,
