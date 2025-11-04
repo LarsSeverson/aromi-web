@@ -8,6 +8,7 @@ import PageBackButton from '@/components/PageBackButton'
 import InteractableRatingStars from '@/components/InteractableRatingStars'
 import VoteOnGenderSection from '../components/VoteOnGenderSection'
 import VoteOnAccordsSection from '../components/VoteOnAccordsSection'
+import VoteOnNotesSection from '../components/VoteOnNotesSection'
 
 export interface FragranceReviewPageProps {
   fragrance: FragranceDetailFragment
@@ -63,7 +64,7 @@ const FragranceReviewPage = (props: FragranceReviewPageProps) => {
 
         <Accordion.Root
           className='flex flex-col gap-7'
-          defaultValue={['gender', 'accords']}
+          defaultValue={['gender', 'accords', 'notes']}
         >
           <div
             className='p-4'
@@ -88,10 +89,14 @@ const FragranceReviewPage = (props: FragranceReviewPageProps) => {
             className='flex flex-col gap-25'
           >
             <VoteOnGenderSection
-              fragrance={fragrance}
+              fragranceId={id}
             />
 
             <VoteOnAccordsSection
+              fragranceId={id}
+            />
+
+            <VoteOnNotesSection
               fragranceId={id}
             />
           </div>

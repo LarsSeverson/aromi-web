@@ -21,7 +21,7 @@ const TraitBucketsInput = (props: TraitBucketsInputProps) => {
 
   const handleOnBucketClick = (typeId: string, optionId: string) => {
     onBucketClick?.(typeId, optionId)
-    setSelectedBucket(optionId)
+    setSelectedBucket(prev => prev === optionId ? undefined : optionId)
   }
 
   return (

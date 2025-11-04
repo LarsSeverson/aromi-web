@@ -97,11 +97,12 @@ export const FRAGRANCE_ACCORDS_QUERY = gql(/* GraphQL */ `
 export const MY_FRAGRANCE_NOTES_QUERY = gql(/* GraphQL */ `
   query MyFragranceNotes(
     $fragranceId: ID!
+    $layer: NoteLayer!
   ) { 
     fragrance(id: $fragranceId) {
       id
-      myNotes {
-        ...AllFragranceNote
+      myNotes(layer: $layer) {
+        ...AllNote
       }
     }
   }

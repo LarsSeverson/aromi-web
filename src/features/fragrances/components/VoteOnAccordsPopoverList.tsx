@@ -5,7 +5,7 @@ import VoteOnAccordsPopoverItemSkeleton from './VoteOnAccordsPopoverItemSkeleton
 import VoteOnAccordsPopoverItem from './VoteOnAccordsPopoverItem'
 
 const SKELETON_COUNT = 6
-const ESTIMATE_HEIGHT = 44
+const ESTIMATE_HEIGHT = 50
 const OVERSCAN = 5
 const LOAD_MORE_THRESHOLD = 200
 
@@ -27,7 +27,6 @@ const VoteOnAccordsPopoverList = (props: VoteOnAccordsPopoverListProps) => {
     count: totalCount,
     getScrollElement: () => listRef.current,
     estimateSize: () => ESTIMATE_HEIGHT,
-    gap: 10,
     overscan: OVERSCAN
   })
 

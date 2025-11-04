@@ -2,9 +2,8 @@ import React from 'react'
 import { Accordion } from '@base-ui-components/react'
 import VoteOnSectionHeader from './VoteOnSectionHeader'
 import VoteOnSectionPanel from './VoteOnSectionPanel'
-import VotedAccordsList from './VotedAccordsList'
 import { VotedAccordsProvider } from '../contexts/providers/VotedAccordsProvider'
-import VoteOnAccordsPopover from './VoteOnAccordsPopover'
+import VoteOnAccordsSectionContent from './VoteOnAccordsSectionContent'
 
 export interface VoteOnAccordsSectionProps {
   fragranceId: string
@@ -25,9 +24,7 @@ const VoteOnAccordsSection = (props: VoteOnAccordsSectionProps) => {
         <VotedAccordsProvider
           fragranceId={fragranceId}
         >
-          <VoteOnAccordsPopover />
-
-          <VotedAccordsList />
+          <VoteOnAccordsSectionContent />
         </VotedAccordsProvider>
       </VoteOnSectionPanel>
     </Accordion.Item>

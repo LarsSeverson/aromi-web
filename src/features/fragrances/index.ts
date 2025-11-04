@@ -1,4 +1,4 @@
-export * from './types'
+export type * from './types'
 
 export * from './graphql/fragments'
 export * from './graphql/mutations'

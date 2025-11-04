@@ -3,6 +3,7 @@ import React from 'react'
 import { useVotedAccordsContext } from '../contexts/VotedAccordsContext'
 import clsx from 'clsx'
 import { FaCheck } from 'react-icons/fa'
+import { MAX_ACCORD_VOTES } from '../utils/constants'
 
 export interface VoteOnAccordsPopoverItemProps {
   accord: AllAccordFragment
@@ -12,15 +13,19 @@ const VoteOnAccordsPopoverItem = (props: VoteOnAccordsPopoverItemProps) => {
   const { accord } = props
   const { id, name, color } = accord
 
-  const { votedAccordsMap, voteOnAccord } = useVotedAccordsContext()
+  const { votedAccordsMap, currentVotedSize, voteOnAccord } = useVotedAccordsContext()
+
   const isSelected = votedAccordsMap.has(id)
+  const isDisabled = !isSelected && currentVotedSize >= MAX_ACCORD_VOTES
 
   return (
     <button
       type='button'
+      disabled={isDisabled}
       className={clsx(
-        'pl-4 pr-8 grid-cols-[0.75rem_1fr] grid items-center gap-2',
-        'border rounded-md border-transparent! hover:bg-surface hover:border-surface2!'
+        'pl-4 pr-8 grid-cols-[0.75rem_1fr] grid items-center gap-2 w-full h-full',
+        'rounded-md',
+        isDisabled ? 'opacity-50' : 'cursor-pointer hover:bg-empty'
       )}
       onClick={voteOnAccord.bind(null, accord)}
     >

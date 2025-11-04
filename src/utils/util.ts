@@ -54,3 +54,7 @@ export const VOTE_TYPES = {
   DOWNVOTE: -1,
   NOVOTE: 0
 } as const
+
+export type VoteType = typeof VOTE_TYPES[keyof typeof VOTE_TYPES]
+
+export type VoidFn = () => void

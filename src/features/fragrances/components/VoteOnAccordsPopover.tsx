@@ -58,6 +58,7 @@ const VoteOnAccordsPopover = () => {
           <Popover.Positioner
             anchor={anchorRef}
             sideOffset={8}
+            side='top'
           >
             <Popover.Popup
               initialFocus={false}

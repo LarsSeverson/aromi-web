@@ -2,43 +2,36 @@ import React from 'react'
 import { Accordion } from '@base-ui-components/react'
 import VoteOnSectionHeader from './VoteOnSectionHeader'
 import VoteOnSectionPanel from './VoteOnSectionPanel'
-import VoteOnTopNotesSection from '../../reviews/components/VoteOnTopNotesSection'
-import VoteOnMiddleNotesSection from './VoteOnMiddleNotesSection'
-import VoteOnBaseNotesSection from './VoteOnBaseNotesSection'
+import { VotedNotesProvider } from '../contexts/providers/VotedNotesProvider'
+import { NoteLayer } from '@/generated/graphql'
+import VoteOnNotesSectionContent from './VoteOnNotesSectionContent'
 
 export interface VoteOnNotesSectionProps {
-  fragranceId: number
+  fragranceId: string
 }
 
 const VoteOnNotesSection = (props: VoteOnNotesSectionProps) => {
   const { fragranceId } = props
 
+  const [layer, setLayer] = React.useState<NoteLayer>(NoteLayer.Top)
+
   return (
-    <Accordion.Item>
+    <Accordion.Item
+      value='notes'
+    >
       <VoteOnSectionHeader
         title='How do the notes develop?'
       />
 
       <VoteOnSectionPanel>
-        <div
-          className='w-full px-4'
+        <VotedNotesProvider
+          layer={layer}
+          fragranceId={fragranceId}
         >
-          <Accordion.Root
-            className='flex flex-col w-full'
-          >
-            <VoteOnTopNotesSection
-              fragranceId={fragranceId}
-            />
-
-            <VoteOnMiddleNotesSection
-              fragranceId={fragranceId}
-            />
-
-            <VoteOnBaseNotesSection
-              fragranceId={fragranceId}
-            />
-          </Accordion.Root>
-        </div>
+          <VoteOnNotesSectionContent
+            onLayerChange={setLayer}
+          />
+        </VotedNotesProvider>
       </VoteOnSectionPanel>
     </Accordion.Item>
   )

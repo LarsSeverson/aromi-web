@@ -1,4 +1,4 @@
-import { TraitTypeEnum, type FragranceDetailFragment } from '@/generated/graphql'
+import { TraitTypeEnum } from '@/generated/graphql'
 import React, { useMemo } from 'react'
 import { useFragranceTraits } from '../hooks/useFragranceTraits'
 import { Accordion } from '@base-ui-components/react'
@@ -8,14 +8,14 @@ import TraitBucketsInput from './TraitBucketsInput'
 import { useMyFragranceTraits } from '../hooks/useMyFragranceTraits'
 
 export interface VoteOnGenderSectionProps {
-  fragrance: FragranceDetailFragment
+  fragranceId: string
 }
 
 const VoteOnGenderSection = (props: VoteOnGenderSectionProps) => {
-  const { fragrance } = props
+  const { fragranceId } = props
 
-  const { traits, isLoading: isLoadingTraits } = useFragranceTraits(fragrance.id)
-  const { myTraits, isLoading: isLoadingMyTraits } = useMyFragranceTraits(fragrance.id)
+  const { traits, isLoading: isLoadingTraits } = useFragranceTraits(fragranceId)
+  const { myTraits, isLoading: isLoadingMyTraits } = useMyFragranceTraits(fragranceId)
 
   const traitMap = useMemo(
     () => new Map(traits.map(trait => [trait.type, trait])),

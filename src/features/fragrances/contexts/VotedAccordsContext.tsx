@@ -4,6 +4,7 @@ import React from 'react'
 export interface VotedAccordsContextValue {
   votedAccords: AllAccordFragment[]
   votedAccordsMap: Map<string, AllAccordFragment>
+  currentVotedSize: number
   voteOnAccord: (accord: AllAccordFragment) => void
 }
 

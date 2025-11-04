@@ -6,13 +6,13 @@ import { wrapQuery } from '@/utils/util'
 export const useVoteOnFragranceNote = () => {
   const [voteInner] = useMutation(VOTE_ON_FRAGRANCE_NOTE_MUTATION)
 
-  const voteOnFragranceNote = (input: VoteOnFragranceNoteInput) => {
+  const vote = (input: VoteOnFragranceNoteInput) => {
     return wrapQuery(
       voteInner({ variables: { input } })
-    ).map(data => data.voteOnFragranceNote)
+    )
   }
 
   return {
-    voteOnFragranceNote
+    vote
   }
 }
