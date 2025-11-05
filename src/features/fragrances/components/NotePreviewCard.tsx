@@ -24,17 +24,17 @@ const NotePreviewCard = (props: NotePreviewCardProps) => {
   return (
     <div
       className={clsx(
-        'p-2 flex flex-col',
+        'flex flex-col p-2',
         className
       )}
       {...rest}
     >
       <div
-        className='w-full aspect-square rounded-xl overflow-hidden bg-gray-200'
+        className='aspect-square w-full overflow-hidden rounded-xl bg-gray-200'
       >
         {thumbnail?.url != null && (
           <div
-            className='relative'
+            className='relative h-full w-full'
           >
             <img
               src={thumbnail.url}
@@ -48,7 +48,7 @@ const NotePreviewCard = (props: NotePreviewCardProps) => {
 
       <div
         className={clsx(
-          'flex flex-row justify-between m-1 overflow-hidden',
+          'm-1 flex flex-row justify-between overflow-hidden',
           headingClass
         )}
       >

@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React from 'react'
 import NotePreviewCard from './NotePreviewCard'
 import clsx from 'clsx'
 import type { AllFragranceNoteFragment, NoteLayer } from '@/generated/graphql'
@@ -11,17 +11,10 @@ export interface NotesPyramidRowProps extends React.HTMLAttributes<HTMLDivElemen
 const NotesPyramidRow = (props: NotesPyramidRowProps) => {
   const { notes, layer, className, ...rest } = props
 
-  const filteredNotes = useMemo(
-    () => notes.filter(note => note.votes.score > 0),
-    [notes]
-  )
-
-  if (notes.length === 0) return null
-
   return (
     <div
       className={clsx(
-        'flex flex-col justify-center w-full min-w-0',
+        'flex w-full min-w-0 flex-col justify-center',
         className
       )}
       {...rest}
@@ -38,12 +31,12 @@ const NotesPyramidRow = (props: NotesPyramidRowProps) => {
         <div
           className='flex overflow-x-auto'
         >
-          {filteredNotes
+          {notes
             .map(note => (
               <NotePreviewCard
                 key={note.id}
                 fragranceNote={note}
-                className='max-w-40 min-w-28 w-full'
+                className='w-full max-w-40 min-w-28'
               />
             ))}
         </div>

@@ -23,9 +23,9 @@ const VoteOnAccordsPopoverItem = (props: VoteOnAccordsPopoverItemProps) => {
       type='button'
       disabled={isDisabled}
       className={clsx(
-        'pl-4 pr-8 grid-cols-[0.75rem_1fr] grid items-center gap-2 w-full h-full',
+        'grid h-full w-full grid-cols-[0.75rem_1fr] items-center gap-2 pr-8 pl-4',
         'rounded-md',
-        isDisabled ? 'opacity-50' : 'cursor-pointer hover:bg-empty'
+        isDisabled ? 'opacity-50' : 'hover:bg-empty cursor-pointer'
       )}
       onClick={voteOnAccord.bind(null, accord)}
     >
@@ -44,15 +44,15 @@ const VoteOnAccordsPopoverItem = (props: VoteOnAccordsPopoverItemProps) => {
         className='col-start-2'
       >
         <div
-          className='flex items-center gap-2 h-11 rounded-md p-1'
+          className='flex h-11 items-center gap-2 rounded-md p-1'
         >
           <div
-            className='h-full aspect-square flex items-center justify-center rounded-md overflow-hidden z-10'
+            className='z-10 flex aspect-square h-full items-center justify-center overflow-hidden rounded-md'
             style={{ backgroundColor: color }}
           />
 
           <span
-            className='font-semibold text-sm truncate'
+            className='truncate text-sm font-semibold'
           >
             {name}
           </span>

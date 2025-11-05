@@ -22,7 +22,7 @@ export const FragranceReviewCard = (props: FragranceReviewCardProps) => {
   return (
     <div
       className={clsx(
-        'flex flex-col w-full gap-5 p-5',
+        'flex w-full flex-col gap-5 p-5',
         rest.className
       )}
       {...rest}
@@ -38,13 +38,13 @@ export const FragranceReviewCard = (props: FragranceReviewCardProps) => {
           className='flex flex-col gap-2'
         >
           <div
-            className='flex flex-row gap-3 self-start items-center w-full min-w-0'
+            className='flex w-full min-w-0 flex-row items-center gap-3 self-start'
           >
             <p
               className='truncate'
             >
               <span
-                className='font-pd text-xl'
+                className='text-xl'
               >
                 {username}
               </span>

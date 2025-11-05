@@ -8,7 +8,7 @@ import { useMemo } from 'react'
 
 export const useSearchNotes = (input?: SearchInput) => {
   const {
-    data, loading: isLoading, error, networkStatus,
+    data, previousData, loading: isLoading, error, networkStatus,
     fetchMore, refetch
   } = useQuery(SEARCH_NOTES_QUERY, { variables: { input } })
 
@@ -20,20 +20,23 @@ export const useSearchNotes = (input?: SearchInput) => {
     const variables = {
       input: {
         ...(input ?? {}),
-        offset: endOffset
+        pagination: {
+          ...(input?.pagination ?? {}),
+          after: endOffset
+        }
       }
     }
 
     return wrapQuery(fetchMore({ variables })).map(data => data.searchNotes)
   }
 
-  const refresh = () => {
-    return wrapQuery(refetch()).map(data => data.searchNotes)
+  const refresh = (input?: SearchInput) => {
+    return wrapQuery(refetch({ input })).map(data => data.searchNotes)
   }
 
   const notes = useMemo(
-    () => flattenConnections(data?.searchNotes ?? []),
-    [data?.searchNotes]
+    () => flattenConnections(data?.searchNotes ?? previousData?.searchNotes ?? []),
+    [data?.searchNotes, previousData?.searchNotes]
   )
 
   const isLoadingMore = isStatusLoadingMore(networkStatus)

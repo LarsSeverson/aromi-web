@@ -6,15 +6,15 @@ import VoteOnSectionHeader from './VoteOnSectionHeader'
 import VoteOnSectionPanel from './VoteOnSectionPanel'
 import TraitBucketsInput from './TraitBucketsInput'
 import { useMyFragranceTraits } from '../hooks/useMyFragranceTraits'
-import { useToastMessage } from '@/hooks/useToastMessage'
 import { useDebounces } from '@/hooks/useDebounces'
+import { useToastMessage } from '@/hooks/useToastMessage'
 import { useVoteOnFragranceTrait } from '../hooks/useVoteOnFragranceTrait'
 
-export interface VoteOnGenderSectionProps {
+export interface VoteOnTraitsSectionProps {
   fragranceId: string
 }
 
-const VoteOnGenderSection = (props: VoteOnGenderSectionProps) => {
+const VoteOnTraitsSection = (props: VoteOnTraitsSectionProps) => {
   const { fragranceId } = props
 
   const { toastError } = useToastMessage()
@@ -54,22 +54,49 @@ const VoteOnGenderSection = (props: VoteOnGenderSectionProps) => {
 
   return (
     <Accordion.Item
-      value='gender'
+      value='traits'
     >
       <VoteOnSectionHeader
-        title='Gender'
+        title='Traits'
       />
 
       <VoteOnSectionPanel>
-        <TraitBucketsInput
-          showLabel={false}
-          trait={traitMap.get(TraitTypeEnum.Gender)!}
-          myTraitVote={myTraitMap.get(TraitTypeEnum.Gender)}
-          onBucketVote={handleOnBucketVote}
-        />
+        <div
+          className='flex flex-col gap-15'
+        >
+          <TraitBucketsInput
+            trait={traitMap.get(TraitTypeEnum.Longevity)!}
+            myTraitVote={myTraitMap.get(TraitTypeEnum.Longevity)}
+            onBucketVote={handleOnBucketVote}
+          />
+
+          <TraitBucketsInput
+            trait={traitMap.get(TraitTypeEnum.Projection)!}
+            myTraitVote={myTraitMap.get(TraitTypeEnum.Projection)}
+            onBucketVote={handleOnBucketVote}
+          />
+
+          <TraitBucketsInput
+            trait={traitMap.get(TraitTypeEnum.Balance)!}
+            myTraitVote={myTraitMap.get(TraitTypeEnum.Balance)}
+            onBucketVote={handleOnBucketVote}
+          />
+
+          <TraitBucketsInput
+            trait={traitMap.get(TraitTypeEnum.Complexity)!}
+            myTraitVote={myTraitMap.get(TraitTypeEnum.Complexity)}
+            onBucketVote={handleOnBucketVote}
+          />
+
+          <TraitBucketsInput
+            trait={traitMap.get(TraitTypeEnum.Appeal)!}
+            myTraitVote={myTraitMap.get(TraitTypeEnum.Appeal)}
+            onBucketVote={handleOnBucketVote}
+          />
+        </div>
       </VoteOnSectionPanel>
     </Accordion.Item>
   )
 }
 
-export default VoteOnGenderSection
+export default VoteOnTraitsSection

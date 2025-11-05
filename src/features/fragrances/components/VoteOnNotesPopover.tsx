@@ -1,18 +1,18 @@
-import { useSearchAccords } from '@/features/accords'
 import { Input, Popover } from '@base-ui-components/react'
 import clsx from 'clsx'
 import React from 'react'
-import VoteOnAccordsPopoverList from './VoteOnAccordsPopoverList'
 import { useDebounce } from '@/hooks/useDebounce'
+import { useSearchNotes } from '@/features/notes'
+import VoteOnNotesPopoverList from './VoteOnNotesPopoverList'
 
-const VoteOnAccordsPopover = () => {
+const VoteOnNotesPopover = () => {
   const {
-    accords,
+    notes,
     isLoading,
     isLoadingMore,
     refresh,
     loadMore
-  } = useSearchAccords()
+  } = useSearchNotes()
 
   const anchorRef = React.useRef<HTMLInputElement>(null)
 
@@ -43,7 +43,7 @@ const VoteOnAccordsPopover = () => {
       <Input
         ref={anchorRef}
         value={searchTerm}
-        placeholder='Search accords'
+        placeholder='Search notes'
         className='text-md rounded-xl border-2 px-3 py-2'
         onValueChange={handleOnInputValueChange}
         // onFocus={setIsPopoverOpen.bind(null, true)}
@@ -70,8 +70,8 @@ const VoteOnAccordsPopover = () => {
                 'data-ending-style:scale-90 data-ending-style:opacity-0 data-starting-style:scale-90 data-starting-style:opacity-0'
               )}
             >
-              <VoteOnAccordsPopoverList
-                accords={accords}
+              <VoteOnNotesPopoverList
+                notes={notes}
                 isLoading={isLoading || isLoadingMore}
                 onLoadMore={handleOnLoadMore}
               />
@@ -83,4 +83,4 @@ const VoteOnAccordsPopover = () => {
   )
 }
 
-export default VoteOnAccordsPopover
+export default VoteOnNotesPopover

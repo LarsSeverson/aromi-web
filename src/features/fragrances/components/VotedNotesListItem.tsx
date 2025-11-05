@@ -14,13 +14,13 @@ const VotedNotesListItem = (props: VotedNotesListItemProps) => {
   return (
     <button
       {...rest}
-      className='group cursor-pointer flex flex-col items-start focus:outline-none'
+      className='group flex cursor-pointer flex-col items-start focus:outline-none'
     >
       <div
-        className='p-0.5 group-hover:outline-2 outline-sinopia rounded-md'
+        className='outline-sinopia rounded-md p-0.5 group-hover:outline-2'
       >
         <div
-          className='aspect-square max-w-32 min-w-28 w-full rounded-md overflow-hidden bg-gray-200'
+          className='aspect-square w-full max-w-32 min-w-28 overflow-hidden rounded-md bg-gray-200'
         >
           {thumbnail?.url != null && (
             <div
@@ -38,7 +38,7 @@ const VotedNotesListItem = (props: VotedNotesListItemProps) => {
       </div>
 
       <span
-        className='mt-1 ml-1 text-sm font-medium text-black/80 block truncate'
+        className='mt-1 ml-1 block truncate text-sm font-medium text-black/80'
       >
         {name}
       </span>

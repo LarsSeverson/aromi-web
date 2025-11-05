@@ -1,7 +1,6 @@
 import React from 'react'
 import { Accordion } from '@base-ui-components/react'
 import clsx from 'clsx'
-import Divider from '@/components/Divider'
 
 export interface VoteOnSectionPanelProps {
   children?: React.ReactNode
@@ -15,19 +14,11 @@ const VoteOnSectionPanel = (props: VoteOnSectionPanelProps) => {
       className={clsx([
         'flex flex-col items-center overflow-hidden',
         'h-(--accordion-panel-height) transition-[height] duration-150 ease-out',
-        'data-starting-style:h-0 data-ending-style:h-0'
+        'data-ending-style:h-0 data-starting-style:h-0'
       ])}
     >
       <div
-        className='px-3 w-full mt-2 mb-10'
-      >
-        <Divider
-          horizontal
-        />
-      </div>
-
-      <div
-        className='flex flex-col w-full px-7'
+        className='flex w-full flex-col px-10 pb-15'
       >
         {children}
       </div>

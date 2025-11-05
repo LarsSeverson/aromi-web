@@ -26,7 +26,7 @@ const FragranceTraitsSection = (props: FragranceTraitsSectionProps) => {
       className='flex flex-col'
     >
       <div
-        className='flex flex-col gap-15 mt-6 max-w-4xl w-full self-center'
+        className='mt-6 flex w-full max-w-4xl flex-col gap-15 self-center'
       >
         <TraitBuckets
           trait={traitMap.get(TraitTypeEnum.Longevity)!}

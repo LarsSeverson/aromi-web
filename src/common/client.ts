@@ -38,7 +38,8 @@ export const client = new ApolloClient({
       Query: {
         fields: {
           fragrances: customRelayPagination(),
-          searchAccords: customSearchPagination()
+          searchAccords: customSearchPagination(),
+          searchNotes: customSearchPagination()
         }
       },
 

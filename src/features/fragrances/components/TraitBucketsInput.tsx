@@ -9,19 +9,22 @@ export interface TraitBucketsInputProps {
   trait: AllFragranceTraitFragment
   myTraitVote?: Nullable<AllFragranceTraitVoteFragment>
   showLabel?: boolean
-  onBucketClick?: (typeId: string, optionId: string) => void
+  onBucketVote?: (typeId: string, optionId?: string) => void
 }
 
 const TraitBucketsInput = (props: TraitBucketsInputProps) => {
-  const { trait, showLabel = true, myTraitVote, onBucketClick } = props
+  const { trait, showLabel = true, myTraitVote, onBucketVote } = props
   const { name, type, stats } = trait
   const { distribution } = stats
 
-  const [selectedBucket, setSelectedBucket] = useState(myTraitVote?.id)
+  const [selectedBucket, setSelectedBucket] = useState(myTraitVote?.option?.id)
 
   const handleOnBucketClick = (typeId: string, optionId: string) => {
-    onBucketClick?.(typeId, optionId)
-    setSelectedBucket(prev => prev === optionId ? undefined : optionId)
+    setSelectedBucket(prev => {
+      const newSelection = prev === optionId ? undefined : optionId
+      onBucketVote?.(typeId, newSelection)
+      return newSelection
+    })
   }
 
   return (
@@ -35,7 +38,7 @@ const TraitBucketsInput = (props: TraitBucketsInputProps) => {
 
         {showLabel && (
           <span
-            className='font-semibold text-light text-md'
+            className='text-md font-semibold'
           >
             {name}
           </span>
@@ -48,15 +51,16 @@ const TraitBucketsInput = (props: TraitBucketsInputProps) => {
             (bucket, index) => (
               <div
                 key={bucket.option.id}
-                className='flex flex-col w-full'
+                className='flex w-full flex-col'
               >
                 <TraitBucketInput
                   bucket={bucket}
                   isSelected={selectedBucket === bucket.option.id}
+                  // eslint-disable-next-line tailwindcss/no-custom-classname
                   className={clsx(
                     index === 0 && 'rounded-l-md',
                     index === distribution.length - 1 && 'rounded-r-md',
-                    index !== 0 && 'border-l border-sinopia/15'
+                    index !== 0 && 'border-sinopia/15 border-l'
                   )}
                   onBucketClick={handleOnBucketClick.bind(null, trait.id)}
                 />

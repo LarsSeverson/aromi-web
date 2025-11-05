@@ -18,8 +18,8 @@ const FragranceImageCard = (props: FragranceImageCardProps) => {
 
     <div
       className={clsx(
-        'flex-1 rounded-2xl overflow-hidden',
-        'group-focus:brightness-[0.85] group-hover:brightness-[0.85]',
+        'flex-1 overflow-hidden rounded-2xl',
+        'group-hover:brightness-[0.85] group-focus:brightness-[0.85]',
         isActive && 'brightness-[0.85]'
       )}
     >

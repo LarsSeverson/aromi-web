@@ -1,30 +1,29 @@
-import type { AllAccordFragment } from '@/generated/graphql'
+import type { AllNoteFragment } from '@/generated/graphql'
 import { useVirtualizer } from '@tanstack/react-virtual'
 import React from 'react'
-import VoteOnAccordsPopoverItemSkeleton from './VoteOnAccordsPopoverItemSkeleton'
-import VoteOnAccordsPopoverItem from './VoteOnAccordsPopoverItem'
+import VoteOnNotesPopoverItemSkeleton from './VoteOnNotesPopoverItemSkeleton'
+import VoteOnNotesPopoverItem from './VoteOnNotesPopoverItem'
 
 const DEFAULT_SKELETON_COUNT = 6
 const ESTIMATE_HEIGHT = 50
 const OVERSCAN = 5
 const LOAD_MORE_THRESHOLD = 200
 
-export interface VoteOnAccordsPopoverListProps {
-  accords: AllAccordFragment[]
+export interface VoteOnNotesPopoverListProps {
+  notes: AllNoteFragment[]
   isLoading?: boolean
   onLoadMore?: () => void
 }
 
-const VoteOnAccordsPopoverList = (props: VoteOnAccordsPopoverListProps) => {
-  const { accords, isLoading = false, onLoadMore } = props
+const VoteOnNotesPopoverList = (props: VoteOnNotesPopoverListProps) => {
+  const { notes, isLoading = false, onLoadMore } = props
 
   const listRef = React.useRef<HTMLDivElement>(null)
 
   const skeletonCount = isLoading
-    ? accords.length > 0 ? accords.length : DEFAULT_SKELETON_COUNT
+    ? notes.length > 0 ? notes.length : DEFAULT_SKELETON_COUNT
     : 0
-
-  const totalCount = accords.length + skeletonCount
+  const totalCount = notes.length + skeletonCount
 
   // eslint-disable-next-line react-hooks/incompatible-library
   const rowVirtualizer = useVirtualizer({
@@ -57,7 +56,7 @@ const VoteOnAccordsPopoverList = (props: VoteOnAccordsPopoverListProps) => {
       <div
         className='text-md w-full px-1 py-4 text-center font-medium text-black/70'
       >
-        No accords found.
+        No notes found.
       </div>
     )
   }
@@ -79,16 +78,12 @@ const VoteOnAccordsPopoverList = (props: VoteOnAccordsPopoverListProps) => {
           .getVirtualItems()
           .map(virtualRow => {
             const index = virtualRow.index
-            const isSkeleton = index >= accords.length
-            const key = isSkeleton
-              ? `skeleton-${index}`
-              : accords[index].id
-
-            const accord = accords[index]
+            const isSkeleton = index >= notes.length
+            const note = notes[index]
 
             return (
               <div
-                key={key}
+                key={index}
                 style={{
                   position: 'absolute',
                   top: 0,
@@ -100,12 +95,12 @@ const VoteOnAccordsPopoverList = (props: VoteOnAccordsPopoverListProps) => {
               >
                 {isSkeleton ?
                   (
-                    <VoteOnAccordsPopoverItemSkeleton />
+                    <VoteOnNotesPopoverItemSkeleton />
                   )
                   :
                   (
-                    <VoteOnAccordsPopoverItem
-                      accord={accord}
+                    <VoteOnNotesPopoverItem
+                      note={note}
                     />
                   )
                 }
@@ -117,4 +112,4 @@ const VoteOnAccordsPopoverList = (props: VoteOnAccordsPopoverListProps) => {
   )
 }
 
-export default VoteOnAccordsPopoverList
+export default VoteOnNotesPopoverList

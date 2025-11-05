@@ -52,17 +52,17 @@ export const FragrancePreviewCard = (props: FragrancePreviewCardProps) => {
   return (
     <div
       className={clsx(
-        'group hover:cursor-pointer relative flex flex-col h-full'
+        'group relative flex h-full flex-col hover:cursor-pointer'
       )}
       onMouseEnter={setIsLinkFocused.bind(null, false)}
     >
       <div
-        className='flex-1 flex flex-col rounded-2xl relative pointer-events-none'
+        className='pointer-events-none relative flex flex-1 flex-col rounded-2xl'
       >
         <Link
           to='/fragrances/$id'
           params={{ id }}
-          className='flex flex-1 rounded-2xl pointer-events-auto'
+          className='pointer-events-auto flex flex-1 rounded-2xl'
           onFocus={handleLinkFocus}
           tabIndex={0}
           {...rest}
@@ -75,7 +75,7 @@ export const FragrancePreviewCard = (props: FragrancePreviewCardProps) => {
 
         <div
           className={clsx(
-            'absolute inset-0 opacity-0 transition-opacity pointer-events-none',
+            'pointer-events-none absolute inset-0 opacity-0 transition-opacity',
             'group-hover:opacity-100 group-focus:opacity-100',
             (isLinkFocused || isSubPopoverOpen) && 'opacity-100'
           )}
@@ -104,7 +104,7 @@ export const FragrancePreviewCard = (props: FragrancePreviewCardProps) => {
         >
           <VoteButtonGroup
             votes={votes}
-            className='absolute bottom-3 right-3 z-10'
+            className='absolute right-3 bottom-3 z-10'
             onVote={handleOnVote}
           />
         </div>
@@ -117,7 +117,7 @@ export const FragrancePreviewCard = (props: FragrancePreviewCardProps) => {
           className='flex flex-row'
         >
           <h5
-            className='flex-1 truncate font-semibold text-sm'
+            className='flex-1 truncate text-sm font-semibold'
           >
             {name}
           </h5>

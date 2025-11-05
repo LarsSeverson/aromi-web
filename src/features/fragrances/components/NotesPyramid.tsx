@@ -34,11 +34,11 @@ const NotesPyramid = (props: NotesPyramidProps) => {
 
             {index < layers.length - 1 && (
               <div
-                className='flex flex-col items-center my-3'
+                className='my-3 flex flex-col items-center'
               >
                 <Divider
                   horizontal
-                  className='bg-transparent border border-dashed'
+                  className='border border-dashed bg-transparent'
                 />
               </div>
             )}

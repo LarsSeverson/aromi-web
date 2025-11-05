@@ -1,3 +1,4 @@
+import Divider from '@/components/Divider'
 import { Accordion } from '@base-ui-components/react'
 import clsx from 'clsx'
 import React from 'react'
@@ -14,8 +15,8 @@ const VoteOnSectionHeader = (props: VoteOnSectionHeaderProps) => {
     <Accordion.Header>
       <Accordion.Trigger
         className={clsx([
-          'group cursor-default flex w-full items-center',
-          'p-3 rounded-md hover:bg-empty'
+          'group flex w-full cursor-default items-center',
+          'hover:bg-empty rounded-md p-3'
         ])}
       >
         <h1
@@ -28,10 +29,18 @@ const VoteOnSectionHeader = (props: VoteOnSectionHeaderProps) => {
           size={22}
           className={clsx([
             'ml-auto transition-transform duration-150 ease-out',
-            'group-data-panel-open:rotate-45 group-data-panel-open:scale-[1.1]'
+            'group-data-panel-open:scale-[1.1] group-data-panel-open:rotate-45'
           ])}
         />
       </Accordion.Trigger>
+
+      <div
+        className='mt-2 mb-10 w-full px-3'
+      >
+        <Divider
+          horizontal
+        />
+      </div>
     </Accordion.Header>
   )
 }

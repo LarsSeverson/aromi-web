@@ -873,7 +873,7 @@ export type FragranceTraitInput = {
 export type FragranceTraitVote = {
   __typename?: 'FragranceTraitVote';
   id: Scalars['ID']['output'];
-  option: TraitOption;
+  option?: Maybe<TraitOption>;
   type: TraitTypeEnum;
 };
 
@@ -1946,7 +1946,7 @@ export type VoteOnFragranceReviewInput = {
 
 export type VoteOnFragranceTraitInput = {
   fragranceId: Scalars['ID']['input'];
-  traitOptionId: Scalars['ID']['input'];
+  traitOptionId?: InputMaybe<Scalars['ID']['input']>;
   traitTypeId: Scalars['ID']['input'];
 };
 
@@ -2104,9 +2104,9 @@ export type AllFragranceAccordFragment = { __typename?: 'FragranceAccord', id: s
 
 export type AllFragranceNoteFragment = { __typename?: 'FragranceNote', id: string, layer: NoteLayer, note: { __typename?: 'Note', id: string, name: string, thumbnail?: { __typename?: 'Asset', id: string, name: string, contentType: string, sizeBytes: number, url?: string | null } | null }, votes: { __typename?: 'VoteInfo', upvotes: number, downvotes: number, score: number, myVote?: number | null } };
 
-export type AllFragranceTraitVoteFragment = { __typename?: 'FragranceTraitVote', id: string, type: TraitTypeEnum, option: { __typename?: 'TraitOption', id: string, label: string, score: number } };
+export type AllFragranceTraitVoteFragment = { __typename?: 'FragranceTraitVote', id: string, type: TraitTypeEnum, option?: { __typename?: 'TraitOption', id: string, label: string, score: number } | null };
 
-export type AllFragranceTraitFragment = { __typename?: 'FragranceTrait', id: string, type: TraitTypeEnum, name: string, options: Array<{ __typename?: 'TraitOption', id: string, label: string, score: number }>, stats: { __typename?: 'TraitStats', averageScore: number, totalVotes: number, distribution: Array<{ __typename?: 'TraitVoteDistribution', votes: number, option: { __typename?: 'TraitOption', id: string, label: string, score: number } }> }, myVote?: { __typename?: 'FragranceTraitVote', id: string, type: TraitTypeEnum, option: { __typename?: 'TraitOption', id: string, label: string, score: number } } | null };
+export type AllFragranceTraitFragment = { __typename?: 'FragranceTrait', id: string, type: TraitTypeEnum, name: string, options: Array<{ __typename?: 'TraitOption', id: string, label: string, score: number }>, stats: { __typename?: 'TraitStats', averageScore: number, totalVotes: number, distribution: Array<{ __typename?: 'TraitVoteDistribution', votes: number, option: { __typename?: 'TraitOption', id: string, label: string, score: number } }> }, myVote?: { __typename?: 'FragranceTraitVote', id: string, type: TraitTypeEnum, option?: { __typename?: 'TraitOption', id: string, label: string, score: number } | null } | null };
 
 export type AllFragranceReviewFragment = { __typename?: 'FragranceReview', id: string, rating: number, body?: string | null, createdAt: string, author: { __typename?: 'User', id: string, username: string, avatar?: { __typename?: 'Asset', id: string, name: string, contentType: string, sizeBytes: number, url?: string | null } | null }, fragrance: { __typename?: 'Fragrance', id: string, name: string, description?: string | null, releaseYear: number, concentration: Concentration, status: FragranceStatus, brand: { __typename?: 'Brand', id: string, name: string, avatar?: { __typename?: 'Asset', id: string, name: string, contentType: string, sizeBytes: number, url?: string | null } | null, votes: { __typename?: 'VoteInfo', upvotes: number, downvotes: number, score: number, myVote?: number | null } }, thumbnail?: { __typename?: 'FragranceImage', id: string, url?: string | null, width: number, height: number, primaryColor?: string | null } | null, votes: { __typename?: 'VoteInfo', upvotes: number, downvotes: number, score: number, myVote?: number | null } }, votes: { __typename?: 'VoteInfo', upvotes: number, downvotes: number, score: number, myVote?: number | null } };
 
@@ -2210,7 +2210,7 @@ export type VoteOnFragranceTraitMutationVariables = Exact<{
 }>;
 
 
-export type VoteOnFragranceTraitMutation = { __typename?: 'Mutation', voteOnFragranceTrait: { __typename?: 'FragranceTraitVote', id: string, type: TraitTypeEnum, option: { __typename?: 'TraitOption', id: string, label: string, score: number } } };
+export type VoteOnFragranceTraitMutation = { __typename?: 'Mutation', voteOnFragranceTrait: { __typename?: 'FragranceTraitVote', id: string, type: TraitTypeEnum, option?: { __typename?: 'TraitOption', id: string, label: string, score: number } | null } };
 
 export type VoteOnFragranceReviewMutationVariables = Exact<{
   input: VoteOnFragranceReviewInput;
@@ -2290,14 +2290,14 @@ export type MyFragranceTraitsQueryVariables = Exact<{
 }>;
 
 
-export type MyFragranceTraitsQuery = { __typename?: 'Query', fragrance: { __typename?: 'Fragrance', id: string, myTraits: Array<{ __typename?: 'FragranceTraitVote', id: string, type: TraitTypeEnum, option: { __typename?: 'TraitOption', id: string, label: string, score: number } }> } };
+export type MyFragranceTraitsQuery = { __typename?: 'Query', fragrance: { __typename?: 'Fragrance', id: string, myTraits: Array<{ __typename?: 'FragranceTraitVote', id: string, type: TraitTypeEnum, option?: { __typename?: 'TraitOption', id: string, label: string, score: number } | null }> } };
 
 export type FragranceTraitsQueryVariables = Exact<{
   fragranceId: Scalars['ID']['input'];
 }>;
 
 
-export type FragranceTraitsQuery = { __typename?: 'Query', fragrance: { __typename?: 'Fragrance', id: string, traits: Array<{ __typename?: 'FragranceTrait', id: string, type: TraitTypeEnum, name: string, options: Array<{ __typename?: 'TraitOption', id: string, label: string, score: number }>, stats: { __typename?: 'TraitStats', averageScore: number, totalVotes: number, distribution: Array<{ __typename?: 'TraitVoteDistribution', votes: number, option: { __typename?: 'TraitOption', id: string, label: string, score: number } }> }, myVote?: { __typename?: 'FragranceTraitVote', id: string, type: TraitTypeEnum, option: { __typename?: 'TraitOption', id: string, label: string, score: number } } | null }> } };
+export type FragranceTraitsQuery = { __typename?: 'Query', fragrance: { __typename?: 'Fragrance', id: string, traits: Array<{ __typename?: 'FragranceTrait', id: string, type: TraitTypeEnum, name: string, options: Array<{ __typename?: 'TraitOption', id: string, label: string, score: number }>, stats: { __typename?: 'TraitStats', averageScore: number, totalVotes: number, distribution: Array<{ __typename?: 'TraitVoteDistribution', votes: number, option: { __typename?: 'TraitOption', id: string, label: string, score: number } }> }, myVote?: { __typename?: 'FragranceTraitVote', id: string, type: TraitTypeEnum, option?: { __typename?: 'TraitOption', id: string, label: string, score: number } | null } | null }> } };
 
 export type MyFragranceReviewQueryVariables = Exact<{
   fragranceId: Scalars['ID']['input'];

@@ -1,15 +1,19 @@
 import React from 'react'
 import { useVotedNotesContext } from '../contexts/VotedNotesContext'
-import { MAX_NOTE_VOTES } from '../utils/constants'
+import { MAX_NOTE_VOTES, NOTE_LAYER_OPTIONS } from '../utils/constants'
 import type { NoteLayer } from '@/generated/graphql'
 import VotedNotesList from './VotedNotesList'
+import SelectInput from '@/components/SelectInput'
+import VoteOnNotesPopover from './VoteOnNotesPopover'
 
 export interface VoteOnNotesSectionContentProps {
   onLayerChange?: (layer: NoteLayer) => void
 }
 
 const VoteOnNotesSectionContent = (props: VoteOnNotesSectionContentProps) => {
-  const { currentVotedSize } = useVotedNotesContext()
+  const { onLayerChange } = props
+
+  const { layer, currentVotedSize } = useVotedNotesContext()
 
   return (
     <div
@@ -19,15 +23,22 @@ const VoteOnNotesSectionContent = (props: VoteOnNotesSectionContentProps) => {
         className='flex justify-between'
       >
         <span
-          className='font-medium text-md text-black/60'
+          className='text-md font-medium text-black/60'
         >
           {currentVotedSize} / {MAX_NOTE_VOTES}
         </span>
 
-        <div>
+        <div
+          className='flex gap-3'
+        >
+          <VoteOnNotesPopover />
 
+          <SelectInput
+            items={NOTE_LAYER_OPTIONS}
+            defaultValue={layer}
+            onValueChange={onLayerChange}
+          />
         </div>
-        {/* <VoteOnAccordsPopover /> */}
       </div>
 
       <VotedNotesList />

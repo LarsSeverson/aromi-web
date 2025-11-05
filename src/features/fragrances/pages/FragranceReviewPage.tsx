@@ -9,6 +9,10 @@ import InteractableRatingStars from '@/components/InteractableRatingStars'
 import VoteOnGenderSection from '../components/VoteOnGenderSection'
 import VoteOnAccordsSection from '../components/VoteOnAccordsSection'
 import VoteOnNotesSection from '../components/VoteOnNotesSection'
+import blankPreviewThumbnail from '@/assets/blank-fragrance-thumbnail.svg'
+import ProgressiveImage from '@/components/ProgressiveImage'
+import VoteOnTraitsSection from '../components/VoteOnTraitsSection'
+import WriteReviewSection from '../components/WriteReviewSection'
 
 export interface FragranceReviewPageProps {
   fragrance: FragranceDetailFragment
@@ -17,7 +21,7 @@ export interface FragranceReviewPageProps {
 
 const FragranceReviewPage = (props: FragranceReviewPageProps) => {
   const { fragrance, rating } = props
-  const { id, name, brand } = fragrance
+  const { id, name, brand, thumbnail } = fragrance
 
   const { myReview } = useMyFragranceReview(id)
 
@@ -36,26 +40,39 @@ const FragranceReviewPage = (props: FragranceReviewPageProps) => {
       </div>
 
       <div
-        className='flex-6 flex-col gap-5 w-full max-w-4xl'
+        className='w-full max-w-4xl flex-6 flex-col gap-5 pb-40'
       >
         <div
-          className='px-4'
+          className='flex h-26 gap-4'
         >
-          <p
-            className='font-semibold text-xl truncate'
+          <div
+            className='h-full w-20 overflow-hidden rounded-xl'
           >
-            {name}
-          </p>
+            <ProgressiveImage
+              src={thumbnail?.url ?? blankPreviewThumbnail}
+              alt={`Thumbnail image for ${name} by ${brand.name}`}
+              placeholderColor={thumbnail?.primaryColor}
+              fallbackImage={blankPreviewThumbnail}
+            />
+          </div>
 
-          <p
-            className='font-light text-lg'
-          >
-            {brand.name}
-          </p>
+          <div>
+            <p
+              className='truncate text-xl font-semibold'
+            >
+              {name}
+            </p>
+
+            <p
+              className='text-lg font-light'
+            >
+              {brand.name}
+            </p>
+          </div>
         </div>
 
         <div
-          className='w-full px-3 my-3'
+          className='my-3 w-full px-3'
         >
           <Divider
             horizontal
@@ -64,29 +81,33 @@ const FragranceReviewPage = (props: FragranceReviewPageProps) => {
 
         <Accordion.Root
           className='flex flex-col gap-7'
-          defaultValue={['gender', 'accords', 'notes']}
+          defaultValue={['gender', 'accords', 'notes', 'traits']}
         >
           <div
-            className='p-4'
+            className='p-4 pt-10'
           >
             <h1
-              className='text-lg font-bold'
+              className='mb-4 text-lg font-bold'
             >
               How would you rate this fragrance?
             </h1>
 
-            <InteractableRatingStars
-              size={32}
-              rating={currentRating}
-              emptyColor={Colors.empty2}
-              filledColor={Colors.sinopia}
-              className='mr-auto flex items-center justify-center w-fit text-md gap-3 mt-2'
-              onRatingChange={setCurrentRating}
-            />
+            <div
+              className='flex w-full items-center justify-center'
+            >
+              <InteractableRatingStars
+                size={40}
+                rating={currentRating}
+                emptyColor={Colors.empty2}
+                filledColor={Colors.sinopia}
+                className='text-md mt-2 flex w-fit flex-col items-center justify-center gap-3 font-medium'
+                onRatingChange={setCurrentRating}
+              />
+            </div>
           </div>
 
           <div
-            className='flex flex-col gap-25'
+            className='flex flex-col gap-5'
           >
             <VoteOnGenderSection
               fragranceId={id}
@@ -99,25 +120,16 @@ const FragranceReviewPage = (props: FragranceReviewPageProps) => {
             <VoteOnNotesSection
               fragranceId={id}
             />
+
+            <VoteOnTraitsSection
+              fragranceId={id}
+            />
           </div>
-
-          {/* <VoteOnAccordsSection
-            fragranceId={id}
-          />
-
-          <VoteOnCharacteristicsSection
-            fragranceId={id}
-          />
-
-          <VoteOnNotesSection
-            fragranceId={id}
-          />
-
-          <WriteAReviewSection
-            fragranceId={id}
-            rating={currentRating}
-          /> */}
         </Accordion.Root>
+
+        <WriteReviewSection
+          fragranceId={id}
+        />
       </div>
 
       <div

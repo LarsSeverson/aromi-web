@@ -6,8 +6,10 @@ import standard from 'eslint-config-love'
 import react from 'eslint-plugin-react'
 import pluginRouter from '@tanstack/eslint-plugin-router'
 import reactHooks from 'eslint-plugin-react-hooks'
+import tailwind from 'eslint-plugin-tailwindcss'
 
 export default [
+  ...tailwind.configs['flat/recommended'],
   eslint.configs.recommended,
   ...tseslint.configs.recommended,
   ...tseslint.configs.stylistic,
