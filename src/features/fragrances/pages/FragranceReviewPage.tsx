@@ -1,11 +1,9 @@
-import React, { useState } from 'react'
-import { Colors } from '@/styles/Colors'
+import React from 'react'
 import Divider from '@/components/Divider'
-import { Accordion } from '@base-ui-components/react'
-import type { FragranceDetailFragment } from '@/generated/graphql'
+import { Accordion, Form } from '@base-ui-components/react'
+import type { CreateFragranceReviewInput, FragranceDetailFragment } from '@/generated/graphql'
 import { useMyFragranceReview } from '../hooks/useMyFragranceReview'
 import PageBackButton from '@/components/PageBackButton'
-import InteractableRatingStars from '@/components/InteractableRatingStars'
 import VoteOnGenderSection from '../components/VoteOnGenderSection'
 import VoteOnAccordsSection from '../components/VoteOnAccordsSection'
 import VoteOnNotesSection from '../components/VoteOnNotesSection'
@@ -13,6 +11,10 @@ import blankPreviewThumbnail from '@/assets/blank-fragrance-thumbnail.svg'
 import ProgressiveImage from '@/components/ProgressiveImage'
 import VoteOnTraitsSection from '../components/VoteOnTraitsSection'
 import WriteReviewSection from '../components/WriteReviewSection'
+import RatingSection from '../components/RatingSection'
+import { ValidFragranceReview } from '../utils/validation'
+import z from 'zod'
+import { set } from 'lodash'
 
 export interface FragranceReviewPageProps {
   fragrance: FragranceDetailFragment
@@ -25,7 +27,30 @@ const FragranceReviewPage = (props: FragranceReviewPageProps) => {
 
   const { myReview } = useMyFragranceReview(id)
 
-  const [currentRating, setCurrentRating] = useState(myReview?.rating ?? rating)
+  const [errors, setError] = React.useState({})
+
+  const handleOnCreateFragranceReview = async (input: CreateFragranceReviewInput) => { 
+    //
+  }
+
+  const handleOnSubmit = (event: React.FormEvent) => {
+    event.preventDefault()
+    setError({})
+
+    const formData = new FormData(event.currentTarget as HTMLFormElement)
+    const result = ValidFragranceReview.safeParse(Object.fromEntries(formData))
+
+    if (!result.success) {
+      const fieldErrors = z.flattenError(result.error).fieldErrors
+      setError(fieldErrors)
+
+      return
+    }
+
+
+    const input = { body}
+    handleOnCreateFragranceReview(result.data)
+  }
 
   return (
     <div
@@ -39,8 +64,10 @@ const FragranceReviewPage = (props: FragranceReviewPageProps) => {
         />
       </div>
 
-      <div
+      <Form
+        errors={errors}
         className='w-full max-w-4xl flex-6 flex-col gap-5 pb-40'
+        onSubmit={handleOnSubmit}
       >
         <div
           className='flex h-26 gap-4'
@@ -83,28 +110,9 @@ const FragranceReviewPage = (props: FragranceReviewPageProps) => {
           className='flex flex-col gap-7'
           defaultValue={['gender', 'accords', 'notes', 'traits']}
         >
-          <div
-            className='p-4 pt-10'
-          >
-            <h1
-              className='mb-4 text-lg font-bold'
-            >
-              How would you rate this fragrance?
-            </h1>
-
-            <div
-              className='flex w-full items-center justify-center'
-            >
-              <InteractableRatingStars
-                size={40}
-                rating={currentRating}
-                emptyColor={Colors.empty2}
-                filledColor={Colors.sinopia}
-                className='text-md mt-2 flex w-fit flex-col items-center justify-center gap-3 font-medium'
-                onRatingChange={setCurrentRating}
-              />
-            </div>
-          </div>
+          <RatingSection
+            defaultRating={myReview?.rating ?? rating}
+          />
 
           <div
             className='flex flex-col gap-5'
@@ -130,7 +138,7 @@ const FragranceReviewPage = (props: FragranceReviewPageProps) => {
         <WriteReviewSection
           fragranceId={id}
         />
-      </div>
+      </Form>
 
       <div
         className='flex-1'

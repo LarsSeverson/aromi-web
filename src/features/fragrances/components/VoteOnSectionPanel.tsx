@@ -18,7 +18,7 @@ const VoteOnSectionPanel = (props: VoteOnSectionPanelProps) => {
       ])}
     >
       <div
-        className='flex w-full flex-col px-10 pb-15'
+        className='flex w-full flex-col px-10 pt-2 pb-15'
       >
         {children}
       </div>

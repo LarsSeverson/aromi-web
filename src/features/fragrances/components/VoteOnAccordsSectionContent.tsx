@@ -15,7 +15,7 @@ const VoteOnAccordsSectionContent = () => {
         className='flex justify-between'
       >
         <span
-          className='font-medium text-md text-black/60'
+          className='text-md font-medium text-black/60'
         >
           {currentVotedSize} / {MAX_ACCORD_VOTES}
         </span>

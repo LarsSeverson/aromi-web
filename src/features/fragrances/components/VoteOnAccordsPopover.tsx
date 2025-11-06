@@ -1,5 +1,5 @@
 import { useSearchAccords } from '@/features/accords'
-import { Input, Popover } from '@base-ui-components/react'
+import { Field, Input, Popover } from '@base-ui-components/react'
 import clsx from 'clsx'
 import React from 'react'
 import VoteOnAccordsPopoverList from './VoteOnAccordsPopoverList'
@@ -40,14 +40,18 @@ const VoteOnAccordsPopover = () => {
     <div
       className='ml-auto flex flex-col'
     >
-      <Input
-        ref={anchorRef}
-        value={searchTerm}
-        placeholder='Search accords'
-        className='text-md rounded-xl border-2 px-3 py-2'
-        onValueChange={handleOnInputValueChange}
+      <Field.Root
+        name='accord-search'
+      >
+        <Input
+          ref={anchorRef}
+          value={searchTerm}
+          placeholder='Search accords'
+          className='text-md rounded-xl border-2 px-3 py-2'
+          onValueChange={handleOnInputValueChange}
         // onFocus={setIsPopoverOpen.bind(null, true)}
-      />
+        />
+      </Field.Root>
 
       <Popover.Root
         open={isPopoverOpen}

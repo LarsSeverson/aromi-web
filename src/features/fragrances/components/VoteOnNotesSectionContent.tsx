@@ -5,6 +5,7 @@ import type { NoteLayer } from '@/generated/graphql'
 import VotedNotesList from './VotedNotesList'
 import SelectInput from '@/components/SelectInput'
 import VoteOnNotesPopover from './VoteOnNotesPopover'
+import { Field } from '@base-ui-components/react'
 
 export interface VoteOnNotesSectionContentProps {
   onLayerChange?: (layer: NoteLayer) => void
@@ -33,11 +34,15 @@ const VoteOnNotesSectionContent = (props: VoteOnNotesSectionContentProps) => {
         >
           <VoteOnNotesPopover />
 
-          <SelectInput
-            items={NOTE_LAYER_OPTIONS}
-            defaultValue={layer}
-            onValueChange={onLayerChange}
-          />
+          <Field.Root
+            name='note-layer'
+          >
+            <SelectInput
+              items={NOTE_LAYER_OPTIONS}
+              defaultValue={layer}
+              onValueChange={onLayerChange}
+            />
+          </Field.Root>
         </div>
       </div>
 

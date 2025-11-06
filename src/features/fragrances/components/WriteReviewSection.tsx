@@ -48,7 +48,7 @@ const WriteReviewSection = (props: WriteReviewSectionProps) => {
   }
 
   const handleOnSubmitReview = () => {
-    handleCreateFragranceReview()
+    // handleCreateFragranceReview()
   }
 
   if (isLoading) return null
@@ -98,9 +98,8 @@ const WriteReviewSection = (props: WriteReviewSectionProps) => {
         className='w-full max-w-2xs self-center'
       >
         <SubmitButton
-          type='button'
           text='Submit Review'
-          onClick={handleOnSubmitReview}
+          // onClick={handleOnSubmitReview}
         />
       </div>
     </div>
