@@ -14,9 +14,9 @@ const BouncyButton = (props: BouncyButtonProps) => {
       className={clsx(
         className,
         'cursor-pointer',
-        'backdrop-brightness-100 hover:backdrop-brightness-95 p-3 flex justify-center items-center select-none',
+        'flex items-center justify-center p-3 backdrop-brightness-100 select-none hover:backdrop-brightness-95',
         ((className?.includes('rounded')) ?? false) ? '' : 'rounded-lg',
-        (disabled ?? false) && 'opacity-40 cursor-not-allowed'
+        (disabled ?? false) && 'cursor-not-allowed opacity-40'
       )}
       disabled={disabled}
       {...rest}

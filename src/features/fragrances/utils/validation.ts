@@ -5,7 +5,7 @@ export const MAX_FRAGRANCE_COLLECTION_NAME_LENGTH = 100
 
 export const MIN_REVIEW_BODY_LENGTH = 45
 export const MAX_REVIEW_BODY_LENGTH = 5000
-export const MIN_REVIEW_RATING = 0
+export const MIN_REVIEW_RATING = 1
 export const MAX_REVIEW_RATING = 5
 
 export const MIN_REPORT_BODY_LENGTH = 45
@@ -30,8 +30,8 @@ export const ValidFragranceReviewBody = z
   .max(MAX_REVIEW_BODY_LENGTH, `Review cannot exceed ${MAX_REVIEW_BODY_LENGTH} characters`)
 
 export const ValidFragranceReviewRating = z
-  .number('Review rating must be a number')
-  .min(MIN_REVIEW_RATING, `Review rating must be at least ${MIN_REVIEW_RATING}`)
+  .number('Please add a rating before submitting your review')
+  .min(MIN_REVIEW_RATING, 'Please add a rating before submitting your review')
   .max(MAX_REVIEW_RATING, `Review rating cannot exceed ${MAX_REVIEW_RATING}`)
 
 export const ValidFragranceReview = z

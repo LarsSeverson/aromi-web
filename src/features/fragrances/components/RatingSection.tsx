@@ -1,6 +1,5 @@
-import InteractableRatingStars from '@/components/InteractableRatingStars'
-import { Colors } from '@/styles/Colors'
-import { Field } from '@base-ui-components/react'
+import StarRating from '@/components/StarRating'
+import { Fieldset } from '@base-ui-components/react'
 import React from 'react'
 
 export interface RatingSectionProps {
@@ -13,42 +12,21 @@ const RatingSection = (props: RatingSectionProps) => {
   const [rating, setRating] = React.useState(defaultRating)
 
   return (
-    <Field.Root
+    <Fieldset.Root
       name='rating'
       className='p-4 pt-10'
     >
-      <Field.Label
+      <Fieldset.Legend
         className='mb-4 text-lg font-bold'
       >
         How would you rate this fragrance?
-      </Field.Label>
+      </Fieldset.Legend>
 
-      <div
-        className='flex w-full items-center justify-center'
-      >
-        <InteractableRatingStars
-          size={40}
-          rating={rating}
-          emptyColor={Colors.empty2}
-          filledColor={Colors.sinopia}
-          className='text-md mt-2 flex w-fit flex-col items-center justify-center gap-3 font-medium'
-          onRatingChange={setRating}
-        />
-
-        <Field.Control
-          value={rating}
-          required
-          className='sr-only'
-        />
-
-        <Field.Error
-          match='valueMissing'
-          className='text-md mt-2 font-medium text-red-700'
-        >
-          Please add a rating before submitting your review.
-        </Field.Error>
-      </div>
-    </Field.Root>
+      <StarRating
+        value={rating}
+        onChange={setRating}
+      />
+    </Fieldset.Root>
   )
 }
 

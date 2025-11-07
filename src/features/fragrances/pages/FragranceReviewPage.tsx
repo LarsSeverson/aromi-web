@@ -29,7 +29,7 @@ const FragranceReviewPage = (props: FragranceReviewPageProps) => {
 
   const [errors, setError] = React.useState({})
 
-  const handleOnCreateFragranceReview = async (input: CreateFragranceReviewInput) => { 
+  const handleOnCreateFragranceReview = async (input: CreateFragranceReviewInput) => {
     //
   }
 
@@ -38,7 +38,14 @@ const FragranceReviewPage = (props: FragranceReviewPageProps) => {
     setError({})
 
     const formData = new FormData(event.currentTarget as HTMLFormElement)
-    const result = ValidFragranceReview.safeParse(Object.fromEntries(formData))
+
+    const rating = Number(formData.get('rating'))
+    const body = formData.get('body')
+
+    const input = { rating, body }
+    const result = ValidFragranceReview.safeParse(input)
+
+    console.log(input)
 
     if (!result.success) {
       const fieldErrors = z.flattenError(result.error).fieldErrors
@@ -47,9 +54,9 @@ const FragranceReviewPage = (props: FragranceReviewPageProps) => {
       return
     }
 
-
-    const input = { body}
-    handleOnCreateFragranceReview(result.data)
+    console.log(formData, result.data)
+    // const input = { body}
+    // handleOnCreateFragranceReview(result.data)
   }
 
   return (
