@@ -20,6 +20,7 @@ const ConfirmationDialog = (props: ConfirmationDialogProps) => {
     cancelText = 'Cancel',
     confirmText = 'Delete',
     onConfirm,
+    children,
     ...rest
   } = props
 
@@ -27,6 +28,8 @@ const ConfirmationDialog = (props: ConfirmationDialogProps) => {
     <Dialog.Root
       {...rest}
     >
+      {children}
+
       <Dialog.Portal>
         <DialogBackdrop />
 
@@ -35,13 +38,13 @@ const ConfirmationDialog = (props: ConfirmationDialogProps) => {
           onClick={(e) => { e.stopPropagation() }}
         >
           <Dialog.Title
-            className='text-xl text-center '
+            className='text-center text-xl'
           >
             {text}
           </Dialog.Title>
 
           <span
-            className='text-md text-light/90'
+            className='text-md text-center text-black/90'
           >
             {subtext}
           </span>
@@ -50,13 +53,13 @@ const ConfirmationDialog = (props: ConfirmationDialogProps) => {
             className='flex gap-3'
           >
             <Dialog.Close
-              className='rounded-lg bg-empty text-md leading-none p-3 flex-1'
+              className='bg-empty text-md flex-1 cursor-pointer rounded-lg p-3 leading-none hover:bg-gray-200'
             >
               {cancelText}
             </Dialog.Close>
 
             <TextButton
-              className='flex-1 bg-red-800 rounded-lg text-white'
+              className='flex-1 cursor-pointer rounded-lg bg-red-800 text-white hover:bg-red-700'
               text={confirmText}
               onClick={onConfirm}
             />

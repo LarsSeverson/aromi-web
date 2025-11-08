@@ -1,50 +1,36 @@
 import React from 'react'
 import ConfirmationDialog from '@/components/ConfirmationDialog'
-import type { AllFragranceReviewFragment } from '@/generated/graphql'
+import { AiOutlineDelete } from 'react-icons/ai'
+import { Dialog } from '@base-ui-components/react'
 
 export interface DeleteReviewDialogProps {
-  review: AllFragranceReviewFragment
+  onConfirm?: () => void
 }
 
 const DeleteReviewDialog = (props: DeleteReviewDialogProps) => {
-  // const { deleteReview } = useDeleteReview()
-
-  // const handleDeleteReview = async () => {
-  //   const { id } = myReview
-
-  //   await deleteReview({ reviewId: id })
-  //     .match(
-  //       () => {
-  //         toastMessage('Review deleted')
-  //       },
-  //       toastApolloError
-  //     )
-  // }
-
-  // const onRenderTrigger = useCallback(() => {
-  //   return (
-  //     <Dialog.Trigger
-  //       className='group w-full flex p-3 hover:brightness-95 bg-white rounded-xl gap-2 items-center justify-start'
-  //     >
-  //       <AiOutlineDelete
-  //         size={20}
-  //         className='group-hover:text-red-700'
-  //       />
-
-  //       <span
-  //         className='font-semibold text-md group-hover:text-red-700'
-  //       >
-  //         Delete review
-  //       </span>
-  //     </Dialog.Trigger>
-  //   )
-  // }, [])
+  const { onConfirm } = props
 
   return (
     <ConfirmationDialog
       text='Delete Review'
       subtext='Are you sure you want to delete your review?'
-    />
+      onConfirm={onConfirm}
+    >
+      <Dialog.Trigger
+        className='group flex w-full cursor-pointer items-center justify-start gap-2 rounded-xl bg-white p-3 hover:brightness-95'
+      >
+        <AiOutlineDelete
+          size={20}
+          className='group-hover:text-red-700'
+        />
+
+        <span
+          className='text-md font-semibold group-hover:text-red-700'
+        >
+          Delete review
+        </span>
+      </Dialog.Trigger>
+    </ConfirmationDialog>
   )
 }
 

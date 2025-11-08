@@ -29,26 +29,26 @@ export const FragrancePage = (props: FragrancePageProps) => {
 
   return (
     <div
-      className='flex flex-wrap gap-5 h-full w-full'
+      className='flex h-full w-full flex-wrap gap-5'
     >
 
       <div
         className='flex pl-4'
       >
         <PageBackButton
-          className='sticky top-16 ml-auto mb-auto'
+          className='sticky top-16 mb-auto ml-auto'
         />
       </div>
 
       <div
-        className='flex-1 flex flex-col w-full'
+        className='flex w-full flex-1 flex-col'
       >
 
         <div
-          className='flex-1 flex flex-wrap gap-8'
+          className='flex flex-1 flex-wrap gap-8'
         >
           <div
-            className='flex-1 rounded-xl flex items-start'
+            className='flex flex-1 items-start rounded-xl'
           >
             <FragranceImagesSection
               fragrance={fragrance}
@@ -66,7 +66,7 @@ export const FragrancePage = (props: FragrancePageProps) => {
         </div>
 
         <div
-          className='self-center mt-10 max-w-5xl w-full flex flex-col gap-7'
+          className='mt-10 flex w-full max-w-5xl flex-col gap-7 self-center'
         >
           <Divider
             horizontal

@@ -1,17 +1,14 @@
 import { z, type ZodType } from 'zod'
 
 export const getFieldErrors = <T>(
-  formData: FormData,
   schema: ZodType<T>,
-  transform?: (data: Record<string, FormDataEntryValue>) => unknown
+  input: unknown
 ) => {
-  const raw = Object.fromEntries(formData)
-  const parsed = transform?.(raw) ?? raw
-  const result = schema.safeParse(parsed)
+  const result = schema.safeParse(input)
 
   if (!result.success) {
-    const errorTree = z.treeifyError(result.error)
-    return errorTree
+    const fieldErrors = z.flattenError(result.error).fieldErrors
+    return fieldErrors
   }
 
   return {}

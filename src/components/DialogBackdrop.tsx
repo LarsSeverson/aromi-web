@@ -7,7 +7,7 @@ const DialogBackdrop = () => {
     <Dialog.Backdrop
       className={clsx(
         'fixed inset-0 bg-black',
-        'opacity-20 data-[ending-style]:opacity-0 data-[starting-style]:opacity-0',
+        'opacity-20 data-ending-style:opacity-0 data-starting-style:opacity-0',
         'transition-all duration-150'
       )}
     />

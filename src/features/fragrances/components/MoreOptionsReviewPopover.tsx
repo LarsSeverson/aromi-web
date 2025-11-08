@@ -23,7 +23,7 @@ const MoreOptionsReviewPopover = (props: MoreOptionsReviewPopoverProps) => {
   return (
     <Popover.Root>
       <Popover.Trigger
-        className='rounded-full p-2 aspect-square bg-white hover:brightness-95'
+        className='aspect-square cursor-pointer rounded-full bg-white p-2 hover:brightness-95'
       >
         <HiDotsHorizontal
           size={20}
@@ -34,8 +34,8 @@ const MoreOptionsReviewPopover = (props: MoreOptionsReviewPopoverProps) => {
         <Popover.Positioner>
           <Popover.Popup
             className={clsx(
-              'bg-white rounded-xl shadow-symmetrical overflow-hidden p-3 gap-2',
-              'w-[20rem] max-h-128 flex flex-col justify-center items-center'
+              'shadow-symmetrical gap-2 overflow-hidden rounded-xl bg-white p-3',
+              'flex max-h-128 w-[20rem] flex-col items-center justify-center'
             )}
           >
             {showMyReviewOptions

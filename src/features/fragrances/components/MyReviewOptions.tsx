@@ -24,7 +24,7 @@ const MyReviewOptions = (props: MyReviewOptionsProps) => {
       className='w-full'
     >
       <button
-        className='w-full flex p-3 hover:brightness-95 bg-white rounded-xl gap-2 items-center justify-start'
+        className='flex w-full cursor-pointer items-center justify-start gap-2 rounded-xl bg-white p-3 hover:brightness-95'
         onClick={handleEditReviewClick}
       >
         <MdOutlineRateReview
@@ -32,15 +32,13 @@ const MyReviewOptions = (props: MyReviewOptionsProps) => {
         />
 
         <span
-          className='font-semibold text-md'
+          className='text-md font-semibold'
         >
           Edit review
         </span>
       </button>
 
-      <DeleteReviewDialog
-        review={review}
-      />
+      <DeleteReviewDialog />
     </div>
   )
 }

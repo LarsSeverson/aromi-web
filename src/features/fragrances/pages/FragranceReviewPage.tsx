@@ -14,7 +14,10 @@ import WriteReviewSection from '../components/WriteReviewSection'
 import RatingSection from '../components/RatingSection'
 import { ValidFragranceReview } from '../utils/validation'
 import z from 'zod'
-import { set } from 'lodash'
+import { useCreateFragranceReview } from '../hooks/useCreateFragranceReview'
+import { useToastMessage } from '@/hooks/useToastMessage'
+import { useNavigate } from '@tanstack/react-router'
+import SubmitButton from '@/components/SubmitButton'
 
 export interface FragranceReviewPageProps {
   fragrance: FragranceDetailFragment
@@ -25,12 +28,30 @@ const FragranceReviewPage = (props: FragranceReviewPageProps) => {
   const { fragrance, rating } = props
   const { id, name, brand, thumbnail } = fragrance
 
+  const navigate = useNavigate()
+  const { toastError, toastMessage } = useToastMessage()
+
   const { myReview } = useMyFragranceReview(id)
+  const { createFragranceReview } = useCreateFragranceReview()
 
   const [errors, setError] = React.useState({})
+  const [isLoading, setIsLoading] = React.useState(false)
+
+  const hasReview = myReview != null
 
   const handleOnCreateFragranceReview = async (input: CreateFragranceReviewInput) => {
-    //
+    setIsLoading(true)
+    const res = await createFragranceReview(input)
+    setIsLoading(false)
+
+    if (res.isErr()) {
+      const error = res.error
+      toastError(error.message)
+      return
+    }
+
+    toastMessage(hasReview ? 'Your review has been updated' : 'Thanks for sharing your thoughts!')
+    navigate({ to: '/fragrances/$id', params: { id } })
   }
 
   const handleOnSubmit = (event: React.FormEvent) => {
@@ -38,14 +59,11 @@ const FragranceReviewPage = (props: FragranceReviewPageProps) => {
     setError({})
 
     const formData = new FormData(event.currentTarget as HTMLFormElement)
-
     const rating = Number(formData.get('rating'))
     const body = formData.get('body')
 
     const input = { rating, body }
     const result = ValidFragranceReview.safeParse(input)
-
-    console.log(input)
 
     if (!result.success) {
       const fieldErrors = z.flattenError(result.error).fieldErrors
@@ -54,9 +72,8 @@ const FragranceReviewPage = (props: FragranceReviewPageProps) => {
       return
     }
 
-    console.log(formData, result.data)
-    // const input = { body}
-    // handleOnCreateFragranceReview(result.data)
+    const createInput = { ...result.data, fragranceId: id }
+    handleOnCreateFragranceReview(createInput)
   }
 
   return (
@@ -118,7 +135,7 @@ const FragranceReviewPage = (props: FragranceReviewPageProps) => {
           defaultValue={['gender', 'accords', 'notes', 'traits']}
         >
           <RatingSection
-            defaultRating={myReview?.rating ?? rating}
+            defaultRating={rating ?? myReview?.rating}
           />
 
           <div
@@ -145,6 +162,19 @@ const FragranceReviewPage = (props: FragranceReviewPageProps) => {
         <WriteReviewSection
           fragranceId={id}
         />
+
+        <div
+          className='mt-4 flex w-full items-center justify-center'
+        >
+          <div
+            className='w-full max-w-3xs'
+          >
+            <SubmitButton
+              isLoading={isLoading}
+              text={hasReview ? 'Update Review' : 'Submit Review'}
+            />
+          </div>
+        </div>
       </Form>
 
       <div

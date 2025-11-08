@@ -12,11 +12,11 @@ const DialogPopup = (props: DialogPopupProps) => {
   return (
     <Dialog.Popup
       className={clsx(
-        'fixed -mt-8 min-w-[26rem] rounded-lg p-6',
-        'bg-white outline-1 outline-surface2',
+        'fixed -mt-8 min-w-104 rounded-lg p-6',
+        'bg-white',
         'top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2',
         'transition-all duration-150',
-        'data-[ending-style]:scale-90 data-[ending-style]:opacity-0 data-[starting-style]:scale-90 data-[starting-style]:opacity-0',
+        'data-ending-style:scale-90 data-ending-style:opacity-0 data-starting-style:scale-90 data-starting-style:opacity-0',
         className
       )}
       {...rest}

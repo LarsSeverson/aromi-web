@@ -30,9 +30,13 @@ export const FragranceReviewCard = (props: FragranceReviewCardProps) => {
       <div
         className='flex flex-row gap-5'
       >
-        <UserAvatar
-          user={author}
-        />
+        <div
+          className='h-14'
+        >
+          <UserAvatar
+            user={author}
+          />
+        </div>
 
         <div
           className='flex flex-col gap-2'
@@ -44,7 +48,7 @@ export const FragranceReviewCard = (props: FragranceReviewCardProps) => {
               className='truncate'
             >
               <span
-                className='text-xl'
+                className='text-md font-medium'
               >
                 {username}
               </span>
@@ -85,9 +89,13 @@ export const FragranceReviewCard = (props: FragranceReviewCardProps) => {
         </p>
       )}
 
-      <VoteButtonGroup
-        votes={votes}
-      />
+      <div
+        className='ml-auto'
+      >
+        <VoteButtonGroup
+          votes={votes}
+        />
+      </div>
     </div>
   )
 }

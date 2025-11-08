@@ -2,36 +2,41 @@ import React from 'react'
 import { Link, useNavigate } from '@tanstack/react-router'
 import InteractableRatingStars from '@/components/InteractableRatingStars'
 import { Colors } from '@/styles/Colors'
-import type { FragranceDetailFragment } from '@/generated/graphql'
+import type { AllFragranceReviewFragment, FragranceDetailFragment } from '@/generated/graphql'
 import { PLACEHOLDER_USER, useMyContext } from '@/features/users'
 import UserAvatar from '@/features/users/components/UserAvatar'
 import { formatDate } from '@/utils/string-utils'
+import type { Nullable } from '@/utils/util'
 
-export interface StartReviewButtonProps {
+export interface MyFragranceReviewButtonProps {
   fragrance: FragranceDetailFragment
+  myReview?: Nullable<AllFragranceReviewFragment>
 }
 
-const StartReviewButton = (props: StartReviewButtonProps) => {
-  const { fragrance } = props
+const MyFragranceReviewButton = (props: MyFragranceReviewButtonProps) => {
+  const { fragrance, myReview } = props
   const { id } = fragrance
 
   const navigate = useNavigate()
   const { me } = useMyContext()
 
   const user = me ?? PLACEHOLDER_USER
+  const hasReview = myReview != null
 
   const handleRouteToReview = (rating?: number) => {
+    const searchRating = rating ?? myReview?.rating
+
     navigate({
       to: '/fragrances/$id/review',
       params: { id },
-      search: { rating }
+      search: { rating: searchRating }
     })
   }
 
   return (
     <div
-      className='shadow-symmetrical p-5 group cursor-pointer'
-      onClick={() => { handleRouteToReview() }}
+      className='shadow-symmetrical group cursor-pointer p-5'
+      onClick={handleRouteToReview.bind(null, undefined)}
     >
       <div
         className='flex flex-col gap-5'
@@ -53,13 +58,13 @@ const StartReviewButton = (props: StartReviewButtonProps) => {
             className='flex flex-col gap-1'
           >
             <div
-              className='flex gap-3 items-center'
+              className='flex items-center gap-3'
             >
               <p
                 className='truncate'
               >
                 <span
-                  className='font-semibold text-black/80'
+                  className='text-md font-medium'
                 >
                   {user.username}
                 </span>
@@ -67,7 +72,7 @@ const StartReviewButton = (props: StartReviewButtonProps) => {
                 <span> • </span>
 
                 <span
-                  className='text-sm text-black/70'
+                  className='text-xs'
                 >
                   {formatDate(new Date())}
                 </span>
@@ -75,18 +80,18 @@ const StartReviewButton = (props: StartReviewButtonProps) => {
             </div>
 
             <span
-              className='text-tawny font-medium text-md truncate group-hover:underline flex-1'
+              className='text-tawny text-md flex-1 truncate font-medium group-hover:underline'
             >
-              Start your review of {fragrance.name}
+              {hasReview ? 'Edit' : 'Start'} your review of {fragrance.name}
             </span>
           </Link>
 
           <InteractableRatingStars
-            rating={0}
+            rating={myReview?.rating ?? 0}
             size={30}
             emptyColor={Colors.empty2}
             filledColor={Colors.sinopia}
-            className='ml-auto text-md flex flex-col items-center gap-1'
+            className='text-md ml-auto flex flex-col items-center gap-1'
             onRatingChange={handleRouteToReview}
           />
         </div>
@@ -95,4 +100,4 @@ const StartReviewButton = (props: StartReviewButtonProps) => {
   )
 }
 
-export default StartReviewButton
+export default MyFragranceReviewButton

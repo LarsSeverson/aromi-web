@@ -16,7 +16,7 @@ const UserAvatar = (props: UserAvatarProps) => {
 
   return (
     <div
-      className='h-full border-surface2 border rounded-full aspect-square overflow-hidden bg-empty'
+      className='bg-empty aspect-square h-full overflow-hidden rounded-full border'
     >
       {showAvatar
         ? (

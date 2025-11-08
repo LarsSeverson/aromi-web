@@ -23,10 +23,10 @@ export const ReviewsSummary = (props: ReviewSummaryProps) => {
       {...rest}
     >
       <div
-        className='flex flex-col items-center justify-center gap-3 flex-1'
+        className='flex flex-1 flex-col items-center justify-center gap-3'
       >
         <h5
-          className='font-pd text-xl'
+          className='text-xl'
         >
           {(averageRating ?? 0).toFixed(1)}
         </h5>
@@ -39,7 +39,7 @@ export const ReviewsSummary = (props: ReviewSummaryProps) => {
         />
 
         <p
-          className='font-pd opacity-60'
+          className='opacity-60'
         >
           {formatNumber(count)} {count === 1 ? 'review' : 'reviews'}
         </p>

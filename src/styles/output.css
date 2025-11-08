@@ -11,14 +11,11 @@
     --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
       "Courier New", monospace;
     --color-red-400: oklch(70.4% 0.191 22.216);
-    --color-red-500: oklch(63.7% 0.237 25.331);
     --color-red-600: oklch(57.7% 0.245 27.325);
     --color-red-700: oklch(50.5% 0.213 27.518);
     --color-red-800: oklch(44.4% 0.177 26.899);
     --color-red-900: oklch(39.6% 0.141 25.723);
     --color-red-950: oklch(25.8% 0.092 26.042);
-    --color-yellow-300: oklch(90.5% 0.182 98.111);
-    --color-yellow-400: oklch(85.2% 0.199 91.936);
     --color-gray-100: oklch(96.7% 0.003 264.542);
     --color-gray-200: oklch(92.8% 0.006 264.531);
     --color-gray-300: oklch(87.2% 0.01 258.338);
@@ -592,6 +589,9 @@
   .h-12 {
     height: calc(var(--spacing) * 12);
   }
+  .h-14 {
+    height: calc(var(--spacing) * 14);
+  }
   .h-16 {
     height: calc(var(--spacing) * 16);
   }
@@ -697,9 +697,6 @@
   .w-\[720px\] {
     width: 720px;
   }
-  .w-fit {
-    width: fit-content;
-  }
   .w-full {
     width: 100%;
   }
@@ -711,9 +708,6 @@
   }
   .max-w-2xl {
     max-width: var(--container-2xl);
-  }
-  .max-w-2xs {
-    max-width: var(--container-2xs);
   }
   .max-w-3xl {
     max-width: var(--container-3xl);
@@ -780,6 +774,9 @@
   }
   .min-w-96 {
     min-width: calc(var(--spacing) * 96);
+  }
+  .min-w-104 {
+    min-width: calc(var(--spacing) * 104);
   }
   .min-w-\[15rem\] {
     min-width: 15rem;
@@ -1474,8 +1471,11 @@
       color: color-mix(in oklab, var(--color-black) 80%, transparent);
     }
   }
-  .text-current {
-    color: currentcolor;
+  .text-black\/90 {
+    color: color-mix(in srgb, #000 90%, transparent);
+    @supports (color: color-mix(in lab, red, red)) {
+      color: color-mix(in oklab, var(--color-black) 90%, transparent);
+    }
   }
   .text-gray-300 {
     color: var(--color-gray-300);
@@ -1495,17 +1495,11 @@
   .text-gray-900 {
     color: var(--color-gray-900);
   }
-  .text-red-500 {
-    color: var(--color-red-500);
-  }
   .text-red-600 {
     color: var(--color-red-600);
   }
   .text-red-700 {
     color: var(--color-red-700);
-  }
-  .text-red-800 {
-    color: var(--color-red-800);
   }
   .text-sinopia {
     color: var(--color-sinopia);
@@ -1900,26 +1894,9 @@
       line-height: calc(var(--spacing) * 4);
     }
   }
-  .peer-checked\:bg-sinopia {
-    &:is(:where(.peer):checked ~ *) {
-      background-color: var(--color-sinopia);
-    }
-  }
   .peer-checked\:text-sinopia {
     &:is(:where(.peer):checked ~ *) {
       color: var(--color-sinopia);
-    }
-  }
-  .peer-checked\:text-yellow-400 {
-    &:is(:where(.peer):checked ~ *) {
-      color: var(--color-yellow-400);
-    }
-  }
-  .peer-hover\:text-yellow-300 {
-    &:is(:where(.peer):hover ~ *) {
-      @media (hover: hover) {
-        color: var(--color-yellow-300);
-      }
     }
   }
   .before\:absolute {
@@ -2000,16 +1977,6 @@
       content: var(--tw-content);
     }
   }
-  .hover\:scale-110 {
-    &:hover {
-      @media (hover: hover) {
-        --tw-scale-x: 110%;
-        --tw-scale-y: 110%;
-        --tw-scale-z: 110%;
-        scale: var(--tw-scale-x) var(--tw-scale-y);
-      }
-    }
-  }
   .hover\:cursor-pointer {
     &:hover {
       @media (hover: hover) {
@@ -2048,17 +2015,38 @@
       }
     }
   }
+  .hover\:bg-gray-200 {
+    &:hover {
+      @media (hover: hover) {
+        background-color: var(--color-gray-200);
+      }
+    }
+  }
+  .hover\:bg-gray-300 {
+    &:hover {
+      @media (hover: hover) {
+        background-color: var(--color-gray-300);
+      }
+    }
+  }
+  .hover\:bg-gray-400 {
+    &:hover {
+      @media (hover: hover) {
+        background-color: var(--color-gray-400);
+      }
+    }
+  }
+  .hover\:bg-red-700 {
+    &:hover {
+      @media (hover: hover) {
+        background-color: var(--color-red-700);
+      }
+    }
+  }
   .hover\:bg-red-900 {
     &:hover {
       @media (hover: hover) {
         background-color: var(--color-red-900);
-      }
-    }
-  }
-  .hover\:bg-sinopia {
-    &:hover {
-      @media (hover: hover) {
-        background-color: var(--color-sinopia);
       }
     }
   }
@@ -2073,13 +2061,6 @@
     &:hover {
       @media (hover: hover) {
         color: var(--color-som);
-      }
-    }
-  }
-  .hover\:text-yellow-300 {
-    &:hover {
-      @media (hover: hover) {
-        color: var(--color-yellow-300);
       }
     }
   }

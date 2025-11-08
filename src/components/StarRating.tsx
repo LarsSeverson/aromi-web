@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import * as React from 'react'
 import { Field } from '@base-ui-components/react'
 import { ratingMap } from './RatingStars'
-import { FaRegStar, FaStar } from 'react-icons/fa'
+import { FaStar } from 'react-icons/fa'
 import clsx from 'clsx'
 
 export interface StarRatingProps {
@@ -31,7 +32,7 @@ export const StarRating = (props: StarRatingProps) => {
           .from({ length: maxStars })
           .map((_, i) => {
             const starValue = maxStars - i
-            const isActive = hoverValue >= starValue || (hoverValue != null && value >= starValue)
+            const isActive = (hoverValue ? hoverValue >= starValue : value >= starValue)
 
             return (
               <React.Fragment
@@ -57,7 +58,7 @@ export const StarRating = (props: StarRatingProps) => {
                   onMouseLeave={setHoverValue.bind(null, 0)}
                 >
                   <FaStar
-                    size={43}
+                    size={40}
                     className={clsx(
                       'transition-colors',
                       isActive ? 'text-sinopia' : 'text-gray-300'
@@ -72,7 +73,7 @@ export const StarRating = (props: StarRatingProps) => {
       <Field.Description
         className='text-md mt-2 text-gray-600'
       >
-        {ratingMap[value as keyof typeof ratingMap] ?? ratingMap[0]}
+        {ratingMap[(hoverValue || value) as keyof typeof ratingMap] ?? ratingMap[0]}
       </Field.Description>
 
       <Field.Error

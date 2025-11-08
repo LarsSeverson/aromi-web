@@ -3,7 +3,7 @@ import PageCategory from '@/components/PageCategory'
 import Divider from '@/components/Divider'
 import { PageNav } from '@/components/PageNav'
 import type { FragranceDetailFragment } from '@/generated/graphql'
-import StartReviewButton from './StartReviewButton'
+import MyFragranceReviewButton from './MyFragranceReviewButton'
 import { ReviewsSummary } from './ReviewsSummary'
 import { useFragranceReviews } from '../hooks/useFragranceReviews'
 import { useMyFragranceReview } from '../hooks/useMyFragranceReview'
@@ -35,25 +35,23 @@ const FragranceReviewsSection = forwardRef<HTMLDivElement, FragranceReviewsSecti
         title='Reviews'
       >
         <div
-          className='w-full flex flex-col items-center'
+          className='flex w-full flex-col items-center'
         >
           <div
-            className='max-w-4xl w-full flex flex-col'
+            className='flex w-full max-w-4xl flex-col'
           >
-            {myReview == null &&
-              (
-                <div
-                  className='max-w-3xl w-full self-center my-10'
-                >
-                  <StartReviewButton
-                    fragrance={fragrance}
-                  />
-                </div>
-              )}
+            <div
+              className='my-10 w-full max-w-3xl self-center'
+            >
+              <MyFragranceReviewButton
+                fragrance={fragrance}
+                myReview={myReview}
+              />
+            </div>
 
             <ReviewsSummary
               info={reviewInfo}
-              className='w-full max-w-4xl mt-3'
+              className='mt-3 w-full max-w-4xl'
             />
 
             <Divider
@@ -72,7 +70,7 @@ const FragranceReviewsSection = forwardRef<HTMLDivElement, FragranceReviewsSecti
               totalPages={totalPages}
               curPage={curReviewPage}
               onPageChange={setCurReviewPage}
-              className='mr-auto my-2'
+              className='my-2 mr-auto'
             />
           </div>
         </div>

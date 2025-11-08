@@ -15,7 +15,7 @@ const Spinner = (props: SpinnerProps) => {
       <div
         className={clsx(
           className,
-          'animate-spin rounded-full aspect-square border-t-2 border-black border-solid',
+          'aspect-square animate-spin rounded-full border-t-2 border-solid border-black',
           `h-${size}`
         )}
         {...rest}

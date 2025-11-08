@@ -8,28 +8,32 @@ export interface SubmitButtonProps extends React.ComponentProps<'button'> {
 }
 
 const SubmitButton = (props: SubmitButtonProps) => {
-  const { isLoading, text = 'Submit', ...rest } = props
+  const { isLoading = false, text = 'Submit', ...rest } = props
 
   return (
     <button
       type='submit'
       disabled={isLoading}
       className={clsx(
-        'flex h-full w-full items-center justify-center rounded-3xl py-2',
+        'relative flex h-full w-full items-center justify-center rounded-3xl py-2',
         'bg-sinopia cursor-pointer font-medium text-white hover:brightness-110'
       )}
       {...rest}
     >
-      {isLoading ?? false
-        ? <Spinner
-          className='border-white'
-        />
-        :
-        (
-          <span>
-            {text}
-          </span>
+      <Spinner
+        className={clsx(
+          'border-white',
+          isLoading ? 'opacity-100' : 'opacity-0'
         )}
+      />
+
+      <span
+        className={clsx(
+          isLoading ? 'opacity-0' : 'opacity-100'
+        )}
+      >
+        {text}
+      </span>
     </button>
   )
 }
