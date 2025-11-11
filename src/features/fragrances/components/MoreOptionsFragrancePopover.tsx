@@ -14,7 +14,7 @@ const MoreOptionsFragrancePopover = (props: MoreOptionsFragrancePopoverProps) =>
   return (
     <Popover.Root>
       <Popover.Trigger
-        className='rounded-full p-2 aspect-square bg-white hover:brightness-95 cursor-pointer'
+        className='aspect-square cursor-pointer rounded-full bg-white p-2 hover:brightness-95'
       >
         <HiDotsHorizontal
           size={20}
@@ -24,7 +24,7 @@ const MoreOptionsFragrancePopover = (props: MoreOptionsFragrancePopoverProps) =>
       <Popover.Portal>
         <Popover.Positioner>
           <Popover.Popup
-            className='bg-white w-[20rem] max-h-[32rem] rounded-xl shadow-symmetrical flex flex-col justify-center items-center overflow-hidden p-5 gap-2'
+            className='shadow-symmetrical flex max-h-128 w-[20rem] flex-col items-center justify-center gap-2 overflow-hidden rounded-xl bg-white p-5'
           >
             <ReportFragranceDialog
               fragrance={fragrance}

@@ -30,13 +30,13 @@ const ReviewDistributionLadder = (props: ReviewDistributionLadderProps) => {
   return (
     <div
       className={clsx(
-        'w-full flex flex-col items-start min-w-48',
+        'flex w-full max-w-lg min-w-48 flex-col items-start',
         className
       )}
       {...rest}
     >
       <div
-        className='table w-full font-light text-[14px] border-spacing-y-3'
+        className='table w-full border-spacing-y-2 text-[14px] font-light'
       >
         {[5, 4, 3, 2, 1].map(
           rating => {
@@ -50,7 +50,7 @@ const ReviewDistributionLadder = (props: ReviewDistributionLadderProps) => {
                 className='table-row'
               >
                 <div
-                  className='table-cell text-center align-middle w-1/6 min-w-20'
+                  className='table-cell w-1/6 min-w-20 text-center align-middle'
                 >
                   {rating} {rating === 1 ? 'star' : 'stars'}
                 </div>

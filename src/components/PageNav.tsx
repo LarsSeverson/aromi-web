@@ -14,8 +14,8 @@ export const PageNav = (props: PageNavProps) => {
   const { totalPages, curPage, pagesShown = 5, onPageChange, className, ...rest } = props
 
   const btnClassName = clsx(
-    'w-9 h-9 px-[9px] rounded-full text-sm font-semibold flex items-center justify-center',
-    'bg-gray-200 outline-2 outline-offset-0 outline-none hover:outline-sinopia'
+    'flex h-9 w-9 items-center justify-center rounded-full px-[9px] text-sm font-semibold',
+    'hover:outline-sinopia bg-gray-200 outline-2 outline-offset-0 outline-none'
   )
 
   const showBackButton = curPage > 0
@@ -32,7 +32,7 @@ export const PageNav = (props: PageNavProps) => {
       <button
         className={clsx(
           btnClassName,
-          !showBackButton && 'hover:outline-transparent opacity-50'
+          !showBackButton && 'opacity-50 hover:outline-transparent'
         )}
         disabled={!showBackButton}
         onClick={onPageChange?.bind(null, curPage - 1)}
@@ -65,7 +65,7 @@ export const PageNav = (props: PageNavProps) => {
       <button
         className={clsx(
           btnClassName,
-          !showForwardButton && 'hover:outline-transparent cursor-default opacity-50'
+          !showForwardButton && 'cursor-default opacity-50 hover:outline-transparent'
         )}
         disabled={!showForwardButton}
         onClick={onPageChange?.bind(null, curPage + 1)}

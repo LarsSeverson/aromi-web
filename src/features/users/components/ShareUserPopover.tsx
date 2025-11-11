@@ -1,28 +1,27 @@
-import React, { useState, type SyntheticEvent } from 'react'
-import { Popover } from '@base-ui-components/react'
-import { GoShare } from 'react-icons/go'
 import BouncyButton from '@/components/BouncyButton'
-import { HiOutlineLink } from 'react-icons/hi'
+import Divider from '@/components/Divider'
+import type { UserPreviewFragment } from '@/generated/graphql'
+import { useToastMessage } from '@/hooks/useToastMessage'
+import { Popover } from '@base-ui-components/react'
 import { useRouter } from '@tanstack/react-router'
 import { ResultAsync } from 'neverthrow'
-import Divider from '@/components/Divider'
-import type { FragrancePreviewFragment } from '@/generated/graphql'
-import { useToastMessage } from '@/hooks/useToastMessage'
+import React, { type SyntheticEvent } from 'react'
+import { HiOutlineLink } from 'react-icons/hi'
 
-export interface ShareFragrancePopoverProps extends Popover.Root.Props {
-  fragrance: FragrancePreviewFragment
-  onRenderTrigger?: () => React.ReactNode
+export interface ShareUserPopoverProps extends Popover.Root.Props {
+  user: UserPreviewFragment
+  triggerText?: string
 }
 
-const ShareFragrancePopover = (props: ShareFragrancePopoverProps) => {
-  const { fragrance, onRenderTrigger, ...rest } = props
-  const { id } = fragrance
+const ShareUserPopover = (props: ShareUserPopoverProps) => {
+  const { user, triggerText = 'Share profile', ...rest } = props
+  const { id, username } = user
 
   const router = useRouter()
   const { toastError } = useToastMessage()
 
-  const [isLinkLoading, setIsLinkLoading] = useState(false)
-  const [showLinkFeedback, setShowLinkFeedback] = useState(false)
+  const [isLinkLoading, setIsLinkLoading] = React.useState(false)
+  const [showLinkFeedback, setShowLinkFeedback] = React.useState(false)
 
   const handlePopoverTriggerClick = (e: SyntheticEvent) => {
     e.preventDefault()
@@ -37,7 +36,7 @@ const ShareFragrancePopover = (props: ShareFragrancePopoverProps) => {
     setIsLinkLoading(true)
 
     const location = router.buildLocation({
-      to: '/fragrances/$id',
+      to: '/users/$id',
       params: { id }
     })
 
@@ -67,18 +66,13 @@ const ShareFragrancePopover = (props: ShareFragrancePopoverProps) => {
     <Popover.Root
       {...rest}
     >
-      {onRenderTrigger?.() ??
-        (
-          <Popover.Trigger
-            className='hover:bg-empty absolute bottom-3 left-3 cursor-pointer rounded-full border bg-white p-2 text-center'
-            disabled={showLinkFeedback}
-            onClick={handlePopoverTriggerClick}
-          >
-            <GoShare
-              size={18}
-            />
-          </Popover.Trigger>
-        )}
+      <Popover.Trigger
+        className='bg-empty cursor-pointer rounded-lg px-4 py-2 hover:bg-gray-200'
+        disabled={showLinkFeedback}
+        onClick={handlePopoverTriggerClick}
+      >
+        {triggerText}
+      </Popover.Trigger>
 
       <Popover.Portal>
         <Popover.Positioner
@@ -98,13 +92,7 @@ const ShareFragrancePopover = (props: ShareFragrancePopoverProps) => {
               <p
                 className='text-sm font-medium text-gray-600'
               >
-                {fragrance.name}
-              </p>
-
-              <p
-                className='text-xs font-light text-gray-500'
-              >
-                {fragrance.brand.name}
+                {username}
               </p>
             </Popover.Title>
 
@@ -151,4 +139,4 @@ const ShareFragrancePopover = (props: ShareFragrancePopoverProps) => {
   )
 }
 
-export default ShareFragrancePopover
+export default ShareUserPopover

@@ -1,25 +1,34 @@
 import React from 'react'
-import { Link, useRouterState } from '@tanstack/react-router'
+import { Link, useRouter, useRouterState } from '@tanstack/react-router'
 import clsx from 'clsx'
 import LogoSvg from './LogoSvg'
 import SearchSvg from './SearchSvg'
 import HomeSvg from './HomeSvg'
 import ProfileSvg from './ProfileSvg'
 import { NAV_HOME, NAV_PROFILE, NAV_SEARCH } from '@/common/nav'
+import { useMyContext } from '@/features/users'
 
 const SideBar = () => {
+  const router = useRouter()
   const matches = useRouterState({ select: state => state.matches })
   const currentPath = matches[matches.length - 1]?.routeId
 
+  const match = router.matchRoute('/users/$id')
+  const matchedUserId: string | undefined = (match as { id: string })?.id
+
+  const { me } = useMyContext()
+
+  const isOnMyProfile = matchedUserId != null && matchedUserId === me?.id
+
   return (
     <nav
-      className='flex flex-col p-3 gap-7 relative border-r h-full'
+      className='relative flex h-full flex-col gap-7 border-r p-3'
     >
       <Link
         to='/'
         className={clsx(
-          'transition-transform active:scale-95 backdrop-brightness-100 hover:backdrop-brightness-90 p-3 flex justify-center items-center select-none relative',
-          'rounded-xl aspect-square'
+          'relative flex items-center justify-center p-3 backdrop-brightness-100 transition-transform select-none hover:backdrop-brightness-90 active:scale-95',
+          'aspect-square rounded-xl'
         )}
       >
         <LogoSvg
@@ -31,9 +40,9 @@ const SideBar = () => {
       <Link
         to='/'
         className={clsx(
-          'backdrop-brightness-100 hover:backdrop-brightness-90 p-3 flex justify-center items-center select-none relative',
+          'relative flex items-center justify-center p-3 backdrop-brightness-100 select-none hover:backdrop-brightness-90',
           'transition-transform active:scale-95',
-          'rounded-xl aspect-square',
+          'aspect-square rounded-xl',
           NAV_HOME.activePaths.includes(currentPath) && 'bg-black/10'
         )}
       >
@@ -46,9 +55,9 @@ const SideBar = () => {
       <Link
         to='/search'
         className={clsx(
-          'backdrop-brightness-100 hover:backdrop-brightness-90 p-3 flex justify-center items-center select-none relative',
+          'relative flex items-center justify-center p-3 backdrop-brightness-100 select-none hover:backdrop-brightness-90',
           'transition-transform active:scale-95',
-          'rounded-xl aspect-square',
+          'aspect-square rounded-xl',
           NAV_SEARCH.activePaths.includes(currentPath) && 'bg-black/10'
         )}
       >
@@ -61,10 +70,10 @@ const SideBar = () => {
       <Link
         to='/users'
         className={clsx(
-          'backdrop-brightness-100 hover:backdrop-brightness-90 p-3 flex justify-center items-center select-none relative',
+          'relative flex items-center justify-center p-3 backdrop-brightness-100 select-none hover:backdrop-brightness-90',
           'transition-transform active:scale-95',
-          'rounded-xl aspect-square',
-          NAV_PROFILE.activePaths.includes(currentPath) && 'bg-black/10'
+          'aspect-square rounded-xl',
+          isOnMyProfile && NAV_PROFILE.activePaths.includes(currentPath) && 'bg-black/10'
         )}
       >
         <ProfileSvg

@@ -16,7 +16,7 @@ const AccountMenu = (props: AccountMenuProps) => {
   return (
     <Menu.Root>
       <Menu.Trigger
-        className='h-full'
+        className='h-full cursor-pointer'
       >
         <UserAvatar
           user={user}
@@ -33,7 +33,7 @@ const AccountMenu = (props: AccountMenuProps) => {
             />
 
             <Menu.Separator
-              className='bg-black/10 mx-4 my-1.5 h-px'
+              className='mx-4 my-1.5 h-px bg-black/10'
             />
 
             <LogOutItem />

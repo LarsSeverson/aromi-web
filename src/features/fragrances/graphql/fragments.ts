@@ -195,3 +195,12 @@ export const FRAGRANCE_VOTE_INFO_FRAGMENT = gql(/* GraphQL */ `
     }
   }
 `)
+
+export const MY_FRAGRANCE_REVIEW_FRAGMENT = gql(/* GraphQL */ `
+  fragment MyFragranceReview on Fragrance { 
+    id
+    myReview {
+      ...AllFragranceReview
+    }
+  }
+`)

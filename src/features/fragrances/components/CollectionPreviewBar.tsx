@@ -23,11 +23,11 @@ const CollectionPreviewBar = (props: CollectionPreviewBarProps) => {
     >
       <GridImages
         urls={thumbnailUrls}
-        className='h-12 aspect-square rounded-md shrink-0'
+        className='aspect-square h-12 shrink-0 rounded-md'
       />
 
       <h2
-        className='font-semibold truncate'
+        className='truncate font-semibold'
       >
         {name}
       </h2>

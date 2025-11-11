@@ -5,7 +5,7 @@ export const Route = createFileRoute('/users/')({
     const { me, utils } = context
 
     if (me == null) {
-      utils?.toastMessage('Hold On', 'You need to log in to view your profile')
+      utils?.toastMessage('Hold On', 'You need to log in first')
 
       throw redirect({
         to: utils?.lastRoute.current?.pathname ?? '/',

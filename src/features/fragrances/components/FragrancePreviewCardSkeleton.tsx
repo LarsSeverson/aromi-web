@@ -1,10 +1,10 @@
 import React from 'react'
 import Skeleton from 'react-loading-skeleton'
 
-const FragrancePreviewCardLoading = () => {
+const FragrancePreviewCardSkeleton = () => {
   return (
     <div
-      className='h-full rounded-2xl overflow-hidden'
+      className='h-full overflow-hidden rounded-2xl'
     >
       <Skeleton
         height='100%'
@@ -18,4 +18,4 @@ const FragrancePreviewCardLoading = () => {
   )
 }
 
-export default FragrancePreviewCardLoading
+export default FragrancePreviewCardSkeleton

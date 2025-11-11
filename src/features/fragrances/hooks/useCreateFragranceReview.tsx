@@ -2,8 +2,7 @@ import { useMutation } from '@apollo/client/react'
 import { CREATE_FRAGRANCE_REVIEW_MUTATION } from '../graphql/mutations'
 import type { CreateFragranceReviewInput } from '@/generated/graphql'
 import { wrapQuery } from '@/utils/util'
-import type { NodeWithEdges } from '@/utils/pagination'
-import type { Reference } from '@apollo/client'
+import { MY_FRAGRANCE_REVIEW_FRAGMENT } from '../graphql/fragments'
 
 export const useCreateFragranceReview = () => {
   const [createReviewInner] = useMutation(CREATE_FRAGRANCE_REVIEW_MUTATION)
@@ -16,29 +15,17 @@ export const useCreateFragranceReview = () => {
           const newReview = data?.createFragranceReview
           if (newReview == null) return
 
-          cache.modify({
-            id: cache.identify({
-              __typename: 'Fragrance',
-              id: input.fragranceId
-            }),
-            fields: {
-              myReview: () => newReview,
-              reviews: (existing = { edges: [] }, { toReference }) => {
-                const typedExisting = existing as NodeWithEdges<Reference>
+          const cachedFragranceId = cache.identify({
+            __typename: 'Fragrance',
+            id: input.fragranceId
+          })
 
-                const newEdge = {
-                  __typename: 'FragranceReviewEdge',
-                  node: toReference(newReview)
-                }
-
-                const oldEdges = typedExisting.edges
-
-                return {
-                  ...typedExisting,
-                  edges: [...oldEdges, newEdge]
-                }
-              }
-            }
+          cache.writeFragment({
+            id: cachedFragranceId,
+            fragment: MY_FRAGRANCE_REVIEW_FRAGMENT,
+            fragmentName: 'MyFragranceReview',
+            data: { id: input.fragranceId, myReview: newReview },
+            broadcast: false
           })
         }
       })

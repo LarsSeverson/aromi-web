@@ -1,6 +1,4 @@
-import ArrowSvg from '@/components/ArrowSvg'
 import type { AllTraitVoteDistributionFragment } from '@/generated/graphql'
-import { formatNumber } from '@/utils/string-utils'
 import { Tooltip } from '@base-ui-components/react'
 import clsx from 'clsx'
 import React from 'react'
@@ -15,7 +13,6 @@ export interface TraitBucketInputProps {
 
 const TraitBucketInput = (props: TraitBucketInputProps) => {
   const { bucket, isSelected = false, className, onBucketClick } = props
-  const { votes } = bucket
 
   return (
     <Tooltip.Root>
@@ -36,7 +33,7 @@ const TraitBucketInput = (props: TraitBucketInputProps) => {
         />
       </Tooltip.Trigger>
 
-      <Tooltip.Portal>
+      {/* <Tooltip.Portal >
         <Tooltip.Positioner
           sideOffset={10}
         >
@@ -57,7 +54,7 @@ const TraitBucketInput = (props: TraitBucketInputProps) => {
             {formatNumber(votes)} {votes === 1 ? 'vote' : 'votes'}
           </Tooltip.Popup>
         </Tooltip.Positioner>
-      </Tooltip.Portal>
+      </Tooltip.Portal> */}
 
       <span
         className='mt-2 min-w-0 truncate text-center text-sm'

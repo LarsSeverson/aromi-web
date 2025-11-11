@@ -1,60 +1,57 @@
 import React from 'react'
-import { type FragranceImage, type FragranceCollection } from '@/generated/graphql'
-import { Link, type LinkProps } from '@tanstack/react-router'
+import { Link } from '@tanstack/react-router'
 import { FaPen } from 'react-icons/fa6'
-import BouncyButton from '@/components/BouncyButton'
 import GridImages from '@/components/GridImages'
 import clsx from 'clsx'
-import { type FlattenedConnection } from '@/utils/pagination'
+import type { FragranceCollectionPreviewFragment } from '@/generated/graphql'
 
-type FlattenedCollection = FlattenedConnection<FragranceCollection>
-type PartialUser = Pick<FlattenedCollection['user'], 'username'>
-type PartialImage = Pick<FragranceImage, 'id' | 'src'>
-interface PartialFragrance { images: PartialImage[] }
-type PartialItem = Pick<FlattenedCollection['items'][number], 'id'> & { fragrance: PartialFragrance }
-export type CardCollectionPreview = Pick<FlattenedCollection, 'id' | 'name'> & { user: PartialUser, items: PartialItem[] }
-
-export interface CollectionPreviewCardProps extends LinkProps {
-  collection: CardCollectionPreview
-  className?: string | undefined
+export interface CollectionPreviewCardProps {
+  collection: FragranceCollectionPreviewFragment
 }
 
 export const CollectionPreviewCard = (props: CollectionPreviewCardProps) => {
-  const { collection, className, to, params, ...rest } = props
-  const { name, items } = collection
+  const { collection } = props
+  const { id, name, previewItems } = collection
+
+  const thumbnailUrls = previewItems.map(item => item.fragrance.thumbnail?.url ?? '')
 
   return (
     <Link
-      to={to ?? '/collection/$id'}
-      params={params ?? { id: String(collection.id) }}
+      to='/collections/$id'
+      params={{ id }}
       className={clsx(
-        'group w-full h-full flex flex-col gap-2 relative',
-        className
+        'group relative flex h-full w-full flex-col gap-2'
       )}
-      {...rest}
     >
       <GridImages
-        urls={items.map(item => item.fragrance.images.at(0)?.src ?? '')}
+        urls={thumbnailUrls}
+        className='h-full w-full'
       />
-      <BouncyButton
-        className='absolute top-3 right-3 rounded-full bg-sinopia aspect-square px-[10px] hidden group-hover:flex'
+
+      <button
+        className={clsx(
+          'bg-sinopia absolute top-3 right-3 hidden aspect-square items-center justify-center rounded-full px-2.5 group-hover:flex',
+          'cursor-pointer'
+        )}
       >
         <FaPen
           color='white'
           size={14}
         />
-      </BouncyButton>
+      </button>
+
       <div>
         <h4
-          className='font-pd text-xl truncate'
+          className='truncate font-medium'
         >
           {name}
         </h4>
-        <p
-          className='text-xs font-normal mt-1'
+
+        {/* <p
+          className='mt-1 text-xs font-normal'
         >
           {items.length} {items.length === 1 ? 'Fragrance' : 'Fragrances'}
-        </p>
+        </p> */}
       </div>
     </Link>
   )

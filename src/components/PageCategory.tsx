@@ -8,6 +8,7 @@ export interface PageCategoryProps extends React.HTMLAttributes<HTMLDivElement> 
   emptyBody?: string
   emptyButtonText?: string
   children?: React.ReactNode
+  onEmptyButtonClick?: () => void
 }
 
 const PageCategory = (props: PageCategoryProps) => {
@@ -19,6 +20,7 @@ const PageCategory = (props: PageCategoryProps) => {
     emptyBody = 'Tried this fragrance? Help out the community by sharing your experience',
     emptyButtonText = 'Write a review',
     className,
+    onEmptyButtonClick,
     ...rest
   } = props
 
@@ -31,10 +33,10 @@ const PageCategory = (props: PageCategoryProps) => {
       {...rest}
     >
       <div
-        className='flex flex-row justify-between items-center mb-4'
+        className='mb-4 flex flex-row items-center justify-between'
       >
         <h2
-          className='font-semibold text-xl'
+          className='text-xl font-semibold'
         >
           {title}
         </h2>
@@ -42,22 +44,23 @@ const PageCategory = (props: PageCategoryProps) => {
 
       {isEmpty && (
         <div
-          className='w-full text-center mt-10'
+          className='mt-10 w-full text-center'
         >
           <h2
-            className='font-semibold text-lg'
+            className='text-lg font-semibold'
           >
             {emptyTitle}
           </h2>
 
           <h5
-            className='font-medium opacity-80 mb-5 mt-2'
+            className='text-md mt-2 mb-5 font-medium opacity-80'
           >
             {emptyBody}
           </h5>
 
           <button
-            className='border-2 px-11 py-3 rounded-md font-medium hover:brightness-95 bg-white w-2/3'
+            className='text-md w-2/3 max-w-xs cursor-pointer rounded-lg border bg-white px-11 py-3 font-medium hover:brightness-95'
+            onClick={onEmptyButtonClick}
           >
             {emptyButtonText}
           </button>

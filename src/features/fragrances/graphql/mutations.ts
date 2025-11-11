@@ -15,7 +15,7 @@ export const DELETE_FRAGRANCE_REVIEW_MUTATION = gql(/* GraphQL */ `
     $input: DeleteFragranceReviewInput!
   ) {
     deleteFragranceReview(input: $input) {
-      id
+      ...AllFragranceReview
     }
   }
 `)

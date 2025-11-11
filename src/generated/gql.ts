@@ -55,8 +55,9 @@ type Documents = {
     "\n  fragment FragranceCollectionItemWithCollection on FragranceCollectionItem { \n    ...AllFragranceCollectionItem\n    collection {\n      id\n    }\n  }\n": typeof types.FragranceCollectionItemWithCollectionFragmentDoc,
     "\n  fragment HasFragranceField on FragranceCollection { \n    id\n    hasFragrance(fragranceId: $fragranceId)\n  }\n": typeof types.HasFragranceFieldFragmentDoc,
     "\n  fragment FragranceVoteInfo on Fragrance { \n    id\n    votes {\n      ...AllVoteInfo\n    }\n  }\n": typeof types.FragranceVoteInfoFragmentDoc,
+    "\n  fragment MyFragranceReview on Fragrance { \n    id\n    myReview {\n      ...AllFragranceReview\n    }\n  }\n": typeof types.MyFragranceReviewFragmentDoc,
     "\n  mutation CreateFragranceReview(\n    $input: CreateFragranceReviewInput!\n  ) {\n    createFragranceReview(input: $input) {\n      ...AllFragranceReview\n    }\n  }\n": typeof types.CreateFragranceReviewDocument,
-    "\n  mutation DeleteFragranceReview(\n    $input: DeleteFragranceReviewInput!\n  ) {\n    deleteFragranceReview(input: $input) {\n      id\n    }\n  }\n": typeof types.DeleteFragranceReviewDocument,
+    "\n  mutation DeleteFragranceReview(\n    $input: DeleteFragranceReviewInput!\n  ) {\n    deleteFragranceReview(input: $input) {\n      ...AllFragranceReview\n    }\n  }\n": typeof types.DeleteFragranceReviewDocument,
     "\n  mutation CreateFragranceCollection(\n    $input: CreateFragranceCollectionInput!\n  ) {\n    createFragranceCollection(input: $input) {\n      ...AllFragranceCollection\n    }\n  }\n": typeof types.CreateFragranceCollectionDocument,
     "\n  mutation DeleteFragranceCollection(\n    $input: DeleteFragranceCollectionInput!\n  ) {\n    deleteFragranceCollection(input: $input) {\n      ...AllFragranceCollection\n    }\n  }\n": typeof types.DeleteFragranceCollectionDocument,
     "\n  mutation CreateFragranceCollectionItem(\n    $input: CreateFragranceCollectionItemInput!\n    $fragranceId: ID!\n  ) {\n    createFragranceCollectionItem(input: $input) {\n      ...AllFragranceCollectionItem\n      collection {\n        id\n        hasFragrance(fragranceId: $fragranceId)\n      }\n    }\n  }\n": typeof types.CreateFragranceCollectionItemDocument,
@@ -93,8 +94,8 @@ type Documents = {
     "\n  fragment AllTraitOption on TraitOption {\n    id\n    label\n    score\n  }\n": typeof types.AllTraitOptionFragmentDoc,
     "\n  fragment AllTraitVoteDistribution on TraitVoteDistribution {\n    option {\n      ...AllTraitOption\n    }\n    votes\n  }\n": typeof types.AllTraitVoteDistributionFragmentDoc,
     "\n  fragment AllTraitStats on TraitStats {\n    averageScore \n    totalVotes\n    distribution {\n      ...AllTraitVoteDistribution\n    }\n  }\n": typeof types.AllTraitStatsFragmentDoc,
-    "\n  fragment Me on User {\n    id\n    username\n    email\n    avatar {\n      ...AllAsset\n    }\n  }\n": typeof types.MeFragmentDoc,
-    "\n  fragment UserPreview on User {\n    id\n    username\n    avatar {\n      ...AllAsset\n    }\n  }\n": typeof types.UserPreviewFragmentDoc,
+    "\n  fragment Me on User {\n    id\n    username\n    email\n\n    followerCount\n    followingCount\n\n    avatar {\n      ...AllAsset\n    }\n  }\n": typeof types.MeFragmentDoc,
+    "\n  fragment UserPreview on User {\n    id\n    username\n\n    followerCount\n    followingCount\n\n    avatar {\n      ...AllAsset\n    }\n  }\n": typeof types.UserPreviewFragmentDoc,
     "\n  mutation UpdateMe(\n    $input: UpdateMeInput!\n  ) {\n    updateMe(input: $input) {\n      ...Me\n    }\n  }\n": typeof types.UpdateMeDocument,
     "\n  mutation SetMyAvatar(\n    $input: SetMyAvatarInput!\n  ) {\n    setMyAvatar(input: $input) {\n      ...Me\n    }\n  }\n": typeof types.SetMyAvatarDocument,
     "\n  query Me {\n    me {\n      ...Me\n    }\n  }\n": typeof types.MeDocument,
@@ -104,6 +105,7 @@ type Documents = {
     "\n  query SearchUsers(\n    $input: SearchInput\n  ) {\n    searchUsers(input: $input) {\n      edges {\n        node {\n          ...UserPreview\n        }\n        offset\n      }\n      pageInfo {\n        ...AllSearchPageInfo\n      }\n    }\n  }\n": typeof types.SearchUsersDocument,
     "\n  query UserCollection(\n    $userId: ID!\n    $collectionId: ID!\n  ) {\n    user(id: $userId) {\n      ...UserPreview\n      collection(id: $collectionId) {\n        ...AllFragranceCollection\n      }\n    }\n  }\n": typeof types.UserCollectionDocument,
     "\n  query UserCollections(\n    $userId: ID!\n    $input: FragranceCollectionPaginationInput\n  ) {\n    user(id: $userId) {\n      ...UserPreview\n      collections(input: $input) {\n        edges {\n          node {\n            ...AllFragranceCollection\n          }\n          cursor\n        }\n        pageInfo {\n          ...AllPageInfo\n        }\n      }\n    }\n  }\n": typeof types.UserCollectionsDocument,
+    "\n  query UserLikes(\n    $userId: ID!\n    $input: FragrancePaginationInput\n  ) {\n    user(id: $userId) {\n      ...UserPreview\n      likes(input: $input) {\n        edges {\n          node {\n            ...FragrancePreview\n          }\n          cursor\n        }\n        pageInfo {\n          ...AllPageInfo\n        }\n      }\n    }\n  }\n": typeof types.UserLikesDocument,
     "\n  query UserReview(\n    $userId: ID!\n    $reviewId: ID!\n  ) {\n    user(id: $userId) {\n      ...UserPreview\n      review(id: $reviewId) {\n        ...AllFragranceReview\n      }\n    }\n  }\n": typeof types.UserReviewDocument,
     "\n  query UserReviews(\n    $userId: ID!\n    $input: FragranceReviewPaginationInput\n  ) {\n    user(id: $userId) {\n      ...UserPreview\n      reviews(input: $input) {\n        edges {\n          node {\n            ...AllFragranceReview\n          }\n          cursor\n        }\n        pageInfo {\n          ...AllPageInfo\n        }\n      }\n    }\n  }\n": typeof types.UserReviewsDocument,
     "\n  fragment AllPageInfo on PageInfo {\n    hasPreviousPage\n    hasNextPage\n    startCursor\n    endCursor\n  }\n": typeof types.AllPageInfoFragmentDoc,
@@ -152,8 +154,9 @@ const documents: Documents = {
     "\n  fragment FragranceCollectionItemWithCollection on FragranceCollectionItem { \n    ...AllFragranceCollectionItem\n    collection {\n      id\n    }\n  }\n": types.FragranceCollectionItemWithCollectionFragmentDoc,
     "\n  fragment HasFragranceField on FragranceCollection { \n    id\n    hasFragrance(fragranceId: $fragranceId)\n  }\n": types.HasFragranceFieldFragmentDoc,
     "\n  fragment FragranceVoteInfo on Fragrance { \n    id\n    votes {\n      ...AllVoteInfo\n    }\n  }\n": types.FragranceVoteInfoFragmentDoc,
+    "\n  fragment MyFragranceReview on Fragrance { \n    id\n    myReview {\n      ...AllFragranceReview\n    }\n  }\n": types.MyFragranceReviewFragmentDoc,
     "\n  mutation CreateFragranceReview(\n    $input: CreateFragranceReviewInput!\n  ) {\n    createFragranceReview(input: $input) {\n      ...AllFragranceReview\n    }\n  }\n": types.CreateFragranceReviewDocument,
-    "\n  mutation DeleteFragranceReview(\n    $input: DeleteFragranceReviewInput!\n  ) {\n    deleteFragranceReview(input: $input) {\n      id\n    }\n  }\n": types.DeleteFragranceReviewDocument,
+    "\n  mutation DeleteFragranceReview(\n    $input: DeleteFragranceReviewInput!\n  ) {\n    deleteFragranceReview(input: $input) {\n      ...AllFragranceReview\n    }\n  }\n": types.DeleteFragranceReviewDocument,
     "\n  mutation CreateFragranceCollection(\n    $input: CreateFragranceCollectionInput!\n  ) {\n    createFragranceCollection(input: $input) {\n      ...AllFragranceCollection\n    }\n  }\n": types.CreateFragranceCollectionDocument,
     "\n  mutation DeleteFragranceCollection(\n    $input: DeleteFragranceCollectionInput!\n  ) {\n    deleteFragranceCollection(input: $input) {\n      ...AllFragranceCollection\n    }\n  }\n": types.DeleteFragranceCollectionDocument,
     "\n  mutation CreateFragranceCollectionItem(\n    $input: CreateFragranceCollectionItemInput!\n    $fragranceId: ID!\n  ) {\n    createFragranceCollectionItem(input: $input) {\n      ...AllFragranceCollectionItem\n      collection {\n        id\n        hasFragrance(fragranceId: $fragranceId)\n      }\n    }\n  }\n": types.CreateFragranceCollectionItemDocument,
@@ -190,8 +193,8 @@ const documents: Documents = {
     "\n  fragment AllTraitOption on TraitOption {\n    id\n    label\n    score\n  }\n": types.AllTraitOptionFragmentDoc,
     "\n  fragment AllTraitVoteDistribution on TraitVoteDistribution {\n    option {\n      ...AllTraitOption\n    }\n    votes\n  }\n": types.AllTraitVoteDistributionFragmentDoc,
     "\n  fragment AllTraitStats on TraitStats {\n    averageScore \n    totalVotes\n    distribution {\n      ...AllTraitVoteDistribution\n    }\n  }\n": types.AllTraitStatsFragmentDoc,
-    "\n  fragment Me on User {\n    id\n    username\n    email\n    avatar {\n      ...AllAsset\n    }\n  }\n": types.MeFragmentDoc,
-    "\n  fragment UserPreview on User {\n    id\n    username\n    avatar {\n      ...AllAsset\n    }\n  }\n": types.UserPreviewFragmentDoc,
+    "\n  fragment Me on User {\n    id\n    username\n    email\n\n    followerCount\n    followingCount\n\n    avatar {\n      ...AllAsset\n    }\n  }\n": types.MeFragmentDoc,
+    "\n  fragment UserPreview on User {\n    id\n    username\n\n    followerCount\n    followingCount\n\n    avatar {\n      ...AllAsset\n    }\n  }\n": types.UserPreviewFragmentDoc,
     "\n  mutation UpdateMe(\n    $input: UpdateMeInput!\n  ) {\n    updateMe(input: $input) {\n      ...Me\n    }\n  }\n": types.UpdateMeDocument,
     "\n  mutation SetMyAvatar(\n    $input: SetMyAvatarInput!\n  ) {\n    setMyAvatar(input: $input) {\n      ...Me\n    }\n  }\n": types.SetMyAvatarDocument,
     "\n  query Me {\n    me {\n      ...Me\n    }\n  }\n": types.MeDocument,
@@ -201,6 +204,7 @@ const documents: Documents = {
     "\n  query SearchUsers(\n    $input: SearchInput\n  ) {\n    searchUsers(input: $input) {\n      edges {\n        node {\n          ...UserPreview\n        }\n        offset\n      }\n      pageInfo {\n        ...AllSearchPageInfo\n      }\n    }\n  }\n": types.SearchUsersDocument,
     "\n  query UserCollection(\n    $userId: ID!\n    $collectionId: ID!\n  ) {\n    user(id: $userId) {\n      ...UserPreview\n      collection(id: $collectionId) {\n        ...AllFragranceCollection\n      }\n    }\n  }\n": types.UserCollectionDocument,
     "\n  query UserCollections(\n    $userId: ID!\n    $input: FragranceCollectionPaginationInput\n  ) {\n    user(id: $userId) {\n      ...UserPreview\n      collections(input: $input) {\n        edges {\n          node {\n            ...AllFragranceCollection\n          }\n          cursor\n        }\n        pageInfo {\n          ...AllPageInfo\n        }\n      }\n    }\n  }\n": types.UserCollectionsDocument,
+    "\n  query UserLikes(\n    $userId: ID!\n    $input: FragrancePaginationInput\n  ) {\n    user(id: $userId) {\n      ...UserPreview\n      likes(input: $input) {\n        edges {\n          node {\n            ...FragrancePreview\n          }\n          cursor\n        }\n        pageInfo {\n          ...AllPageInfo\n        }\n      }\n    }\n  }\n": types.UserLikesDocument,
     "\n  query UserReview(\n    $userId: ID!\n    $reviewId: ID!\n  ) {\n    user(id: $userId) {\n      ...UserPreview\n      review(id: $reviewId) {\n        ...AllFragranceReview\n      }\n    }\n  }\n": types.UserReviewDocument,
     "\n  query UserReviews(\n    $userId: ID!\n    $input: FragranceReviewPaginationInput\n  ) {\n    user(id: $userId) {\n      ...UserPreview\n      reviews(input: $input) {\n        edges {\n          node {\n            ...AllFragranceReview\n          }\n          cursor\n        }\n        pageInfo {\n          ...AllPageInfo\n        }\n      }\n    }\n  }\n": types.UserReviewsDocument,
     "\n  fragment AllPageInfo on PageInfo {\n    hasPreviousPage\n    hasNextPage\n    startCursor\n    endCursor\n  }\n": types.AllPageInfoFragmentDoc,
@@ -389,11 +393,15 @@ export function gql(source: "\n  fragment FragranceVoteInfo on Fragrance { \n   
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
+export function gql(source: "\n  fragment MyFragranceReview on Fragrance { \n    id\n    myReview {\n      ...AllFragranceReview\n    }\n  }\n"): (typeof documents)["\n  fragment MyFragranceReview on Fragrance { \n    id\n    myReview {\n      ...AllFragranceReview\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
 export function gql(source: "\n  mutation CreateFragranceReview(\n    $input: CreateFragranceReviewInput!\n  ) {\n    createFragranceReview(input: $input) {\n      ...AllFragranceReview\n    }\n  }\n"): (typeof documents)["\n  mutation CreateFragranceReview(\n    $input: CreateFragranceReviewInput!\n  ) {\n    createFragranceReview(input: $input) {\n      ...AllFragranceReview\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\n  mutation DeleteFragranceReview(\n    $input: DeleteFragranceReviewInput!\n  ) {\n    deleteFragranceReview(input: $input) {\n      id\n    }\n  }\n"): (typeof documents)["\n  mutation DeleteFragranceReview(\n    $input: DeleteFragranceReviewInput!\n  ) {\n    deleteFragranceReview(input: $input) {\n      id\n    }\n  }\n"];
+export function gql(source: "\n  mutation DeleteFragranceReview(\n    $input: DeleteFragranceReviewInput!\n  ) {\n    deleteFragranceReview(input: $input) {\n      ...AllFragranceReview\n    }\n  }\n"): (typeof documents)["\n  mutation DeleteFragranceReview(\n    $input: DeleteFragranceReviewInput!\n  ) {\n    deleteFragranceReview(input: $input) {\n      ...AllFragranceReview\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -541,11 +549,11 @@ export function gql(source: "\n  fragment AllTraitStats on TraitStats {\n    ave
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\n  fragment Me on User {\n    id\n    username\n    email\n    avatar {\n      ...AllAsset\n    }\n  }\n"): (typeof documents)["\n  fragment Me on User {\n    id\n    username\n    email\n    avatar {\n      ...AllAsset\n    }\n  }\n"];
+export function gql(source: "\n  fragment Me on User {\n    id\n    username\n    email\n\n    followerCount\n    followingCount\n\n    avatar {\n      ...AllAsset\n    }\n  }\n"): (typeof documents)["\n  fragment Me on User {\n    id\n    username\n    email\n\n    followerCount\n    followingCount\n\n    avatar {\n      ...AllAsset\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\n  fragment UserPreview on User {\n    id\n    username\n    avatar {\n      ...AllAsset\n    }\n  }\n"): (typeof documents)["\n  fragment UserPreview on User {\n    id\n    username\n    avatar {\n      ...AllAsset\n    }\n  }\n"];
+export function gql(source: "\n  fragment UserPreview on User {\n    id\n    username\n\n    followerCount\n    followingCount\n\n    avatar {\n      ...AllAsset\n    }\n  }\n"): (typeof documents)["\n  fragment UserPreview on User {\n    id\n    username\n\n    followerCount\n    followingCount\n\n    avatar {\n      ...AllAsset\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -582,6 +590,10 @@ export function gql(source: "\n  query UserCollection(\n    $userId: ID!\n    $c
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(source: "\n  query UserCollections(\n    $userId: ID!\n    $input: FragranceCollectionPaginationInput\n  ) {\n    user(id: $userId) {\n      ...UserPreview\n      collections(input: $input) {\n        edges {\n          node {\n            ...AllFragranceCollection\n          }\n          cursor\n        }\n        pageInfo {\n          ...AllPageInfo\n        }\n      }\n    }\n  }\n"): (typeof documents)["\n  query UserCollections(\n    $userId: ID!\n    $input: FragranceCollectionPaginationInput\n  ) {\n    user(id: $userId) {\n      ...UserPreview\n      collections(input: $input) {\n        edges {\n          node {\n            ...AllFragranceCollection\n          }\n          cursor\n        }\n        pageInfo {\n          ...AllPageInfo\n        }\n      }\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  query UserLikes(\n    $userId: ID!\n    $input: FragrancePaginationInput\n  ) {\n    user(id: $userId) {\n      ...UserPreview\n      likes(input: $input) {\n        edges {\n          node {\n            ...FragrancePreview\n          }\n          cursor\n        }\n        pageInfo {\n          ...AllPageInfo\n        }\n      }\n    }\n  }\n"): (typeof documents)["\n  query UserLikes(\n    $userId: ID!\n    $input: FragrancePaginationInput\n  ) {\n    user(id: $userId) {\n      ...UserPreview\n      likes(input: $input) {\n        edges {\n          node {\n            ...FragrancePreview\n          }\n          cursor\n        }\n        pageInfo {\n          ...AllPageInfo\n        }\n      }\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

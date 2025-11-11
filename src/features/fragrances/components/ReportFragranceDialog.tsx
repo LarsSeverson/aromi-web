@@ -75,7 +75,7 @@ const ReportFragranceDialog = (props: ReportFragranceDialogProps) => {
       onOpenChange={setIsDialogOpen}
     >
       <Dialog.Trigger
-        className='flex w-full items-center justify-start gap-2 rounded-xl bg-white p-3 hover:brightness-95'
+        className='flex w-full cursor-pointer items-center justify-start gap-2 rounded-xl bg-white p-3 hover:brightness-95'
       >
         <TbFlag
           size={20}

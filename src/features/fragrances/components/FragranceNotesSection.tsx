@@ -3,6 +3,7 @@ import React from 'react'
 import NotesPyramid from './NotesPyramid'
 import { type FragranceDetailFragment, NoteLayer } from '@/generated/graphql'
 import { useFragranceNotes } from '../hooks/useFragranceNotes'
+import { useNavigate } from '@tanstack/react-router'
 
 export interface FragranceNotesSectionProps {
   fragrance: FragranceDetailFragment
@@ -10,6 +11,8 @@ export interface FragranceNotesSectionProps {
 
 const FragranceNotesSection = (props: FragranceNotesSectionProps) => {
   const { fragrance } = props
+
+  const navigate = useNavigate()
 
   const { notes: topNotes, isLoading: isTopLoading } = useFragranceNotes(fragrance.id, { layer: NoteLayer.Top })
   const { notes: middleNotes, isLoading: isMiddleLoading } = useFragranceNotes(fragrance.id, { layer: NoteLayer.Middle })
@@ -30,6 +33,10 @@ const FragranceNotesSection = (props: FragranceNotesSectionProps) => {
     }
   ].filter(item => item.notes.length > 0)
 
+  const handleOnEmptyButtonClick = () => {
+    navigate({ to: '/fragrances/$id/review', params: { id: fragrance.id } })
+  }
+
   if (isTopLoading || isMiddleLoading || isBaseLoading) return null
 
   return (
@@ -39,6 +46,7 @@ const FragranceNotesSection = (props: FragranceNotesSectionProps) => {
       emptyButtonText='Vote on Notes'
       isEmpty={layers.length === 0}
       className='flex w-full min-w-0 flex-col'
+      onEmptyButtonClick={handleOnEmptyButtonClick}
     >
       <NotesPyramid
         layers={layers}

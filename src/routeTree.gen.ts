@@ -12,14 +12,19 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as UsersRouteRouteImport } from './routes/users/route'
 import { Route as SearchRouteRouteImport } from './routes/search/route'
 import { Route as FragrancesRouteRouteImport } from './routes/fragrances/route'
+import { Route as CollectionsRouteRouteImport } from './routes/collections/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as UsersIndexRouteImport } from './routes/users/index'
 import { Route as SearchIndexRouteImport } from './routes/search/index'
 import { Route as FragrancesIndexRouteImport } from './routes/fragrances/index'
 import { Route as AuthAccountRecoveryRouteImport } from './routes/auth/account-recovery'
+import { Route as UsersIdRouteRouteImport } from './routes/users/$id/route'
 import { Route as FragrancesIdRouteRouteImport } from './routes/fragrances/$id/route'
+import { Route as CollectionsIdRouteRouteImport } from './routes/collections/$id/route'
 import { Route as UsersIdIndexRouteImport } from './routes/users/$id/index'
 import { Route as FragrancesIdIndexRouteImport } from './routes/fragrances/$id/index'
+import { Route as UsersIdReviewsRouteImport } from './routes/users/$id/reviews'
+import { Route as UsersIdLikesRouteImport } from './routes/users/$id/likes'
 import { Route as FragrancesIdReviewRouteRouteImport } from './routes/fragrances/$id/review/route'
 import { Route as FragrancesIdReviewIndexRouteImport } from './routes/fragrances/$id/review/index'
 
@@ -36,6 +41,11 @@ const SearchRouteRoute = SearchRouteRouteImport.update({
 const FragrancesRouteRoute = FragrancesRouteRouteImport.update({
   id: '/fragrances',
   path: '/fragrances',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CollectionsRouteRoute = CollectionsRouteRouteImport.update({
+  id: '/collections',
+  path: '/collections',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -63,20 +73,40 @@ const AuthAccountRecoveryRoute = AuthAccountRecoveryRouteImport.update({
   path: '/auth/account-recovery',
   getParentRoute: () => rootRouteImport,
 } as any)
+const UsersIdRouteRoute = UsersIdRouteRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => UsersRouteRoute,
+} as any)
 const FragrancesIdRouteRoute = FragrancesIdRouteRouteImport.update({
   id: '/$id',
   path: '/$id',
   getParentRoute: () => FragrancesRouteRoute,
 } as any)
+const CollectionsIdRouteRoute = CollectionsIdRouteRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => CollectionsRouteRoute,
+} as any)
 const UsersIdIndexRoute = UsersIdIndexRouteImport.update({
-  id: '/$id/',
-  path: '/$id/',
-  getParentRoute: () => UsersRouteRoute,
+  id: '/',
+  path: '/',
+  getParentRoute: () => UsersIdRouteRoute,
 } as any)
 const FragrancesIdIndexRoute = FragrancesIdIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => FragrancesIdRouteRoute,
+} as any)
+const UsersIdReviewsRoute = UsersIdReviewsRouteImport.update({
+  id: '/reviews',
+  path: '/reviews',
+  getParentRoute: () => UsersIdRouteRoute,
+} as any)
+const UsersIdLikesRoute = UsersIdLikesRouteImport.update({
+  id: '/likes',
+  path: '/likes',
+  getParentRoute: () => UsersIdRouteRoute,
 } as any)
 const FragrancesIdReviewRouteRoute = FragrancesIdReviewRouteRouteImport.update({
   id: '/review',
@@ -91,25 +121,34 @@ const FragrancesIdReviewIndexRoute = FragrancesIdReviewIndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/collections': typeof CollectionsRouteRouteWithChildren
   '/fragrances': typeof FragrancesRouteRouteWithChildren
   '/search': typeof SearchRouteRouteWithChildren
   '/users': typeof UsersRouteRouteWithChildren
+  '/collections/$id': typeof CollectionsIdRouteRoute
   '/fragrances/$id': typeof FragrancesIdRouteRouteWithChildren
+  '/users/$id': typeof UsersIdRouteRouteWithChildren
   '/auth/account-recovery': typeof AuthAccountRecoveryRoute
   '/fragrances/': typeof FragrancesIndexRoute
   '/search/': typeof SearchIndexRoute
   '/users/': typeof UsersIndexRoute
   '/fragrances/$id/review': typeof FragrancesIdReviewRouteRouteWithChildren
+  '/users/$id/likes': typeof UsersIdLikesRoute
+  '/users/$id/reviews': typeof UsersIdReviewsRoute
   '/fragrances/$id/': typeof FragrancesIdIndexRoute
-  '/users/$id': typeof UsersIdIndexRoute
+  '/users/$id/': typeof UsersIdIndexRoute
   '/fragrances/$id/review/': typeof FragrancesIdReviewIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/collections': typeof CollectionsRouteRouteWithChildren
+  '/collections/$id': typeof CollectionsIdRouteRoute
   '/auth/account-recovery': typeof AuthAccountRecoveryRoute
   '/fragrances': typeof FragrancesIndexRoute
   '/search': typeof SearchIndexRoute
   '/users': typeof UsersIndexRoute
+  '/users/$id/likes': typeof UsersIdLikesRoute
+  '/users/$id/reviews': typeof UsersIdReviewsRoute
   '/fragrances/$id': typeof FragrancesIdIndexRoute
   '/users/$id': typeof UsersIdIndexRoute
   '/fragrances/$id/review': typeof FragrancesIdReviewIndexRoute
@@ -117,15 +156,20 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/collections': typeof CollectionsRouteRouteWithChildren
   '/fragrances': typeof FragrancesRouteRouteWithChildren
   '/search': typeof SearchRouteRouteWithChildren
   '/users': typeof UsersRouteRouteWithChildren
+  '/collections/$id': typeof CollectionsIdRouteRoute
   '/fragrances/$id': typeof FragrancesIdRouteRouteWithChildren
+  '/users/$id': typeof UsersIdRouteRouteWithChildren
   '/auth/account-recovery': typeof AuthAccountRecoveryRoute
   '/fragrances/': typeof FragrancesIndexRoute
   '/search/': typeof SearchIndexRoute
   '/users/': typeof UsersIndexRoute
   '/fragrances/$id/review': typeof FragrancesIdReviewRouteRouteWithChildren
+  '/users/$id/likes': typeof UsersIdLikesRoute
+  '/users/$id/reviews': typeof UsersIdReviewsRoute
   '/fragrances/$id/': typeof FragrancesIdIndexRoute
   '/users/$id/': typeof UsersIdIndexRoute
   '/fragrances/$id/review/': typeof FragrancesIdReviewIndexRoute
@@ -134,40 +178,54 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/collections'
     | '/fragrances'
     | '/search'
     | '/users'
+    | '/collections/$id'
     | '/fragrances/$id'
+    | '/users/$id'
     | '/auth/account-recovery'
     | '/fragrances/'
     | '/search/'
     | '/users/'
     | '/fragrances/$id/review'
+    | '/users/$id/likes'
+    | '/users/$id/reviews'
     | '/fragrances/$id/'
-    | '/users/$id'
+    | '/users/$id/'
     | '/fragrances/$id/review/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/collections'
+    | '/collections/$id'
     | '/auth/account-recovery'
     | '/fragrances'
     | '/search'
     | '/users'
+    | '/users/$id/likes'
+    | '/users/$id/reviews'
     | '/fragrances/$id'
     | '/users/$id'
     | '/fragrances/$id/review'
   id:
     | '__root__'
     | '/'
+    | '/collections'
     | '/fragrances'
     | '/search'
     | '/users'
+    | '/collections/$id'
     | '/fragrances/$id'
+    | '/users/$id'
     | '/auth/account-recovery'
     | '/fragrances/'
     | '/search/'
     | '/users/'
     | '/fragrances/$id/review'
+    | '/users/$id/likes'
+    | '/users/$id/reviews'
     | '/fragrances/$id/'
     | '/users/$id/'
     | '/fragrances/$id/review/'
@@ -175,6 +233,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CollectionsRouteRoute: typeof CollectionsRouteRouteWithChildren
   FragrancesRouteRoute: typeof FragrancesRouteRouteWithChildren
   SearchRouteRoute: typeof SearchRouteRouteWithChildren
   UsersRouteRoute: typeof UsersRouteRouteWithChildren
@@ -202,6 +261,13 @@ declare module '@tanstack/react-router' {
       path: '/fragrances'
       fullPath: '/fragrances'
       preLoaderRoute: typeof FragrancesRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/collections': {
+      id: '/collections'
+      path: '/collections'
+      fullPath: '/collections'
+      preLoaderRoute: typeof CollectionsRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -239,6 +305,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthAccountRecoveryRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/users/$id': {
+      id: '/users/$id'
+      path: '/$id'
+      fullPath: '/users/$id'
+      preLoaderRoute: typeof UsersIdRouteRouteImport
+      parentRoute: typeof UsersRouteRoute
+    }
     '/fragrances/$id': {
       id: '/fragrances/$id'
       path: '/$id'
@@ -246,12 +319,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FragrancesIdRouteRouteImport
       parentRoute: typeof FragrancesRouteRoute
     }
+    '/collections/$id': {
+      id: '/collections/$id'
+      path: '/$id'
+      fullPath: '/collections/$id'
+      preLoaderRoute: typeof CollectionsIdRouteRouteImport
+      parentRoute: typeof CollectionsRouteRoute
+    }
     '/users/$id/': {
       id: '/users/$id/'
-      path: '/$id'
-      fullPath: '/users/$id'
+      path: '/'
+      fullPath: '/users/$id/'
       preLoaderRoute: typeof UsersIdIndexRouteImport
-      parentRoute: typeof UsersRouteRoute
+      parentRoute: typeof UsersIdRouteRoute
     }
     '/fragrances/$id/': {
       id: '/fragrances/$id/'
@@ -259,6 +339,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/fragrances/$id/'
       preLoaderRoute: typeof FragrancesIdIndexRouteImport
       parentRoute: typeof FragrancesIdRouteRoute
+    }
+    '/users/$id/reviews': {
+      id: '/users/$id/reviews'
+      path: '/reviews'
+      fullPath: '/users/$id/reviews'
+      preLoaderRoute: typeof UsersIdReviewsRouteImport
+      parentRoute: typeof UsersIdRouteRoute
+    }
+    '/users/$id/likes': {
+      id: '/users/$id/likes'
+      path: '/likes'
+      fullPath: '/users/$id/likes'
+      preLoaderRoute: typeof UsersIdLikesRouteImport
+      parentRoute: typeof UsersIdRouteRoute
     }
     '/fragrances/$id/review': {
       id: '/fragrances/$id/review'
@@ -276,6 +370,17 @@ declare module '@tanstack/react-router' {
     }
   }
 }
+
+interface CollectionsRouteRouteChildren {
+  CollectionsIdRouteRoute: typeof CollectionsIdRouteRoute
+}
+
+const CollectionsRouteRouteChildren: CollectionsRouteRouteChildren = {
+  CollectionsIdRouteRoute: CollectionsIdRouteRoute,
+}
+
+const CollectionsRouteRouteWithChildren =
+  CollectionsRouteRoute._addFileChildren(CollectionsRouteRouteChildren)
 
 interface FragrancesIdReviewRouteRouteChildren {
   FragrancesIdReviewIndexRoute: typeof FragrancesIdReviewIndexRoute
@@ -330,14 +435,30 @@ const SearchRouteRouteWithChildren = SearchRouteRoute._addFileChildren(
   SearchRouteRouteChildren,
 )
 
-interface UsersRouteRouteChildren {
-  UsersIndexRoute: typeof UsersIndexRoute
+interface UsersIdRouteRouteChildren {
+  UsersIdLikesRoute: typeof UsersIdLikesRoute
+  UsersIdReviewsRoute: typeof UsersIdReviewsRoute
   UsersIdIndexRoute: typeof UsersIdIndexRoute
 }
 
-const UsersRouteRouteChildren: UsersRouteRouteChildren = {
-  UsersIndexRoute: UsersIndexRoute,
+const UsersIdRouteRouteChildren: UsersIdRouteRouteChildren = {
+  UsersIdLikesRoute: UsersIdLikesRoute,
+  UsersIdReviewsRoute: UsersIdReviewsRoute,
   UsersIdIndexRoute: UsersIdIndexRoute,
+}
+
+const UsersIdRouteRouteWithChildren = UsersIdRouteRoute._addFileChildren(
+  UsersIdRouteRouteChildren,
+)
+
+interface UsersRouteRouteChildren {
+  UsersIdRouteRoute: typeof UsersIdRouteRouteWithChildren
+  UsersIndexRoute: typeof UsersIndexRoute
+}
+
+const UsersRouteRouteChildren: UsersRouteRouteChildren = {
+  UsersIdRouteRoute: UsersIdRouteRouteWithChildren,
+  UsersIndexRoute: UsersIndexRoute,
 }
 
 const UsersRouteRouteWithChildren = UsersRouteRoute._addFileChildren(
@@ -346,6 +467,7 @@ const UsersRouteRouteWithChildren = UsersRouteRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CollectionsRouteRoute: CollectionsRouteRouteWithChildren,
   FragrancesRouteRoute: FragrancesRouteRouteWithChildren,
   SearchRouteRoute: SearchRouteRouteWithChildren,
   UsersRouteRoute: UsersRouteRouteWithChildren,

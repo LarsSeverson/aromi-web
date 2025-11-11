@@ -18,6 +18,7 @@ import SaveFragrancePopover from './SaveFragrancePopover'
 import { useFragranceAccords } from '../hooks/useFragranceAccords'
 import { useDebounce } from '@/hooks/useDebounce'
 import { useToastMessage } from '@/hooks/useToastMessage'
+import { useNavigate } from '@tanstack/react-router'
 
 export interface FragranceInfoSectionProps {
   fragrance: FragranceDetailFragment
@@ -29,6 +30,7 @@ const FragranceInfoSection = (props: FragranceInfoSectionProps) => {
   const { id, name, brand, votes, reviewInfo } = fragrance
   const { averageRating, count } = reviewInfo
 
+  const navigate = useNavigate()
   const { toastError } = useToastMessage()
 
   const { accords } = useFragranceAccords(id, { first: 10 })
@@ -54,17 +56,21 @@ const FragranceInfoSection = (props: FragranceInfoSectionProps) => {
     handleVoteOnFragrance(vote)
   }
 
+  const handleOnEmptyButtonClick = () => {
+    navigate({ to: '/fragrances/$id/review', params: { id } })
+  }
+
   return (
 
     <div
-      className='flex flex-1 flex-col max-w-md '
+      className='flex max-w-md flex-1 flex-col '
     >
 
       <div
-        className='flex justify-between items-center'
+        className='flex items-center justify-between'
       >
         <h2
-          className='font-semibold text-2xl truncate'
+          className='truncate text-2xl font-semibold'
         >
           {name}
         </h2>
@@ -81,7 +87,7 @@ const FragranceInfoSection = (props: FragranceInfoSectionProps) => {
       </h2>
 
       <div
-        className='flex flex-row items-center mt-4 mb-2'
+        className='mt-4 mb-2 flex flex-row items-center'
       >
         <RatingStars
           rating={averageRating}
@@ -91,14 +97,14 @@ const FragranceInfoSection = (props: FragranceInfoSectionProps) => {
         />
 
         <p
-          className='font-semibold text-sm opacity-80 ml-1'
+          className='ml-1 text-sm font-semibold opacity-80'
         >
           ({averageRating ?? 0} / 5.0)
         </p>
       </div>
 
       <div
-        className='flex flex-row items-end mb-3 gap-3'
+        className='mb-3 flex flex-row items-end gap-3'
       >
         <VoteButtonGroup
           votes={votes}
@@ -106,18 +112,18 @@ const FragranceInfoSection = (props: FragranceInfoSectionProps) => {
         />
 
         <BouncyButton
-          className='rounded-full px-3 py-0 flex items-center justify-center border gap-1 group'
+          className='group flex items-center justify-center gap-1 rounded-full border px-3 py-0'
           onClick={onScrollToReview}
         >
           <div
-            className='h-8 flex items-center justify-center group-hover:text-sinopia'
+            className='group-hover:text-sinopia flex h-8 items-center justify-center'
           >
             <TbMessage2Star
               size={18}
             />
           </div>
           <p
-            className='font-semibold text-sm'
+            className='text-sm font-semibold'
           >
             {formatNumber(count)}
           </p>
@@ -128,7 +134,7 @@ const FragranceInfoSection = (props: FragranceInfoSectionProps) => {
           onRenderTrigger={() => (
             <Popover.Trigger>
               <div
-                className='rounded-full px-3 h-[34px] flex items-center justify-center border gap-1 group hover:brightness-95 bg-white cursor-pointer'
+                className='group flex h-[34px] cursor-pointer items-center justify-center gap-1 rounded-full border bg-white px-3 hover:brightness-95'
               >
                 <PiShareFat
                   className='group-hover:text-sinopia'
@@ -136,7 +142,7 @@ const FragranceInfoSection = (props: FragranceInfoSectionProps) => {
                 />
 
                 <p
-                  className='font-semibold text-sm'
+                  className='text-sm font-semibold'
                 >
                   Share
                 </p>
@@ -146,7 +152,7 @@ const FragranceInfoSection = (props: FragranceInfoSectionProps) => {
         />
 
         <div
-          className='flex ml-auto'
+          className='ml-auto flex'
         >
           <SaveFragrancePopover
             fragrance={fragrance}
@@ -169,6 +175,7 @@ const FragranceInfoSection = (props: FragranceInfoSectionProps) => {
             isEmpty={accords.length === 0}
             emptyTitle='No accords yet'
             emptyButtonText='Vote on Accords'
+            onEmptyButtonClick={handleOnEmptyButtonClick}
           >
             <AccordsLadder
               accords={accords}

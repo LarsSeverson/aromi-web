@@ -54,7 +54,7 @@ const CollectionPopoverList = (props: CollectionPopoverListProps) => {
   return (
     <div
       ref={parentRef}
-      className='overflow-auto w-full mb-4'
+      className='mb-4 w-full overflow-auto'
       style={{ scrollbarGutter: 'stable' }}
     >
       <CreateCollectionDialog

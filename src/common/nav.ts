@@ -15,5 +15,5 @@ export const NAV_SEARCH: NavItem = {
 }
 
 export const NAV_PROFILE: NavItem = {
-  activePaths: ['/users/$id/']
+  activePaths: ['/users/$id/', '/users/$id/likes', '/users/$id/reviews']
 }

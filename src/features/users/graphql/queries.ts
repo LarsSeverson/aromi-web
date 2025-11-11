@@ -116,6 +116,28 @@ export const USER_COLLECTIONS_QUERY = gql(/* GraphQL */`
   }
 `)
 
+export const USER_LIKES_QUERY = gql(/* GraphQL */`
+  query UserLikes(
+    $userId: ID!
+    $input: FragrancePaginationInput
+  ) {
+    user(id: $userId) {
+      ...UserPreview
+      likes(input: $input) {
+        edges {
+          node {
+            ...FragrancePreview
+          }
+          cursor
+        }
+        pageInfo {
+          ...AllPageInfo
+        }
+      }
+    }
+  }
+`)
+
 export const USER_REVIEW_QUERY = gql(/* GraphQL */`
   query UserReview(
     $userId: ID!

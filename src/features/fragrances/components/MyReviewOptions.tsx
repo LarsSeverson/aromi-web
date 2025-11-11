@@ -3,6 +3,8 @@ import { MdOutlineRateReview } from 'react-icons/md'
 import DeleteReviewDialog from './DeleteReviewDialog'
 import { useNavigate } from '@tanstack/react-router'
 import type { AllFragranceReviewFragment } from '@/generated/graphql'
+import { useDeleteFragranceReview } from '../hooks/useDeleteFragranceReview'
+import { useToastMessage } from '@/hooks/useToastMessage'
 
 export interface MyReviewOptionsProps {
   review: AllFragranceReviewFragment
@@ -10,13 +12,33 @@ export interface MyReviewOptionsProps {
 
 const MyReviewOptions = (props: MyReviewOptionsProps) => {
   const { review } = props
-  const { fragrance } = review
-  const { id } = fragrance
+  const { id: reviewId, fragrance } = review
+  const { id: fragranceId } = fragrance
 
+  const { toastError, toastMessage } = useToastMessage()
   const navigate = useNavigate()
 
+  const { deleteReview } = useDeleteFragranceReview()
+
+  const handleDeleteReview = async () => {
+    const res = await deleteReview({ reviewId })
+
+    res.match(
+      () => {
+        toastMessage('Your review has been deleted')
+      },
+      error => {
+        toastError(error.message)
+      }
+    )
+  }
+
   const handleEditReviewClick = () => {
-    navigate({ to: '/fragrances/$id/review', params: { id } })
+    navigate({ to: '/fragrances/$id/review', params: { id: fragranceId } })
+  }
+
+  const handleOnConfirmDelete = () => {
+    handleDeleteReview()
   }
 
   return (
@@ -38,7 +60,9 @@ const MyReviewOptions = (props: MyReviewOptionsProps) => {
         </span>
       </button>
 
-      <DeleteReviewDialog />
+      <DeleteReviewDialog
+        onConfirm={handleOnConfirmDelete}
+      />
     </div>
   )
 }
