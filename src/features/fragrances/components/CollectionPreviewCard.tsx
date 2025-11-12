@@ -42,7 +42,7 @@ export const CollectionPreviewCard = (props: CollectionPreviewCardProps) => {
 
       <div>
         <h4
-          className='truncate font-medium'
+          className='truncate text-sm font-semibold'
         >
           {name}
         </h4>

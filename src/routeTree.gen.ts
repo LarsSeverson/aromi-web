@@ -23,6 +23,7 @@ import { Route as FragrancesIdRouteRouteImport } from './routes/fragrances/$id/r
 import { Route as CollectionsIdRouteRouteImport } from './routes/collections/$id/route'
 import { Route as UsersIdIndexRouteImport } from './routes/users/$id/index'
 import { Route as FragrancesIdIndexRouteImport } from './routes/fragrances/$id/index'
+import { Route as CollectionsIdIndexRouteImport } from './routes/collections/$id/index'
 import { Route as UsersIdReviewsRouteImport } from './routes/users/$id/reviews'
 import { Route as UsersIdLikesRouteImport } from './routes/users/$id/likes'
 import { Route as FragrancesIdReviewRouteRouteImport } from './routes/fragrances/$id/review/route'
@@ -98,6 +99,11 @@ const FragrancesIdIndexRoute = FragrancesIdIndexRouteImport.update({
   path: '/',
   getParentRoute: () => FragrancesIdRouteRoute,
 } as any)
+const CollectionsIdIndexRoute = CollectionsIdIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => CollectionsIdRouteRoute,
+} as any)
 const UsersIdReviewsRoute = UsersIdReviewsRouteImport.update({
   id: '/reviews',
   path: '/reviews',
@@ -125,7 +131,7 @@ export interface FileRoutesByFullPath {
   '/fragrances': typeof FragrancesRouteRouteWithChildren
   '/search': typeof SearchRouteRouteWithChildren
   '/users': typeof UsersRouteRouteWithChildren
-  '/collections/$id': typeof CollectionsIdRouteRoute
+  '/collections/$id': typeof CollectionsIdRouteRouteWithChildren
   '/fragrances/$id': typeof FragrancesIdRouteRouteWithChildren
   '/users/$id': typeof UsersIdRouteRouteWithChildren
   '/auth/account-recovery': typeof AuthAccountRecoveryRoute
@@ -135,6 +141,7 @@ export interface FileRoutesByFullPath {
   '/fragrances/$id/review': typeof FragrancesIdReviewRouteRouteWithChildren
   '/users/$id/likes': typeof UsersIdLikesRoute
   '/users/$id/reviews': typeof UsersIdReviewsRoute
+  '/collections/$id/': typeof CollectionsIdIndexRoute
   '/fragrances/$id/': typeof FragrancesIdIndexRoute
   '/users/$id/': typeof UsersIdIndexRoute
   '/fragrances/$id/review/': typeof FragrancesIdReviewIndexRoute
@@ -142,13 +149,13 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/collections': typeof CollectionsRouteRouteWithChildren
-  '/collections/$id': typeof CollectionsIdRouteRoute
   '/auth/account-recovery': typeof AuthAccountRecoveryRoute
   '/fragrances': typeof FragrancesIndexRoute
   '/search': typeof SearchIndexRoute
   '/users': typeof UsersIndexRoute
   '/users/$id/likes': typeof UsersIdLikesRoute
   '/users/$id/reviews': typeof UsersIdReviewsRoute
+  '/collections/$id': typeof CollectionsIdIndexRoute
   '/fragrances/$id': typeof FragrancesIdIndexRoute
   '/users/$id': typeof UsersIdIndexRoute
   '/fragrances/$id/review': typeof FragrancesIdReviewIndexRoute
@@ -160,7 +167,7 @@ export interface FileRoutesById {
   '/fragrances': typeof FragrancesRouteRouteWithChildren
   '/search': typeof SearchRouteRouteWithChildren
   '/users': typeof UsersRouteRouteWithChildren
-  '/collections/$id': typeof CollectionsIdRouteRoute
+  '/collections/$id': typeof CollectionsIdRouteRouteWithChildren
   '/fragrances/$id': typeof FragrancesIdRouteRouteWithChildren
   '/users/$id': typeof UsersIdRouteRouteWithChildren
   '/auth/account-recovery': typeof AuthAccountRecoveryRoute
@@ -170,6 +177,7 @@ export interface FileRoutesById {
   '/fragrances/$id/review': typeof FragrancesIdReviewRouteRouteWithChildren
   '/users/$id/likes': typeof UsersIdLikesRoute
   '/users/$id/reviews': typeof UsersIdReviewsRoute
+  '/collections/$id/': typeof CollectionsIdIndexRoute
   '/fragrances/$id/': typeof FragrancesIdIndexRoute
   '/users/$id/': typeof UsersIdIndexRoute
   '/fragrances/$id/review/': typeof FragrancesIdReviewIndexRoute
@@ -192,6 +200,7 @@ export interface FileRouteTypes {
     | '/fragrances/$id/review'
     | '/users/$id/likes'
     | '/users/$id/reviews'
+    | '/collections/$id/'
     | '/fragrances/$id/'
     | '/users/$id/'
     | '/fragrances/$id/review/'
@@ -199,13 +208,13 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/collections'
-    | '/collections/$id'
     | '/auth/account-recovery'
     | '/fragrances'
     | '/search'
     | '/users'
     | '/users/$id/likes'
     | '/users/$id/reviews'
+    | '/collections/$id'
     | '/fragrances/$id'
     | '/users/$id'
     | '/fragrances/$id/review'
@@ -226,6 +235,7 @@ export interface FileRouteTypes {
     | '/fragrances/$id/review'
     | '/users/$id/likes'
     | '/users/$id/reviews'
+    | '/collections/$id/'
     | '/fragrances/$id/'
     | '/users/$id/'
     | '/fragrances/$id/review/'
@@ -340,6 +350,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FragrancesIdIndexRouteImport
       parentRoute: typeof FragrancesIdRouteRoute
     }
+    '/collections/$id/': {
+      id: '/collections/$id/'
+      path: '/'
+      fullPath: '/collections/$id/'
+      preLoaderRoute: typeof CollectionsIdIndexRouteImport
+      parentRoute: typeof CollectionsIdRouteRoute
+    }
     '/users/$id/reviews': {
       id: '/users/$id/reviews'
       path: '/reviews'
@@ -371,12 +388,23 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface CollectionsIdRouteRouteChildren {
+  CollectionsIdIndexRoute: typeof CollectionsIdIndexRoute
+}
+
+const CollectionsIdRouteRouteChildren: CollectionsIdRouteRouteChildren = {
+  CollectionsIdIndexRoute: CollectionsIdIndexRoute,
+}
+
+const CollectionsIdRouteRouteWithChildren =
+  CollectionsIdRouteRoute._addFileChildren(CollectionsIdRouteRouteChildren)
+
 interface CollectionsRouteRouteChildren {
-  CollectionsIdRouteRoute: typeof CollectionsIdRouteRoute
+  CollectionsIdRouteRoute: typeof CollectionsIdRouteRouteWithChildren
 }
 
 const CollectionsRouteRouteChildren: CollectionsRouteRouteChildren = {
-  CollectionsIdRouteRoute: CollectionsIdRouteRoute,
+  CollectionsIdRouteRoute: CollectionsIdRouteRouteWithChildren,
 }
 
 const CollectionsRouteRouteWithChildren =

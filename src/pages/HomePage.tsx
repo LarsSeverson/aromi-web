@@ -45,7 +45,7 @@ export const HomePage = () => {
         <DynamicList
           items={fragrances}
           containerWidth={containerRect?.width}
-          loading={isLoading || isLoadingMore}
+          isLoading={isLoading || isLoadingMore}
           onRenderItem={onRenderFragrance}
           onRenderSkeleton={onRenderFragranceSkeleton}
           onEndReached={handleOnEndReached}

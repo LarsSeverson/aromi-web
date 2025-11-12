@@ -84,7 +84,7 @@ export const UserCollectionsTab = (props: UserCollectionsTabProps) => {
       >
         <DynamicList
           items={collections}
-          loading={isLoading || isLoadingMore}
+          isLoading={isLoading || isLoadingMore}
           containerWidth={containerRect?.width}
           itemHeight={300}
           itemWidth={350}

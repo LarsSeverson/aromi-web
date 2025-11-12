@@ -86,7 +86,7 @@ export const UserLikesTab = (props: UserLikesTabProps) => {
       >
         <DynamicList
           items={likes}
-          loading={isLoading || isLoadingMore}
+          isLoading={isLoading || isLoadingMore}
           containerWidth={containerRect?.width}
           gap={25}
           onRenderItem={onRenderFragrance}

@@ -49,7 +49,7 @@ type Documents = {
     "\n  fragment AllFragranceTrait on FragranceTrait { \n    id\n    type\n    name\n    options {\n      ...AllTraitOption\n    } \n    stats {\n      ...AllTraitStats\n    }\n    myVote {\n      ...AllFragranceTraitVote\n    }\n  }\n": typeof types.AllFragranceTraitFragmentDoc,
     "\n  fragment AllFragranceReview on FragranceReview { \n    id\n    rating\n    body\n\n    author {\n      ...UserPreview\n    }\n\n    fragrance {\n      ...FragrancePreview\n    }\n\n    votes {\n      ...AllVoteInfo\n    }\n    \n    createdAt\n  }\n": typeof types.AllFragranceReviewFragmentDoc,
     "\n  fragment AllFragranceReviewInfo on FragranceReviewInfo { \n    count\n    averageRating\n    distribution {\n      rating\n      count\n    }\n  }\n": typeof types.AllFragranceReviewInfoFragmentDoc,
-    "\n  fragment AllFragranceCollection on FragranceCollection { \n    id\n    __typename\n    name\n    previewItems {\n      ...AllFragranceCollectionItem\n    }\n    items {\n      ...AllFragranceCollectionItem\n    }\n    user {\n      ...UserPreview\n    }\n  }\n": typeof types.AllFragranceCollectionFragmentDoc,
+    "\n  fragment AllFragranceCollection on FragranceCollection { \n    ...FragranceCollectionPreview\n    info {\n      itemCount\n    } \n  }\n": typeof types.AllFragranceCollectionFragmentDoc,
     "\n  fragment FragranceCollectionPreview on FragranceCollection { \n    id\n    name\n    previewItems {\n      ...AllFragranceCollectionItem\n    }\n    user {\n      ...UserPreview\n    }\n  }\n": typeof types.FragranceCollectionPreviewFragmentDoc,
     "\n  fragment AllFragranceCollectionItem on FragranceCollectionItem { \n    id\n    fragrance {\n      ...FragrancePreview\n    }\n  }\n": typeof types.AllFragranceCollectionItemFragmentDoc,
     "\n  fragment FragranceCollectionItemWithCollection on FragranceCollectionItem { \n    ...AllFragranceCollectionItem\n    collection {\n      id\n    }\n  }\n": typeof types.FragranceCollectionItemWithCollectionFragmentDoc,
@@ -86,6 +86,7 @@ type Documents = {
     "\n  query FragranceCollection(\n    $id: ID!\n  ) { \n    fragranceCollection(id: $id) {\n      ...AllFragranceCollection\n    }\n  }\n": typeof types.FragranceCollectionDocument,
     "\n  query FragranceCollections(\n    $input: FragranceCollectionPaginationInput\n  ) { \n    fragranceCollections(input: $input) {\n      edges {\n        node {\n          ...FragranceCollectionPreview\n        }\n        cursor\n      }\n      pageInfo {\n        ...AllPageInfo\n      }\n    }\n  }\n": typeof types.FragranceCollectionsDocument,
     "\n  query FragranceCollectionHasFragrance(\n    $collectionId: ID!\n    $fragranceId: ID!\n  ) { \n    fragranceCollection(id: $collectionId) { \n      id\n      hasFragrance(fragranceId: $fragranceId)\n    }\n  }\n": typeof types.FragranceCollectionHasFragranceDocument,
+    "\n  query FragranceCollectionItems(\n    $collectionId: ID!\n    $input: FragranceCollectionItemPaginationInput\n  ) {\n    fragranceCollection(id: $collectionId) {\n      id\n      items(input: $input) {\n        edges {\n          node {\n            ...FragranceCollectionItemWithCollection\n          }\n          cursor\n        }\n        pageInfo {\n          ...AllPageInfo\n        }\n      }\n    }\n  }\n": typeof types.FragranceCollectionItemsDocument,
     "\n  fragment AllNote on Note { \n    id\n    name\n    thumbnail {\n      ...AllAsset\n    }\n  }\n": typeof types.AllNoteFragmentDoc,
     "\n  fragment NotePreview on Note { \n    id\n    name\n    thumbnail {\n      ...AllAsset\n    }\n  }\n": typeof types.NotePreviewFragmentDoc,
     "\n  query Note(\n    $id: ID!\n  ) {\n    note(id: $id) {\n      ...NotePreview\n    }\n  }\n": typeof types.NoteDocument,
@@ -148,7 +149,7 @@ const documents: Documents = {
     "\n  fragment AllFragranceTrait on FragranceTrait { \n    id\n    type\n    name\n    options {\n      ...AllTraitOption\n    } \n    stats {\n      ...AllTraitStats\n    }\n    myVote {\n      ...AllFragranceTraitVote\n    }\n  }\n": types.AllFragranceTraitFragmentDoc,
     "\n  fragment AllFragranceReview on FragranceReview { \n    id\n    rating\n    body\n\n    author {\n      ...UserPreview\n    }\n\n    fragrance {\n      ...FragrancePreview\n    }\n\n    votes {\n      ...AllVoteInfo\n    }\n    \n    createdAt\n  }\n": types.AllFragranceReviewFragmentDoc,
     "\n  fragment AllFragranceReviewInfo on FragranceReviewInfo { \n    count\n    averageRating\n    distribution {\n      rating\n      count\n    }\n  }\n": types.AllFragranceReviewInfoFragmentDoc,
-    "\n  fragment AllFragranceCollection on FragranceCollection { \n    id\n    __typename\n    name\n    previewItems {\n      ...AllFragranceCollectionItem\n    }\n    items {\n      ...AllFragranceCollectionItem\n    }\n    user {\n      ...UserPreview\n    }\n  }\n": types.AllFragranceCollectionFragmentDoc,
+    "\n  fragment AllFragranceCollection on FragranceCollection { \n    ...FragranceCollectionPreview\n    info {\n      itemCount\n    } \n  }\n": types.AllFragranceCollectionFragmentDoc,
     "\n  fragment FragranceCollectionPreview on FragranceCollection { \n    id\n    name\n    previewItems {\n      ...AllFragranceCollectionItem\n    }\n    user {\n      ...UserPreview\n    }\n  }\n": types.FragranceCollectionPreviewFragmentDoc,
     "\n  fragment AllFragranceCollectionItem on FragranceCollectionItem { \n    id\n    fragrance {\n      ...FragrancePreview\n    }\n  }\n": types.AllFragranceCollectionItemFragmentDoc,
     "\n  fragment FragranceCollectionItemWithCollection on FragranceCollectionItem { \n    ...AllFragranceCollectionItem\n    collection {\n      id\n    }\n  }\n": types.FragranceCollectionItemWithCollectionFragmentDoc,
@@ -185,6 +186,7 @@ const documents: Documents = {
     "\n  query FragranceCollection(\n    $id: ID!\n  ) { \n    fragranceCollection(id: $id) {\n      ...AllFragranceCollection\n    }\n  }\n": types.FragranceCollectionDocument,
     "\n  query FragranceCollections(\n    $input: FragranceCollectionPaginationInput\n  ) { \n    fragranceCollections(input: $input) {\n      edges {\n        node {\n          ...FragranceCollectionPreview\n        }\n        cursor\n      }\n      pageInfo {\n        ...AllPageInfo\n      }\n    }\n  }\n": types.FragranceCollectionsDocument,
     "\n  query FragranceCollectionHasFragrance(\n    $collectionId: ID!\n    $fragranceId: ID!\n  ) { \n    fragranceCollection(id: $collectionId) { \n      id\n      hasFragrance(fragranceId: $fragranceId)\n    }\n  }\n": types.FragranceCollectionHasFragranceDocument,
+    "\n  query FragranceCollectionItems(\n    $collectionId: ID!\n    $input: FragranceCollectionItemPaginationInput\n  ) {\n    fragranceCollection(id: $collectionId) {\n      id\n      items(input: $input) {\n        edges {\n          node {\n            ...FragranceCollectionItemWithCollection\n          }\n          cursor\n        }\n        pageInfo {\n          ...AllPageInfo\n        }\n      }\n    }\n  }\n": types.FragranceCollectionItemsDocument,
     "\n  fragment AllNote on Note { \n    id\n    name\n    thumbnail {\n      ...AllAsset\n    }\n  }\n": types.AllNoteFragmentDoc,
     "\n  fragment NotePreview on Note { \n    id\n    name\n    thumbnail {\n      ...AllAsset\n    }\n  }\n": types.NotePreviewFragmentDoc,
     "\n  query Note(\n    $id: ID!\n  ) {\n    note(id: $id) {\n      ...NotePreview\n    }\n  }\n": types.NoteDocument,
@@ -369,7 +371,7 @@ export function gql(source: "\n  fragment AllFragranceReviewInfo on FragranceRev
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\n  fragment AllFragranceCollection on FragranceCollection { \n    id\n    __typename\n    name\n    previewItems {\n      ...AllFragranceCollectionItem\n    }\n    items {\n      ...AllFragranceCollectionItem\n    }\n    user {\n      ...UserPreview\n    }\n  }\n"): (typeof documents)["\n  fragment AllFragranceCollection on FragranceCollection { \n    id\n    __typename\n    name\n    previewItems {\n      ...AllFragranceCollectionItem\n    }\n    items {\n      ...AllFragranceCollectionItem\n    }\n    user {\n      ...UserPreview\n    }\n  }\n"];
+export function gql(source: "\n  fragment AllFragranceCollection on FragranceCollection { \n    ...FragranceCollectionPreview\n    info {\n      itemCount\n    } \n  }\n"): (typeof documents)["\n  fragment AllFragranceCollection on FragranceCollection { \n    ...FragranceCollectionPreview\n    info {\n      itemCount\n    } \n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -514,6 +516,10 @@ export function gql(source: "\n  query FragranceCollections(\n    $input: Fragra
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(source: "\n  query FragranceCollectionHasFragrance(\n    $collectionId: ID!\n    $fragranceId: ID!\n  ) { \n    fragranceCollection(id: $collectionId) { \n      id\n      hasFragrance(fragranceId: $fragranceId)\n    }\n  }\n"): (typeof documents)["\n  query FragranceCollectionHasFragrance(\n    $collectionId: ID!\n    $fragranceId: ID!\n  ) { \n    fragranceCollection(id: $collectionId) { \n      id\n      hasFragrance(fragranceId: $fragranceId)\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  query FragranceCollectionItems(\n    $collectionId: ID!\n    $input: FragranceCollectionItemPaginationInput\n  ) {\n    fragranceCollection(id: $collectionId) {\n      id\n      items(input: $input) {\n        edges {\n          node {\n            ...FragranceCollectionItemWithCollection\n          }\n          cursor\n        }\n        pageInfo {\n          ...AllPageInfo\n        }\n      }\n    }\n  }\n"): (typeof documents)["\n  query FragranceCollectionItems(\n    $collectionId: ID!\n    $input: FragranceCollectionItemPaginationInput\n  ) {\n    fragranceCollection(id: $collectionId) {\n      id\n      items(input: $input) {\n        edges {\n          node {\n            ...FragranceCollectionItemWithCollection\n          }\n          cursor\n        }\n        pageInfo {\n          ...AllPageInfo\n        }\n      }\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

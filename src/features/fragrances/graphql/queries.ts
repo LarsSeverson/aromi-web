@@ -230,3 +230,25 @@ export const FRAGRANCE_COLLECTION_HAS_FRAGRANCE_QUERY = gql(/* GraphQL */ `
     }
   }
 `)
+
+export const FRAGRANCE_COLLECTION_ITEMS_QUERY = gql(/* GraphQL */ `
+  query FragranceCollectionItems(
+    $collectionId: ID!
+    $input: FragranceCollectionItemPaginationInput
+  ) {
+    fragranceCollection(id: $collectionId) {
+      id
+      items(input: $input) {
+        edges {
+          node {
+            ...FragranceCollectionItemWithCollection
+          }
+          cursor
+        }
+        pageInfo {
+          ...AllPageInfo
+        }
+      }
+    }
+  }
+`)

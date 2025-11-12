@@ -28,7 +28,7 @@ const SaveFragrancePopover = (props: SaveFragrancePopoverProps) => {
       <Popover.Trigger
         tabIndex={0}
         className={clsx(
-          'bg-sinopia text-white rounded-full px-7 py-3 hover:shadow-lg hover:brightness-105',
+          'bg-sinopia rounded-full px-7 py-3 text-white hover:shadow-lg hover:brightness-105',
           'cursor-pointer'
         )}
         onClick={handlePopoverTriggerClick}

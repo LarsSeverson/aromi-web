@@ -134,18 +134,10 @@ export const ALL_FRAGRANCE_REVIEW_INFO_FRAGMENT = gql(/* GraphQL */ `
 
 export const ALL_FRAGRANCE_COLLECTION_FRAGMENT = gql(/* GraphQL */ `
   fragment AllFragranceCollection on FragranceCollection { 
-    id
-    __typename
-    name
-    previewItems {
-      ...AllFragranceCollectionItem
-    }
-    items {
-      ...AllFragranceCollectionItem
-    }
-    user {
-      ...UserPreview
-    }
+    ...FragranceCollectionPreview
+    info {
+      itemCount
+    } 
   }
 `)
 

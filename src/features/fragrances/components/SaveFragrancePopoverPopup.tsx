@@ -48,11 +48,11 @@ const SaveFragrancePopoverPopup = (props: SaveFragrancePopoverPopupProps) => {
   return (
     <div>
       <Popover.Popup
-        className='bg-white w-[26rem] max-h-[32rem] rounded-xl shadow-xl flex flex-col justify-center items-center overflow-hidden'
+        className='flex max-h-128 w-104 flex-col items-center justify-center overflow-hidden rounded-xl bg-white shadow-xl'
         onClick={handlePopoverClick}
       >
         <Popover.Title
-          className='font-semibold p-5'
+          className='p-5 font-semibold'
         >
           Save
         </Popover.Title>
@@ -62,14 +62,14 @@ const SaveFragrancePopoverPopup = (props: SaveFragrancePopoverPopupProps) => {
         />
 
         <div
-          className='w-full h-full flex-1 p-2 justify-between flex shadow-[0_0px_10px_0px_rgba(0,0,0,0.1)]'
+          className='flex h-full w-full flex-1 justify-between p-2 shadow-[0_0px_10px_0px_rgba(0,0,0,0.1)]'
         >
 
           <div
-            className='flex text-md font-semibold items-center gap-2 ml-auto'
+            className='text-md ml-auto flex items-center gap-2 font-semibold'
           >
             <BouncyButton
-              className='rounded-3xl w-20 h-10'
+              className='h-10 w-20 rounded-3xl'
               onClick={handleOnCancel}
             >
               Cancel
@@ -77,7 +77,7 @@ const SaveFragrancePopoverPopup = (props: SaveFragrancePopoverPopupProps) => {
 
             {hasModified && (
               <BouncyButton
-                className='bg-sinopia rounded-3xl w-20 text-white h-10'
+                className='bg-sinopia h-10 w-20 rounded-3xl text-white'
                 onClick={handleOnSubmit}
               >
                 {isLoading && (

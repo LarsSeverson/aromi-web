@@ -9,7 +9,7 @@ export interface DynamicListProps<T extends Identifiable> extends React.HTMLAttr
   items: T[]
 
   containerWidth: number
-  loading?: boolean | undefined
+  isLoading?: boolean | undefined
   itemWidth?: number | undefined
   maxWidth?: number | undefined
   itemHeight?: number | undefined
@@ -27,7 +27,7 @@ export const DynamicList = <T extends Identifiable, >(props: DynamicListProps<T>
   const {
     items,
     containerWidth,
-    loading = false,
+    isLoading = false,
     itemWidth = 275,
     maxWidth = 400,
     itemHeight = 392,
@@ -45,7 +45,7 @@ export const DynamicList = <T extends Identifiable, >(props: DynamicListProps<T>
   const ratio = itemHeight / itemWidth
   const colCount = Math.max(1, Math.floor(containerWidth / (minItemWidth + gap)))
   const remaining = items.length % colCount
-  const skeletonCount = loading ? (remaining === 0 ? 0 : colCount - remaining) + colCount : 0
+  const skeletonCount = isLoading ? (remaining === 0 ? 0 : colCount - remaining) + colCount : 0
   const total = items.length + skeletonCount
   const rowCount = Math.ceil(total / colCount)
 
@@ -99,7 +99,7 @@ export const DynamicList = <T extends Identifiable, >(props: DynamicListProps<T>
 
               const x = colIndex * (effectiveWidth + gap)
               const y = virtualRow.start
-              const isSkeleton = loading && idx >= items.length
+              const isSkeleton = isLoading && idx >= items.length
               const key = idx < items.length
                 ? items[idx].id
                 : `skeleton-${rowIndex}-${colIndex}`
