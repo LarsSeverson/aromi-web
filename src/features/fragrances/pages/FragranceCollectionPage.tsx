@@ -1,17 +1,22 @@
-import type { AllFragranceCollectionFragment } from '@/generated/graphql'
 import React from 'react'
 import CollectionHeader from '../components/CollectionHeader'
 import CollectionItemsGrid from '../components/CollectionItemsGrid'
 import Divider from '@/components/Divider'
+import useFragranceCollection from '../hooks/useFragranceCollection'
 
 export interface FragranceCollectionPageProps {
-  collection: AllFragranceCollectionFragment
+  collectionId: string
 }
 
 const FragranceCollectionPage = (props: FragranceCollectionPageProps) => {
-  const { collection } = props
-  const { info } = collection
-  const { itemCount } = info
+  const { collectionId } = props
+
+  const { collection } = useFragranceCollection(collectionId)
+  const { info } = collection ?? {}
+
+  const itemCount = info?.itemCount ?? 0
+
+  if (collection == null) return null
 
   return (
     <div

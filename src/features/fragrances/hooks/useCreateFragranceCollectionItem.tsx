@@ -3,6 +3,8 @@ import { CREATE_FRAGRANCE_COLLECTION_ITEM_MUTATION } from '../graphql/mutations'
 import type { AllFragranceCollectionItemFragment, CreateFragranceCollectionItemInput } from '@/generated/graphql'
 import { wrapQuery } from '@/utils/util'
 import { ALL_FRAGRANCE_COLLECTION_ITEM_FRAGMENT, HAS_FRAGRANCE_FIELD_FRAGMENT } from '../graphql/fragments'
+import type { NodeWithEdges } from '@/utils/pagination'
+import type { Reference } from '@apollo/client'
 
 export const useCreateFragranceCollectionItem = () => {
   const [createItemInner] = useMutation(CREATE_FRAGRANCE_COLLECTION_ITEM_MUTATION)
@@ -38,13 +40,21 @@ export const useCreateFragranceCollectionItem = () => {
           cache.modify({
             id: cachedCollectionId,
             fields: {
-              items: (existing = [], { readField }) => {
-                const fragments = existing as AllFragranceCollectionItemFragment[]
+              items: (existing = { edges: [] }) => {
+                const fragments = existing as NodeWithEdges<Reference>
 
-                const alreadyExists = fragments.some(ref => readField('id', ref) === newItem.id)
-                if (alreadyExists) return fragments
+                const newEdge = {
+                  __typename: 'FragranceCollectionItemEdge',
+                  node: newItemRef,
+                  cursor: ''
+                }
 
-                return [newItemRef, ...fragments]
+                const oldEdges = fragments.edges
+
+                return {
+                  ...fragments,
+                  edges: [newEdge, ...oldEdges]
+                }
               },
               previewItems: (existing = [], { readField }) => {
                 const fragments = existing as AllFragranceCollectionItemFragment[]

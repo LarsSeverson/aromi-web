@@ -7,10 +7,11 @@ import SortableItem from './SortableItem'
 
 export interface DraggableDynamicListProps<T extends Identifiable> extends Omit<DynamicListProps<T>, 'onRenderItem'> {
   onRenderItem: (item: T, index: number, isDragging: boolean) => React.ReactNode
+  onItemMove?: (movedId: string, beforeId: string | null) => void
 }
 
 const DraggableDynamicList = <T extends Identifiable>(props: DraggableDynamicListProps<T>) => {
-  const { items, onRenderItem, ...rest } = props
+  const { items, onRenderItem, onItemMove, ...rest } = props
 
   const sensors = useSensors(
     useSensor(
@@ -31,12 +32,16 @@ const DraggableDynamicList = <T extends Identifiable>(props: DraggableDynamicLis
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event
-    if (over != null && active.id !== over.id) {
-      const oldIndex = internalItems.findIndex(i => i.id === active.id)
-      const newIndex = internalItems.findIndex(i => i.id === over.id)
-      const updated = arrayMove(internalItems, oldIndex, newIndex)
-      setInternalItems(updated)
-    }
+    if (over == null || active.id === over.id) return
+
+    const oldIndex = internalItems.findIndex(i => i.id === active.id)
+    const newIndex = internalItems.findIndex(i => i.id === over.id)
+
+    const updated = arrayMove(internalItems, oldIndex, newIndex)
+    setInternalItems(updated)
+
+    const beforeId = newIndex === updated.length - 1 ? null : updated[newIndex + 1].id ?? null
+    onItemMove?.(String(active.id), beforeId)
   }
 
   const handleOnRenderItem = useCallback(

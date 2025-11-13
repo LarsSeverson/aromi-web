@@ -1,7 +1,9 @@
 import { Dialog } from '@base-ui-components/react'
-import React from 'react'
+import React, { type SyntheticEvent } from 'react'
 import DialogBackdrop from './DialogBackdrop'
 import DialogPopup from './DialogPopup'
+import Spinner from './Spinner'
+import clsx from 'clsx'
 
 export interface ConfirmationDialogProps extends Dialog.Root.Props {
   text?: string
@@ -9,7 +11,8 @@ export interface ConfirmationDialogProps extends Dialog.Root.Props {
   cancelText?: string
   confirmText?: string
 
-  onConfirm?: () => void
+  onCancel?: () => void
+  onConfirm?: () => void | Promise<void>
 }
 
 const ConfirmationDialog = (props: ConfirmationDialogProps) => {
@@ -18,13 +21,36 @@ const ConfirmationDialog = (props: ConfirmationDialogProps) => {
     subtext = 'You\'ll lose any edits you\'ve made. This can\'t be undone!',
     cancelText = 'Cancel',
     confirmText = 'Delete',
+    onCancel,
     onConfirm,
     children,
     ...rest
   } = props
 
+  const [isOpen, setIsOpen] = React.useState(false)
+  const [isLoading, setIsLoading] = React.useState(false)
+
+  const handleOnConfirm = async () => {
+    if (onConfirm == null) return
+
+    setIsLoading(true)
+    await onConfirm()
+    setIsLoading(false)
+
+    setIsOpen(false)
+  }
+
+  const handleOnConfirmClick = (event: SyntheticEvent) => {
+    event.stopPropagation()
+    event.preventDefault()
+
+    handleOnConfirm()
+  }
+
   return (
     <Dialog.Root
+      open={isOpen}
+      onOpenChange={setIsOpen}
       {...rest}
     >
       {children}
@@ -52,17 +78,34 @@ const ConfirmationDialog = (props: ConfirmationDialogProps) => {
             className='flex gap-3'
           >
             <Dialog.Close
+              disabled={isLoading}
               className='bg-empty text-md flex-1 cursor-pointer rounded-lg py-3 leading-none hover:bg-gray-200'
+              onClick={onCancel}
             >
               {cancelText}
             </Dialog.Close>
 
-            <Dialog.Close
-              className='flex-1 cursor-pointer rounded-lg bg-red-800 text-white hover:bg-red-700'
-              onClick={onConfirm}
+            <button
+              disabled={isLoading}
+              className='relative flex-1 cursor-pointer rounded-lg bg-red-800 text-white hover:bg-red-700'
+              onClick={handleOnConfirmClick}
             >
-              {confirmText}
-            </Dialog.Close>
+              <Spinner
+                className={clsx(
+                  'border-white',
+                  isLoading ? 'opacity-100' : 'opacity-0'
+                )}
+              />
+
+              <span
+                className={clsx(
+                  'block',
+                  isLoading ? 'opacity-0' : 'opacity-100'
+                )}
+              >
+                {confirmText}
+              </span>
+            </button>
           </div>
         </DialogPopup>
       </Dialog.Portal>

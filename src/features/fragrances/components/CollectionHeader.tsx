@@ -5,6 +5,7 @@ import CollectionOptionsPopover from './CollectionOptionsPopover'
 import UserAvatar from '@/features/users/components/UserAvatar'
 import ShareCollectionPopover from './ShareCollectionPopover'
 import { Link } from '@tanstack/react-router'
+import { useMyContext } from '@/features/users'
 
 export interface CollectionHeaderProps {
   collection: AllFragranceCollectionFragment
@@ -15,7 +16,10 @@ const CollectionHeader = (props: CollectionHeaderProps) => {
   const { name, previewItems, user } = collection
   const { username } = user
 
+  const { me } = useMyContext()
+
   const previewUrls = previewItems.map(item => item.fragrance.thumbnail?.url ?? '')
+  const isMyCollection = me?.id === user.id
 
   return (
     <div
@@ -37,7 +41,7 @@ const CollectionHeader = (props: CollectionHeaderProps) => {
           className='flex flex-col gap-1'
         >
           <span
-            className='truncate text-6xl font-semibold'
+            className='truncate text-6xl leading-normal font-semibold'
           >
             {name}
           </span>
@@ -76,9 +80,11 @@ const CollectionHeader = (props: CollectionHeaderProps) => {
           collection={collection}
         />
 
-        <CollectionOptionsPopover
-          collection={collection}
-        />
+        {isMyCollection && (
+          <CollectionOptionsPopover
+            collection={collection}
+          />
+        )}
       </div>
     </div>
   )

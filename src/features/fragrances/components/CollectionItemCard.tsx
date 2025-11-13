@@ -6,6 +6,7 @@ import FragranceImageCard from './FragranceImageCard'
 import SaveFragrancePopover from './SaveFragrancePopover'
 import ShareFragrancePopover from './ShareFragrancePopover'
 import CollectionItemOptionsPopover from './CollectionItemOptionsPopover'
+import { LuGrip } from 'react-icons/lu'
 
 export interface CollectionItemCardProps {
   item: AllFragranceCollectionItemFragment
@@ -66,9 +67,18 @@ const CollectionItemCard = (props: CollectionItemCardProps) => {
           </div>
 
           <div
+            className='pointer-events-auto absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'
+          >
+            <LuGrip
+              size={25}
+            />
+          </div>
+
+          <div
             className='pointer-events-auto absolute right-3 bottom-3 flex gap-2'
           >
             <CollectionItemOptionsPopover
+              item={item}
               onOpenChangeComplete={setIsSubPopoverOpen}
             />
 

@@ -6,6 +6,9 @@ import React from 'react'
 import { AiOutlineDelete } from 'react-icons/ai'
 import { HiDotsHorizontal } from 'react-icons/hi'
 import UpdateCollectionDialog from './UpdateCollectionDialog'
+import { useNavigate } from '@tanstack/react-router'
+import { useToastMessage } from '@/hooks/useToastMessage'
+import { useDeleteFraganceCollection } from '../hooks/useDeleteFragranceCollection'
 
 export interface CollectionOptionsPopoverProps {
   collection: AllFragranceCollectionFragment
@@ -14,8 +17,32 @@ export interface CollectionOptionsPopoverProps {
 const CollectionOptionsPopover = (props: CollectionOptionsPopoverProps) => {
   const { collection } = props
 
+  const navigate = useNavigate()
+  const { toastMessage, toastError } = useToastMessage()
+
+  const { deleteCollection } = useDeleteFraganceCollection()
+
+  const [isOpen, setIsOpen] = React.useState(false)
+
+  const handleConfirmDelete = async () => {
+    const res = await deleteCollection({ collectionId: collection.id })
+
+    res.match(
+      () => {
+        toastMessage('Collection deleted')
+        navigate({ to: '/collections' })
+      },
+      error => {
+        toastError(error.message)
+      }
+    )
+  }
+
   return (
-    <Popover.Root>
+    <Popover.Root
+      open={isOpen}
+      onOpenChange={setIsOpen}
+    >
       <Popover.Trigger
         className='aspect-square cursor-pointer rounded-lg bg-white p-3 hover:brightness-95'
       >
@@ -37,9 +64,13 @@ const CollectionOptionsPopover = (props: CollectionOptionsPopoverProps) => {
             >
               <UpdateCollectionDialog
                 collection={collection}
+                onClose={setIsOpen.bind(null, false)}
               />
 
-              <ConfirmationDialog>
+              <ConfirmationDialog
+                onCancel={setIsOpen.bind(null, false)}
+                onConfirm={handleConfirmDelete}
+              >
                 <Dialog.Trigger
                   className='group flex w-full cursor-pointer items-center justify-start gap-2 rounded-xl bg-white p-3 hover:brightness-95'
                 >

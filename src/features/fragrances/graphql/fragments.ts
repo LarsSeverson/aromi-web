@@ -160,6 +160,9 @@ export const ALL_FRAGRANCE_COLLECTION_ITEM_FRAGMENT = gql(/* GraphQL */ `
     fragrance {
       ...FragrancePreview
     }
+    collection {
+      id
+    }
   }
 `)
 

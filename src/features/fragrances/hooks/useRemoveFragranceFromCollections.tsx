@@ -1,9 +1,10 @@
 import { useMutation } from '@apollo/client/react'
 import { REMOVE_FRAGRANCE_FROM_COLLECTIONS_MUTATION } from '../graphql/mutations'
-import type { ApolloCache } from '@apollo/client'
+import type { ApolloCache, Reference } from '@apollo/client'
 import type { RemoveFragranceFromCollectionsInput, RemoveFragranceFromCollectionsMutation } from '@/generated/graphql'
 import { type Nullable, wrapQuery } from '@/utils/util'
 import { HAS_FRAGRANCE_FIELD_FRAGMENT } from '../graphql/fragments'
+import type { NodeWithEdges } from '@/utils/pagination'
 
 export const useRemoveFragranceFromCollections = () => {
   const [removeFragranceInner] = useMutation(REMOVE_FRAGRANCE_FROM_COLLECTIONS_MUTATION)
@@ -32,9 +33,14 @@ export const useRemoveFragranceFromCollections = () => {
       cache.modify({
         id: cachedCollectionId,
         fields: {
-          items: (existing = [], { readField }) => {
-            const fragments = existing as Array<typeof removedItem>
-            return fragments.filter(ref => readField('id', ref) !== removedItem.id)
+          items: (existing = { edges: [] }, { readField }) => {
+            const fragments = existing as NodeWithEdges<Reference>
+            const newEdges = fragments.edges.filter(ref => readField('id', ref.node) !== removedItem.id)
+
+            return {
+              ...fragments,
+              edges: newEdges
+            }
           },
           previewItems: (existing = [], { readField }) => {
             const fragments = existing as Array<typeof removedItem>

@@ -2,26 +2,62 @@ import GridImages from '@/components/GridImages'
 import { Overlay } from '@/components/Overlay'
 import Spinner from '@/components/Spinner'
 import type { FragranceCollectionPreviewFragment } from '@/generated/graphql'
+import { useToastMessage } from '@/hooks/useToastMessage'
 import { Dialog, Field, Form } from '@base-ui-components/react'
 import clsx from 'clsx'
 import React from 'react'
 import { MdOutlineRateReview } from 'react-icons/md'
+import { useUpdateFragranceCollection } from '../hooks/useUpdateFragranceCollection'
+import { useDebounce } from '@/hooks/useDebounce'
 
 export interface UpdateCollectionDialogProps {
   collection: FragranceCollectionPreviewFragment
+  onClose?: () => void
 }
 
 const UpdateCollectionDialog = (props: UpdateCollectionDialogProps) => {
-  const { collection } = props
+  const { collection, onClose } = props
   const { name, previewItems } = collection
 
-  const previewUrls = previewItems.map(item => item.fragrance.thumbnail?.url ?? '')
+  const { toastError, toastMessage } = useToastMessage()
+  const { updateCollection } = useUpdateFragranceCollection()
 
   const [isOpen, setIsOpen] = React.useState(false)
   const [isLoading, setIsLoading] = React.useState(false)
 
+  const previewUrls = previewItems.map(item => item.fragrance.thumbnail?.url ?? '')
+
+  const handleUpdateCollection = useDebounce(
+    async (updatedName: string) => {
+      const collectionId = collection.id
+      const res = await updateCollection({ collectionId, name: updatedName })
+
+      res.match(
+        () => {
+          toastMessage('Changes saved')
+
+          setIsOpen(false)
+          onClose?.()
+        },
+        error => {
+          toastError(error.message)
+        }
+      )
+
+      setIsLoading(false)
+    }
+  )
+
   const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+
+    const formData = new FormData(event.currentTarget)
+    const updatedName = formData.get('name') as string
+
+    if (updatedName == null) return
+
+    setIsLoading(true)
+    handleUpdateCollection(updatedName)
   }
 
   return (
@@ -98,6 +134,7 @@ const UpdateCollectionDialog = (props: UpdateCollectionDialogProps) => {
                   </Field.Label>
 
                   <Field.Control
+                    defaultValue={name}
                     required
                     placeholder='My New Collection'
                     className={clsx(
@@ -120,6 +157,7 @@ const UpdateCollectionDialog = (props: UpdateCollectionDialogProps) => {
             >
               <Dialog.Close
                 className='bg-empty cursor-pointer rounded-full px-7 py-3 hover:brightness-95'
+                onClick={onClose}
               >
                 Cancel
               </Dialog.Close>
@@ -139,7 +177,7 @@ const UpdateCollectionDialog = (props: UpdateCollectionDialogProps) => {
                 <div
                   className={clsx(isLoading && 'opacity-0')}
                 >
-                  Create
+                  Save
                 </div>
               </button>
             </div>

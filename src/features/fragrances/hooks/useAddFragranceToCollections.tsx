@@ -2,8 +2,9 @@ import { useMutation } from '@apollo/client/react'
 import { ADD_FRAGRANCE_TO_COLLECTIONS_MUTATION } from '../graphql/mutations'
 import type { AddFragranceToCollectionsInput, AddFragranceToCollectionsMutation } from '@/generated/graphql'
 import { wrapQuery } from '@/utils/util'
-import type { ApolloCache } from '@apollo/client'
+import type { ApolloCache, Reference } from '@apollo/client'
 import { FRAGRANCE_COLLECTION_ITEM_WITH_COLLECTION_FRAGMENT, HAS_FRAGRANCE_FIELD_FRAGMENT } from '../graphql/fragments'
+import type { NodeWithEdges } from '@/utils/pagination'
 
 export const useAddFragranceToCollections = () => {
   const [addFragranceInner] = useMutation(ADD_FRAGRANCE_TO_COLLECTIONS_MUTATION)
@@ -39,13 +40,21 @@ export const useAddFragranceToCollections = () => {
       cache.modify({
         id: cachedCollectionId,
         fields: {
-          items: (existing = [], { readField }) => {
-            const fragments = existing as Array<typeof newItem>
+          items: (existing = { edges: [] }) => {
+            const fragments = existing as NodeWithEdges<Reference>
 
-            const alreadyExists = fragments.some(ref => readField('id', ref) === newItem.id)
-            if (alreadyExists) return fragments
+            const newEdge = {
+              __typename: 'FragranceCollectionItemEdge',
+              node: newItemRef,
+              cursor: ''
+            }
 
-            return [newItemRef, ...fragments]
+            const oldEdges = fragments.edges
+
+            return {
+              ...fragments,
+              edges: [newEdge, ...oldEdges]
+            }
           },
           previewItems: (existing = [], { readField }) => {
             const fragments = existing as Array<typeof newItem>

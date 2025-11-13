@@ -11,7 +11,7 @@ function RouteComponent () {
 
   return (
     <FragranceCollectionPage
-      collection={collection}
+      collectionId={collection.id}
     />
   )
 }

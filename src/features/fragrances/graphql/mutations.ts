@@ -78,13 +78,11 @@ export const MOVE_FRAGRANCE_COLLECTION_ITEMS_MUTATION = gql(/* GraphQL */ `
 export const DELETE_FRAGRANCE_COLLECTION_ITEM_MUTATION = gql(/* GraphQL */ `
   mutation DeleteFragranceCollectionItem(
     $input: DeleteFragranceCollectionItemInput!
-    $fragranceId: ID!
   ) {
     deleteFragranceCollectionItem(input: $input) {
       ...AllFragranceCollectionItem
       collection {
         id
-        hasFragrance(fragranceId: $fragranceId)
       }
     }
   }
