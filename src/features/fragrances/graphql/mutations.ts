@@ -30,6 +30,16 @@ export const CREATE_FRAGRANCE_COLLECTION_MUTATION = gql(/* GraphQL */ `
   }
 `)
 
+export const UPDATE_FRAGRANCE_COLLECTION_MUTATION = gql(/* GraphQL */ `
+  mutation UpdateFragranceCollection(
+    $input: UpdateFragranceCollectionInput!
+  ) {
+    updateFragranceCollection(input: $input) {
+      ...AllFragranceCollection
+    }
+  }
+`)
+
 export const DELETE_FRAGRANCE_COLLECTION_MUTATION = gql(/* GraphQL */ `
   mutation DeleteFragranceCollection(
     $input: DeleteFragranceCollectionInput!

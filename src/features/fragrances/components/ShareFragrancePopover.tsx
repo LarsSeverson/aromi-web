@@ -70,7 +70,7 @@ const ShareFragrancePopover = (props: ShareFragrancePopoverProps) => {
       {onRenderTrigger?.() ??
         (
           <Popover.Trigger
-            className='hover:bg-empty absolute bottom-3 left-3 cursor-pointer rounded-full border bg-white p-2 text-center'
+            className='hover:bg-empty cursor-pointer rounded-full border bg-white p-2 text-center'
             disabled={showLinkFeedback}
             onClick={handlePopoverTriggerClick}
           >

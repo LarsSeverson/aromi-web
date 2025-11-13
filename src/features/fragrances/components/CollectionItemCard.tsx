@@ -1,53 +1,27 @@
-import type { FragrancePreviewFragment } from '@/generated/graphql'
-import clsx from 'clsx'
-import React, { useState } from 'react'
-import { VoteButtonGroup } from '@/components/VoteButtonGroup'
+import type { AllFragranceCollectionItemFragment } from '@/generated/graphql'
 import { Link } from '@tanstack/react-router'
+import clsx from 'clsx'
+import React from 'react'
 import FragranceImageCard from './FragranceImageCard'
-import { useVoteOnFragrance } from '../hooks/useVoteOnFragrance'
-import ShareFragrancePopover from './ShareFragrancePopover'
 import SaveFragrancePopover from './SaveFragrancePopover'
-import { useToastMessage } from '@/hooks/useToastMessage'
-import { useDebounce } from '@/hooks/useDebounce'
+import ShareFragrancePopover from './ShareFragrancePopover'
+import CollectionItemOptionsPopover from './CollectionItemOptionsPopover'
 
-export interface FragrancePreviewCardProps {
-  fragrance: FragrancePreviewFragment
-  isDisabled?: boolean
+export interface CollectionItemCardProps {
+  item: AllFragranceCollectionItemFragment
+  isDragging?: boolean
 }
 
-export const FragrancePreviewCard = (props: FragrancePreviewCardProps) => {
-  const { fragrance, isDisabled = false, ...rest } = props
-  const { id, name, brand, votes } = fragrance
+const CollectionItemCard = (props: CollectionItemCardProps) => {
+  const { item, isDragging = false } = props
+  const { fragrance } = item
+  const { id, name, brand } = fragrance
 
-  const { toastError } = useToastMessage()
-
-  const { vote } = useVoteOnFragrance()
-
-  const [isSubPopoverOpen, setIsSubPopoverOpen] = useState(false)
-  const [isLinkFocused, setIsLinkFocused] = useState(false)
+  const [isSubPopoverOpen, setIsSubPopoverOpen] = React.useState(false)
+  const [isLinkFocused, setIsLinkFocused] = React.useState(false)
 
   const handleLinkFocus = () => {
     setIsLinkFocused(true)
-  }
-
-  const handleVoteOnFragrance = useDebounce(
-    async (userVote: number) => {
-      const res = await vote({ fragranceId: id, vote: userVote })
-
-      res.match(
-        () => {
-          //
-        },
-        () => {
-          toastError('', 'Something went wrong')
-        }
-      )
-    },
-    150
-  )
-
-  const handleOnVote = (vote: number) => {
-    handleVoteOnFragrance(vote)
   }
 
   return (
@@ -66,8 +40,7 @@ export const FragrancePreviewCard = (props: FragrancePreviewCardProps) => {
           className='pointer-events-auto flex flex-1 rounded-2xl'
           onFocus={handleLinkFocus}
           tabIndex={0}
-          disabled={isDisabled}
-          {...rest}
+          disabled={isDragging}
         >
           <FragranceImageCard
             isActive={isLinkFocused || isSubPopoverOpen}
@@ -77,7 +50,7 @@ export const FragrancePreviewCard = (props: FragrancePreviewCardProps) => {
 
         <div
           className={clsx(
-            isDisabled && 'hidden',
+            isDragging && 'hidden',
             'pointer-events-none absolute inset-0 opacity-0 transition-opacity',
             'group-hover:opacity-100 group-focus:opacity-100',
             (isLinkFocused || isSubPopoverOpen) && 'opacity-100'
@@ -93,23 +66,17 @@ export const FragrancePreviewCard = (props: FragrancePreviewCardProps) => {
           </div>
 
           <div
-            className='pointer-events-auto absolute bottom-3 left-3'
+            className='pointer-events-auto absolute right-3 bottom-3 flex gap-2'
           >
+            <CollectionItemOptionsPopover
+              onOpenChangeComplete={setIsSubPopoverOpen}
+            />
+
             <ShareFragrancePopover
               fragrance={fragrance}
               onOpenChangeComplete={setIsSubPopoverOpen}
             />
           </div>
-        </div>
-
-        <div
-          className='pointer-events-auto'
-        >
-          <VoteButtonGroup
-            votes={votes}
-            className='absolute right-3 bottom-3 z-10'
-            onVote={handleOnVote}
-          />
         </div>
       </div>
 
@@ -117,7 +84,7 @@ export const FragrancePreviewCard = (props: FragrancePreviewCardProps) => {
         to='/fragrances/$id'
         params={{ id }}
         className='px-1 pt-2'
-        disabled={isDisabled}
+        disabled={isDragging}
       >
         <div
           className='flex flex-row'
@@ -138,3 +105,5 @@ export const FragrancePreviewCard = (props: FragrancePreviewCardProps) => {
     </div>
   )
 }
+
+export default CollectionItemCard

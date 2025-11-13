@@ -1,9 +1,8 @@
 'use no memo'
 
+import type { Identifiable } from '@/utils/util'
 import { useWindowVirtualizer } from '@tanstack/react-virtual'
 import React, { useEffect, useLayoutEffect } from 'react'
-
-interface Identifiable { id: string | number }
 
 export interface DynamicListProps<T extends Identifiable> extends React.HTMLAttributes<HTMLDivElement> {
   items: T[]
@@ -107,6 +106,8 @@ export const DynamicList = <T extends Identifiable, >(props: DynamicListProps<T>
               return (
                 <div
                   key={key}
+                  data-index={idx}
+                  ref={rowVirtualizer.measureElement}
                   style={{
                     position: 'absolute',
                     top: 0,

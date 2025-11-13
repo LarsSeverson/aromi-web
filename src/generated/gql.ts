@@ -59,6 +59,7 @@ type Documents = {
     "\n  mutation CreateFragranceReview(\n    $input: CreateFragranceReviewInput!\n  ) {\n    createFragranceReview(input: $input) {\n      ...AllFragranceReview\n    }\n  }\n": typeof types.CreateFragranceReviewDocument,
     "\n  mutation DeleteFragranceReview(\n    $input: DeleteFragranceReviewInput!\n  ) {\n    deleteFragranceReview(input: $input) {\n      ...AllFragranceReview\n    }\n  }\n": typeof types.DeleteFragranceReviewDocument,
     "\n  mutation CreateFragranceCollection(\n    $input: CreateFragranceCollectionInput!\n  ) {\n    createFragranceCollection(input: $input) {\n      ...AllFragranceCollection\n    }\n  }\n": typeof types.CreateFragranceCollectionDocument,
+    "\n  mutation UpdateFragranceCollection(\n    $input: UpdateFragranceCollectionInput!\n  ) {\n    updateFragranceCollection(input: $input) {\n      ...AllFragranceCollection\n    }\n  }\n": typeof types.UpdateFragranceCollectionDocument,
     "\n  mutation DeleteFragranceCollection(\n    $input: DeleteFragranceCollectionInput!\n  ) {\n    deleteFragranceCollection(input: $input) {\n      ...AllFragranceCollection\n    }\n  }\n": typeof types.DeleteFragranceCollectionDocument,
     "\n  mutation CreateFragranceCollectionItem(\n    $input: CreateFragranceCollectionItemInput!\n    $fragranceId: ID!\n  ) {\n    createFragranceCollectionItem(input: $input) {\n      ...AllFragranceCollectionItem\n      collection {\n        id\n        hasFragrance(fragranceId: $fragranceId)\n      }\n    }\n  }\n": typeof types.CreateFragranceCollectionItemDocument,
     "\n  mutation MoveFragranceCollectionItems(\n    $input: MoveFragranceCollectionItemsInput!\n  ) {\n    moveFragranceCollectionItems(input: $input) {\n      ...AllFragranceCollectionItem\n    }\n  }\n": typeof types.MoveFragranceCollectionItemsDocument,
@@ -159,6 +160,7 @@ const documents: Documents = {
     "\n  mutation CreateFragranceReview(\n    $input: CreateFragranceReviewInput!\n  ) {\n    createFragranceReview(input: $input) {\n      ...AllFragranceReview\n    }\n  }\n": types.CreateFragranceReviewDocument,
     "\n  mutation DeleteFragranceReview(\n    $input: DeleteFragranceReviewInput!\n  ) {\n    deleteFragranceReview(input: $input) {\n      ...AllFragranceReview\n    }\n  }\n": types.DeleteFragranceReviewDocument,
     "\n  mutation CreateFragranceCollection(\n    $input: CreateFragranceCollectionInput!\n  ) {\n    createFragranceCollection(input: $input) {\n      ...AllFragranceCollection\n    }\n  }\n": types.CreateFragranceCollectionDocument,
+    "\n  mutation UpdateFragranceCollection(\n    $input: UpdateFragranceCollectionInput!\n  ) {\n    updateFragranceCollection(input: $input) {\n      ...AllFragranceCollection\n    }\n  }\n": types.UpdateFragranceCollectionDocument,
     "\n  mutation DeleteFragranceCollection(\n    $input: DeleteFragranceCollectionInput!\n  ) {\n    deleteFragranceCollection(input: $input) {\n      ...AllFragranceCollection\n    }\n  }\n": types.DeleteFragranceCollectionDocument,
     "\n  mutation CreateFragranceCollectionItem(\n    $input: CreateFragranceCollectionItemInput!\n    $fragranceId: ID!\n  ) {\n    createFragranceCollectionItem(input: $input) {\n      ...AllFragranceCollectionItem\n      collection {\n        id\n        hasFragrance(fragranceId: $fragranceId)\n      }\n    }\n  }\n": types.CreateFragranceCollectionItemDocument,
     "\n  mutation MoveFragranceCollectionItems(\n    $input: MoveFragranceCollectionItemsInput!\n  ) {\n    moveFragranceCollectionItems(input: $input) {\n      ...AllFragranceCollectionItem\n    }\n  }\n": types.MoveFragranceCollectionItemsDocument,
@@ -408,6 +410,10 @@ export function gql(source: "\n  mutation DeleteFragranceReview(\n    $input: De
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(source: "\n  mutation CreateFragranceCollection(\n    $input: CreateFragranceCollectionInput!\n  ) {\n    createFragranceCollection(input: $input) {\n      ...AllFragranceCollection\n    }\n  }\n"): (typeof documents)["\n  mutation CreateFragranceCollection(\n    $input: CreateFragranceCollectionInput!\n  ) {\n    createFragranceCollection(input: $input) {\n      ...AllFragranceCollection\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation UpdateFragranceCollection(\n    $input: UpdateFragranceCollectionInput!\n  ) {\n    updateFragranceCollection(input: $input) {\n      ...AllFragranceCollection\n    }\n  }\n"): (typeof documents)["\n  mutation UpdateFragranceCollection(\n    $input: UpdateFragranceCollectionInput!\n  ) {\n    updateFragranceCollection(input: $input) {\n      ...AllFragranceCollection\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

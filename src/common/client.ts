@@ -63,7 +63,8 @@ export const client = new ApolloClient({
               return existing as boolean ?? false
             },
             merge: false
-          }
+          },
+          items: customRelayPagination()
         }
       }
     }

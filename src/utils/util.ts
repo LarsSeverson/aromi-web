@@ -5,6 +5,8 @@ import type { PageInfo, SearchPageInfo } from '@/generated/graphql'
 
 export type Nullable<T> = T | null | undefined
 
+export interface Identifiable { id: string }
+
 export const noRes = okAsync(undefined)
 
 export const wrapQuery = <T>(promise: Promise<ApolloClient.QueryResult<T>>) => {

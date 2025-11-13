@@ -26,14 +26,14 @@ const TraitBucket = (props: TraitBucketProps) => {
       <Tooltip.Trigger
         className={clsx(
           className,
-          'h-8 min-w-0 w-full overflow-hidden group'
+          'group h-8 w-full min-w-0 overflow-hidden'
         )}
         onClick={onBucketClick?.bind(null, bucket.option.id)}
       >
         <div
           className={clsx(
             'h-8 w-full transition-colors',
-            'bg-sinopia transition-opacity ease-in-out duration-300'
+            'bg-sinopia transition-opacity duration-300 ease-in-out'
           )}
           style={{ opacity }}
         />
@@ -45,7 +45,7 @@ const TraitBucket = (props: TraitBucketProps) => {
         >
           <Tooltip.Popup
             className={clsx(
-              'flex flex-col rounded-md px-2 py-1 text-sm outline outline-gray-200 bg-white',
+              'flex flex-col rounded-md bg-white px-2 py-1 text-sm outline outline-gray-200',
               'data-ending-style:scale-90 data-ending-style:opacity-0 data-instant:duration-0 data-starting-style:scale-90 data-starting-style:opacity-0',
               'origin-(--transform-origin) transition-[transform,scale,opacity]',
               'shadow-lg shadow-gray-200'
@@ -63,14 +63,14 @@ const TraitBucket = (props: TraitBucketProps) => {
       </Tooltip.Portal>
 
       <span
-        className='mt-2 text-sm min-w-0 text-center truncate'
+        className='mt-2 min-w-0 truncate text-center text-sm'
       >
         {bucket.option.label}
       </span>
 
       {votes > 0 && (
         <span
-          className='text-xs font-medium text-black/50 min-w-0 text-center truncate'
+          className='min-w-0 truncate text-center text-xs font-medium text-black/50'
         >
           {formatNumber(votes)} {votes === 1 ? 'vote' : 'votes'}
         </span>

@@ -12,8 +12,7 @@ export interface CollectionHeaderProps {
 
 const CollectionHeader = (props: CollectionHeaderProps) => {
   const { collection } = props
-  const { name, previewItems, user, info } = collection
-  const { itemCount } = info
+  const { name, previewItems, user } = collection
   const { username } = user
 
   const previewUrls = previewItems.map(item => item.fragrance.thumbnail?.url ?? '')
@@ -42,7 +41,6 @@ const CollectionHeader = (props: CollectionHeaderProps) => {
           >
             {name}
           </span>
-
 
         </div>
 

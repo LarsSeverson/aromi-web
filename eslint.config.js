@@ -33,8 +33,7 @@ export default [
         ecmaFeatures: {
           jsx: true
         },
-        sourceType: 'module',
-        project: ['./tsconfig.app.json']
+        sourceType: 'module'
       },
       globals: {
         ...globals.browser,

@@ -1,11 +1,10 @@
-import React, { useCallback, useEffect } from 'react'
+import React, { useCallback } from 'react'
 import { useFragranceCollectionItems } from '../hooks/useFragranceCollectionItems'
 import { ResizeContainer } from '@/components/ResizeContainer'
-import { DynamicList } from '@/components/DynamicList'
 import type { AllFragranceCollectionItemFragment } from '@/generated/graphql'
-import { FragrancePreviewCard } from './FragrancePreviewCard'
 import FragrancePreviewCardSkeleton from './FragrancePreviewCardSkeleton'
-import { DndContext } from '@dnd-kit/core'
+import DraggableDynamicList from '@/components/DraggableDynamicList'
+import CollectionItemCard from './CollectionItemCard'
 
 export interface CollectionItemsGridProps {
   collectionId: string
@@ -16,15 +15,14 @@ const CollectionItemsGrid = (props: CollectionItemsGridProps) => {
 
   const { items, isLoading, isLoadingMore, loadMore } = useFragranceCollectionItems(collectionId)
 
-  const [renderedItems, setRenderedItems] = React.useState(items)
   const [containerRect, setContainerRect] = React.useState(new DOMRect())
 
   const onRenderItem = useCallback(
-    (item: AllFragranceCollectionItemFragment) => {
+    (item: AllFragranceCollectionItemFragment, _: number, isDragging: boolean) => {
       return (
-        <FragrancePreviewCard
-          key={item.id}
-          fragrance={item.fragrance}
+        <CollectionItemCard
+          item={item}
+          isDragging={isDragging}
         />
       )
     },
@@ -38,27 +36,8 @@ const CollectionItemsGrid = (props: CollectionItemsGridProps) => {
     []
   )
 
-  const handleLoadMore = async () => {
-    const newItems = (await loadMore().unwrapOr([])) ?? []
-
-    if (newItems.length === 0) return
-
-    setRenderedItems(prevItems => {
-      const existing = new Set(prevItems.map(i => i.id))
-      const merged = prevItems.slice()
-
-      for (const newItem of newItems) {
-        if (!existing.has(newItem.id)) {
-          merged.push(newItem)
-        }
-      }
-
-      return merged
-    })
-  }
-
   const handleOnEndReached = () => {
-    handleLoadMore()
+    loadMore()
   }
 
   return (
@@ -68,16 +47,14 @@ const CollectionItemsGrid = (props: CollectionItemsGridProps) => {
       <ResizeContainer
         onResize={setContainerRect}
       >
-        <DndContext>
-          <DynamicList
-            items={items}
-            isLoading={isLoading || isLoadingMore}
-            containerWidth={containerRect?.width}
-            onRenderItem={onRenderItem}
-            onRenderSkeleton={onRenderItemSkeleton}
-            onEndReached={handleOnEndReached}
-          />
-        </DndContext>
+        <DraggableDynamicList
+          items={items}
+          isLoading={isLoading || isLoadingMore}
+          containerWidth={containerRect.width}
+          onEndReached={handleOnEndReached}
+          onRenderItem={onRenderItem}
+          onRenderSkeleton={onRenderItemSkeleton}
+        />
       </ResizeContainer>
     </div>
   )

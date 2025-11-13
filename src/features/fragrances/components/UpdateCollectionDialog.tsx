@@ -1,52 +1,27 @@
-import React, { useState } from 'react'
-import { Dialog, Field, Form } from '@base-ui-components/react'
-import clsx from 'clsx'
-import blankFragranceThumbnail from '@/assets/blank-fragrance-thumbnail.svg'
+import GridImages from '@/components/GridImages'
 import { Overlay } from '@/components/Overlay'
 import Spinner from '@/components/Spinner'
-import { FiPlus } from 'react-icons/fi'
-import type { FragrancePreviewFragment } from '@/generated/graphql'
-import { useCreateFragranceCollection } from '../hooks/useCreateFragranceCollection'
-import { useToastMessage } from '@/hooks/useToastMessage'
-import GridImages from '@/components/GridImages'
+import type { FragranceCollectionPreviewFragment } from '@/generated/graphql'
+import { Dialog, Field, Form } from '@base-ui-components/react'
+import clsx from 'clsx'
+import React from 'react'
+import { MdOutlineRateReview } from 'react-icons/md'
 
-export interface CreateCollectionDialogProps {
-  fragrance: FragrancePreviewFragment
+export interface UpdateCollectionDialogProps {
+  collection: FragranceCollectionPreviewFragment
 }
 
-const CreateCollectionDialog = (props: CreateCollectionDialogProps) => {
-  const { fragrance } = props
-  const { id, name, brand, thumbnail } = fragrance
+const UpdateCollectionDialog = (props: UpdateCollectionDialogProps) => {
+  const { collection } = props
+  const { name, previewItems } = collection
 
-  const { toastError } = useToastMessage()
-  const { createCollectionWithFragrance } = useCreateFragranceCollection()
+  const previewUrls = previewItems.map(item => item.fragrance.thumbnail?.url ?? '')
 
-  const [isOpen, setIsOpen] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
-
-  const handleNewCollection = async (name: string) => {
-    setIsLoading(true)
-
-    await createCollectionWithFragrance(id, name)
-      .match(
-        () => {
-          setIsOpen(false)
-        },
-        ({ message }) => {
-          toastError(message, 'Failed to create collection')
-        }
-      )
-
-    setIsLoading(false)
-  }
+  const [isOpen, setIsOpen] = React.useState(false)
+  const [isLoading, setIsLoading] = React.useState(false)
 
   const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-
-    const formData = new FormData(event.currentTarget)
-    const name = formData.get('name') as string
-
-    handleNewCollection(name)
   }
 
   return (
@@ -55,24 +30,17 @@ const CreateCollectionDialog = (props: CreateCollectionDialogProps) => {
       onOpenChange={setIsOpen}
     >
       <Dialog.Trigger
-        className='flex w-full cursor-pointer items-center justify-between gap-2 rounded-md px-2 py-0 pr-4 hover:backdrop-brightness-95'
+        className='group flex w-full cursor-pointer items-center justify-start gap-2 rounded-xl bg-white p-3 hover:brightness-95'
       >
-        <div
-          className='flex h-16 items-center gap-4 overflow-ellipsis'
-        >
-          <GridImages
-            urls={[thumbnail?.url ?? '']}
-            className='aspect-square h-12 shrink-0 rounded-md'
-          />
-
-          <h2>
-            New Collection
-          </h2>
-        </div>
-
-        <FiPlus
-          size={22}
+        <MdOutlineRateReview
+          size={20}
         />
+
+        <span
+          className='text-md font-semibold'
+        >
+          Edit collection
+        </span>
       </Dialog.Trigger>
 
       <Dialog.Portal>
@@ -86,7 +54,7 @@ const CreateCollectionDialog = (props: CreateCollectionDialogProps) => {
           <Dialog.Title
             className='p-6 text-center text-3xl font-medium'
           >
-            Create Collection
+            Edit Collection
           </Dialog.Title>
 
           <Form
@@ -102,9 +70,8 @@ const CreateCollectionDialog = (props: CreateCollectionDialogProps) => {
                 <div
                   className='relative overflow-hidden rounded-2xl'
                 >
-                  <img
-                    src={thumbnail?.url ?? blankFragranceThumbnail}
-                    alt={`${name} by ${brand.name}`}
+                  <GridImages
+                    urls={previewUrls}
                     className='aspect-square w-full object-cover'
                   />
 
@@ -115,12 +82,6 @@ const CreateCollectionDialog = (props: CreateCollectionDialogProps) => {
                   className='text-md mx-2 mt-2 truncate font-medium'
                 >
                   {name}
-                </p>
-
-                <p
-                  className='text-md mx-2 font-light'
-                >
-                  {brand.name}
                 </p>
               </div>
 
@@ -189,4 +150,4 @@ const CreateCollectionDialog = (props: CreateCollectionDialogProps) => {
   )
 }
 
-export default CreateCollectionDialog
+export default UpdateCollectionDialog
