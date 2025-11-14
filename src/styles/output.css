@@ -853,6 +853,15 @@
   .cursor-default {
     cursor: default;
   }
+  .cursor-grab {
+    cursor: grab;
+  }
+  .cursor-grabbing {
+    cursor: grabbing;
+  }
+  .cursor-grabbing\! {
+    cursor: grabbing !important;
+  }
   .cursor-not-allowed {
     cursor: not-allowed;
   }

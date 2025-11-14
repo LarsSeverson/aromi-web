@@ -25,9 +25,14 @@ const CollectionItemCard = (props: CollectionItemCardProps) => {
     setIsLinkFocused(true)
   }
 
+  if (isDragging && isLinkFocused) {
+    setIsLinkFocused(false)
+  }
+
   return (
     <div
       className={clsx(
+        isDragging && 'cursor-grabbing!',
         'group relative flex h-full flex-col hover:cursor-pointer'
       )}
       onMouseEnter={setIsLinkFocused.bind(null, false)}
@@ -51,14 +56,16 @@ const CollectionItemCard = (props: CollectionItemCardProps) => {
 
         <div
           className={clsx(
-            isDragging && 'hidden',
             'pointer-events-none absolute inset-0 opacity-0 transition-opacity',
             'group-hover:opacity-100 group-focus:opacity-100',
             (isLinkFocused || isSubPopoverOpen) && 'opacity-100'
           )}
         >
           <div
-            className='pointer-events-auto absolute top-3 right-3'
+            className={clsx(
+              isDragging && 'hidden',
+              'pointer-events-auto absolute top-3 right-3'
+            )}
           >
             <SaveFragrancePopover
               fragrance={fragrance}
@@ -67,7 +74,10 @@ const CollectionItemCard = (props: CollectionItemCardProps) => {
           </div>
 
           <div
-            className='pointer-events-auto absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'
+            className={clsx(
+              isDragging && 'cursor-grabbing',
+              'pointer-events-auto absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 cursor-grab'
+            )}
           >
             <LuGrip
               size={25}
@@ -75,7 +85,10 @@ const CollectionItemCard = (props: CollectionItemCardProps) => {
           </div>
 
           <div
-            className='pointer-events-auto absolute right-3 bottom-3 flex gap-2'
+            className={clsx(
+              isDragging && 'hidden',
+              'pointer-events-auto absolute right-3 bottom-3 flex gap-2'
+            )}
           >
             <CollectionItemOptionsPopover
               item={item}

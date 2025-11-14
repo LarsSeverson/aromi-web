@@ -4,6 +4,7 @@ import type { MoveFragranceCollectionItemsInput, MoveFragranceCollectionItemsMut
 import { type Nullable, wrapQuery } from '@/utils/util'
 import type { ApolloCache, Reference } from '@apollo/client'
 import type { NodeWithEdges } from '@/utils/pagination'
+import { ALL_FRAGRANCE_COLLECTION_ITEM_FRAGMENT } from '../graphql/fragments'
 
 export const useMoveFragranceCollectionItems = () => {
   const [moveItemsInner] = useMutation(MOVE_FRAGRANCE_COLLECTION_ITEMS_MUTATION)
@@ -18,7 +19,16 @@ export const useMoveFragranceCollectionItems = () => {
 
     if (updatedItems == null) return
 
-    const movedIds = updatedItems.map(item => item.id)
+    const movedIds = new Set(updatedItems.map(item => item.id))
+    const updatedItemsRefs = updatedItems.map(item =>
+      cache.writeFragment({
+        fragment: ALL_FRAGRANCE_COLLECTION_ITEM_FRAGMENT,
+        fragmentName: 'AllFragranceCollectionItem',
+        data: item,
+        broadcast: false
+      })
+    )
+
     const cachedCollectionId = cache.identify({ __typename: 'FragranceCollection', id: input.collectionId })
 
     cache.modify({
@@ -27,37 +37,27 @@ export const useMoveFragranceCollectionItems = () => {
         items: (existing = { edges: [] }, { readField }) => {
           const fragments = existing as NodeWithEdges<Reference>
 
-          const remainingEdges = fragments.edges.filter(ref => {
-            const id = readField('id', ref.node)
-            return id != null && !movedIds.includes(id as string)
-          })
+          const base = fragments.edges.filter(ref => !movedIds.has(readField('id', ref.node) ?? ''))
 
-          const newEdges = updatedItems.map(item => {
-            return {
+          const foundIndex = insertBefore == null
+            ? -1
+            : base.findIndex(ref => readField('id', ref.node) === insertBefore)
+
+          const insertIndex = foundIndex === -1 ? base.length : foundIndex
+
+          const newEdges = [
+            ...base.slice(0, insertIndex),
+            ...updatedItemsRefs.map(item => ({
               __typename: 'FragranceCollectionItemEdge',
               node: item,
               cursor: ''
-            }
-          })
-
-          const insertIndex = insertBefore == null
-            ? -1
-            : remainingEdges.findIndex(ref => readField('id', ref.node) === insertBefore)
-
-          if (insertIndex === -1) {
-            return {
-              ...fragments,
-              edges: [...remainingEdges, ...newEdges]
-            }
-          }
+            })),
+            ...base.slice(insertIndex)
+          ]
 
           return {
             ...fragments,
-            edges: [
-              ...remainingEdges.slice(0, insertIndex),
-              ...newEdges,
-              ...remainingEdges.slice(insertIndex)
-            ]
+            edges: newEdges
           }
         }
       }
