@@ -6,6 +6,7 @@ import { AiOutlineDelete } from 'react-icons/ai'
 import { HiDotsHorizontal } from 'react-icons/hi'
 import { useDeleteFragranceCollectionItem } from '../hooks/useDeleteFragranceCollectionItem'
 import { useToastMessage } from '@/hooks/useToastMessage'
+import { useMyContext } from '@/features/users'
 
 export interface CollectionItemOptionsPopoverProps extends Popover.Root.Props {
   item: AllFragranceCollectionItemFragment
@@ -14,9 +15,14 @@ export interface CollectionItemOptionsPopoverProps extends Popover.Root.Props {
 const CollectionItemOptionsPopover = (props: CollectionItemOptionsPopoverProps) => {
   const { item } = props
   const { collection } = item
+  const { user } = collection
+
+  const { me } = useMyContext()
 
   const { toastMessage, toastError } = useToastMessage()
   const { deleteItem } = useDeleteFragranceCollectionItem()
+
+  const isMyCollection = me?.id === user.id
 
   const handleDeleteItem = async () => {
     const collectionId = collection.id
@@ -37,6 +43,8 @@ const CollectionItemOptionsPopover = (props: CollectionItemOptionsPopoverProps) 
   const handleOnDeleteClick = () => {
     handleDeleteItem()
   }
+
+  if (!isMyCollection) return null
 
   return (
     <Popover.Root

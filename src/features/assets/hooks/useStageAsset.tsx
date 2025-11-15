@@ -21,9 +21,9 @@ export const useStageAsset = () => {
   ) => {
     const fileName = file.name
     const contentType = file.type
-    const sizeBytes = file.size
+    const contentSize = file.size
 
-    return stageAsset({ key, fileName, contentType, sizeBytes })
+    return stageAsset({ key, fileName, contentType, contentSize })
       .andThrough(presigned => upload(presigned, file, onProgress))
   }
 

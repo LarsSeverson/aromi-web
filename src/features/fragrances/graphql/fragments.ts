@@ -162,6 +162,9 @@ export const ALL_FRAGRANCE_COLLECTION_ITEM_FRAGMENT = gql(/* GraphQL */ `
     }
     collection {
       id
+      user {
+        id
+      }
     }
   }
 `)

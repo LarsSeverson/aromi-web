@@ -1,6 +1,8 @@
+import SettingsLayout from '@/layouts/SettingsLayout'
 import { createFileRoute, redirect } from '@tanstack/react-router'
 
-export const Route = createFileRoute('/users/')({
+export const Route = createFileRoute('/settings')({
+  component: RouteComponent,
   beforeLoad: ({ context }) => {
     const { me, utils } = context
 
@@ -12,10 +14,9 @@ export const Route = createFileRoute('/users/')({
         search: { showLogIn: true }
       })
     }
-
-    throw redirect({
-      to: '/users/$id',
-      params: { id: me.id }
-    })
   }
 })
+
+function RouteComponent () {
+  return <SettingsLayout />
+}

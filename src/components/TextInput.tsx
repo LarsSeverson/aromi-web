@@ -14,11 +14,11 @@ const TextInput = (props: TextInputProps) => {
 
   return (
     <Field.Root
-      name={label}
+      name={rest.name ?? label}
       className='flex flex-col'
     >
       <Field.Label
-        className='font-semibold text-md'
+        className='text-md font-semibold'
       >
         {label}
       </Field.Label>
@@ -26,14 +26,14 @@ const TextInput = (props: TextInputProps) => {
       <Field.Control
         className={({ valid }) =>
           clsx(
-            'p-2 my-1 border-2 rounded-md border-surface2',
+            'my-1 rounded-md border-2 p-2',
             valid === false && 'outline-red-600'
           )}
         {...rest}
       />
 
       <Field.Error
-        className='text-red-600 font-pd text-sm ml-1'
+        className='text-md ml-1 font-medium text-red-600'
       />
     </Field.Root>
   )

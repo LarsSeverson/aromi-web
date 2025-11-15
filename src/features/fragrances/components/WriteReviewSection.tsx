@@ -7,10 +7,11 @@ import { Field } from '@base-ui-components/react'
 
 export interface WriteReviewSectionProps {
   fragranceId: string
+  onBodyChange?: (body: string) => void
 }
 
 const WriteReviewSection = (props: WriteReviewSectionProps) => {
-  const { fragranceId } = props
+  const { fragranceId, onBodyChange } = props
 
   const { myReview, isLoading } = useMyFragranceReview(fragranceId)
 
@@ -19,6 +20,7 @@ const WriteReviewSection = (props: WriteReviewSectionProps) => {
 
   const handleOnValueChange = (value: string) => {
     setBody(value)
+    onBodyChange?.(value)
   }
 
   const handleValidate = (value: unknown) => {

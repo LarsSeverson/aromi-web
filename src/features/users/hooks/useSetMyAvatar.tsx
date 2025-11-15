@@ -21,13 +21,13 @@ export const useSetMyAvatar = () => {
   ) => {
     const fileName = file.name
     const contentType = file.type
-    const sizeBytes = file.size
+    const contentSize = file.size
 
     const stageInput: StageAssetInput = {
       key: 'USER_IMAGES',
       fileName,
       contentType,
-      sizeBytes
+      contentSize
     }
 
     return stageAsset(stageInput)

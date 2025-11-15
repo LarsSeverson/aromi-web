@@ -15,8 +15,9 @@ const SubmitButton = (props: SubmitButtonProps) => {
       type='submit'
       disabled={isLoading}
       className={clsx(
+        (props.disabled ?? false) ? 'cursor-default opacity-50 hover:brightness-100' : 'cursor-pointer hover:brightness-110',
         'relative flex h-full w-full items-center justify-center rounded-3xl py-2',
-        'bg-sinopia cursor-pointer font-medium text-white hover:brightness-110'
+        'bg-sinopia font-medium text-white'
       )}
       {...rest}
     >

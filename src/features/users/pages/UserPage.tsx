@@ -93,11 +93,12 @@ export const UserPage = (props: UserPageProps) => {
           />
 
           {isMyProfile && (
-            <button
-              className='bg-empty cursor-pointer rounded-lg px-4 py-2 hover:bg-gray-200'
+            <Link
+              to='/settings/profile'
+              className='bg-empty text-md cursor-pointer rounded-lg px-4 py-2 font-medium hover:bg-gray-200'
             >
               Edit profile
-            </button>
+            </Link>
           )}
         </div>
       </div>

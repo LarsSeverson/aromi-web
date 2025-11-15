@@ -13,13 +13,14 @@ const MenuItem = (props: MenuItemProps) => {
     <Menu.Item
       {...rest}
       className={clsx(
-        'outline-none cursor-pointer select-none',
-        'py-2 pl-4 pr-8 flex text-sm leading-4 relative items-center',
-        'data-[highlighted]:z-0 ',
-        'data-[highlighted]:before:content-[""] data-[highlighted]:before:absolute',
-        'data-[highlighted]:before:inset-y-0 data-[highlighted]:before:inset-x-1',
-        'data-[highlighted]:before:z-[-1] data-[highlighted]:before:rounded',
-        'data-[highlighted]:before:bg-black/10'
+        rest.className,
+        'cursor-pointer outline-none select-none',
+        'relative flex items-center py-3 pr-8 pl-4 text-sm leading-4',
+        'data-highlighted:z-0 ',
+        'data-highlighted:before:absolute data-highlighted:before:content-[""]',
+        'data-highlighted:before:inset-x-1 data-highlighted:before:inset-y-0',
+        'data-highlighted:before:z-[-1] data-highlighted:before:rounded',
+        'data-highlighted:before:bg-empty'
       )}
     >
       {children}

@@ -28,7 +28,7 @@ const AccountInfoItem = (props: AccountInfoItemProps) => {
         </div>
 
         <div
-          className='flex flex-col justify-center ml-3'
+          className='ml-3 flex flex-col justify-center'
         >
           <span
             className='font-semibold'
@@ -37,7 +37,7 @@ const AccountInfoItem = (props: AccountInfoItemProps) => {
           </span>
 
           <span
-            className='font-light text-black/80 mt-1'
+            className='mt-1 font-light text-black/80'
           >
             {email}
           </span>

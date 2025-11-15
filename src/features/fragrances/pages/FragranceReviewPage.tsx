@@ -36,6 +36,7 @@ const FragranceReviewPage = (props: FragranceReviewPageProps) => {
 
   const [errors, setError] = React.useState({})
   const [isLoading, setIsLoading] = React.useState(false)
+  const [hasChanges, setHasChanges] = React.useState(false)
 
   const hasReview = myReview != null
 
@@ -74,6 +75,11 @@ const FragranceReviewPage = (props: FragranceReviewPageProps) => {
 
     const createInput = { ...result.data, fragranceId: id }
     handleOnCreateFragranceReview(createInput)
+  }
+
+  const handleOnBodyChange = (body: string) => {
+    const difference = (myReview?.body ?? '') !== body
+    setHasChanges(difference)
   }
 
   return (
@@ -161,6 +167,7 @@ const FragranceReviewPage = (props: FragranceReviewPageProps) => {
 
         <WriteReviewSection
           fragranceId={id}
+          onBodyChange={handleOnBodyChange}
         />
 
         <div
@@ -170,6 +177,7 @@ const FragranceReviewPage = (props: FragranceReviewPageProps) => {
             className='w-full max-w-3xs'
           >
             <SubmitButton
+              disabled={!hasChanges || isLoading}
               isLoading={isLoading}
               text={hasReview ? 'Update Review' : 'Submit Review'}
             />

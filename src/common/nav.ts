@@ -15,5 +15,16 @@ export const NAV_SEARCH: NavItem = {
 }
 
 export const NAV_PROFILE: NavItem = {
-  activePaths: ['/users/$id/', '/users/$id/likes', '/users/$id/reviews']
+  activePaths: ['/users/$id', '/users/$id/', '/users/$id/likes', '/users/$id/reviews']
 }
+
+export const SETTINGS_NAV = [
+  {
+    heading: 'Edit profile',
+    to: '/settings/profile'
+  },
+  {
+    heading: 'Account management',
+    to: '/settings/account'
+  }
+]

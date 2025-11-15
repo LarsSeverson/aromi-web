@@ -37,6 +37,7 @@ const LogOutItem = () => {
       closeOnClick={false}
       disabled={isLoading}
       onClick={handleOnItemClick}
+      className='relative hover:text-red-700'
     >
       <HiOutlineLogout
         size={18}
@@ -51,7 +52,7 @@ const LogOutItem = () => {
 
       {isLoading && (
         <div
-          className='ml-auto'
+          className='absolute right-8'
         >
           <Spinner
             size={3}

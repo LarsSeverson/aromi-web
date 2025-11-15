@@ -10,11 +10,13 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as UsersRouteRouteImport } from './routes/users/route'
+import { Route as SettingsRouteRouteImport } from './routes/settings/route'
 import { Route as SearchRouteRouteImport } from './routes/search/route'
 import { Route as FragrancesRouteRouteImport } from './routes/fragrances/route'
 import { Route as CollectionsRouteRouteImport } from './routes/collections/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as UsersIndexRouteImport } from './routes/users/index'
+import { Route as SettingsIndexRouteImport } from './routes/settings/index'
 import { Route as SearchIndexRouteImport } from './routes/search/index'
 import { Route as FragrancesIndexRouteImport } from './routes/fragrances/index'
 import { Route as AuthAccountRecoveryRouteImport } from './routes/auth/account-recovery'
@@ -22,6 +24,8 @@ import { Route as UsersIdRouteRouteImport } from './routes/users/$id/route'
 import { Route as FragrancesIdRouteRouteImport } from './routes/fragrances/$id/route'
 import { Route as CollectionsIdRouteRouteImport } from './routes/collections/$id/route'
 import { Route as UsersIdIndexRouteImport } from './routes/users/$id/index'
+import { Route as SettingsProfileIndexRouteImport } from './routes/settings/profile/index'
+import { Route as SettingsAccountIndexRouteImport } from './routes/settings/account/index'
 import { Route as FragrancesIdIndexRouteImport } from './routes/fragrances/$id/index'
 import { Route as CollectionsIdIndexRouteImport } from './routes/collections/$id/index'
 import { Route as UsersIdReviewsRouteImport } from './routes/users/$id/reviews'
@@ -32,6 +36,11 @@ import { Route as FragrancesIdReviewIndexRouteImport } from './routes/fragrances
 const UsersRouteRoute = UsersRouteRouteImport.update({
   id: '/users',
   path: '/users',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsRouteRoute = SettingsRouteRouteImport.update({
+  id: '/settings',
+  path: '/settings',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SearchRouteRoute = SearchRouteRouteImport.update({
@@ -58,6 +67,11 @@ const UsersIndexRoute = UsersIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => UsersRouteRoute,
+} as any)
+const SettingsIndexRoute = SettingsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => SettingsRouteRoute,
 } as any)
 const SearchIndexRoute = SearchIndexRouteImport.update({
   id: '/',
@@ -93,6 +107,16 @@ const UsersIdIndexRoute = UsersIdIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => UsersIdRouteRoute,
+} as any)
+const SettingsProfileIndexRoute = SettingsProfileIndexRouteImport.update({
+  id: '/profile/',
+  path: '/profile/',
+  getParentRoute: () => SettingsRouteRoute,
+} as any)
+const SettingsAccountIndexRoute = SettingsAccountIndexRouteImport.update({
+  id: '/account/',
+  path: '/account/',
+  getParentRoute: () => SettingsRouteRoute,
 } as any)
 const FragrancesIdIndexRoute = FragrancesIdIndexRouteImport.update({
   id: '/',
@@ -130,6 +154,7 @@ export interface FileRoutesByFullPath {
   '/collections': typeof CollectionsRouteRouteWithChildren
   '/fragrances': typeof FragrancesRouteRouteWithChildren
   '/search': typeof SearchRouteRouteWithChildren
+  '/settings': typeof SettingsRouteRouteWithChildren
   '/users': typeof UsersRouteRouteWithChildren
   '/collections/$id': typeof CollectionsIdRouteRouteWithChildren
   '/fragrances/$id': typeof FragrancesIdRouteRouteWithChildren
@@ -137,12 +162,15 @@ export interface FileRoutesByFullPath {
   '/auth/account-recovery': typeof AuthAccountRecoveryRoute
   '/fragrances/': typeof FragrancesIndexRoute
   '/search/': typeof SearchIndexRoute
+  '/settings/': typeof SettingsIndexRoute
   '/users/': typeof UsersIndexRoute
   '/fragrances/$id/review': typeof FragrancesIdReviewRouteRouteWithChildren
   '/users/$id/likes': typeof UsersIdLikesRoute
   '/users/$id/reviews': typeof UsersIdReviewsRoute
   '/collections/$id/': typeof CollectionsIdIndexRoute
   '/fragrances/$id/': typeof FragrancesIdIndexRoute
+  '/settings/account': typeof SettingsAccountIndexRoute
+  '/settings/profile': typeof SettingsProfileIndexRoute
   '/users/$id/': typeof UsersIdIndexRoute
   '/fragrances/$id/review/': typeof FragrancesIdReviewIndexRoute
 }
@@ -152,11 +180,14 @@ export interface FileRoutesByTo {
   '/auth/account-recovery': typeof AuthAccountRecoveryRoute
   '/fragrances': typeof FragrancesIndexRoute
   '/search': typeof SearchIndexRoute
+  '/settings': typeof SettingsIndexRoute
   '/users': typeof UsersIndexRoute
   '/users/$id/likes': typeof UsersIdLikesRoute
   '/users/$id/reviews': typeof UsersIdReviewsRoute
   '/collections/$id': typeof CollectionsIdIndexRoute
   '/fragrances/$id': typeof FragrancesIdIndexRoute
+  '/settings/account': typeof SettingsAccountIndexRoute
+  '/settings/profile': typeof SettingsProfileIndexRoute
   '/users/$id': typeof UsersIdIndexRoute
   '/fragrances/$id/review': typeof FragrancesIdReviewIndexRoute
 }
@@ -166,6 +197,7 @@ export interface FileRoutesById {
   '/collections': typeof CollectionsRouteRouteWithChildren
   '/fragrances': typeof FragrancesRouteRouteWithChildren
   '/search': typeof SearchRouteRouteWithChildren
+  '/settings': typeof SettingsRouteRouteWithChildren
   '/users': typeof UsersRouteRouteWithChildren
   '/collections/$id': typeof CollectionsIdRouteRouteWithChildren
   '/fragrances/$id': typeof FragrancesIdRouteRouteWithChildren
@@ -173,12 +205,15 @@ export interface FileRoutesById {
   '/auth/account-recovery': typeof AuthAccountRecoveryRoute
   '/fragrances/': typeof FragrancesIndexRoute
   '/search/': typeof SearchIndexRoute
+  '/settings/': typeof SettingsIndexRoute
   '/users/': typeof UsersIndexRoute
   '/fragrances/$id/review': typeof FragrancesIdReviewRouteRouteWithChildren
   '/users/$id/likes': typeof UsersIdLikesRoute
   '/users/$id/reviews': typeof UsersIdReviewsRoute
   '/collections/$id/': typeof CollectionsIdIndexRoute
   '/fragrances/$id/': typeof FragrancesIdIndexRoute
+  '/settings/account/': typeof SettingsAccountIndexRoute
+  '/settings/profile/': typeof SettingsProfileIndexRoute
   '/users/$id/': typeof UsersIdIndexRoute
   '/fragrances/$id/review/': typeof FragrancesIdReviewIndexRoute
 }
@@ -189,6 +224,7 @@ export interface FileRouteTypes {
     | '/collections'
     | '/fragrances'
     | '/search'
+    | '/settings'
     | '/users'
     | '/collections/$id'
     | '/fragrances/$id'
@@ -196,12 +232,15 @@ export interface FileRouteTypes {
     | '/auth/account-recovery'
     | '/fragrances/'
     | '/search/'
+    | '/settings/'
     | '/users/'
     | '/fragrances/$id/review'
     | '/users/$id/likes'
     | '/users/$id/reviews'
     | '/collections/$id/'
     | '/fragrances/$id/'
+    | '/settings/account'
+    | '/settings/profile'
     | '/users/$id/'
     | '/fragrances/$id/review/'
   fileRoutesByTo: FileRoutesByTo
@@ -211,11 +250,14 @@ export interface FileRouteTypes {
     | '/auth/account-recovery'
     | '/fragrances'
     | '/search'
+    | '/settings'
     | '/users'
     | '/users/$id/likes'
     | '/users/$id/reviews'
     | '/collections/$id'
     | '/fragrances/$id'
+    | '/settings/account'
+    | '/settings/profile'
     | '/users/$id'
     | '/fragrances/$id/review'
   id:
@@ -224,6 +266,7 @@ export interface FileRouteTypes {
     | '/collections'
     | '/fragrances'
     | '/search'
+    | '/settings'
     | '/users'
     | '/collections/$id'
     | '/fragrances/$id'
@@ -231,12 +274,15 @@ export interface FileRouteTypes {
     | '/auth/account-recovery'
     | '/fragrances/'
     | '/search/'
+    | '/settings/'
     | '/users/'
     | '/fragrances/$id/review'
     | '/users/$id/likes'
     | '/users/$id/reviews'
     | '/collections/$id/'
     | '/fragrances/$id/'
+    | '/settings/account/'
+    | '/settings/profile/'
     | '/users/$id/'
     | '/fragrances/$id/review/'
   fileRoutesById: FileRoutesById
@@ -246,6 +292,7 @@ export interface RootRouteChildren {
   CollectionsRouteRoute: typeof CollectionsRouteRouteWithChildren
   FragrancesRouteRoute: typeof FragrancesRouteRouteWithChildren
   SearchRouteRoute: typeof SearchRouteRouteWithChildren
+  SettingsRouteRoute: typeof SettingsRouteRouteWithChildren
   UsersRouteRoute: typeof UsersRouteRouteWithChildren
   AuthAccountRecoveryRoute: typeof AuthAccountRecoveryRoute
 }
@@ -257,6 +304,13 @@ declare module '@tanstack/react-router' {
       path: '/users'
       fullPath: '/users'
       preLoaderRoute: typeof UsersRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/search': {
@@ -293,6 +347,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/users/'
       preLoaderRoute: typeof UsersIndexRouteImport
       parentRoute: typeof UsersRouteRoute
+    }
+    '/settings/': {
+      id: '/settings/'
+      path: '/'
+      fullPath: '/settings/'
+      preLoaderRoute: typeof SettingsIndexRouteImport
+      parentRoute: typeof SettingsRouteRoute
     }
     '/search/': {
       id: '/search/'
@@ -342,6 +403,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/users/$id/'
       preLoaderRoute: typeof UsersIdIndexRouteImport
       parentRoute: typeof UsersIdRouteRoute
+    }
+    '/settings/profile/': {
+      id: '/settings/profile/'
+      path: '/profile'
+      fullPath: '/settings/profile'
+      preLoaderRoute: typeof SettingsProfileIndexRouteImport
+      parentRoute: typeof SettingsRouteRoute
+    }
+    '/settings/account/': {
+      id: '/settings/account/'
+      path: '/account'
+      fullPath: '/settings/account'
+      preLoaderRoute: typeof SettingsAccountIndexRouteImport
+      parentRoute: typeof SettingsRouteRoute
     }
     '/fragrances/$id/': {
       id: '/fragrances/$id/'
@@ -463,6 +538,22 @@ const SearchRouteRouteWithChildren = SearchRouteRoute._addFileChildren(
   SearchRouteRouteChildren,
 )
 
+interface SettingsRouteRouteChildren {
+  SettingsIndexRoute: typeof SettingsIndexRoute
+  SettingsAccountIndexRoute: typeof SettingsAccountIndexRoute
+  SettingsProfileIndexRoute: typeof SettingsProfileIndexRoute
+}
+
+const SettingsRouteRouteChildren: SettingsRouteRouteChildren = {
+  SettingsIndexRoute: SettingsIndexRoute,
+  SettingsAccountIndexRoute: SettingsAccountIndexRoute,
+  SettingsProfileIndexRoute: SettingsProfileIndexRoute,
+}
+
+const SettingsRouteRouteWithChildren = SettingsRouteRoute._addFileChildren(
+  SettingsRouteRouteChildren,
+)
+
 interface UsersIdRouteRouteChildren {
   UsersIdLikesRoute: typeof UsersIdLikesRoute
   UsersIdReviewsRoute: typeof UsersIdReviewsRoute
@@ -498,6 +589,7 @@ const rootRouteChildren: RootRouteChildren = {
   CollectionsRouteRoute: CollectionsRouteRouteWithChildren,
   FragrancesRouteRoute: FragrancesRouteRouteWithChildren,
   SearchRouteRoute: SearchRouteRouteWithChildren,
+  SettingsRouteRoute: SettingsRouteRouteWithChildren,
   UsersRouteRoute: UsersRouteRouteWithChildren,
   AuthAccountRecoveryRoute: AuthAccountRecoveryRoute,
 }

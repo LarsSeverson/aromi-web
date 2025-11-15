@@ -67,7 +67,7 @@ const ShareUserPopover = (props: ShareUserPopoverProps) => {
       {...rest}
     >
       <Popover.Trigger
-        className='bg-empty cursor-pointer rounded-lg px-4 py-2 hover:bg-gray-200'
+        className='bg-empty text-md cursor-pointer rounded-lg px-4 py-2 font-medium hover:bg-gray-200'
         disabled={showLinkFeedback}
         onClick={handlePopoverTriggerClick}
       >

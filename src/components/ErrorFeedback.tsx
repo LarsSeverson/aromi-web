@@ -11,7 +11,7 @@ const ErrorFeedback = (props: ErrorFeedbackProps) => {
 
   return (
     <span
-      className='text-red-600 text-sm text-center'
+      className='text-center text-sm text-red-700'
     >
       {error}
     </span>

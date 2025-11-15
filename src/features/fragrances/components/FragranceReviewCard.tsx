@@ -8,6 +8,7 @@ import UserAvatar from '@/features/users/components/UserAvatar'
 import MoreOptionsReviewPopover from './MoreOptionsReviewPopover'
 import ProgressiveImage from '@/components/ProgressiveImage'
 import blankPreviewThumbnail from '@/assets/blank-fragrance-thumbnail.svg'
+import { Link } from '@tanstack/react-router'
 
 export interface FragranceReviewCardProps extends React.HTMLAttributes<HTMLDivElement> {
   review: AllFragranceReviewFragment
@@ -41,22 +42,32 @@ export const FragranceReviewCard = (props: FragranceReviewCardProps) => {
         >
           {isFragranceFocused ?
             (
-              <div
-                className='relative h-full w-16 overflow-hidden rounded-lg border'
+              <Link
+                to='/fragrances/$id'
+                params={{ id: fragrance.id }}
               >
-                <ProgressiveImage
-                  src={url ?? blankPreviewThumbnail}
-                  alt={`Thumbnail image for ${fragrance.name} by ${fragrance.brand.name}`}
-                  placeholderColor={primaryColor}
-                  fallbackImage={blankPreviewThumbnail}
-                />
-              </div>
+                <div
+                  className='relative h-full w-16 overflow-hidden rounded-lg border'
+                >
+                  <ProgressiveImage
+                    src={url ?? blankPreviewThumbnail}
+                    alt={`Thumbnail image for ${fragrance.name} by ${fragrance.brand.name}`}
+                    placeholderColor={primaryColor}
+                    fallbackImage={blankPreviewThumbnail}
+                  />
+                </div>
+              </Link>
             )
             :
             (
-              <UserAvatar
-                user={author}
-              />
+              <Link
+                to='/users/$id'
+                params={{ id: author.id }}
+              >
+                <UserAvatar
+                  user={author}
+                />
+              </Link>
             )}
 
         </div>
@@ -70,11 +81,13 @@ export const FragranceReviewCard = (props: FragranceReviewCardProps) => {
             <p
               className='truncate'
             >
-              <span
+              <Link
+                to={isFragranceFocused ? '/fragrances/$id' : '/users/$id'}
+                params={{ id: isFragranceFocused ? fragrance.id : author.id }}
                 className='text-md font-medium'
               >
                 {isFragranceFocused ? name : username}
-              </span>
+              </Link>
 
               <span> • </span>
 
