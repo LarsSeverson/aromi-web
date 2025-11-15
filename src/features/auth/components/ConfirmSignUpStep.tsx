@@ -80,16 +80,16 @@ const ConfirmSignUpStep = (props: ConfirmSignUpStepProps) => {
       onSubmit={(e) => { void handleSubmit(e) }}
     >
       <div
-        className='w-full my-3 px-2 flex flex-col'
+        className='my-3 flex w-full flex-col px-2'
       >
         <h1
-          className='text-2xl font-semibold text-center'
+          className='text-center text-2xl font-semibold'
         >
           Verify Your Account
         </h1>
 
         <div
-          className='mt-3 text-md text-center w-[80%] self-center'
+          className='text-md mt-3 w-[80%] self-center text-center'
         >
           {text}
         </div>
@@ -100,10 +100,10 @@ const ConfirmSignUpStep = (props: ConfirmSignUpStepProps) => {
       </div>
 
       <div
-        className='flex flex-col items-center justify-center mt-5 w-full'
+        className='mt-5 flex w-full flex-col items-center justify-center'
       >
         <div
-          className='flex flex-col gap-1 my-4'
+          className='my-4 flex flex-col gap-1'
         >
           <CodeInput />
 
@@ -111,7 +111,7 @@ const ConfirmSignUpStep = (props: ConfirmSignUpStepProps) => {
             type='button'
             disabled={isResendDisabled}
             className={clsx(
-              'text-sm hover:underline ml-auto',
+              'ml-auto text-sm hover:underline',
               isResendDisabled && 'opacity-60 hover:no-underline'
             )}
             onClick={(e) => { void handleResend(e) }}

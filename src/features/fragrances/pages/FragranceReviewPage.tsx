@@ -34,7 +34,7 @@ const FragranceReviewPage = (props: FragranceReviewPageProps) => {
   const { myReview } = useMyFragranceReview(id)
   const { createFragranceReview } = useCreateFragranceReview()
 
-  const [errors, setError] = React.useState({})
+  const [errors, setErrors] = React.useState({})
   const [isLoading, setIsLoading] = React.useState(false)
   const [hasChanges, setHasChanges] = React.useState(false)
 
@@ -57,7 +57,7 @@ const FragranceReviewPage = (props: FragranceReviewPageProps) => {
 
   const handleOnSubmit = (event: React.FormEvent) => {
     event.preventDefault()
-    setError({})
+    setErrors({})
 
     const formData = new FormData(event.currentTarget as HTMLFormElement)
     const rating = Number(formData.get('rating'))
@@ -68,7 +68,7 @@ const FragranceReviewPage = (props: FragranceReviewPageProps) => {
 
     if (!result.success) {
       const fieldErrors = z.flattenError(result.error).fieldErrors
-      setError(fieldErrors)
+      setErrors(fieldErrors)
 
       return
     }

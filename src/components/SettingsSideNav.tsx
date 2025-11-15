@@ -36,11 +36,15 @@ const SettingsSideNav = () => {
                 </Link>
 
                 <div
-                  className={clsx(
-                    active ? 'opacity-100' : 'opacity-0',
-                    'h-1 w-[80%] self-center rounded-full bg-black'
-                  )}
-                />
+                  className='px-3'
+                >
+                  <div
+                    className={clsx(
+                      active ? 'opacity-100' : 'opacity-0',
+                      'h-1 w-full self-start rounded-full bg-black'
+                    )}
+                  />
+                </div>
               </div>
             )
           }

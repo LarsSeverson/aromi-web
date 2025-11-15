@@ -70,3 +70,11 @@ export const CONFIRM_FORGOT_PASSWORD_MUTATION = gql(/* GraphQL */ `
     confirmForgotPassword(input: $input)
   }
 `)
+
+export const CHANGE_PASSWORD_MUTATION = gql(/* GraphQL */ `
+  mutation ChangePassword(
+    $input: ChangePasswordInput!
+  ) {
+    changePassword(input: $input)
+  }
+`)

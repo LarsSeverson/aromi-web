@@ -21,3 +21,9 @@ export const SignUpSchema = z
     email: ValidEmail,
     password: ValidPassword
   })
+
+export const ChangePasswordSchema = z
+  .object({
+    oldPassword: ValidPassword,
+    newPassword: ValidPassword
+  })

@@ -1,3 +1,4 @@
+import AccountManagementPage from '@/features/auth/pages/AccountManagementPage'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/settings/account/')({
@@ -5,5 +6,5 @@ export const Route = createFileRoute('/settings/account/')({
 })
 
 function RouteComponent () {
-  return <div>Hello "/settings/account/"!</div>
+  return <AccountManagementPage />
 }

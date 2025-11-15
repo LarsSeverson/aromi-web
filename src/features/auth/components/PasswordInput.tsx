@@ -3,23 +3,23 @@ import { Field } from '@base-ui-components/react'
 import clsx from 'clsx'
 import { IoEyeOffOutline, IoEyeOutline } from 'react-icons/io5'
 
-export interface PasswordInputProps {
+export interface PasswordInputProps extends Field.Control.Props {
   label?: string
   placeholder?: string
 }
 
 const PasswordInput = (props: PasswordInputProps) => {
-  const { label = 'Password', placeholder = 'Password' } = props
+  const { label = 'Password', placeholder = 'Password', ...rest } = props
 
   const [showPassword, setShowPassword] = useState(false)
 
   return (
     <Field.Root
-      name='password'
-      className='flex flex-col relative'
+      name={rest.name ?? label}
+      className='relative flex flex-col'
     >
       <Field.Label
-        className='font-semibold text-md mt-2'
+        className='text-md mt-2 font-semibold'
       >
         {label}
       </Field.Label>
@@ -32,17 +32,18 @@ const PasswordInput = (props: PasswordInputProps) => {
           required
           placeholder={placeholder}
           className={({ valid }) => clsx(
-            'p-2 my-1 border-2 rounded-md pe-[43px] w-full border-surface2',
+            'my-1 w-full rounded-md border-2 p-2 pe-[43px]',
             'tracking-normal text-ellipsis whitespace-nowrap',
-            valid === false && 'outline-red-600'
+            valid === false && 'outline-red-700'
           )}
+          {...rest}
         />
 
         <button
           type='button'
           className={clsx(
-            'absolute right-2 top-1/2 -translate-y-1/2 p-2',
-            'rounded-md hover:bg-empty'
+            'absolute top-1/2 right-2 -translate-y-1/2 p-2',
+            'hover:bg-empty rounded-md'
           )}
           onClick={(e) => {
             e.preventDefault()
@@ -59,12 +60,13 @@ const PasswordInput = (props: PasswordInputProps) => {
             :
             (
               <IoEyeOutline />
-            )}
+            )
+          }
         </button>
       </div>
 
       <Field.Error
-        className='text-red-600 font-pd text-sm ml-1'
+        className='ml-1 text-sm font-semibold text-red-700'
       />
     </Field.Root>
   )

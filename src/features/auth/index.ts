@@ -5,6 +5,7 @@ export * from './contexts/AuthContext'
 export * from './contexts/AuthProvider'
 
 export * from './hooks/useAuth'
+export * from './hooks/useChangePassword'
 export * from './hooks/useConfirmForgotPassword'
 export * from './hooks/useConfirmSignUp'
 export * from './hooks/useForgotPassword'

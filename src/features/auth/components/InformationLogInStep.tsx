@@ -31,7 +31,7 @@ const InformationLogInStep = (props: InformationLogInStepProps) => {
     const email = formData.get('email') as string
     const password = formData.get('password') as string
 
-    const fieldErrors = getFieldErrors(formData, LogInSchema)
+    const fieldErrors = getFieldErrors(LogInSchema, { email, password })
     const valid = Object.values(fieldErrors).length === 0
 
     if (valid) {
@@ -66,19 +66,21 @@ const InformationLogInStep = (props: InformationLogInStepProps) => {
         errors={errors}
         onClearErrors={setErrors}
         onSubmit={(e) => { void handleSubmit(e) }}
-        className='flex flex-col mt-4 gap-3'
+        className='mt-4 flex flex-col gap-3'
       >
         <EmailInput />
 
         <div
-          className='flex flex-col mb-3'
+          className='mb-3 flex flex-col'
         >
-          <PasswordInput />
+          <PasswordInput
+            name='password'
+          />
 
           <Link
             to='/auth/account-recovery'
             search={{ showLogIn: false }}
-            className='text-sm hover:underline mt-1'
+            className='mt-1 text-sm hover:underline'
             style={{ marginLeft: 'auto' }}
           >
             Forgot password?
@@ -93,7 +95,7 @@ const InformationLogInStep = (props: InformationLogInStepProps) => {
         <Link
           to='.'
           search={{ showSignUp: true }}
-          className='text-center text-sm group w-min text-nowrap self-center'
+          className='group w-min self-center text-center text-sm text-nowrap'
         >
           Don't have an account?&nbsp;
 

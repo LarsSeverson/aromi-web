@@ -33,6 +33,7 @@ type Documents = {
     "\n  mutation ResendSignUpCode(\n    $input: ResendSignUpCodeInput!\n  ) {\n    resendSignUpCode(input: $input) {\n      ...AllAuthDeliveryResult\n    }\n  }\n": typeof types.ResendSignUpCodeDocument,
     "\n  mutation ForgotPassword(\n    $input: ForgotPasswordInput!\n  ) {\n    forgotPassword(input: $input) {\n      ...AllAuthDeliveryResult\n    }\n  }\n": typeof types.ForgotPasswordDocument,
     "\n  mutation ConfirmForgotPassword(\n    $input: ConfirmForgotPasswordInput!\n  ) {\n    confirmForgotPassword(input: $input)\n  }\n": typeof types.ConfirmForgotPasswordDocument,
+    "\n  mutation ChangePassword(\n    $input: ChangePasswordInput!\n  ) {\n    changePassword(input: $input)\n  }\n": typeof types.ChangePasswordDocument,
     "\n  fragment AllBrand on Brand {\n    id\n    name\n    website\n    description\n    avatar {\n      ...AllAsset\n    }\n    votes {\n      ...AllVoteInfo\n    }\n  }\n": typeof types.AllBrandFragmentDoc,
     "\n  fragment BrandPreview on Brand {\n    id\n    name\n    avatar {\n      ...AllAsset\n    }\n    votes {\n      ...AllVoteInfo\n    }\n  }\n": typeof types.BrandPreviewFragmentDoc,
     "\n  mutation VoteOnBrandMutation(\n    $input: VoteOnBrandInput!\n  ) {\n    voteOnBrand(input: $input) {\n      ...BrandPreview\n    }\n  }\n": typeof types.VoteOnBrandMutationDocument,
@@ -134,6 +135,7 @@ const documents: Documents = {
     "\n  mutation ResendSignUpCode(\n    $input: ResendSignUpCodeInput!\n  ) {\n    resendSignUpCode(input: $input) {\n      ...AllAuthDeliveryResult\n    }\n  }\n": types.ResendSignUpCodeDocument,
     "\n  mutation ForgotPassword(\n    $input: ForgotPasswordInput!\n  ) {\n    forgotPassword(input: $input) {\n      ...AllAuthDeliveryResult\n    }\n  }\n": types.ForgotPasswordDocument,
     "\n  mutation ConfirmForgotPassword(\n    $input: ConfirmForgotPasswordInput!\n  ) {\n    confirmForgotPassword(input: $input)\n  }\n": types.ConfirmForgotPasswordDocument,
+    "\n  mutation ChangePassword(\n    $input: ChangePasswordInput!\n  ) {\n    changePassword(input: $input)\n  }\n": types.ChangePasswordDocument,
     "\n  fragment AllBrand on Brand {\n    id\n    name\n    website\n    description\n    avatar {\n      ...AllAsset\n    }\n    votes {\n      ...AllVoteInfo\n    }\n  }\n": types.AllBrandFragmentDoc,
     "\n  fragment BrandPreview on Brand {\n    id\n    name\n    avatar {\n      ...AllAsset\n    }\n    votes {\n      ...AllVoteInfo\n    }\n  }\n": types.BrandPreviewFragmentDoc,
     "\n  mutation VoteOnBrandMutation(\n    $input: VoteOnBrandInput!\n  ) {\n    voteOnBrand(input: $input) {\n      ...BrandPreview\n    }\n  }\n": types.VoteOnBrandMutationDocument,
@@ -306,6 +308,10 @@ export function gql(source: "\n  mutation ForgotPassword(\n    $input: ForgotPas
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(source: "\n  mutation ConfirmForgotPassword(\n    $input: ConfirmForgotPasswordInput!\n  ) {\n    confirmForgotPassword(input: $input)\n  }\n"): (typeof documents)["\n  mutation ConfirmForgotPassword(\n    $input: ConfirmForgotPasswordInput!\n  ) {\n    confirmForgotPassword(input: $input)\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation ChangePassword(\n    $input: ChangePasswordInput!\n  ) {\n    changePassword(input: $input)\n  }\n"): (typeof documents)["\n  mutation ChangePassword(\n    $input: ChangePasswordInput!\n  ) {\n    changePassword(input: $input)\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
