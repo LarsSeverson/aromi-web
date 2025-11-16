@@ -9,7 +9,7 @@ const MainLayout = () => {
       className='min-h-screen'
     >
       <aside
-        className='fixed top-0 w-[72px] h-screen shrink-0'
+        className='fixed top-0 h-screen w-[72px] shrink-0'
       >
         <SideBar />
       </aside>
@@ -19,7 +19,9 @@ const MainLayout = () => {
       >
         <TopBar />
 
-        <main>
+        <main
+          className='py-10'
+        >
           <Outlet />
         </main>
       </div>

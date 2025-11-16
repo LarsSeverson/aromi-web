@@ -99,7 +99,7 @@ const FragranceInfoSection = (props: FragranceInfoSectionProps) => {
         <p
           className='ml-1 text-sm font-semibold opacity-80'
         >
-          ({averageRating ?? 0} / 5.0)
+          ({averageRating ?? 0} / 5)
         </p>
       </div>
 

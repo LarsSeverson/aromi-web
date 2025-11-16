@@ -22,10 +22,14 @@ const SettingsLayout = () => {
         </div>
 
         <div
-          className='flex-3'
+          className='flex-1'
         >
           <Outlet />
         </div>
+
+        <div
+          className='flex-1'
+        />
       </div>
     </div>
   )

@@ -30,9 +30,11 @@ const ChangePasswordDialog = () => {
       error => {
         const status = error.status
 
-        status === 401
-          ? toastError('Current password is incorrect')
-          : toastError(error.message)
+        const message = status === 401
+          ? 'Current password is incorrect'
+          : error.message
+
+        toastError(message)
       }
     )
 

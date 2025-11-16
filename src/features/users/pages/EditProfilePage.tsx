@@ -56,7 +56,7 @@ const EditProfilePage = () => {
 
   return (
     <Form
-      className='flex flex-col items-start justify-center gap-5'
+      className='flex flex-col items-center justify-center gap-5'
       onSubmit={handleOnSubmit}
     >
       <div
