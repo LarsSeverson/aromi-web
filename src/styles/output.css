@@ -38,6 +38,7 @@
     --container-3xl: 48rem;
     --container-4xl: 56rem;
     --container-5xl: 64rem;
+    --container-6xl: 72rem;
     --text-xs: 0.75rem;
     --text-xs--line-height: calc(1 / 0.75);
     --text-sm: 0.875rem;
@@ -290,9 +291,6 @@
   }
   .right-0 {
     right: calc(var(--spacing) * 0);
-  }
-  .right-1 {
-    right: calc(var(--spacing) * 1);
   }
   .right-2 {
     right: calc(var(--spacing) * 2);
@@ -646,14 +644,26 @@
   .max-h-96 {
     max-height: calc(var(--spacing) * 96);
   }
+  .max-h-100 {
+    max-height: calc(var(--spacing) * 100);
+  }
   .max-h-128 {
     max-height: calc(var(--spacing) * 128);
+  }
+  .max-h-150 {
+    max-height: calc(var(--spacing) * 150);
+  }
+  .max-h-200 {
+    max-height: calc(var(--spacing) * 200);
   }
   .min-h-44 {
     min-height: calc(var(--spacing) * 44);
   }
   .min-h-screen {
     min-height: 100vh;
+  }
+  .w-\(--positioner-width\) {
+    width: var(--positioner-width);
   }
   .w-1\/3 {
     width: calc(1/3 * 100%);
@@ -816,6 +826,12 @@
   }
   .min-w-fit {
     min-width: fit-content;
+  }
+  .min-w-lg {
+    min-width: var(--container-lg);
+  }
+  .min-w-md {
+    min-width: var(--container-md);
   }
   .flex-1 {
     flex: 1;
@@ -1278,12 +1294,6 @@
   .p-10 {
     padding: calc(var(--spacing) * 10);
   }
-  .p-\[5px\] {
-    padding: 5px;
-  }
-  .p-\[6px\] {
-    padding: 6px;
-  }
   .p-px {
     padding: 1px;
   }
@@ -1358,12 +1368,6 @@
   }
   .pe-9 {
     padding-inline-end: calc(var(--spacing) * 9);
-  }
-  .pe-\[34px\] {
-    padding-inline-end: 34px;
-  }
-  .pe-\[36px\] {
-    padding-inline-end: 36px;
   }
   .pe-\[43px\] {
     padding-inline-end: 43px;
@@ -1847,6 +1851,13 @@
   .\[transition\:transform_0\.5s_cubic-bezier\(0\.22\,1\,0\.36\,1\)\,opacity_0\.5s\,height_0\.15s\] {
     transition: transform 0.5s cubic-bezier(0.22,1,0.36,1),opacity 0.5s,height 0.15s;
   }
+  .group-hover\:block {
+    &:is(:where(.group):hover *) {
+      @media (hover: hover) {
+        display: block;
+      }
+    }
+  }
   .group-hover\:flex {
     &:is(:where(.group):hover *) {
       @media (hover: hover) {
@@ -2068,6 +2079,13 @@
       content: var(--tw-content);
     }
   }
+  .hover\:block {
+    &:hover {
+      @media (hover: hover) {
+        display: block;
+      }
+    }
+  }
   .hover\:cursor-pointer {
     &:hover {
       @media (hover: hover) {
@@ -2110,6 +2128,20 @@
     &:hover {
       @media (hover: hover) {
         background-color: var(--color-gray-200);
+      }
+    }
+  }
+  .hover\:bg-gray-300 {
+    &:hover {
+      @media (hover: hover) {
+        background-color: var(--color-gray-300);
+      }
+    }
+  }
+  .hover\:bg-gray-400 {
+    &:hover {
+      @media (hover: hover) {
+        background-color: var(--color-gray-400);
       }
     }
   }

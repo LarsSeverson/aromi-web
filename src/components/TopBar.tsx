@@ -4,7 +4,7 @@ import LogInDialog from '../features/auth/components/LogInDialog'
 import SignUpDialog from '../features/auth/components/SignUpDialog'
 import { useAuthContext } from '@/features/auth'
 import AccountMenu from '@/features/users/components/AccountMenu'
-import SearchInput from './SearchInput'
+import TopBarSearch from './TopBarSearch'
 
 export interface TopBarProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -45,9 +45,7 @@ const TopBar = (props: TopBarProps) => {
       <div
         className='flex-2'
       >
-        <SearchInput
-          className='w-full'
-        />
+        <TopBarSearch />
       </div>
 
       <div

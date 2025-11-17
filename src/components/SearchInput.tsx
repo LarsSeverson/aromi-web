@@ -1,30 +1,25 @@
 /* eslint-disable tailwindcss/no-custom-classname */
-import { Input } from '@base-ui-components/react'
+import { type FieldControlProps, Input, Popover } from '@base-ui-components/react'
 import clsx from 'clsx'
-import React, { useRef } from 'react'
+import React, { useMemo, useRef } from 'react'
 import { FiSearch } from 'react-icons/fi'
 import { IoClose } from 'react-icons/io5'
+import SearchPopoverList from './SearchPopoverList'
+import { ResizeContainer } from './ResizeContainer'
+import type { SearchItem } from './SearchPopoverListItem'
 
 export interface SearchInputProps extends Input.Props {
-  searchHistory?: string[]
-
-  options?: string[]
-  showOptions?: boolean
-
+  items?: SearchItem[]
   onSearch?: (term: string) => void
   onClearOneHistory?: (term: string) => void
-  onOptionSelect?: (option: string) => void
 }
 
 const SearchInput = (props: SearchInputProps) => {
   const {
-    showOptions,
-    options,
-    searchHistory,
+    items = [],
 
     onSearch,
     onClearOneHistory,
-    onOptionSelect,
 
     ...inputProps
   } = props
@@ -34,6 +29,7 @@ const SearchInput = (props: SearchInputProps) => {
     className,
 
     onKeyDown,
+    onValueChange,
 
     ...restInputProps
   } = inputProps
@@ -41,8 +37,19 @@ const SearchInput = (props: SearchInputProps) => {
   const inputRef = useRef<HTMLInputElement>(null)
 
   const [currentTerm, setCurrentTerm] = React.useState('')
+  const [inputRect, setInputRect] = React.useState(new DOMRect())
+  const [isFocused, setIsFocused] = React.useState(false)
+  const [isPopoverOpen, setIsPopoverOpen] = React.useState(false)
+
+  const filteredItems = useMemo(
+    () => currentTerm.length === 0
+      ? items.filter(term => term.type === 'history')
+      : items.filter(term => term.type === 'suggestion'),
+    [currentTerm, items]
+  )
 
   const showClearButton = currentTerm.length > 0
+  const showPopoverContent = filteredItems.length > 0
 
   const handleOnKeyDown = (event: Parameters<NonNullable<Input.Props['onKeyDown']>>[0]) => {
     if (event.key === 'Enter') {
@@ -53,6 +60,29 @@ const SearchInput = (props: SearchInputProps) => {
     }
 
     onKeyDown?.(event)
+  }
+
+  const handleOnFocus = (event: React.SyntheticEvent) => {
+    event.preventDefault()
+    event.stopPropagation()
+
+    setIsFocused(true)
+    setIsPopoverOpen(true)
+  }
+
+  const handleOnBlur = (event: React.SyntheticEvent) => {
+    event.preventDefault()
+    event.stopPropagation()
+
+    setIsFocused(false)
+    setIsPopoverOpen(false)
+  }
+
+  const handleOnValueChange: FieldControlProps['onValueChange'] = (value, details) => {
+    setCurrentTerm(value)
+    onValueChange?.(value, details)
+
+    setIsPopoverOpen(true)
   }
 
   const handleOnSearchButtonClick = () => {
@@ -67,26 +97,40 @@ const SearchInput = (props: SearchInputProps) => {
     inputRef.current?.focus()
   }
 
+  const handleOnPopoverOpenChange = (open: boolean) => {
+    setIsPopoverOpen(isFocused || open)
+  }
+
+  const handleOnItemSelect = (item: SearchItem) => {
+    setCurrentTerm(item.term)
+    onSearch?.(item.term)
+    setIsPopoverOpen(false)
+  }
+
   return (
     <div
-      className='flex'
+      className='flex w-full'
     >
-      <div
+      <ResizeContainer
+        onResize={setInputRect}
         className='relative w-full'
       >
         <Input
+          {...restInputProps}
           ref={inputRef}
           value={currentTerm}
           placeholder={placeholder}
+          autoFocus={false}
           className={clsx(
             className,
-            'bg-empty! z-10 rounded-l-3xl border p-2 px-4',
+            'bg-empty! z-10 w-full rounded-l-3xl border p-2 px-4',
             'tracking-normal text-ellipsis whitespace-nowrap',
             showClearButton && 'pe-9'
           )}
+          onFocus={handleOnFocus}
+          onBlur={handleOnBlur}
           onKeyDown={handleOnKeyDown}
-          onValueChange={setCurrentTerm}
-          {...restInputProps}
+          onValueChange={handleOnValueChange}
         />
 
         {showClearButton && (
@@ -103,7 +147,7 @@ const SearchInput = (props: SearchInputProps) => {
             />
           </button>
         )}
-      </div>
+      </ResizeContainer>
 
       <button
         className={clsx(
@@ -117,6 +161,40 @@ const SearchInput = (props: SearchInputProps) => {
           size={25}
         />
       </button>
+
+      <Popover.Root
+        open={isPopoverOpen}
+        onOpenChange={handleOnPopoverOpenChange}
+      >
+        <Popover.Portal>
+          <Popover.Positioner
+            anchor={inputRef}
+            sideOffset={4}
+            alignOffset={4}
+            align='start'
+          >
+            <Popover.Popup
+              initialFocus={false}
+              finalFocus={false}
+              className={clsx(
+                'box-border flex max-h-150 min-w-md',
+                'overflow-hidden rounded-lg',
+                'border bg-white shadow-md',
+                'origin-(--transform-origin) transition-transform duration-150',
+                'data-ending-style:scale-90 data-ending-style:opacity-0 data-starting-style:scale-90 data-starting-style:opacity-0',
+                !showPopoverContent && 'hidden'
+              )}
+              style={{ width: inputRect.width }}
+            >
+              <SearchPopoverList
+                items={filteredItems}
+                onItemSelect={handleOnItemSelect}
+                onClearOneHistory={onClearOneHistory}
+              />
+            </Popover.Popup>
+          </Popover.Positioner>
+        </Popover.Portal>
+      </Popover.Root>
     </div>
   )
 }
