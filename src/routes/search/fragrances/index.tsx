@@ -1,9 +1,17 @@
-import { createFileRoute } from '@tanstack/react-router'
+import FragranceSearchPage from '@/features/fragrances/pages/FragranceSearchPage'
+import { createFileRoute, getRouteApi } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/search/fragrances/')({
   component: RouteComponent
 })
 
 function RouteComponent () {
-  return <div>Hello "/search/fragrances/"!</div>
+  const api = getRouteApi('/search/fragrances')
+  const { term } = api.useSearch()
+
+  return (
+    <FragranceSearchPage
+      term={term}
+    />
+  )
 }

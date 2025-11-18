@@ -36,7 +36,7 @@ export const FragranceImagesSection = (props: FragranceImagesSectionProps) => {
       className='flex flex-1 items-center justify-end'
     >
       <div
-        className='rounded-2xl overflow-hidden group w-full max-w-md min-w-3xs'
+        className='group w-full max-w-md min-w-3xs overflow-hidden rounded-2xl'
       >
         <div
           className={clsx(
@@ -54,11 +54,11 @@ export const FragranceImagesSection = (props: FragranceImagesSectionProps) => {
           <Overlay />
 
           <div
-            className='flex justify-between items-center absolute top-0 w-full h-full p-2'
+            className='absolute top-0 flex h-full w-full items-center justify-between p-2'
           >
             {showBackButton && (
               <BouncyButton
-                className='bg-white drop-shadow-md rounded-xl px-1.5 py-1.5 opacity-0 group-hover:opacity-85 transition-opacity duration-200 ease-in-out'
+                className='rounded-xl bg-white px-1.5 py-1.5 opacity-0 drop-shadow-md transition-opacity duration-200 ease-in-out group-hover:opacity-85'
                 onClick={handleOnBackImage}
               >
                 <HiChevronLeft
@@ -69,7 +69,7 @@ export const FragranceImagesSection = (props: FragranceImagesSectionProps) => {
 
             {showForwardButton && (
               <BouncyButton
-                className='bg-white drop-shadow-md rounded-xl px-1.5 py-1.5 opacity-0 group-hover:opacity-85 transition-opacity duration-200 ease-in-out'
+                className='rounded-xl bg-white px-1.5 py-1.5 opacity-0 drop-shadow-md transition-opacity duration-200 ease-in-out group-hover:opacity-85'
                 onClick={handleOnForwardImage}
               >
                 <HiChevronRight

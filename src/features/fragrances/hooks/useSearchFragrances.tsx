@@ -1,5 +1,4 @@
 import type { SearchInput } from '@/generated/graphql'
-
 import { useQuery } from '@apollo/client/react'
 import { SEARCH_FRAGRANCES_QUERY } from '../graphql/queries'
 import { flattenConnections, validateSearchPagination } from '@/utils/pagination'
@@ -20,7 +19,10 @@ export const useSearchFragrances = (input?: SearchInput) => {
     const variables = {
       input: {
         ...input,
-        after: endOffset
+        pagination: {
+          ...(input?.pagination ?? {}),
+          after: endOffset
+        }
       }
     }
 
@@ -38,6 +40,7 @@ export const useSearchFragrances = (input?: SearchInput) => {
 
   const isLoadingMore = isStatusLoadingMore(networkStatus)
   const hasMore = hasNextPage(data?.searchFragrances.pageInfo)
+  const hasNoResults = fragrances.length === 0 && !isLoading
 
   return {
     fragrances,
@@ -45,6 +48,7 @@ export const useSearchFragrances = (input?: SearchInput) => {
     isLoading,
     isLoadingMore,
     hasMore,
+    hasNoResults,
 
     error,
 

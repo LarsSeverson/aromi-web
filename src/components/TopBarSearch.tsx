@@ -4,10 +4,14 @@ import { useSearchHistory } from '@/hooks/useSearchHistory'
 import { useSearchFragrances } from '@/features/fragrances'
 import type { SearchItem } from './SearchPopoverListItem'
 import { useDebounce } from '@/hooks/useDebounce'
+import { useNavigate, useSearch } from '@tanstack/react-router'
 
 const TopBarSearch = () => {
+  const { term = '' } = useSearch({ strict: false }) ?? {}
+  const navigate = useNavigate()
+
   const { history, addTerm, deleteTerm } = useSearchHistory()
-  const { fragrances, refresh } = useSearchFragrances()
+  const { fragrances, refresh } = useSearchFragrances({ term, pagination: { first: 10 } })
 
   const historyItems = React.useMemo<SearchItem[]>(
     () => history.map(term => ({ term, type: 'history' })),
@@ -41,6 +45,7 @@ const TopBarSearch = () => {
 
   const handleOnSearch = (term: string) => {
     addTerm(term)
+    navigate({ to: '/search/fragrances', search: { term } })
   }
 
   const handleClearOneHistory = (term: string) => {
@@ -52,6 +57,7 @@ const TopBarSearch = () => {
       className='w-full'
     >
       <SearchInput
+        defaultValue={term}
         items={allItems}
         onValueChange={handleOnValueChange}
         onSearch={handleOnSearch}

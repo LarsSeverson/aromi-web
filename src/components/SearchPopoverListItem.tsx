@@ -67,14 +67,17 @@ const SearchPopoverListItem = (props: SearchPopoverListItemProps) => {
         {subtext}
       </span>
 
-      <button
-        type='button'
-        className='ml-auto hidden cursor-pointer rounded-lg p-2 group-hover:block hover:bg-gray-200'
-        onMouseDown={handleOptionMouseDown}
-        onClick={handleOnClearClick}
-      >
-        <CgClose />
-      </button>
+      {type === 'history' && (
+        <button
+          type='button'
+          className='ml-auto hidden cursor-pointer rounded-lg p-2 group-hover:block hover:bg-gray-200'
+          onMouseDown={handleOptionMouseDown}
+          onClick={handleOnClearClick}
+        >
+          <CgClose />
+        </button>
+      )}
+
     </div>
   )
 }

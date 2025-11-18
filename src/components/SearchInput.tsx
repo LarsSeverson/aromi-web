@@ -26,6 +26,7 @@ const SearchInput = (props: SearchInputProps) => {
 
   const {
     placeholder = 'Search',
+    defaultValue,
     className,
 
     onKeyDown,
@@ -36,7 +37,7 @@ const SearchInput = (props: SearchInputProps) => {
 
   const inputRef = useRef<HTMLInputElement>(null)
 
-  const [currentTerm, setCurrentTerm] = React.useState('')
+  const [currentTerm, setCurrentTerm] = React.useState(String(defaultValue ?? ''))
   const [inputRect, setInputRect] = React.useState(new DOMRect())
   const [isFocused, setIsFocused] = React.useState(false)
   const [isPopoverOpen, setIsPopoverOpen] = React.useState(false)
@@ -57,6 +58,8 @@ const SearchInput = (props: SearchInputProps) => {
       const searchTerm = target.value
 
       onSearch?.(searchTerm)
+      setIsPopoverOpen(false)
+      inputRef.current?.blur()
     }
 
     onKeyDown?.(event)
@@ -103,8 +106,10 @@ const SearchInput = (props: SearchInputProps) => {
 
   const handleOnItemSelect = (item: SearchItem) => {
     setCurrentTerm(item.term)
-    onSearch?.(item.term)
     setIsPopoverOpen(false)
+
+    onSearch?.(item.term)
+    inputRef.current?.blur()
   }
 
   return (

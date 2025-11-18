@@ -1,3 +1,4 @@
+import type { SearchInput } from '@/generated/graphql'
 import { customRelayPagination, customSearchPagination } from '@/utils/pagination'
 import { ApolloClient, ApolloLink, HttpLink, InMemoryCache, makeVar } from '@apollo/client'
 import { SetContextLink } from '@apollo/client/link/context'
@@ -38,6 +39,11 @@ export const client = new ApolloClient({
       Query: {
         fields: {
           fragrances: customRelayPagination(),
+
+          searchFragrances: customSearchPagination((_, { variables }) => {
+            const { term = '' } = (variables?.input as SearchInput) ?? {}
+            return `term:${term}`
+          }),
           searchAccords: customSearchPagination(),
           searchNotes: customSearchPagination()
         }
