@@ -5,9 +5,10 @@ import { useSearchFragrances } from '@/features/fragrances'
 import type { SearchItem } from './SearchPopoverListItem'
 import { useDebounce } from '@/hooks/useDebounce'
 import { useNavigate, useSearch } from '@tanstack/react-router'
+import TopBarSearchFilter from './TopBarSearchFilter'
 
 const TopBarSearch = () => {
-  const { term = '' } = useSearch({ strict: false }) ?? {}
+  const { term } = useSearch({ strict: false }) ?? {}
   const navigate = useNavigate()
 
   const { history, addTerm, deleteTerm } = useSearchHistory()
@@ -54,7 +55,7 @@ const TopBarSearch = () => {
 
   return (
     <div
-      className='w-full'
+      className='flex w-full items-center gap-4'
     >
       <SearchInput
         defaultValue={term}
@@ -63,6 +64,10 @@ const TopBarSearch = () => {
         onSearch={handleOnSearch}
         onClearOneHistory={handleClearOneHistory}
       />
+
+      {term != null && (
+        <TopBarSearchFilter />
+      )}
     </div>
   )
 }
