@@ -76,12 +76,9 @@ const CollectionPopoverList = (props: CollectionPopoverListProps) => {
           .getVirtualItems()
           .map(virtualItem => {
             const index = virtualItem.index
-            const isSkeleton = index >= collections.length
-            const key = isSkeleton
-              ? `skeleton-${index}`
-              : collections[index].id
-
             const collection = collections[index]
+            const isSkeleton = index >= collections.length
+            const key = isSkeleton ? `skeleton-${index}` : collection.id
 
             return (
               <div

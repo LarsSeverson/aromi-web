@@ -6,6 +6,7 @@ import { ResizeContainer } from '@/components/ResizeContainer'
 import { DynamicList } from '@/components/DynamicList'
 import { CollectionPreviewCard } from '@/features/fragrances/components/CollectionPreviewCard'
 import CollectionPreviewCardSkeleton from '@/features/fragrances/components/CollectionPreviewCardSkeleton'
+import EmptyTab from './EmptyTab'
 
 const emptyCollectionText = (areMyCollections: boolean, username: string) => ({
   headline: areMyCollections ? 'You have no collections' : `${username} has no collections`,
@@ -57,21 +58,10 @@ export const UserCollectionsTab = (props: UserCollectionsTabProps) => {
 
   if (isEmpty) {
     return (
-      <div
-        className='space-y-5 text-center'
-      >
-        <h2
-          className='text-2xl'
-        >
-          {headline}
-        </h2>
-
-        <h5
-          className='text-xl'
-        >
-          {body}
-        </h5>
-      </div>
+      <EmptyTab
+        headline={headline}
+        body={body}
+      />
     )
   }
 

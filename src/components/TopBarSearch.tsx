@@ -8,7 +8,7 @@ import { useNavigate, useSearch } from '@tanstack/react-router'
 import TopBarSearchFilter from './TopBarSearchFilter'
 
 const TopBarSearch = () => {
-  const { term } = useSearch({ strict: false }) ?? {}
+  const { term, ...restSearch } = useSearch({ strict: false }) ?? {}
   const navigate = useNavigate()
 
   const { history, addTerm, deleteTerm } = useSearchHistory()
@@ -44,9 +44,13 @@ const TopBarSearch = () => {
     handleSearchFragrances(value)
   }
 
-  const handleOnSearch = (term: string) => {
+  const handleOnSearch = (term: string, method: 'suggested' | 'custom') => {
     addTerm(term)
-    navigate({ to: '/search/fragrances', search: { term } })
+
+    const shouldReset = method === 'suggested'
+    const newSearch = shouldReset ? { term } : { ...restSearch, term }
+
+    navigate({ to: '/search', search: newSearch })
   }
 
   const handleClearOneHistory = (term: string) => {

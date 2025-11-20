@@ -36,7 +36,7 @@ export const FragrancePage = (props: FragrancePageProps) => {
         className='flex pl-4'
       >
         <PageBackButton
-          className='sticky top-16 mb-auto ml-auto'
+          className='sticky top-18 mb-auto ml-auto'
         />
       </div>
 

@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { Colors } from '@/styles/Colors'
 import type { UserPreviewFragment } from '@/generated/graphql'
 import EmptyAvatarSvg from '@/components/EmptyAvatarSvg'
 import type { Nullable } from '@/utils/util'
@@ -28,7 +27,7 @@ const UserAvatar = (props: UserAvatarProps) => {
         )
         : (
           <EmptyAvatarSvg
-            color={Colors.empty2}
+            color='#AAAAAA'
           />
         )}
     </div>

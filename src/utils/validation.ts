@@ -29,3 +29,8 @@ export const getFirstErrorMessage = <T>(
 
   return null
 }
+
+export const ValidSearchTerm = z
+  .string()
+  .trim()
+  .min(1)

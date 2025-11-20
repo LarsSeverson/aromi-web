@@ -6,6 +6,7 @@ import { useMyContext } from '../context/MyContext'
 import { FragrancePreviewCard } from '@/features/fragrances/components/FragrancePreviewCard'
 import FragrancePreviewCardSkeleton from '@/features/fragrances/components/FragrancePreviewCardSkeleton'
 import { DynamicList } from '@/components/DynamicList'
+import EmptyTab from './EmptyTab'
 
 export type UserLikesUser = Pick<User, 'id' | 'username'>
 
@@ -59,21 +60,10 @@ export const UserLikesTab = (props: UserLikesTabProps) => {
 
   if (isEmpty) {
     return (
-      <div
-        className='space-y-5 text-center'
-      >
-        <h2
-          className='text-2xl'
-        >
-          {headline}
-        </h2>
-
-        <h5
-          className='text-xl'
-        >
-          {body}
-        </h5>
-      </div>
+      <EmptyTab
+        headline={headline}
+        body={body}
+      />
     )
   }
 

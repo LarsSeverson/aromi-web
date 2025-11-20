@@ -45,7 +45,9 @@ export const client = new ApolloClient({
             return `term:${term}`
           }),
           searchAccords: customSearchPagination(),
-          searchNotes: customSearchPagination()
+          searchNotes: customSearchPagination(),
+
+          searchUsers: customSearchPagination()
         }
       },
 

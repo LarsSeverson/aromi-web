@@ -7,10 +7,11 @@ import { IoClose } from 'react-icons/io5'
 import SearchPopoverList from './SearchPopoverList'
 import { ResizeContainer } from './ResizeContainer'
 import type { SearchItem } from './SearchPopoverListItem'
+import { ValidSearchTerm } from '@/utils/validation'
 
 export interface SearchInputProps extends Input.Props {
   items?: SearchItem[]
-  onSearch?: (term: string) => void
+  onSearch?: (term: string, method: 'suggested' | 'custom') => void
   onClearOneHistory?: (term: string) => void
 }
 
@@ -57,7 +58,13 @@ const SearchInput = (props: SearchInputProps) => {
       const target = event.target as HTMLInputElement
       const searchTerm = target.value
 
-      onSearch?.(searchTerm)
+      const parsed = ValidSearchTerm.safeParse(searchTerm)
+
+      if (!parsed.success) {
+        return
+      }
+
+      onSearch?.(searchTerm, 'custom')
       setIsPopoverOpen(false)
       inputRef.current?.blur()
     }
@@ -89,7 +96,14 @@ const SearchInput = (props: SearchInputProps) => {
   }
 
   const handleOnSearchButtonClick = () => {
-    onSearch?.(currentTerm)
+    const parsed = ValidSearchTerm.safeParse(currentTerm)
+
+    if (!parsed.success) {
+      inputRef.current?.focus()
+      return
+    }
+
+    onSearch?.(currentTerm, 'custom')
   }
 
   const handleOnClearButtonClick = (event: React.SyntheticEvent) => {
@@ -108,7 +122,7 @@ const SearchInput = (props: SearchInputProps) => {
     setCurrentTerm(item.term)
     setIsPopoverOpen(false)
 
-    onSearch?.(item.term)
+    onSearch?.(item.term, 'suggested')
     inputRef.current?.blur()
   }
 

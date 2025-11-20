@@ -7,6 +7,7 @@ import { useUserReviews } from '../hooks/useUserReviews'
 import { useWindowVirtualizer } from '@tanstack/react-virtual'
 import { FragranceReviewCard } from '@/features/fragrances/components/FragranceReviewCard'
 import FragranceReviewCardSkeleton from '@/features/fragrances/components/FragranceReviewCardSkeleton'
+import EmptyTab from './EmptyTab'
 
 const SKELETON_COUNT = 4
 const ESTIMATE_HEIGHT = 184
@@ -62,25 +63,10 @@ const UserReviewsTab = (props: UserReviewsTabProps) => {
 
   if (isEmpty) {
     return (
-      <div
-        className='flex w-full flex-col items-center'
-      >
-        <div
-          className='space-y-5 text-center'
-        >
-          <h2
-            className='text-2xl'
-          >
-            {headline}
-          </h2>
-
-          <h5
-            className='text-xl'
-          >
-            {body}
-          </h5>
-        </div>
-      </div>
+      <EmptyTab
+        headline={headline}
+        body={body}
+      />
     )
   }
 

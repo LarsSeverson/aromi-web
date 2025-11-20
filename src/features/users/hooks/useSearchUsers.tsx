@@ -19,7 +19,10 @@ export const useSearchUsers = (input?: SearchInput) => {
     const variables = {
       input: {
         ...input,
-        after: endOffset
+        pagination: {
+          ...(input?.pagination ?? {}),
+          after: endOffset
+        }
       }
     }
 
@@ -37,6 +40,7 @@ export const useSearchUsers = (input?: SearchInput) => {
 
   const isLoadingMore = isStatusLoadingMore(networkStatus)
   const hasMore = hasNextPage(data?.searchUsers.pageInfo)
+  const hasNoResults = users.length === 0 && !isLoading
 
   return {
     users,
@@ -44,6 +48,7 @@ export const useSearchUsers = (input?: SearchInput) => {
     isLoading,
     isLoadingMore,
     hasMore,
+    hasNoResults,
 
     error,
 
