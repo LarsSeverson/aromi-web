@@ -22,9 +22,19 @@ export const USER_PREVIEW_FRAGMENT = gql(/* GraphQL */ `
 
     followerCount
     followingCount
+    relationship
 
     avatar {
       ...AllAsset
+    }
+  }
+`)
+
+export const ALL_USER_FOLLOW_FRAGMENT = gql(/* GraphQL */ `
+  fragment AllUserFollow on UserFollow {
+    id
+    user {
+      ...UserPreview
     }
   }
 `)

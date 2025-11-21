@@ -7,14 +7,14 @@ import { useRouter } from '@tanstack/react-router'
 import { ResultAsync } from 'neverthrow'
 import React, { type SyntheticEvent } from 'react'
 import { HiOutlineLink } from 'react-icons/hi'
+import { RxShare2 } from 'react-icons/rx'
 
 export interface ShareUserPopoverProps extends Popover.Root.Props {
   user: UserPreviewFragment
-  triggerText?: string
 }
 
 const ShareUserPopover = (props: ShareUserPopoverProps) => {
-  const { user, triggerText = 'Share profile', ...rest } = props
+  const { user, ...rest } = props
   const { id, username } = user
 
   const router = useRouter()
@@ -67,11 +67,13 @@ const ShareUserPopover = (props: ShareUserPopoverProps) => {
       {...rest}
     >
       <Popover.Trigger
-        className='bg-empty text-md cursor-pointer rounded-lg px-4 py-2 font-medium hover:bg-gray-200'
+        className='text-md cursor-pointer rounded-lg p-3 font-medium hover:bg-gray-200'
         disabled={showLinkFeedback}
         onClick={handlePopoverTriggerClick}
       >
-        {triggerText}
+        <RxShare2
+          size={24}
+        />
       </Popover.Trigger>
 
       <Popover.Portal>

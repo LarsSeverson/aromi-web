@@ -71,7 +71,7 @@ export const VoteButtonGroup = (props: VoteButtonGroupProps) => {
     >
       <button
         className={clsx(
-          'p-2 rounded-full aspect-square cursor-pointer',
+          'aspect-square cursor-pointer rounded-full p-2',
           'hover:bg-black/10',
           'flex items-center justify-center',
           currentVote === VOTE_TYPES.NOVOTE ? 'hover:text-sinopia' : 'text-white'
@@ -94,7 +94,7 @@ export const VoteButtonGroup = (props: VoteButtonGroupProps) => {
 
       <span
         className={clsx(
-          'font-semibold text-sm flex items-center mr-2',
+          'mr-2 flex items-center text-sm font-semibold',
           currentVote === VOTE_TYPES.NOVOTE ? '' : 'text-white'
         )}
       >
@@ -112,8 +112,9 @@ export const VoteButtonGroup = (props: VoteButtonGroupProps) => {
       </div>
 
       <button
+        // eslint-disable-next-line tailwindcss/no-custom-classname
         className={clsx(
-          'p-2 rounded-full aspect-square cursor-pointer',
+          'aspect-square cursor-pointer rounded-full p-2',
           ' hover:bg-black/10',
           'flex items-center justify-center',
           currentVote === VOTE_TYPES.NOVOTE ? 'hover:text-som' : 'text-white'

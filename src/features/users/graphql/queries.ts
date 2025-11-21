@@ -80,6 +80,50 @@ export const SEARCH_USERS_QUERY = gql(/* GraphQL */`
   }
 `)
 
+export const USER_FOLLOWERS_QUERY = gql(/* GraphQL */ `
+  query UserFollowers(
+    $userId: ID!
+    $input: UserFollowPaginationInput
+  ) {
+    user(id: $userId) {
+      ...UserPreview
+      followers(input: $input) {
+        edges {
+          node {
+            ...AllUserFollow
+          }
+          cursor
+        }
+        pageInfo {
+          ...AllPageInfo
+        }
+      }
+    } 
+  }
+`)
+
+export const USER_FOLLOWING_QUERY = gql(/* GraphQL */ `
+  query UserFollowing(
+    $userId: ID!
+    $input: UserFollowPaginationInput
+  ) {
+    user(id: $userId) {
+      ...UserPreview
+      following(input: $input) {
+        edges {
+          node {
+            ...AllUserFollow
+          }
+          cursor
+        }
+        pageInfo {
+          ...AllPageInfo
+        }
+      }
+    } 
+  }
+`)
+
 export const USER_COLLECTION_QUERY = gql(/* GraphQL */`
   query UserCollection(
     $userId: ID!

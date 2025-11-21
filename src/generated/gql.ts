@@ -98,14 +98,19 @@ type Documents = {
     "\n  fragment AllTraitVoteDistribution on TraitVoteDistribution {\n    option {\n      ...AllTraitOption\n    }\n    votes\n  }\n": typeof types.AllTraitVoteDistributionFragmentDoc,
     "\n  fragment AllTraitStats on TraitStats {\n    averageScore \n    totalVotes\n    distribution {\n      ...AllTraitVoteDistribution\n    }\n  }\n": typeof types.AllTraitStatsFragmentDoc,
     "\n  fragment Me on User {\n    id\n    username\n    email\n\n    followerCount\n    followingCount\n\n    avatar {\n      ...AllAsset\n    }\n  }\n": typeof types.MeFragmentDoc,
-    "\n  fragment UserPreview on User {\n    id\n    username\n\n    followerCount\n    followingCount\n\n    avatar {\n      ...AllAsset\n    }\n  }\n": typeof types.UserPreviewFragmentDoc,
+    "\n  fragment UserPreview on User {\n    id\n    username\n\n    followerCount\n    followingCount\n    relationship\n\n    avatar {\n      ...AllAsset\n    }\n  }\n": typeof types.UserPreviewFragmentDoc,
+    "\n  fragment AllUserFollow on UserFollow {\n    id\n    user {\n      ...UserPreview\n    }\n  }\n": typeof types.AllUserFollowFragmentDoc,
     "\n  mutation UpdateMe(\n    $input: UpdateMeInput!\n  ) {\n    updateMe(input: $input) {\n      ...Me\n    }\n  }\n": typeof types.UpdateMeDocument,
     "\n  mutation SetMyAvatar(\n    $input: SetMyAvatarInput!\n  ) {\n    setMyAvatar(input: $input) {\n      ...Me\n    }\n  }\n": typeof types.SetMyAvatarDocument,
+    "\n  mutation FollowUser(\n    $input: FollowUserInput!\n  ) {\n    follow(input: $input) {\n      ...UserPreview\n    }\n  }\n": typeof types.FollowUserDocument,
+    "\n  mutation UnfollowUser(\n    $input: UnfollowUserInput!\n  ) {\n    unfollow(input: $input) {\n      ...UserPreview\n    }\n  }\n": typeof types.UnfollowUserDocument,
     "\n  query Me {\n    me {\n      ...Me\n    }\n  }\n": typeof types.MeDocument,
     "\n  query MyCollections(\n    $input: FragranceCollectionPaginationInput\n  ) {\n    me {\n      ...Me\n      collections(input: $input) {\n        edges {\n          node {\n            ...FragranceCollectionPreview\n          }\n          cursor\n        }\n        pageInfo {\n          ...AllPageInfo\n        }\n      }\n    }\n  }\n": typeof types.MyCollectionsDocument,
     "\n  query MyCollectionsHasFragrance(\n    $fragranceId: ID!\n    $input: FragranceCollectionPaginationInput\n  ) {\n    me {\n      ...Me\n      collections(input: $input) { \n        edges {\n          node {\n            ...FragranceCollectionPreview\n            hasFragrance(fragranceId: $fragranceId)\n          }\n          cursor\n        }\n        pageInfo {\n          ...AllPageInfo\n        }\n      }\n    }\n  }\n": typeof types.MyCollectionsHasFragranceDocument,
     "\n  query User(\n    $id: ID!\n  ) {\n    user(id: $id) {\n      ...UserPreview\n    }\n  }\n": typeof types.UserDocument,
     "\n  query SearchUsers(\n    $input: SearchInput\n  ) {\n    searchUsers(input: $input) {\n      edges {\n        node {\n          ...UserPreview\n        }\n        offset\n      }\n      pageInfo {\n        ...AllSearchPageInfo\n      }\n    }\n  }\n": typeof types.SearchUsersDocument,
+    "\n  query UserFollowers(\n    $userId: ID!\n    $input: UserFollowPaginationInput\n  ) {\n    user(id: $userId) {\n      ...UserPreview\n      followers(input: $input) {\n        edges {\n          node {\n            ...AllUserFollow\n          }\n          cursor\n        }\n        pageInfo {\n          ...AllPageInfo\n        }\n      }\n    } \n  }\n": typeof types.UserFollowersDocument,
+    "\n  query UserFollowing(\n    $userId: ID!\n    $input: UserFollowPaginationInput\n  ) {\n    user(id: $userId) {\n      ...UserPreview\n      following(input: $input) {\n        edges {\n          node {\n            ...AllUserFollow\n          }\n          cursor\n        }\n        pageInfo {\n          ...AllPageInfo\n        }\n      }\n    } \n  }\n": typeof types.UserFollowingDocument,
     "\n  query UserCollection(\n    $userId: ID!\n    $collectionId: ID!\n  ) {\n    user(id: $userId) {\n      ...UserPreview\n      collection(id: $collectionId) {\n        ...AllFragranceCollection\n      }\n    }\n  }\n": typeof types.UserCollectionDocument,
     "\n  query UserCollections(\n    $userId: ID!\n    $input: FragranceCollectionPaginationInput\n  ) {\n    user(id: $userId) {\n      ...UserPreview\n      collections(input: $input) {\n        edges {\n          node {\n            ...AllFragranceCollection\n          }\n          cursor\n        }\n        pageInfo {\n          ...AllPageInfo\n        }\n      }\n    }\n  }\n": typeof types.UserCollectionsDocument,
     "\n  query UserLikes(\n    $userId: ID!\n    $input: FragrancePaginationInput\n  ) {\n    user(id: $userId) {\n      ...UserPreview\n      likes(input: $input) {\n        edges {\n          node {\n            ...FragrancePreview\n          }\n          cursor\n        }\n        pageInfo {\n          ...AllPageInfo\n        }\n      }\n    }\n  }\n": typeof types.UserLikesDocument,
@@ -200,14 +205,19 @@ const documents: Documents = {
     "\n  fragment AllTraitVoteDistribution on TraitVoteDistribution {\n    option {\n      ...AllTraitOption\n    }\n    votes\n  }\n": types.AllTraitVoteDistributionFragmentDoc,
     "\n  fragment AllTraitStats on TraitStats {\n    averageScore \n    totalVotes\n    distribution {\n      ...AllTraitVoteDistribution\n    }\n  }\n": types.AllTraitStatsFragmentDoc,
     "\n  fragment Me on User {\n    id\n    username\n    email\n\n    followerCount\n    followingCount\n\n    avatar {\n      ...AllAsset\n    }\n  }\n": types.MeFragmentDoc,
-    "\n  fragment UserPreview on User {\n    id\n    username\n\n    followerCount\n    followingCount\n\n    avatar {\n      ...AllAsset\n    }\n  }\n": types.UserPreviewFragmentDoc,
+    "\n  fragment UserPreview on User {\n    id\n    username\n\n    followerCount\n    followingCount\n    relationship\n\n    avatar {\n      ...AllAsset\n    }\n  }\n": types.UserPreviewFragmentDoc,
+    "\n  fragment AllUserFollow on UserFollow {\n    id\n    user {\n      ...UserPreview\n    }\n  }\n": types.AllUserFollowFragmentDoc,
     "\n  mutation UpdateMe(\n    $input: UpdateMeInput!\n  ) {\n    updateMe(input: $input) {\n      ...Me\n    }\n  }\n": types.UpdateMeDocument,
     "\n  mutation SetMyAvatar(\n    $input: SetMyAvatarInput!\n  ) {\n    setMyAvatar(input: $input) {\n      ...Me\n    }\n  }\n": types.SetMyAvatarDocument,
+    "\n  mutation FollowUser(\n    $input: FollowUserInput!\n  ) {\n    follow(input: $input) {\n      ...UserPreview\n    }\n  }\n": types.FollowUserDocument,
+    "\n  mutation UnfollowUser(\n    $input: UnfollowUserInput!\n  ) {\n    unfollow(input: $input) {\n      ...UserPreview\n    }\n  }\n": types.UnfollowUserDocument,
     "\n  query Me {\n    me {\n      ...Me\n    }\n  }\n": types.MeDocument,
     "\n  query MyCollections(\n    $input: FragranceCollectionPaginationInput\n  ) {\n    me {\n      ...Me\n      collections(input: $input) {\n        edges {\n          node {\n            ...FragranceCollectionPreview\n          }\n          cursor\n        }\n        pageInfo {\n          ...AllPageInfo\n        }\n      }\n    }\n  }\n": types.MyCollectionsDocument,
     "\n  query MyCollectionsHasFragrance(\n    $fragranceId: ID!\n    $input: FragranceCollectionPaginationInput\n  ) {\n    me {\n      ...Me\n      collections(input: $input) { \n        edges {\n          node {\n            ...FragranceCollectionPreview\n            hasFragrance(fragranceId: $fragranceId)\n          }\n          cursor\n        }\n        pageInfo {\n          ...AllPageInfo\n        }\n      }\n    }\n  }\n": types.MyCollectionsHasFragranceDocument,
     "\n  query User(\n    $id: ID!\n  ) {\n    user(id: $id) {\n      ...UserPreview\n    }\n  }\n": types.UserDocument,
     "\n  query SearchUsers(\n    $input: SearchInput\n  ) {\n    searchUsers(input: $input) {\n      edges {\n        node {\n          ...UserPreview\n        }\n        offset\n      }\n      pageInfo {\n        ...AllSearchPageInfo\n      }\n    }\n  }\n": types.SearchUsersDocument,
+    "\n  query UserFollowers(\n    $userId: ID!\n    $input: UserFollowPaginationInput\n  ) {\n    user(id: $userId) {\n      ...UserPreview\n      followers(input: $input) {\n        edges {\n          node {\n            ...AllUserFollow\n          }\n          cursor\n        }\n        pageInfo {\n          ...AllPageInfo\n        }\n      }\n    } \n  }\n": types.UserFollowersDocument,
+    "\n  query UserFollowing(\n    $userId: ID!\n    $input: UserFollowPaginationInput\n  ) {\n    user(id: $userId) {\n      ...UserPreview\n      following(input: $input) {\n        edges {\n          node {\n            ...AllUserFollow\n          }\n          cursor\n        }\n        pageInfo {\n          ...AllPageInfo\n        }\n      }\n    } \n  }\n": types.UserFollowingDocument,
     "\n  query UserCollection(\n    $userId: ID!\n    $collectionId: ID!\n  ) {\n    user(id: $userId) {\n      ...UserPreview\n      collection(id: $collectionId) {\n        ...AllFragranceCollection\n      }\n    }\n  }\n": types.UserCollectionDocument,
     "\n  query UserCollections(\n    $userId: ID!\n    $input: FragranceCollectionPaginationInput\n  ) {\n    user(id: $userId) {\n      ...UserPreview\n      collections(input: $input) {\n        edges {\n          node {\n            ...AllFragranceCollection\n          }\n          cursor\n        }\n        pageInfo {\n          ...AllPageInfo\n        }\n      }\n    }\n  }\n": types.UserCollectionsDocument,
     "\n  query UserLikes(\n    $userId: ID!\n    $input: FragrancePaginationInput\n  ) {\n    user(id: $userId) {\n      ...UserPreview\n      likes(input: $input) {\n        edges {\n          node {\n            ...FragrancePreview\n          }\n          cursor\n        }\n        pageInfo {\n          ...AllPageInfo\n        }\n      }\n    }\n  }\n": types.UserLikesDocument,
@@ -571,7 +581,11 @@ export function gql(source: "\n  fragment Me on User {\n    id\n    username\n  
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\n  fragment UserPreview on User {\n    id\n    username\n\n    followerCount\n    followingCount\n\n    avatar {\n      ...AllAsset\n    }\n  }\n"): (typeof documents)["\n  fragment UserPreview on User {\n    id\n    username\n\n    followerCount\n    followingCount\n\n    avatar {\n      ...AllAsset\n    }\n  }\n"];
+export function gql(source: "\n  fragment UserPreview on User {\n    id\n    username\n\n    followerCount\n    followingCount\n    relationship\n\n    avatar {\n      ...AllAsset\n    }\n  }\n"): (typeof documents)["\n  fragment UserPreview on User {\n    id\n    username\n\n    followerCount\n    followingCount\n    relationship\n\n    avatar {\n      ...AllAsset\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  fragment AllUserFollow on UserFollow {\n    id\n    user {\n      ...UserPreview\n    }\n  }\n"): (typeof documents)["\n  fragment AllUserFollow on UserFollow {\n    id\n    user {\n      ...UserPreview\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -580,6 +594,14 @@ export function gql(source: "\n  mutation UpdateMe(\n    $input: UpdateMeInput!\
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(source: "\n  mutation SetMyAvatar(\n    $input: SetMyAvatarInput!\n  ) {\n    setMyAvatar(input: $input) {\n      ...Me\n    }\n  }\n"): (typeof documents)["\n  mutation SetMyAvatar(\n    $input: SetMyAvatarInput!\n  ) {\n    setMyAvatar(input: $input) {\n      ...Me\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation FollowUser(\n    $input: FollowUserInput!\n  ) {\n    follow(input: $input) {\n      ...UserPreview\n    }\n  }\n"): (typeof documents)["\n  mutation FollowUser(\n    $input: FollowUserInput!\n  ) {\n    follow(input: $input) {\n      ...UserPreview\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation UnfollowUser(\n    $input: UnfollowUserInput!\n  ) {\n    unfollow(input: $input) {\n      ...UserPreview\n    }\n  }\n"): (typeof documents)["\n  mutation UnfollowUser(\n    $input: UnfollowUserInput!\n  ) {\n    unfollow(input: $input) {\n      ...UserPreview\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -600,6 +622,14 @@ export function gql(source: "\n  query User(\n    $id: ID!\n  ) {\n    user(id: 
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(source: "\n  query SearchUsers(\n    $input: SearchInput\n  ) {\n    searchUsers(input: $input) {\n      edges {\n        node {\n          ...UserPreview\n        }\n        offset\n      }\n      pageInfo {\n        ...AllSearchPageInfo\n      }\n    }\n  }\n"): (typeof documents)["\n  query SearchUsers(\n    $input: SearchInput\n  ) {\n    searchUsers(input: $input) {\n      edges {\n        node {\n          ...UserPreview\n        }\n        offset\n      }\n      pageInfo {\n        ...AllSearchPageInfo\n      }\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  query UserFollowers(\n    $userId: ID!\n    $input: UserFollowPaginationInput\n  ) {\n    user(id: $userId) {\n      ...UserPreview\n      followers(input: $input) {\n        edges {\n          node {\n            ...AllUserFollow\n          }\n          cursor\n        }\n        pageInfo {\n          ...AllPageInfo\n        }\n      }\n    } \n  }\n"): (typeof documents)["\n  query UserFollowers(\n    $userId: ID!\n    $input: UserFollowPaginationInput\n  ) {\n    user(id: $userId) {\n      ...UserPreview\n      followers(input: $input) {\n        edges {\n          node {\n            ...AllUserFollow\n          }\n          cursor\n        }\n        pageInfo {\n          ...AllPageInfo\n        }\n      }\n    } \n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  query UserFollowing(\n    $userId: ID!\n    $input: UserFollowPaginationInput\n  ) {\n    user(id: $userId) {\n      ...UserPreview\n      following(input: $input) {\n        edges {\n          node {\n            ...AllUserFollow\n          }\n          cursor\n        }\n        pageInfo {\n          ...AllPageInfo\n        }\n      }\n    } \n  }\n"): (typeof documents)["\n  query UserFollowing(\n    $userId: ID!\n    $input: UserFollowPaginationInput\n  ) {\n    user(id: $userId) {\n      ...UserPreview\n      following(input: $input) {\n        edges {\n          node {\n            ...AllUserFollow\n          }\n          cursor\n        }\n        pageInfo {\n          ...AllPageInfo\n        }\n      }\n    } \n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

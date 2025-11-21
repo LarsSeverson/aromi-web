@@ -2,8 +2,12 @@ import type { UserPreviewFragment } from '@/generated/graphql'
 import React from 'react'
 import UserAvatar from './UserAvatar'
 import { formatNumber } from '@/utils/string-utils'
-import clsx from 'clsx'
 import { Link } from '@tanstack/react-router'
+import UserFollowButton from './UserFollowButton'
+import { useFollowUser } from '../hooks/useFollowUser'
+import { useUnfollowUser } from '../hooks/useUnfollowUser'
+import { useDebounce } from '@/hooks/useDebounce'
+import { useToastMessage } from '@/hooks/useToastMessage'
 
 export interface UserPreviewCardProps {
   user: UserPreviewFragment
@@ -11,7 +15,30 @@ export interface UserPreviewCardProps {
 
 const UserPreviewCard = (props: UserPreviewCardProps) => {
   const { user } = props
-  const { id, username } = user
+  const { id, username, relationship } = user
+
+  const { toastError } = useToastMessage()
+
+  const { follow } = useFollowUser()
+  const { unfollow } = useUnfollowUser()
+
+  const handleOnRelationshipChange = useDebounce(
+    async (newValue: boolean) => {
+      const fn = newValue ? follow : unfollow
+
+      const res = await fn({ userId: id })
+
+      if (res.isErr()) {
+        toastError('')
+      }
+    },
+    300,
+    [id]
+  )
+
+  const handleOnIsFollowingChange = (newValue: boolean) => {
+    handleOnRelationshipChange(newValue)
+  }
 
   return (
     <div
@@ -50,14 +77,10 @@ const UserPreviewCard = (props: UserPreviewCardProps) => {
       <div
         className='ml-auto self-center'
       >
-        <button
-          className={clsx(
-            'bg-sinopia cursor-pointer rounded-xl px-4 py-2 font-medium text-white',
-            'hover:brightness-105'
-          )}
-        >
-          Follow
-        </button>
+        <UserFollowButton
+          relationship={relationship}
+          onIsFollowingChange={handleOnIsFollowingChange}
+        />
       </div>
     </div>
   )

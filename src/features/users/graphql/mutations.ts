@@ -19,3 +19,23 @@ export const SET_MY_AVATAR_MUTATION = gql(/* GraphQL */`
     }
   }
 `)
+
+export const FOLLOW_USER_MUTATION = gql(/* GraphQL */ `
+  mutation FollowUser(
+    $input: FollowUserInput!
+  ) {
+    follow(input: $input) {
+      ...UserPreview
+    }
+  }
+`)
+
+export const UNFOLLOW_USER_MUTATION = gql(/* GraphQL */`
+  mutation UnfollowUser(
+    $input: UnfollowUserInput!
+  ) {
+    unfollow(input: $input) {
+      ...UserPreview
+    }
+  }
+`)
