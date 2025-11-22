@@ -10,22 +10,19 @@ export const useSearchBrands = (input?: SearchInput) => {
   const {
     data, previousData, loading: isLoading, error, networkStatus,
     fetchMore, refetch
-  } = useQuery(
-    SEARCH_BRANDS_QUERY,
-    {
-      variables: { input }
-    }
-  )
+  } = useQuery(SEARCH_BRANDS_QUERY, { variables: { input } })
 
   const loadMore = () => {
     const endOffset = validateSearchPagination(data?.searchBrands.pageInfo, networkStatus)
-
     if (endOffset == null) return noRes
 
     const variables = {
       input: {
         ...(input ?? {}),
-        offset: endOffset
+        pagination: {
+          ...(input?.pagination ?? {}),
+          after: endOffset
+        }
       }
     }
 
@@ -43,6 +40,7 @@ export const useSearchBrands = (input?: SearchInput) => {
 
   const isLoadingMore = isStatusLoadingMore(networkStatus)
   const hasMore = hasNextPage(data?.searchBrands.pageInfo)
+  const hasNoResults = brands.length === 0 && !isLoading
 
   return {
     brands,
@@ -50,6 +48,7 @@ export const useSearchBrands = (input?: SearchInput) => {
     isLoading,
     isLoadingMore,
     hasMore,
+    hasNoResults,
 
     error,
 

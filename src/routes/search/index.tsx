@@ -1,5 +1,4 @@
 import { client } from '@/common/client'
-import BrandSearchPage from '@/features/brands/pages/BrandSearchPage'
 import FragranceSearchPage from '@/features/fragrances/pages/FragranceSearchPage'
 import UserSearchPage from '@/features/users/pages/UserSearchPage'
 import { wrapQuery } from '@/utils/util'
@@ -27,14 +26,6 @@ export const Route = createFileRoute('/search/')({
 function RouteComponent () {
   const api = getRouteApi('/search')
   const { term, filter } = api.useSearch()
-
-  if (filter === 'brands') {
-    return (
-      <BrandSearchPage
-        term={term}
-      />
-    )
-  }
 
   if (filter === 'users') {
     return (
