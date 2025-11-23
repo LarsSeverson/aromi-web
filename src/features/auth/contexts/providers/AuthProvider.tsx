@@ -1,6 +1,7 @@
 import useAuth from '@/features/auth/hooks/useAuth'
 import React, { useEffect } from 'react'
-import { AuthContext } from './AuthContext'
+import { AuthContext } from '../AuthContext'
+import { useAuthDialogs } from '../../hooks/useAuthDialogs'
 
 interface AuthProviderProps {
   children: React.ReactNode
@@ -8,7 +9,9 @@ interface AuthProviderProps {
 
 export const AuthProvider = (props: AuthProviderProps) => {
   const { children } = props
+
   const auth = useAuth()
+  const dialogs = useAuthDialogs()
 
   useEffect(() => {
     auth.initialize()
@@ -18,7 +21,10 @@ export const AuthProvider = (props: AuthProviderProps) => {
 
   return (
     <AuthContext.Provider
-      value={auth}
+      value={{
+        ...auth,
+        dialogs
+      }}
     >
       {children}
     </AuthContext.Provider>

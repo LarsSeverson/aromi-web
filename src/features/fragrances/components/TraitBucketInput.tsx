@@ -1,3 +1,4 @@
+import { useAuthHelpers } from '@/features/auth/hooks/useAuthHelpers'
 import type { AllTraitVoteDistributionFragment } from '@/generated/graphql'
 import { Tooltip } from '@base-ui-components/react'
 import clsx from 'clsx'
@@ -14,6 +15,15 @@ export interface TraitBucketInputProps {
 const TraitBucketInput = (props: TraitBucketInputProps) => {
   const { bucket, isSelected = false, className, onBucketClick } = props
 
+  const { checkAuthenticated: requireAuth } = useAuthHelpers()
+
+  const handleOnBucketClick = () => {
+    const shouldContinue = requireAuth()
+    if (!shouldContinue) return
+
+    onBucketClick?.(bucket.option.id)
+  }
+
   return (
     <Tooltip.Root>
       <Tooltip.Trigger
@@ -22,7 +32,7 @@ const TraitBucketInput = (props: TraitBucketInputProps) => {
           'group h-8 w-full min-w-0 overflow-hidden',
           'cursor-pointer'
         )}
-        onClick={onBucketClick?.bind(null, bucket.option.id)}
+        onClick={handleOnBucketClick}
       >
         <div
           className={clsx(

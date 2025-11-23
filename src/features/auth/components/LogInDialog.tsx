@@ -1,19 +1,18 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Dialog } from '@base-ui-components/react'
-import { useLocation, useNavigate } from '@tanstack/react-router'
 import LogInButton from './LogInButton'
 import DialogBackdrop from '@/components/DialogBackdrop'
 import DialogPopup from '@/components/DialogPopup'
 import InformationLogInStep from './InformationLogInStep'
 import ConfirmSignUpStep from './ConfirmSignUpStep'
 import BackButton from '@/components/BackButton'
+import { useAuthContext } from '../contexts/AuthContext'
 
 const LogInDialog = () => {
-  const navigate = useNavigate()
-  const { showLogIn, showSignUp } = useLocation().search
+  const { dialogs } = useAuthContext()
+  const { isLogInDialogOpen, setIsLogInDialogOpen } = dialogs
 
   const [step, setStep] = useState(0)
-  const [isOpen, setIsOpen] = useState(false)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
@@ -33,27 +32,10 @@ const LogInDialog = () => {
     setStep(prev => Math.max(0, prev - 1))
   }
 
-  useEffect(() => {
-    if (showLogIn === true) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setIsOpen(true)
-      navigate({ from: '/', search: { showLogIn: undefined } })
-    }
-
-    if (showLogIn === false) {
-      setIsOpen(false)
-      navigate({ from: '/', search: { showLogIn: undefined } })
-    }
-
-    if (showSignUp === true) {
-      setIsOpen(false)
-    }
-  }, [showLogIn, showSignUp, navigate])
-
   return (
     <Dialog.Root
-      open={isOpen}
-      onOpenChange={setIsOpen}
+      open={isLogInDialogOpen}
+      onOpenChange={setIsLogInDialogOpen}
     >
       <LogInButton />
 
@@ -61,7 +43,7 @@ const LogInDialog = () => {
         <DialogBackdrop />
 
         <DialogPopup
-          className='min-w-96 max-w-96'
+          className='max-w-96 min-w-96'
         >
           {showBack && (
             <BackButton

@@ -6,7 +6,6 @@ import { SignUpSchema } from '../utils/validation'
 import AuthDialogHeading from './AuthDialogHeading'
 import PasswordInput from '@/features/auth/components/PasswordInput'
 import EmailInput from './EmailInput'
-import { Link } from '@tanstack/react-router'
 import SubmitButton from '@/components/SubmitButton'
 
 export interface InformationSignUpStepProps {
@@ -16,38 +15,47 @@ export interface InformationSignUpStepProps {
 const InformationSignUpStep = (props: InformationSignUpStepProps) => {
   const { onNotConfirmed } = props
 
-  const { signUp } = useAuthContext()
+  const { signUp, dialogs } = useAuthContext()
+  const { openLogInDialog } = dialogs
 
   const [error, setError] = useState<string | null>(null)
   const [errors, setErrors] = useState({})
   const [isLoading, setIsLoading] = useState(false)
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSignUp = async (email: string, password: string) => {
+    setIsLoading(true)
+
+    const res = await signUp({ email, password })
+
+    setIsLoading(false)
+
+    if (res.isOk()) {
+      onNotConfirmed(email, password)
+      return
+    }
+
+    const { message } = res.error
+
+    setError(message)
+  }
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    setIsLoading(true)
+    setError(null)
 
     const formData = new FormData(e.currentTarget)
     const email = formData.get('email') as string
     const password = formData.get('password') as string
 
-    const fieldErrors = getFieldErrors(formData, SignUpSchema)
+    const fieldErrors = getFieldErrors(SignUpSchema, { email, password })
     const valid = Object.values(fieldErrors).length === 0
 
     if (valid) {
-      await signUp({ email, password })
-        .match(
-          () => {
-            onNotConfirmed(email, password)
-          },
-          error => {
-            setError(error.message)
-          }
-        )
+      handleSignUp(email, password)
     }
 
     setErrors(fieldErrors)
-    setIsLoading(false)
   }
 
   return (
@@ -57,10 +65,9 @@ const InformationSignUpStep = (props: InformationSignUpStepProps) => {
       />
 
       <Form
-        className='flex flex-col mt-4 gap-3'
+        className='mt-4 flex flex-col gap-3'
         errors={errors}
-        onClearErrors={setErrors}
-        onSubmit={(e) => { void handleSubmit(e) }}
+        onSubmit={handleSubmit}
       >
         <EmailInput />
 
@@ -75,10 +82,10 @@ const InformationSignUpStep = (props: InformationSignUpStepProps) => {
           text='Sign Up'
         />
 
-        <Link
-          to='.'
-          search={{ showLogIn: true }}
-          className='text-center text-sm group w-min text-nowrap self-center'
+        <button
+          className='group w-min self-center text-center text-sm text-nowrap'
+          type='button'
+          onClick={openLogInDialog}
         >
           Already have an account?&nbsp;
 
@@ -87,7 +94,7 @@ const InformationSignUpStep = (props: InformationSignUpStepProps) => {
           >
             Log In
           </span>
-        </Link>
+        </button>
       </Form>
     </div>
   )

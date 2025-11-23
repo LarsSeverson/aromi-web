@@ -4,6 +4,7 @@ import TextAreaAutoSize from 'react-textarea-autosize'
 import clsx from 'clsx'
 import { MIN_REVIEW_BODY_LENGTH, ValidFragranceReviewBody } from '../utils/validation'
 import { Field } from '@base-ui-components/react'
+import { useAuthHelpers } from '@/features/auth/hooks/useAuthHelpers'
 
 export interface WriteReviewSectionProps {
   fragranceId: string
@@ -12,6 +13,8 @@ export interface WriteReviewSectionProps {
 
 const WriteReviewSection = (props: WriteReviewSectionProps) => {
   const { fragranceId, onBodyChange } = props
+
+  const helpers = useAuthHelpers()
 
   const { myReview, isLoading } = useMyFragranceReview(fragranceId)
 
@@ -31,6 +34,10 @@ const WriteReviewSection = (props: WriteReviewSectionProps) => {
 
     const messages = result.error.issues.map(issue => issue.message)
     return messages.at(0) ?? null
+  }
+
+  const handleOnFocus = () => {
+    helpers.checkAuthenticated('You need to log in to write a review')
   }
 
   if (isLoading) return null
@@ -57,11 +64,13 @@ const WriteReviewSection = (props: WriteReviewSectionProps) => {
         <Field.Control
           value={body}
           placeholder='Got compliments or regrets? Tell us here...'
+          // disabled={!isAuthenticated}
           className={clsx(
             'hover:border-sinopia min-h-44 w-full resize-none overflow-auto rounded-md border-2 p-4',
             'focus:border-sinopia transition-colors duration-150 ease-in-out focus:outline-none'
           )}
           onValueChange={handleOnValueChange}
+          onFocus={handleOnFocus}
 
           render={props => {
             const { style: _style, ...rest } = props

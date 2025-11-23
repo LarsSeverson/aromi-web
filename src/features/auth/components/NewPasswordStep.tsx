@@ -17,9 +17,11 @@ export interface NewPasswordStepProps {
 const NewPasswordStep = (props: NewPasswordStepProps) => {
   const { email, onEditEmail } = props
 
+  const { confirmForgotPassword, dialogs } = useAuthContext()
+  const { openLogInDialog } = dialogs
+
   const navigate = useNavigate()
   const { toastMessage } = useToastMessage()
-  const { confirmForgotPassword } = useAuthContext()
 
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -34,7 +36,8 @@ const NewPasswordStep = (props: NewPasswordStepProps) => {
       .match(
         () => {
           toastMessage('Password updated', 'Log in with your new password')
-          void navigate({ to: '/', search: { showLogIn: true } })
+          openLogInDialog()
+          navigate({ to: '/' })
         },
         error => {
           setError(error.message)
@@ -70,7 +73,7 @@ const NewPasswordStep = (props: NewPasswordStepProps) => {
       </div>
 
       <span
-        className='text-2xl self-start'
+        className='self-start text-2xl'
       >
         Getting back your account
       </span>
@@ -82,10 +85,10 @@ const NewPasswordStep = (props: NewPasswordStepProps) => {
       </span>
 
       <div
-        className='flex flex-col gap-1 my-2'
+        className='my-2 flex flex-col gap-1'
       >
         <span
-          className='font-semibold text-md'
+          className='text-md font-semibold'
         >
           Email
         </span>
@@ -94,7 +97,7 @@ const NewPasswordStep = (props: NewPasswordStepProps) => {
           className='flex items-center gap-1'
         >
           <span
-            className='font-semibold opacity-50 text-sm'
+            className='text-sm font-semibold opacity-50'
           >
             {email}
           </span>
@@ -112,7 +115,7 @@ const NewPasswordStep = (props: NewPasswordStepProps) => {
       </div>
 
       <p
-        className='text-red-600 text-sm text-center mt-3'
+        className='mt-3 text-center text-sm text-red-600'
       >
         {error}
       </p>

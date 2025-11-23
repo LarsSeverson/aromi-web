@@ -2,7 +2,7 @@ export * from './graphql/fragments'
 export * from './graphql/mutations'
 
 export * from './contexts/AuthContext'
-export * from './contexts/AuthProvider'
+export * from './contexts/providers/AuthProvider'
 
 export * from './hooks/useAuth'
 export * from './hooks/useChangePassword'

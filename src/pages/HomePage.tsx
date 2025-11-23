@@ -4,12 +4,17 @@ import { useFragrances } from '@/features/fragrances'
 import { FragrancePreviewCard } from '@/features/fragrances/components/FragrancePreviewCard'
 import FragrancePreviewCardSkeleton from '@/features/fragrances/components/FragrancePreviewCardSkeleton'
 import type { FragrancePreviewFragment } from '@/generated/graphql'
-import { useCallback, useState } from 'react'
+import { useContainerRect } from '@/hooks/useContainerRect'
+import { useElementScrollRestoration } from '@tanstack/react-router'
+import { useCallback } from 'react'
 
 export const HomePage = () => {
   const { fragrances, isLoading, isLoadingMore, loadMore } = useFragrances()
 
-  const [containerRect, setContainerRect] = useState(new DOMRect())
+  const { rect, updateRect } = useContainerRect('homePageContainer')
+  const scrollEntry = useElementScrollRestoration({
+    getElement: () => window
+  })
 
   const onRenderFragrance = useCallback(
     (fragrance: FragrancePreviewFragment) => (
@@ -40,12 +45,13 @@ export const HomePage = () => {
       className='p-4'
     >
       <ResizeContainer
-        onResize={setContainerRect}
+        onResize={updateRect}
       >
         <DynamicList
           items={fragrances}
-          containerWidth={containerRect?.width}
+          containerWidth={rect.width}
           isLoading={isLoading || isLoadingMore}
+          initialScrollOffset={scrollEntry?.scrollY}
           onRenderItem={onRenderFragrance}
           onRenderSkeleton={onRenderFragranceSkeleton}
           onEndReached={handleOnEndReached}

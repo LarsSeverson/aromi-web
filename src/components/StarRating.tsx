@@ -4,11 +4,12 @@ import { Field } from '@base-ui-components/react'
 import { ratingMap } from './RatingStars'
 import { FaStar } from 'react-icons/fa'
 import clsx from 'clsx'
+import { useAuthHelpers } from '@/features/auth/hooks/useAuthHelpers'
 
 export interface StarRatingProps {
   value: number
   maxStars?: number
-  onChange: (value: number) => void
+  onChange?: (value: number) => void
 }
 
 export const StarRating = (props: StarRatingProps) => {
@@ -18,7 +19,16 @@ export const StarRating = (props: StarRatingProps) => {
     onChange
   } = props
 
+  const { checkAuthenticated } = useAuthHelpers()
+
   const [hoverValue, setHoverValue] = React.useState(0)
+
+  const handleOnStarClick = (starValue: number) => {
+    const shouldContinue = checkAuthenticated()
+    if (!shouldContinue) return
+
+    onChange?.(starValue)
+  }
 
   return (
     <Field.Root
@@ -35,37 +45,32 @@ export const StarRating = (props: StarRatingProps) => {
             const isActive = (hoverValue ? hoverValue >= starValue : value >= starValue)
 
             return (
-              <React.Fragment
+              <label
                 key={starValue}
+                className={clsx(
+                  'cursor-pointer px-1 transition-colors',
+                  'hover:text-sinopia text-gray-300'
+                )}
+                onMouseEnter={setHoverValue.bind(null, starValue)}
+                onMouseLeave={setHoverValue.bind(null, 0)}
               >
                 <Field.Control
                   type="radio"
-                  id={String(starValue)}
-                  required
+                  name="rating"
                   value={starValue}
                   checked={value === starValue}
-                  onChange={onChange?.bind(null, starValue)}
-                  className="peer sr-only"
+                  onChange={handleOnStarClick.bind(null, starValue)}
+                  className="sr-only"
                 />
 
-                <label
-                  htmlFor={String(starValue)}
+                <FaStar
+                  size={40}
                   className={clsx(
-                    'cursor-pointer px-1 transition-colors',
-                    'peer-checked:text-sinopia hover:text-sinopia text-gray-300'
+                    'transition-colors',
+                    isActive ? 'text-sinopia' : 'text-gray-300'
                   )}
-                  onMouseEnter={setHoverValue.bind(null, starValue)}
-                  onMouseLeave={setHoverValue.bind(null, 0)}
-                >
-                  <FaStar
-                    size={40}
-                    className={clsx(
-                      'transition-colors',
-                      isActive ? 'text-sinopia' : 'text-gray-300'
-                    )}
-                  />
-                </label>
-              </React.Fragment>
+                />
+              </label>
             )
           })}
       </div>

@@ -13,10 +13,9 @@ const BackButton = (props: BackButtonProps) => {
     <button
       type='button'
       className={clsx(
-        'flex h-9 aspect-square items-center justify-center select-none rounded-full',
-        'border border-surface2 bg-empty hover:bg-black/10',
-        'text-base font-medium',
-        'focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-1'
+        'flex aspect-square h-9 items-center justify-center rounded-full select-none',
+        'bg-empty border hover:bg-black/10',
+        'text-base font-medium'
       )}
       {...rest}
     >

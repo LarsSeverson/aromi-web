@@ -1,5 +1,5 @@
 import React from 'react'
-import { useCanGoBack, useRouter, type LinkProps } from '@tanstack/react-router'
+import { useCanGoBack, useNavigate, useRouter, type LinkProps } from '@tanstack/react-router'
 import { IoMdArrowRoundBack } from 'react-icons/io'
 import BouncyButton from './BouncyButton'
 
@@ -8,12 +8,18 @@ export interface PageBackButtonProps extends LinkProps {
 }
 
 const PageBackButton = (props: PageBackButtonProps) => {
-  const { className, ...rest } = props
+  const { className, to, ...rest } = props
 
+  const navigate = useNavigate()
   const canGoBack = useCanGoBack()
   const router = useRouter()
 
   const handleGoBack = () => {
+    if (to != null) {
+      navigate({ to, ...rest })
+      return
+    }
+
     if (canGoBack) {
       router.history.back()
     }
@@ -25,7 +31,8 @@ const PageBackButton = (props: PageBackButtonProps) => {
     >
       <BouncyButton
         {...rest}
-        className='p-3 rounded-lg bg-white hover:brightness-95 flex items-center justify-center'
+        type='button'
+        className='flex items-center justify-center rounded-lg bg-white p-3 hover:brightness-95'
         onClick={handleGoBack}
       >
         <IoMdArrowRoundBack

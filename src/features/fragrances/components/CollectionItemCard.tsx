@@ -44,7 +44,7 @@ const CollectionItemCard = (props: CollectionItemCardProps) => {
           to='/fragrances/$id'
           params={{ id }}
           className='pointer-events-auto flex flex-1 rounded-2xl'
-          onFocus={handleLinkFocus}
+          onClick={handleLinkFocus}
           tabIndex={0}
           disabled={isDragging}
         >

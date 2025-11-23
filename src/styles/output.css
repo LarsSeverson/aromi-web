@@ -499,9 +499,6 @@
   .ml-1 {
     margin-left: calc(var(--spacing) * 1);
   }
-  .ml-2 {
-    margin-left: calc(var(--spacing) * 2);
-  }
   .ml-3 {
     margin-left: calc(var(--spacing) * 3);
   }
@@ -920,9 +917,6 @@
   }
   .grid-cols-\[0\.75rem_1fr\] {
     grid-template-columns: 0.75rem 1fr;
-  }
-  .grid-cols-\[repeat\(auto-fit\,minmax\(60px\,128px\)\)\] {
-    grid-template-columns: repeat(auto-fit,minmax(60px,128px));
   }
   .grid-rows-1 {
     grid-template-rows: repeat(1, minmax(0, 1fr));
@@ -2012,11 +2006,6 @@
     &:is(:where(.group)[data-side="none"] *) {
       --tw-leading: calc(var(--spacing) * 4);
       line-height: calc(var(--spacing) * 4);
-    }
-  }
-  .peer-checked\:text-sinopia {
-    &:is(:where(.peer):checked ~ *) {
-      color: var(--color-sinopia);
     }
   }
   .before\:absolute {

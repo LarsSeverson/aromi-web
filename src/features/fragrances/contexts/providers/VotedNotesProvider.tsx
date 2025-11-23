@@ -7,6 +7,7 @@ import { useDebounces } from '@/hooks/useDebounces'
 import { VOTE_TYPES, type VoteType } from '@/utils/util'
 import { MAX_NOTE_VOTES } from '../../utils/constants'
 import { VotedNotesContext } from '../VotedNotesContext'
+import { useAuthHelpers } from '@/features/auth/hooks/useAuthHelpers'
 
 export interface VotedNotesProviderProps {
   fragranceId: string
@@ -17,6 +18,7 @@ export interface VotedNotesProviderProps {
 export const VotedNotesProvider = (props: VotedNotesProviderProps) => {
   const { fragranceId, layer, children } = props
 
+  const { checkAuthenticated } = useAuthHelpers()
   const { toastError } = useToastMessage()
 
   const { vote } = useVoteOnFragranceNote()
@@ -40,12 +42,13 @@ export const VotedNotesProvider = (props: VotedNotesProviderProps) => {
     const voteRes = await vote({ fragranceId, noteId, layer, vote: userVote })
 
     if (voteRes.isErr()) {
-      const error = voteRes.error
-      toastError('Error voting on note', error.message)
+      toastError('')
     }
   }
 
   const voteOnNote = (note: AllNoteFragment) => {
+    if (!checkAuthenticated('You need to log in before voting on notes')) return
+
     const noteId = note.id
     const currentSize = votedNotesMapInternal.current.size
     const shouldAdd = !votedNotesMapInternal.current.has(noteId)

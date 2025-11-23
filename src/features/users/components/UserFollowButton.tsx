@@ -11,7 +11,7 @@ const UserFollowButton = (props: UserFollowButtonProps) => {
   const {
     relationship = RelationshipStatus.None,
     onIsFollowingChange,
-    className, onClick, ...restButtonProps
+    className, onClick: onClick, ...restButtonProps
   } = props
 
   const [isFollowing, setIsFollowing] = React.useState(relationship === RelationshipStatus.Following)

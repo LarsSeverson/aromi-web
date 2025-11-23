@@ -5,6 +5,7 @@ import type { AllVoteInfoFragment } from '@/generated/graphql'
 import { VOTE_TYPES } from '@/utils/util'
 import { formatNumber } from '@/utils/string-utils'
 import { TbArrowBigDown, TbArrowBigDownFilled, TbArrowBigUp, TbArrowBigUpFilled } from 'react-icons/tb'
+import AuthButton from '@/features/auth/components/AuthButton'
 
 export interface VoteButtonGroupProps extends React.HTMLAttributes<HTMLDivElement> {
   votes: AllVoteInfoFragment
@@ -69,7 +70,7 @@ export const VoteButtonGroup = (props: VoteButtonGroupProps) => {
       )}
       {...rest}
     >
-      <button
+      <AuthButton
         className={clsx(
           'aspect-square cursor-pointer rounded-full p-2',
           'hover:bg-black/10',
@@ -90,7 +91,7 @@ export const VoteButtonGroup = (props: VoteButtonGroupProps) => {
             />
           )
         }
-      </button>
+      </AuthButton>
 
       <span
         className={clsx(
@@ -111,7 +112,7 @@ export const VoteButtonGroup = (props: VoteButtonGroupProps) => {
         />
       </div>
 
-      <button
+      <AuthButton
         // eslint-disable-next-line tailwindcss/no-custom-classname
         className={clsx(
           'aspect-square cursor-pointer rounded-full p-2',
@@ -134,7 +135,7 @@ export const VoteButtonGroup = (props: VoteButtonGroupProps) => {
             />
           )
         }
-      </button>
+      </AuthButton>
     </div>
   )
 }

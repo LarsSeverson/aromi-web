@@ -9,6 +9,7 @@ import type { FragrancePreviewFragment } from '@/generated/graphql'
 import { useCreateFragranceCollection } from '../hooks/useCreateFragranceCollection'
 import { useToastMessage } from '@/hooks/useToastMessage'
 import GridImages from '@/components/GridImages'
+import AuthButton from '@/features/auth/components/AuthButton'
 
 export interface CreateCollectionDialogProps {
   fragrance: FragrancePreviewFragment
@@ -56,6 +57,7 @@ const CreateCollectionDialog = (props: CreateCollectionDialogProps) => {
     >
       <Dialog.Trigger
         className='flex w-full cursor-pointer items-center justify-between gap-2 rounded-md px-2 py-0 pr-4 hover:backdrop-brightness-95'
+        render={AuthButton}
       >
         <div
           className='flex h-16 items-center gap-4 overflow-ellipsis'

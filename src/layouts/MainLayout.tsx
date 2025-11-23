@@ -2,8 +2,11 @@ import React from 'react'
 import { Outlet } from '@tanstack/react-router'
 import SideBar from '@/components/SideBar'
 import TopBar from '@/components/TopBar'
+import { useRedirectHistory } from '@/hooks/useRedirectHistory'
 
 const MainLayout = () => {
+  useRedirectHistory()
+
   return (
     <div
       className='min-h-screen'

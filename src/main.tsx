@@ -16,17 +16,15 @@ topbar.config({ barThickness: 2, barColors: { 0: Colors.sinopia } })
 
 export const router = createRouter({
   routeTree,
+
   context: {
     auth: undefined,
     me: undefined,
     utils: undefined
   },
-  scrollRestoration: true,
-  getScrollRestorationKey: location => {
-    if (location.pathname === '/') return 'homeScrollPos'
-    return location.state.key!
-  },
-  notFoundMode: 'root'
+
+  notFoundMode: 'root',
+  scrollRestoration: true
 })
 
 const root = document.getElementById('root')

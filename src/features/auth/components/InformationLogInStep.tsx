@@ -16,16 +16,38 @@ export interface InformationLogInStepProps {
 const InformationLogInStep = (props: InformationLogInStepProps) => {
   const { onNotConfirmed } = props
 
-  const { logIn } = useAuthContext()
+  const { logIn, dialogs } = useAuthContext()
+  const { openSignUpDialog, closeAllDialogs } = dialogs
 
   const [error, setError] = useState<string | null>(null)
   const [errors, setErrors] = useState({})
   const [isLoading, setIsLoading] = useState(false)
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleLogIn = async (email: string, password: string) => {
+    setIsLoading(true)
+
+    const res = await logIn({ email, password })
+
+    setIsLoading(false)
+
+    if (res.isOk()) {
+      window.location.reload()
+      return
+    }
+
+    const { code, message } = res.error
+
+    if (['NOT_CONFIRMED'].includes(code)) {
+      onNotConfirmed(email, password)
+    }
+
+    setError(message)
+  }
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    setIsLoading(true)
+    setError(null)
 
     const formData = new FormData(e.currentTarget)
     const email = formData.get('email') as string
@@ -35,25 +57,10 @@ const InformationLogInStep = (props: InformationLogInStepProps) => {
     const valid = Object.values(fieldErrors).length === 0
 
     if (valid) {
-      await logIn({ email, password })
-        .match(
-          () => {
-            window.location.reload()
-          },
-          error => {
-            const { code, message } = error
-
-            if (['NOT_CONFIRMED'].includes(code)) {
-              onNotConfirmed(email, password)
-            }
-
-            setError(message)
-          }
-        )
+      handleLogIn(email, password)
     }
 
     setErrors(fieldErrors)
-    setIsLoading(false)
   }
 
   return (
@@ -64,8 +71,7 @@ const InformationLogInStep = (props: InformationLogInStepProps) => {
 
       <Form
         errors={errors}
-        onClearErrors={setErrors}
-        onSubmit={(e) => { void handleSubmit(e) }}
+        onSubmit={handleSubmit}
         className='mt-4 flex flex-col gap-3'
       >
         <EmailInput />
@@ -79,9 +85,8 @@ const InformationLogInStep = (props: InformationLogInStepProps) => {
 
           <Link
             to='/auth/account-recovery'
-            search={{ showLogIn: false }}
-            className='mt-1 text-sm hover:underline'
-            style={{ marginLeft: 'auto' }}
+            className='mt-1 ml-auto text-sm hover:underline'
+            onClick={closeAllDialogs}
           >
             Forgot password?
           </Link>
@@ -92,10 +97,10 @@ const InformationLogInStep = (props: InformationLogInStepProps) => {
           text='Log In'
         />
 
-        <Link
-          to='.'
-          search={{ showSignUp: true }}
+        <button
           className='group w-min self-center text-center text-sm text-nowrap'
+          type='button'
+          onClick={openSignUpDialog}
         >
           Don't have an account?&nbsp;
 
@@ -104,7 +109,7 @@ const InformationLogInStep = (props: InformationLogInStepProps) => {
           >
             Sign Up
           </span>
-        </Link>
+        </button>
       </Form>
     </div>
   )

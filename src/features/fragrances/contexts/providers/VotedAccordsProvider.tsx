@@ -7,6 +7,7 @@ import { useVoteOnFragranceAccord } from '../../hooks/useVoteOnFragranceAccord'
 import { useDebounces } from '@/hooks/useDebounces'
 import { useToastMessage } from '@/hooks/useToastMessage'
 import { MAX_ACCORD_VOTES } from '../../utils/constants'
+import { useAuthHelpers } from '@/features/auth/hooks/useAuthHelpers'
 
 export interface VotedAccordsProviderProps {
   fragranceId: string
@@ -16,6 +17,7 @@ export interface VotedAccordsProviderProps {
 export const VotedAccordsProvider = (props: VotedAccordsProviderProps) => {
   const { fragranceId, children } = props
 
+  const { checkAuthenticated } = useAuthHelpers()
   const { toastError } = useToastMessage()
 
   const { vote } = useVoteOnFragranceAccord()
@@ -45,6 +47,8 @@ export const VotedAccordsProvider = (props: VotedAccordsProviderProps) => {
   }
 
   const voteOnAccord = (accord: AllAccordFragment) => {
+    if (!checkAuthenticated('You need to log in before voting on accords')) return
+
     const accordId = accord.id
     const currentSize = votedAccordsMapInternal.current.size
     const shouldAdd = !votedAccordsMapInternal.current.has(accordId)
