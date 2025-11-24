@@ -9,6 +9,7 @@ import MoreOptionsReviewPopover from './MoreOptionsReviewPopover'
 import ProgressiveImage from '@/components/ProgressiveImage'
 import blankPreviewThumbnail from '@/assets/blank-fragrance-thumbnail.svg'
 import { Link } from '@tanstack/react-router'
+import { MAX_REVIEW_BODY_DISPLAY_LENGTH } from '../utils/constants'
 
 export interface FragranceReviewCardProps extends React.HTMLAttributes<HTMLDivElement> {
   review: AllFragranceReviewFragment
@@ -21,13 +22,17 @@ export const FragranceReviewCard = (props: FragranceReviewCardProps) => {
   const { thumbnail, name, brand } = fragrance
   const { username } = author
 
+  const [showFull, setShowFull] = React.useState(false)
+
   const { url, primaryColor } = thumbnail ?? {}
   const showBody = body != null && body.length > 0
+  const isLong = (body?.length ?? 0) > MAX_REVIEW_BODY_DISPLAY_LENGTH
+  const displayText = showFull ? body : body?.slice(0, MAX_REVIEW_BODY_DISPLAY_LENGTH)
 
   return (
     <div
       className={clsx(
-        'flex w-full flex-col gap-5 p-5',
+        'flex w-full flex-col gap-5 border-b p-5',
         rest.className
       )}
       {...rest}
@@ -69,7 +74,6 @@ export const FragranceReviewCard = (props: FragranceReviewCardProps) => {
                 />
               </Link>
             )}
-
         </div>
 
         <div
@@ -127,9 +131,25 @@ export const FragranceReviewCard = (props: FragranceReviewCardProps) => {
       </div>
 
       {showBody && (
-        <p>
-          {body}
-        </p>
+        <div
+          className='flex flex-col gap-2'
+        >
+          <p
+            className='text-md text-black/90'
+          >
+            {displayText}
+            {(!showFull && isLong) && '...'}
+          </p>
+
+          {isLong && (
+            <button
+              onClick={setShowFull.bind(null, prev => !prev)}
+              className='cursor-pointer self-start text-sm font-medium text-black'
+            >
+              {showFull ? 'Read less' : 'Read more'}
+            </button>
+          )}
+        </div>
       )}
 
       <div

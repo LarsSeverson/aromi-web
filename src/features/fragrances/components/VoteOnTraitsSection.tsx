@@ -65,6 +65,18 @@ const VoteOnTraitsSection = (props: VoteOnTraitsSectionProps) => {
           className='flex flex-col gap-15'
         >
           <TraitBucketsInput
+            trait={traitMap.get(TraitTypeEnum.Time)!}
+            myTraitVote={myTraitMap.get(TraitTypeEnum.Time)}
+            onBucketVote={handleOnBucketVote}
+          />
+
+          <TraitBucketsInput
+            trait={traitMap.get(TraitTypeEnum.Season)!}
+            myTraitVote={myTraitMap.get(TraitTypeEnum.Season)}
+            onBucketVote={handleOnBucketVote}
+          />
+
+          <TraitBucketsInput
             trait={traitMap.get(TraitTypeEnum.Longevity)!}
             myTraitVote={myTraitMap.get(TraitTypeEnum.Longevity)}
             onBucketVote={handleOnBucketVote}

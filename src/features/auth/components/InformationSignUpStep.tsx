@@ -74,7 +74,9 @@ const InformationSignUpStep = (props: InformationSignUpStepProps) => {
         <div
           className='mb-3'
         >
-          <PasswordInput />
+          <PasswordInput
+            name='password'
+          />
         </div>
 
         <SubmitButton
@@ -83,7 +85,7 @@ const InformationSignUpStep = (props: InformationSignUpStepProps) => {
         />
 
         <button
-          className='group w-min self-center text-center text-sm text-nowrap'
+          className='group w-min cursor-pointer self-center text-center text-sm text-nowrap'
           type='button'
           onClick={openLogInDialog}
         >

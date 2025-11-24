@@ -64,6 +64,12 @@ export const client = new ApolloClient({
         }
       },
 
+      Fragrance: {
+        fields: {
+          reviews: customRelayPagination()
+        }
+      },
+
       FragranceCollection: {
         fields: {
           previewItems: {

@@ -3,6 +3,7 @@ import CollectionHeader from '../components/CollectionHeader'
 import CollectionItemsGrid from '../components/CollectionItemsGrid'
 import Divider from '@/components/Divider'
 import useFragranceCollection from '../hooks/useFragranceCollection'
+import { useMyContext } from '@/features/users'
 
 export interface FragranceCollectionPageProps {
   collectionId: string
@@ -11,9 +12,12 @@ export interface FragranceCollectionPageProps {
 const FragranceCollectionPage = (props: FragranceCollectionPageProps) => {
   const { collectionId } = props
 
+  const { me } = useMyContext()
+
   const { collection } = useFragranceCollection(collectionId)
   const { info } = collection ?? {}
 
+  const isMyCollection = collection != null && collection.user.id === me?.id
   const itemCount = info?.itemCount ?? 0
 
   if (collection == null) return null
@@ -51,6 +55,7 @@ const FragranceCollectionPage = (props: FragranceCollectionPageProps) => {
 
       <CollectionItemsGrid
         collectionId={collection.id}
+        isMyCollection={isMyCollection}
       />
     </div>
   )

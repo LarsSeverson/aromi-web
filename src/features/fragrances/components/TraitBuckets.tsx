@@ -27,7 +27,7 @@ const TraitBuckets = (props: TraitBucketsProps) => {
 
         {showLabel && (
           <span
-            className='font-semibold text-light text-md'
+            className='text-md font-semibold'
           >
             {name}
           </span>
@@ -41,15 +41,16 @@ const TraitBuckets = (props: TraitBucketsProps) => {
               (bucket, index) => (
                 <div
                   key={bucket.option.id}
-                  className='flex flex-col w-full'
+                  className='flex w-full flex-col'
                 >
                   <TraitBucket
                     bucket={bucket}
                     maxScore={maxScore}
+                    // eslint-disable-next-line tailwindcss/no-custom-classname
                     className={clsx(
                       index === 0 && 'rounded-l-md',
                       index === distribution.length - 1 && 'rounded-r-md',
-                      index !== 0 && 'border-l border-sinopia/15'
+                      index !== 0 && 'border-sinopia/15 border-l'
                     )}
                   />
                 </div>

@@ -9,6 +9,7 @@ import { useToastMessage } from '@/hooks/useToastMessage'
 import type { FragranceDetailFragment } from '@/generated/graphql'
 import { useCreateFragranceReport } from '../hooks/useCreateFragranceReport'
 import { MAX_REPORT_BODY_LENGTH, MIN_REPORT_BODY_LENGTH } from '../utils/validation'
+import AuthButton from '@/features/auth/components/AuthButton'
 
 export interface ReportFragranceDialogProps {
   fragrance: FragranceDetailFragment
@@ -76,6 +77,7 @@ const ReportFragranceDialog = (props: ReportFragranceDialogProps) => {
     >
       <Dialog.Trigger
         className='flex w-full cursor-pointer items-center justify-start gap-2 rounded-xl bg-white p-3 hover:brightness-95'
+        render={AuthButton}
       >
         <TbFlag
           size={20}
@@ -145,6 +147,7 @@ const ReportFragranceDialog = (props: ReportFragranceDialogProps) => {
                     'focus:border-sinopia transition-colors duration-300 ease-in-out focus:border-2 focus:outline-none'
                   )}
                   onInput={handleReportChange}
+                  maxLength={MAX_REPORT_BODY_LENGTH}
                 />
 
                 <div
@@ -154,7 +157,7 @@ const ReportFragranceDialog = (props: ReportFragranceDialogProps) => {
                     <span
                       className='text-sm text-gray-500'
                     >
-                      Reports need to be at least {MIN_REPORT_BODY_LENGTH} character.
+                      Reports need to be at least {MIN_REPORT_BODY_LENGTH} characters.
                     </span>
                   )}
 

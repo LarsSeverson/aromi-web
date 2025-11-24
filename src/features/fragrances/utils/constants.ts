@@ -17,3 +17,5 @@ export const NOTE_LAYER_OPTIONS = [
   { label: 'Middle', value: NoteLayer.Middle },
   { label: 'Base', value: NoteLayer.Base }
 ]
+
+export const MAX_REVIEW_BODY_DISPLAY_LENGTH = 500

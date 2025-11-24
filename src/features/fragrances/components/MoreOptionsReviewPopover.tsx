@@ -5,7 +5,6 @@ import clsx from 'clsx'
 import type { AllFragranceReviewFragment } from '@/generated/graphql'
 import MyReviewOptions from './MyReviewOptions'
 import { useMyContext } from '@/features/users'
-import ReviewOptions from './ReviewOptions'
 
 export interface MoreOptionsReviewPopoverProps {
   review: AllFragranceReviewFragment
@@ -19,6 +18,8 @@ const MoreOptionsReviewPopover = (props: MoreOptionsReviewPopoverProps) => {
   const { me } = useMyContext()
 
   const showMyReviewOptions = me?.id === id
+
+  if (!showMyReviewOptions) return null
 
   return (
     <Popover.Root>
@@ -38,17 +39,14 @@ const MoreOptionsReviewPopover = (props: MoreOptionsReviewPopoverProps) => {
               'flex max-h-128 w-[20rem] flex-col items-center justify-center'
             )}
           >
-            {showMyReviewOptions
-              ? (
-                <MyReviewOptions
-                  review={review}
-                />
-              )
-              : (
-                <ReviewOptions
-                  review={review}
-                />
-              )}
+            <MyReviewOptions
+              review={review}
+            />
+            {/* : (
+                 <ReviewOptions
+                   review={review}
+                 />
+               ) */}
           </Popover.Popup>
         </Popover.Positioner>
       </Popover.Portal>

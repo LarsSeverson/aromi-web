@@ -98,7 +98,7 @@ const InformationLogInStep = (props: InformationLogInStepProps) => {
         />
 
         <button
-          className='group w-min self-center text-center text-sm text-nowrap'
+          className='group w-min cursor-pointer self-center text-center text-sm text-nowrap'
           type='button'
           onClick={openSignUpDialog}
         >

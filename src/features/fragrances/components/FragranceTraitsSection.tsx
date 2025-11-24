@@ -29,6 +29,14 @@ const FragranceTraitsSection = (props: FragranceTraitsSectionProps) => {
         className='mt-6 flex w-full max-w-4xl flex-col gap-15 self-center'
       >
         <TraitBuckets
+          trait={traitMap.get(TraitTypeEnum.Time)!}
+        />
+
+        <TraitBuckets
+          trait={traitMap.get(TraitTypeEnum.Season)!}
+        />
+
+        <TraitBuckets
           trait={traitMap.get(TraitTypeEnum.Longevity)!}
         />
 

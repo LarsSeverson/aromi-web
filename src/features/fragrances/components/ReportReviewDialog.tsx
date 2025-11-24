@@ -27,7 +27,7 @@ const ReportReviewDialog = (props: ReportReviewDialogProps) => {
     setIsReportEmpty(length === 0)
   }
 
-  const handleReportSubmit = async (event: React.FormEvent) => {
+  const handleOnSubmit = (event: React.FormEvent) => {
     event.preventDefault()
     event.stopPropagation()
 
@@ -42,14 +42,14 @@ const ReportReviewDialog = (props: ReportReviewDialogProps) => {
       onOpenChange={setIsDialogOpen}
     >
       <Dialog.Trigger
-        className='w-full flex p-3 hover:brightness-95 bg-white rounded-xl gap-2 items-center justify-start'
+        className='flex w-full items-center justify-start gap-2 rounded-xl bg-white p-3 hover:brightness-95'
       >
         <TbFlag
           size={20}
         />
 
         <span
-          className='font-semibold text-md'
+          className='text-md font-semibold'
         >
           Report this review
         </span>
@@ -57,38 +57,38 @@ const ReportReviewDialog = (props: ReportReviewDialogProps) => {
 
       <Dialog.Portal>
         <Dialog.Backdrop
-          className='bg-black/30 backdrop-blur-sm fixed inset-0'
+          className='fixed inset-0 bg-black/30 backdrop-blur-sm'
         />
 
         <Dialog.Popup
-          className='flex flex-col w-[720px] h-[520px] bg-white top-1/2 left-1/2 fixed -translate-x-1/2 -translate-y-1/2 rounded-xl overflow-hidden'
+          className='fixed top-1/2 left-1/2 flex h-[520px] w-[720px] -translate-x-1/2 -translate-y-1/2 flex-col overflow-hidden rounded-xl bg-white'
         >
           <Dialog.Title
-            className='text-3xl text-center font-medium p-6'
+            className='p-6 text-center text-3xl font-medium'
           >
             Report Review
           </Dialog.Title>
 
           <Form
-            onSubmit={(event) => { void handleReportSubmit(event) }}
-            className='flex-1 flex flex-col'
+            onSubmit={handleOnSubmit}
+            className='flex flex-1 flex-col'
           >
-            <div className='flex px-8 pb-8 pt-5 gap-8 flex-1'>
+            <div className='flex flex-1 gap-8 px-8 pt-5 pb-8'>
               <div
-                className='flex-2 flex flex-col gap-2'
+                className='flex flex-2 flex-col gap-2'
               >
                 <textarea
                   ref={reportRef}
                   placeholder='Notice something concerning? Tell us here...'
                   className={clsx(
-                    'border border-gray-300 rounded-md w-full h-full p-4 resize-none outline-none hover:border-sinopia',
-                    'transition-colors ease-in-out duration-300 focus:border-sinopia focus:border-2 focus:outline-none'
+                    'hover:border-sinopia h-full w-full resize-none rounded-md border border-gray-300 p-4 outline-none',
+                    'focus:border-sinopia transition-colors duration-300 ease-in-out focus:border-2 focus:outline-none'
                   )}
                   onInput={handleReportChange}
                 />
 
                 <div
-                  className='flex ml-auto gap-1'
+                  className='ml-auto flex gap-1'
                 >
                   {characterCount < 100 && (
                     <span
@@ -108,7 +108,7 @@ const ReportReviewDialog = (props: ReportReviewDialogProps) => {
             </div>
 
             <div
-              className='flex justify-end gap-3 px-5 bg-white py-2 shadow-[0_0px_10px_0px_rgba(0,0,0,0.1)]'
+              className='flex justify-end gap-3 bg-white px-5 py-2 shadow-[0_0px_10px_0px_rgba(0,0,0,0.1)]'
             >
               <Dialog.Close
                 className='bg-empty rounded-full px-7 py-3 hover:brightness-95'
@@ -121,7 +121,7 @@ const ReportReviewDialog = (props: ReportReviewDialogProps) => {
                   type='submit'
                   disabled={isLoading}
                   className={clsx(
-                    'bg-sinopia text-white rounded-full px-7 py-3 hover:shadow-lg brightness-100 hover:brightness-105'
+                    'bg-sinopia rounded-full px-7 py-3 text-white brightness-100 hover:shadow-lg hover:brightness-105'
                   )}
                 >
                   {isLoading && <Spinner />}

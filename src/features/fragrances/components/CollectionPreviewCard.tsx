@@ -4,6 +4,7 @@ import { FaPen } from 'react-icons/fa6'
 import GridImages from '@/components/GridImages'
 import clsx from 'clsx'
 import type { FragranceCollectionPreviewFragment } from '@/generated/graphql'
+import { useMyContext } from '@/features/users'
 
 export interface CollectionPreviewCardProps {
   collection: FragranceCollectionPreviewFragment
@@ -11,8 +12,11 @@ export interface CollectionPreviewCardProps {
 
 export const CollectionPreviewCard = (props: CollectionPreviewCardProps) => {
   const { collection } = props
-  const { id, name, previewItems } = collection
+  const { id, name, previewItems, user } = collection
 
+  const { me } = useMyContext()
+
+  const isMyCollection = me?.id === user.id
   const thumbnailUrls = previewItems.map(item => item.fragrance.thumbnail?.url ?? '')
 
   return (
@@ -28,17 +32,19 @@ export const CollectionPreviewCard = (props: CollectionPreviewCardProps) => {
         className='h-full w-full'
       />
 
-      <button
-        className={clsx(
-          'bg-sinopia absolute top-3 right-3 hidden aspect-square items-center justify-center rounded-full px-2.5 group-hover:flex',
-          'cursor-pointer'
-        )}
-      >
-        <FaPen
-          color='white'
-          size={14}
-        />
-      </button>
+      {isMyCollection && (
+        <button
+          className={clsx(
+            'bg-sinopia absolute top-3 right-3 hidden aspect-square items-center justify-center rounded-full px-2.5 group-hover:flex',
+            'cursor-pointer'
+          )}
+        >
+          <FaPen
+            color='white'
+            size={14}
+          />
+        </button>
+      )}
 
       <div>
         <h4

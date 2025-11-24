@@ -8,13 +8,15 @@ import CollectionItemCard from './CollectionItemCard'
 import { useDebounce } from '@/hooks/useDebounce'
 import { useMoveFragranceCollectionItems } from '../hooks/useMoveFragranceCollectionItems'
 import { useToastMessage } from '@/hooks/useToastMessage'
+import { DynamicList } from '@/components/DynamicList'
 
 export interface CollectionItemsGridProps {
   collectionId: string
+  isMyCollection?: boolean
 }
 
 const CollectionItemsGrid = (props: CollectionItemsGridProps) => {
-  const { collectionId } = props
+  const { collectionId, isMyCollection = false } = props
 
   const { toastError } = useToastMessage()
 
@@ -48,7 +50,7 @@ const CollectionItemsGrid = (props: CollectionItemsGridProps) => {
   )
 
   const onRenderItem = useCallback(
-    (item: AllFragranceCollectionItemFragment, _: number, isDragging: boolean) => {
+    (item: AllFragranceCollectionItemFragment, _: number, isDragging?: boolean) => {
       return (
         <CollectionItemCard
           item={item}
@@ -77,15 +79,30 @@ const CollectionItemsGrid = (props: CollectionItemsGridProps) => {
       <ResizeContainer
         onResize={setContainerRect}
       >
-        <DraggableDynamicList
-          items={items}
-          isLoading={isLoading || isLoadingMore}
-          containerWidth={containerRect.width}
-          onEndReached={handleOnEndReached}
-          onRenderItem={onRenderItem}
-          onRenderSkeleton={onRenderItemSkeleton}
-          onItemMove={handleOnItemMove}
-        />
+        {isMyCollection ?
+          (
+            <DraggableDynamicList
+              items={items}
+              isLoading={isLoading || isLoadingMore}
+              containerWidth={containerRect.width}
+              onEndReached={handleOnEndReached}
+              onRenderItem={onRenderItem}
+              onRenderSkeleton={onRenderItemSkeleton}
+              onItemMove={handleOnItemMove}
+            />
+          )
+          :
+          (
+            <DynamicList
+              items={items}
+              isLoading={isLoading || isLoadingMore}
+              containerWidth={containerRect.width}
+              onEndReached={handleOnEndReached}
+              onRenderItem={onRenderItem}
+              onRenderSkeleton={onRenderItemSkeleton}
+            />
+          )
+        }
       </ResizeContainer>
     </div>
   )

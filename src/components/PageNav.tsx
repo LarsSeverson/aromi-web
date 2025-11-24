@@ -11,11 +11,19 @@ export interface PageNavProps extends React.HTMLAttributes<HTMLElement> {
 }
 
 export const PageNav = (props: PageNavProps) => {
-  const { totalPages, curPage, pagesShown = 5, onPageChange, className, ...rest } = props
+  const {
+    totalPages,
+    curPage,
+    pagesShown = 5,
+    onPageChange,
+
+    className,
+    ...rest
+  } = props
 
   const btnClassName = clsx(
     'flex h-9 w-9 items-center justify-center rounded-full px-[9px] text-sm font-semibold',
-    'hover:outline-sinopia bg-gray-200 outline-2 outline-offset-0 outline-none'
+    'cursor-pointer bg-gray-200'
   )
 
   const showBackButton = curPage > 0
@@ -50,8 +58,8 @@ export const PageNav = (props: PageNavProps) => {
             <BouncyButton
               key={index}
               className={clsx(
+                curPage === pageIndex && 'outline-2 outline-black',
                 btnClassName,
-                curPage === pageIndex && 'outline-black',
                 !(curPage === pageIndex) && 'outline-none'
               )}
               onClick={onPageChange?.bind(null, pageIndex)}

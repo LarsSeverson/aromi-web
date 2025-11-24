@@ -7,6 +7,7 @@ import SaveFragrancePopover from './SaveFragrancePopover'
 import ShareFragrancePopover from './ShareFragrancePopover'
 import CollectionItemOptionsPopover from './CollectionItemOptionsPopover'
 import { LuGrip } from 'react-icons/lu'
+import { useMyContext } from '@/features/users'
 
 export interface CollectionItemCardProps {
   item: AllFragranceCollectionItemFragment
@@ -15,11 +16,15 @@ export interface CollectionItemCardProps {
 
 const CollectionItemCard = (props: CollectionItemCardProps) => {
   const { item, isDragging = false } = props
-  const { fragrance } = item
+  const { fragrance, collection } = item
   const { id, name, brand } = fragrance
+
+  const { me } = useMyContext()
 
   const [isSubPopoverOpen, setIsSubPopoverOpen] = React.useState(false)
   const [isLinkFocused, setIsLinkFocused] = React.useState(false)
+
+  const isMyCollection = me?.id === collection.user.id
 
   const handleLinkFocus = () => {
     setIsLinkFocused(true)
@@ -73,16 +78,18 @@ const CollectionItemCard = (props: CollectionItemCardProps) => {
             />
           </div>
 
-          <div
-            className={clsx(
-              isDragging && 'cursor-grabbing',
-              'pointer-events-auto absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 cursor-grab'
-            )}
-          >
-            <LuGrip
-              size={25}
-            />
-          </div>
+          {isMyCollection && (
+            <div
+              className={clsx(
+                isDragging && 'cursor-grabbing',
+                'pointer-events-auto absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 cursor-grab'
+              )}
+            >
+              <LuGrip
+                size={25}
+              />
+            </div>
+          )}
 
           <div
             className={clsx(

@@ -20,11 +20,21 @@ const FragranceReviewsSection = forwardRef<HTMLDivElement, FragranceReviewsSecti
   const { id, reviewInfo } = fragrance
 
   const { myReview } = useMyFragranceReview(id)
-  const { reviews } = useFragranceReviews(id)
+  const { reviews, loadMore } = useFragranceReviews(id)
 
   const [curReviewPage, setCurReviewPage] = useState(0)
 
   const totalPages = Math.ceil(reviews.length / REVIEWS_PER_PAGE)
+
+  const handleOnPageChange = (page: number) => {
+    setCurReviewPage(page)
+
+    const isEnd = page >= totalPages - 1
+
+    if (isEnd) {
+      loadMore()
+    }
+  }
 
   return (
     <div
@@ -69,7 +79,7 @@ const FragranceReviewsSection = forwardRef<HTMLDivElement, FragranceReviewsSecti
             <PageNav
               totalPages={totalPages}
               curPage={curReviewPage}
-              onPageChange={setCurReviewPage}
+              onPageChange={handleOnPageChange}
               className='my-2 mr-auto'
             />
           </div>

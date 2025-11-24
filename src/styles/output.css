@@ -30,6 +30,7 @@
     --color-white: #fff;
     --spacing: 0.25rem;
     --container-3xs: 16rem;
+    --container-2xs: 18rem;
     --container-xs: 20rem;
     --container-sm: 24rem;
     --container-md: 28rem;
@@ -749,6 +750,9 @@
   }
   .max-w-2xl {
     max-width: var(--container-2xl);
+  }
+  .max-w-2xs {
+    max-width: var(--container-2xs);
   }
   .max-w-3xl {
     max-width: var(--container-3xl);
@@ -1706,9 +1710,6 @@
   .-outline-offset-1 {
     outline-offset: calc(1px * -1);
   }
-  .outline-offset-0 {
-    outline-offset: 0px;
-  }
   .outline-offset-\[-3px\] {
     outline-offset: -3px;
   }
@@ -2213,13 +2214,6 @@
       @media (hover: hover) {
         --tw-shadow: 0 0 #0000 !important;
         box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow) !important;
-      }
-    }
-  }
-  .hover\:outline-sinopia {
-    &:hover {
-      @media (hover: hover) {
-        outline-color: var(--color-sinopia);
       }
     }
   }

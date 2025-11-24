@@ -1848,7 +1848,9 @@ export const TraitTypeEnum = {
   Complexity: 'COMPLEXITY',
   Gender: 'GENDER',
   Longevity: 'LONGEVITY',
-  Projection: 'PROJECTION'
+  Projection: 'PROJECTION',
+  Season: 'SEASON',
+  Time: 'TIME'
 } as const;
 
 export type TraitTypeEnum = typeof TraitTypeEnum[keyof typeof TraitTypeEnum];

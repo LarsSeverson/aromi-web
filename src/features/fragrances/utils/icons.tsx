@@ -5,6 +5,8 @@ import ProjectionSvg from '../components/ProjectionSvg'
 import BalanceSvg from '../components/BalanceSvg'
 import ComplexitySvg from '../components/ComplexitySvg'
 import AppealSvg from '../components/AppealSvg'
+import TimeSvg from '../components/TimeSvg'
+import SeasonSvg from '../components/SeasonSvg'
 
 export const getTraitIcon = (traitType: TraitTypeEnum) => {
   switch (traitType) {
@@ -16,19 +18,32 @@ export const getTraitIcon = (traitType: TraitTypeEnum) => {
         />
       )
 
+    case TraitTypeEnum.Time:
+      return (
+        <TimeSvg
+          width={28}
+          height={28}
+        />
+      )
+
+    case TraitTypeEnum.Season:
+      return (
+        <SeasonSvg />
+      )
+
     case TraitTypeEnum.Longevity:
       return (
         <LongevitySvg
-          width={21}
-          height={21}
+          width={23}
+          height={23}
         />
       )
 
     case TraitTypeEnum.Projection:
       return (
         <ProjectionSvg
-          width={22}
-          height={22}
+          width={25}
+          height={25}
         />
       )
 
@@ -43,16 +58,16 @@ export const getTraitIcon = (traitType: TraitTypeEnum) => {
     case TraitTypeEnum.Complexity:
       return (
         <ComplexitySvg
-          width={22}
-          height={22}
+          width={23}
+          height={23}
         />
       )
 
     case TraitTypeEnum.Appeal:
       return (
         <AppealSvg
-          width={22}
-          height={22}
+          width={24}
+          height={24}
         />
       )
   }

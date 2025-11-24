@@ -8,6 +8,7 @@ import { useFollowUser } from '../hooks/useFollowUser'
 import { useUnfollowUser } from '../hooks/useUnfollowUser'
 import { useDebounce } from '@/hooks/useDebounce'
 import { useToastMessage } from '@/hooks/useToastMessage'
+import { useMyContext } from '../context/MyContext'
 
 export interface UserPreviewCardProps {
   user: UserPreviewFragment
@@ -17,10 +18,14 @@ const UserPreviewCard = (props: UserPreviewCardProps) => {
   const { user } = props
   const { id, username, relationship } = user
 
+  const { me } = useMyContext()
+
   const { toastError } = useToastMessage()
 
   const { follow } = useFollowUser()
   const { unfollow } = useUnfollowUser()
+
+  const isMe = me?.id === id
 
   const handleOnRelationshipChange = useDebounce(
     async (newValue: boolean) => {
@@ -78,6 +83,7 @@ const UserPreviewCard = (props: UserPreviewCardProps) => {
         className='ml-auto self-center'
       >
         <UserFollowButton
+          isMe={isMe}
           relationship={relationship}
           onIsFollowingChange={handleOnIsFollowingChange}
         />

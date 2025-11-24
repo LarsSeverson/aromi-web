@@ -27,13 +27,8 @@ const ConfirmSignUpStep = (props: ConfirmSignUpStepProps) => {
   const [isResendLoading, setIsResendLoading] = useState(false)
   const [isResendDisabled, setIsResendDisabled] = useState(false)
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-
+  const handleConfirmSignUp = async (code: string) => {
     setIsLoading(true)
-
-    const formData = new FormData(e.currentTarget)
-    const code = formData.get('code') as string
 
     await confirmSignUp({ email, code })
       .andThen(() => logIn({ email, password }))
@@ -49,12 +44,7 @@ const ConfirmSignUpStep = (props: ConfirmSignUpStepProps) => {
     setIsLoading(false)
   }
 
-  const handleResend = async (e: React.SyntheticEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-
-    if (isResendDisabled) return
-
+  const handleResendSignUpCode = async () => {
     setIsResendDisabled(true)
     setIsResendLoading(true)
 
@@ -75,9 +65,27 @@ const ConfirmSignUpStep = (props: ConfirmSignUpStepProps) => {
     }, 7000)
   }
 
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+
+    const formData = new FormData(e.currentTarget)
+    const code = formData.get('code') as string
+
+    handleConfirmSignUp(code)
+  }
+
+  const handleResend = (e: React.SyntheticEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+
+    if (isResendDisabled) return
+
+    handleResendSignUpCode()
+  }
+
   return (
     <Form
-      onSubmit={(e) => { void handleSubmit(e) }}
+      onSubmit={handleSubmit}
     >
       <div
         className='my-3 flex w-full flex-col px-2'
@@ -111,28 +119,35 @@ const ConfirmSignUpStep = (props: ConfirmSignUpStepProps) => {
             type='button'
             disabled={isResendDisabled}
             className={clsx(
-              'ml-auto text-sm hover:underline',
+              'relative ml-auto cursor-pointer text-sm hover:underline',
               isResendDisabled && 'opacity-60 hover:no-underline'
             )}
-            onClick={(e) => { void handleResend(e) }}
+            onClick={handleResend}
           >
-            {isResendLoading
-              ? (
-                <Spinner
-                  size={5}
-                />
-              )
-              : (
-                <span>
-                  {isResendDisabled ? 'Email sent!' : 'Resend code'}
-                </span>
+            <Spinner
+              size={5}
+              className={clsx(
+                isResendLoading ? 'opacity-100' : 'opacity-0'
               )}
+            />
+
+            <span
+              className={clsx(
+                isResendLoading ? 'opacity-0' : 'opacity-100'
+              )}
+            >
+              {isResendDisabled ? 'Email sent!' : 'Resend code'}
+            </span>
           </button>
         </div>
 
-        <SubmitButton
-          isLoading={isLoading}
-        />
+        <div
+          className='mt-4 w-full max-w-2xs'
+        >
+          <SubmitButton
+            isLoading={isLoading}
+          />
+        </div>
       </div>
     </Form>
   )
