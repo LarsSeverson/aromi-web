@@ -1,7 +1,7 @@
 import React from 'react'
 import fourOFour from '@/assets/404.png'
 
-const NotFoundPage = () => {
+const FragranceErrorPage = () => {
   return (
     <div
       className='mt-20 flex flex-col gap-4 self-center text-center'
@@ -15,16 +15,16 @@ const NotFoundPage = () => {
       <span
         className='text-2xl font-medium'
       >
-        Oops! The page you're looking for doesn't exist
+        Something went wrong
       </span>
 
       <span
         className='text-md font-medium text-black/70'
       >
-        It might have been moved or deleted. Please check the URL or return to the homepage
+        We couldn't load this page. Perhaps the fragrance doesn't exist or has been removed
       </span>
     </div>
   )
 }
 
-export default NotFoundPage
+export default FragranceErrorPage

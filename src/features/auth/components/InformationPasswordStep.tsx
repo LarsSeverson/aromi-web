@@ -46,10 +46,10 @@ const InformationPasswordStep = (props: InformationPasswordStepProps) => {
 
   return (
     <div
-      className='flex flex-col gap-2'
+      className='flex w-full max-w-lg flex-col gap-2 self-center p-5'
     >
       <span
-        className='text-2xl self-start'
+        className='self-start text-2xl'
       >
         Getting back your account
       </span>
@@ -66,17 +66,21 @@ const InformationPasswordStep = (props: InformationPasswordStepProps) => {
 
       <Form
         onSubmit={handleOnSubmit}
-        className='flex flex-col mt-4 gap-3'
+        className='mt-4 flex flex-col gap-3'
       >
         <EmailInput
           label='Enter your email'
           placeholder=''
         />
 
-        <SubmitButton
-          isLoading={isLoading}
-          text='Continue'
-        />
+        <div
+          className='w-full max-w-2xs self-center'
+        >
+          <SubmitButton
+            isLoading={isLoading}
+            text='Continue'
+          />
+        </div>
       </Form>
     </div>
   )

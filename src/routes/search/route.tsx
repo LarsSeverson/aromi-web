@@ -1,9 +1,12 @@
+import GeneralErrorPage from '@/pages/GeneralErrorPage'
 import { SEARCH_FILTER_OPTIONS } from '@/utils/constants'
 import { ValidSearchTerm } from '@/utils/validation'
 import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
 import z from 'zod'
 
 export const Route = createFileRoute('/search')({
+  component: RouteComponent,
+  errorComponent: GeneralErrorPage,
   validateSearch: z
     .object({
       term: z
@@ -22,8 +25,7 @@ export const Route = createFileRoute('/search')({
     if (!parsed.success) {
       throw redirect({ to: '/' })
     }
-  },
-  component: RouteComponent
+  }
 })
 
 function RouteComponent () {

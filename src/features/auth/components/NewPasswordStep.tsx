@@ -57,7 +57,7 @@ const NewPasswordStep = (props: NewPasswordStepProps) => {
 
     if (code == null || password == null) return
 
-    void handleConfirmForgotPassword(code, password)
+    handleConfirmForgotPassword(code, password)
   }
 
   return (
@@ -126,14 +126,23 @@ const NewPasswordStep = (props: NewPasswordStepProps) => {
       >
         <CodeInput />
 
-        <PasswordInput
-          label='Your new password'
-          placeholder=''
-        />
+        <div
+          className='max-w-xs'
+        >
+          <PasswordInput
+            name='password'
+            label='Your new password'
+            placeholder=''
+          />
+        </div>
 
-        <SubmitButton
-          isLoading={isLoading}
-        />
+        <div
+          className='mt-2 w-full max-w-2xs'
+        >
+          <SubmitButton
+            isLoading={isLoading}
+          />
+        </div>
       </Form>
     </div>
   )

@@ -16,7 +16,10 @@ export const Route = createFileRoute('/search/')({
 
     // Just fill cache
     await wrapQuery(
-      client.query({ query, variables: { input: { term: deps.term } } })
+      client.query({
+        query,
+        variables: { input: { term: deps.term } }
+      })
     )
 
     topbar.hide()

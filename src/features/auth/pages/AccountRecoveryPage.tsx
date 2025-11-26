@@ -38,10 +38,10 @@ const AccountRecoveryPage = () => {
 
   return (
     <div
-      className='w-full flex flex-col items-center mt-10'
+      className='mt-10 flex w-full flex-col items-center'
     >
       <div
-        className='flex flex-col max-w-lg w-full'
+        className='flex w-full max-w-lg flex-col'
       >
         {onRenderStep()}
       </div>

@@ -9,7 +9,7 @@ export interface RelayEdge<TNode> {
 
 export interface SearchEdge<TNode> {
   node: TNode
-  offset?: number
+  offset: number
   __typename?: string
 }
 
@@ -164,9 +164,10 @@ export const customSearchPagination = <TNode extends Reference = Reference> (
       const incomingEdges = incoming.edges?.map(
         edge => {
           const copy = { ...edge }
-          if (isReference(copy)) copy.offset = readField('offset', copy)
+          if (isReference(copy)) copy.offset = readField('offset', copy) ?? 0
           return copy
-        }) ?? []
+        }
+      ) ?? []
 
       const firstEdge = incomingEdges.at(0)
       const lastEdge = incomingEdges.at(-1)
@@ -175,7 +176,23 @@ export const customSearchPagination = <TNode extends Reference = Reference> (
       if (firstEdge != null && startOffset != null) firstEdge.offset = startOffset
       if (lastEdge != null && endOffset != null) lastEdge.offset = endOffset
 
-      const edges = existing.edges.concat(incomingEdges)
+      const indexMap = new Map<number, number>()
+      const edges = [...existing.edges]
+
+      for (let i = 0; i < edges.length; i += 1) {
+        indexMap.set(edges[i].offset, i)
+      }
+
+      for (const e of incomingEdges) {
+        const idx = indexMap.get(e.offset)
+        if (idx == null) {
+          indexMap.set(e.offset, edges.length)
+          edges.push(e)
+        } else {
+          edges[idx] = e
+        }
+      }
+
       const pageInfo: SearchPageInfo = { ...existing.pageInfo, ...incoming.pageInfo }
 
       return {

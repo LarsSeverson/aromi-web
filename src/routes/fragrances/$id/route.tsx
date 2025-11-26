@@ -1,5 +1,6 @@
 import { client } from '@/common/client'
 import { FRAGRANCE_QUERY } from '@/features/fragrances'
+import FragranceErrorPage from '@/features/fragrances/pages/FragranceErrorPage'
 import { DocumentTitleBuilder } from '@/utils/DocumentTitleBuilder'
 import { wrapQuery } from '@/utils/util'
 import { createFileRoute, Outlet } from '@tanstack/react-router'
@@ -7,6 +8,7 @@ import topbar from 'topbar'
 
 export const Route = createFileRoute('/fragrances/$id')({
   component: RouteComponent,
+  errorComponent: FragranceErrorPage,
   loader: async ({ params }) => {
     const { id } = params
 

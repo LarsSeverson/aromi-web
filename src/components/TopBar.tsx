@@ -61,7 +61,7 @@ const TopBar = (props: TopBarProps) => {
           :
           (
             <div
-              className='flex flex-row gap-2 self-end'
+              className='flex flex-row gap-2'
             >
               <LogInDialog />
 
