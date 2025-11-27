@@ -1,5 +1,5 @@
 import React from 'react'
-import fourOFour from '@/assets/404.png'
+import fragranceCrackedSplash from '@/assets/fragrance-cracked-splash.png'
 
 const NotFoundPage = () => {
   return (
@@ -7,7 +7,7 @@ const NotFoundPage = () => {
       className='mt-20 flex flex-col gap-4 self-center text-center'
     >
       <img
-        src={fourOFour}
+        src={fragranceCrackedSplash}
         alt='404 Not Found'
         className='aspect-square h-60 object-contain'
       />
