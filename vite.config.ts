@@ -43,6 +43,7 @@ export default defineConfig({
           }
         }
       }
-    }
+    },
+    assetsDir: 'spa-assets'
   }
 })
