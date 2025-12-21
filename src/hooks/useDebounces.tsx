@@ -1,5 +1,6 @@
 import type { VoidFn } from '@/utils/util'
-import { debounce, type DebouncedFunc } from 'lodash'
+import debounce from 'lodash/debounce'
+import type { DebouncedFunc } from 'lodash'
 import { useEffect, useRef } from 'react'
 
 export const useDebounces = (

@@ -1,4 +1,5 @@
-import { debounce, type DebouncedFunc } from 'lodash'
+import debounce from 'lodash/debounce'
+import type { DebouncedFunc } from 'lodash'
 import type React from 'react'
 import { useEffect, useRef } from 'react'
 

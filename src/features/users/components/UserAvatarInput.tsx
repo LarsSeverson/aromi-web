@@ -6,7 +6,7 @@ import type { UserPreviewFragment } from '@/generated/graphql'
 import { useSetMyAvatar } from '../hooks/useSetMyAvatar'
 
 export interface UserAvatarInputProps {
-  user: UserPreviewFragment
+  user: Omit<UserPreviewFragment, 'relationship'>
 }
 
 const UserAvatarInput = (props: UserAvatarInputProps) => {

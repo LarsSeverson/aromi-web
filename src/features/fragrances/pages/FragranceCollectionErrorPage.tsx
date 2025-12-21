@@ -1,5 +1,5 @@
 import React from 'react'
-import collectionSplash from '@/assets/collection-splash.png'
+import collectionSplash from '@/assets/collection-splash.webp'
 
 const FragranceCollectionErrorPage = () => {
   return (

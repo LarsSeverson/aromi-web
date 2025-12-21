@@ -4,7 +4,7 @@ export interface BrandSearchPageProps {
   term: string
 }
 
-const BrandSearchPage = (props: BrandSearchPageProps) => {
+const BrandSearchPage = (_: BrandSearchPageProps) => {
   return (
     <div>
 

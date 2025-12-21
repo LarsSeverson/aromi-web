@@ -33,7 +33,7 @@ const CollectionPreviewBarCheck = (props: CollectionPreviewBarCheckProps) => {
   return (
     <div
       role='button'
-      className='w-full h-full flex items-center px-2 pr-4 py-0 hover:bg-gray-100 gap-2 select-none cursor-pointer '
+      className='flex h-full w-full cursor-pointer items-center gap-2 px-2 py-0 pr-4 select-none hover:bg-gray-100 '
       tabIndex={0}
       onClick={toggleChecked}
     >
@@ -45,9 +45,9 @@ const CollectionPreviewBarCheck = (props: CollectionPreviewBarCheckProps) => {
       <Checkbox.Root
         checked={isChecked}
         className={clsx(
-          'shrink-0 w-5 h-5 flex items-center justify-center rounded-full focus-visible:outline-2 focus-visible:outline-sinopia focus-visible:outline-offset-2',
-          'data-[unchecked]:border data-[unchecked]:border-gray-300 data-[unchecked]:bg-transparent',
-          'data-[checked]:bg-sinopia ml-auto border-red-400 cursor-pointer'
+          'focus-visible:outline-sinopia flex h-5 w-5 shrink-0 items-center justify-center rounded-full focus-visible:outline-2 focus-visible:outline-offset-2',
+          'data-unchecked:border data-unchecked:border-gray-300 data-unchecked:bg-transparent',
+          'data-checked:bg-sinopia ml-auto cursor-pointer border-red-400'
         )}
         onClick={(e) => { e.stopPropagation() }}
       >

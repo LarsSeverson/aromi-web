@@ -1,5 +1,5 @@
 import React from 'react'
-import fragranceCrackedSplash from '@/assets/fragrance-cracked-splash.png'
+import fragranceCrackedSplash from '@/assets/fragrance-cracked-splash.webp'
 
 const NotFoundPage = () => {
   return (

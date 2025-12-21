@@ -11,6 +11,8 @@ export interface ConfirmationDialogProps extends Dialog.Root.Props {
   cancelText?: string
   confirmText?: string
 
+  children: React.ReactNode
+
   onCancel?: () => void
   onConfirm?: () => void | Promise<void>
 }

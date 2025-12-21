@@ -18,12 +18,17 @@ export interface SelectInputProps<Value> {
 const SelectInput = <Value, >(props: SelectInputProps<Value>) => {
   const { items, value, defaultValue, onValueChange } = props
 
+  const handleOnValueChange = (newValue: Value | null) => {
+    if (newValue == null) return
+    onValueChange?.(newValue)
+  }
+
   return (
     <Select.Root
       items={items}
       value={value}
       defaultValue={defaultValue}
-      onValueChange={onValueChange}
+      onValueChange={handleOnValueChange}
     >
       <Select.Trigger
         className={clsx(

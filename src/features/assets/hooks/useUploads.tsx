@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import type { OnUploadProgressFn, CombinedUploadAsset, UploadingAsset } from '../types'
-import { uniqueId } from 'lodash'
+import uniqueId from 'lodash/uniqueId'
 import type { ResultAsync } from 'neverthrow'
 import type { ServerErrorInfo } from '@/utils/error'
 import { updateById } from '@/utils/util'

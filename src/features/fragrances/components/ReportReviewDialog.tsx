@@ -12,7 +12,7 @@ export interface ReportReviewDialogProps {
   review: AllFragranceReviewFragment
 }
 
-const ReportReviewDialog = (props: ReportReviewDialogProps) => {
+const ReportReviewDialog = (_: ReportReviewDialogProps) => {
   const reportRef = useRef<HTMLTextAreaElement>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [isReportEmpty, setIsReportEmpty] = useState(true)
@@ -61,7 +61,7 @@ const ReportReviewDialog = (props: ReportReviewDialogProps) => {
         />
 
         <Dialog.Popup
-          className='fixed top-1/2 left-1/2 flex h-[520px] w-[720px] -translate-x-1/2 -translate-y-1/2 flex-col overflow-hidden rounded-xl bg-white'
+          className='fixed top-1/2 left-1/2 flex h-130 w-180 -translate-x-1/2 -translate-y-1/2 flex-col overflow-hidden rounded-xl bg-white'
         >
           <Dialog.Title
             className='p-6 text-center text-3xl font-medium'

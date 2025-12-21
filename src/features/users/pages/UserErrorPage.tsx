@@ -1,5 +1,5 @@
 import React from 'react'
-import userSplash from '@/assets/user-splash.png'
+import userSplash from '@/assets/user-splash.webp'
 
 const UserErrorPage = () => {
   return (

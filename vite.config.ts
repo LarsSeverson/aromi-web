@@ -21,9 +21,28 @@ export default defineConfig({
     }),
     tailwindcss()
   ],
+
   resolve: {
     alias: {
       '@': path.resolve(__dirname, 'src')
+    }
+  },
+
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks (id) {
+          if (id.includes('node_modules')) {
+            const name = id.split('node_modules/')[1].split('/')[0]
+
+            if (['graphql-tag', 'tiny-warning', 'tiny-invariant', 'tslib', 'clsx', '@babel'].includes(name)) {
+              return 'vendor-helpers'
+            }
+
+            return name
+          }
+        }
+      }
     }
   }
 })

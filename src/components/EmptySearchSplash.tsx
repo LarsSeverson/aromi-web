@@ -1,5 +1,5 @@
 import React from 'react'
-import noResultsImage from '@/assets/no-search-results.png'
+import noResultsImage from '@/assets/no-search-results.webp'
 
 const EmptySearchSplash = () => {
   return (

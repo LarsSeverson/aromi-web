@@ -4,7 +4,7 @@ import EmptyAvatarSvg from '@/components/EmptyAvatarSvg'
 import type { Nullable } from '@/utils/util'
 
 export interface UserAvatarProps {
-  user: Nullable<UserPreviewFragment>
+  user: Nullable<Omit<UserPreviewFragment, 'relationship'>>
 }
 
 const UserAvatar = (props: UserAvatarProps) => {
