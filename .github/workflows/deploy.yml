@@ -18,14 +18,23 @@ env:
   S3_BUCKET: aromi-${{ github.ref_name == 'main' && 'production' || 'development' }}-spa-bucket
 
 jobs:
-  build-and-deploy:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      web: ${{ steps.filter.outputs.web == 'true' || github.event_name == 'workflow_dispatch' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            web: ['**']
+
+  build:
+    needs: changes
+    if: needs.changes.outputs.web == 'true'
     runs-on: ubuntu-latest
     environment: ${{ github.ref_name == 'main' && 'production' || 'development' }}
-    
-    defaults:
-      run:
-        working-directory: packages/web
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -33,8 +42,8 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'yarn'
+          node-version: "20"
+          cache: "yarn"
 
       - name: Install dependencies
         run: yarn install --immutable
@@ -45,6 +54,25 @@ jobs:
           VITE_APP_ENV: ${{ env.ENV_NAME }}
           VITE_API_ENDPOINT: ${{ vars.VITE_API_ENDPOINT }}
 
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+          retention-days: 1
+
+  deploy:
+    needs: [changes, build]
+    runs-on: ubuntu-latest
+    environment: ${{ github.ref_name == 'main' && 'production' || 'development' }}
+
+    steps:
+      - name: Download Build Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+
       - name: Configure AWS
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -52,8 +80,7 @@ jobs:
           aws-region: ${{ vars.AWS_REGION }}
 
       - name: Upload to S3
-        run: |
-          aws s3 sync dist/ s3://${{ env.S3_BUCKET }} --delete
+        run: aws s3 sync dist/ s3://${{ env.S3_BUCKET }} --delete
 
       - name: Invalidate CloudFront
         run: |
