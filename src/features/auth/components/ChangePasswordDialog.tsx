@@ -66,7 +66,7 @@ const ChangePasswordDialog = () => {
       onOpenChange={setIsOpen}
     >
       <Dialog.Trigger
-        className='bg-empty text-md cursor-pointer rounded-xl px-4 py-3 font-medium hover:bg-gray-200'
+        className='bg-empty text-md cursor-pointer rounded-xl px-4 py-3 font-medium text-nowrap hover:bg-gray-200'
       >
         Change password
       </Dialog.Trigger>
@@ -77,7 +77,7 @@ const ChangePasswordDialog = () => {
         />
 
         <Dialog.Popup
-          className='fixed top-1/2 left-1/2 w-[520px] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-xl bg-white'
+          className='fixed top-1/2 left-1/2 w-130 -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-xl bg-white'
         >
           <Dialog.Title
             className='pt-4 text-center text-2xl font-medium'

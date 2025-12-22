@@ -12,13 +12,13 @@ const MainLayout = () => {
       className='min-h-screen'
     >
       <aside
-        className='fixed top-0 h-screen w-[72px] shrink-0'
+        className='fixed top-0 h-screen w-18 shrink-0'
       >
         <SideBar />
       </aside>
 
       <div
-        className='pl-[72px]'
+        className='pl-18'
       >
         <TopBar />
 

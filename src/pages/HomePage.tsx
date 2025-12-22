@@ -5,8 +5,9 @@ import { FragrancePreviewCard } from '@/features/fragrances/components/Fragrance
 import FragrancePreviewCardSkeleton from '@/features/fragrances/components/FragrancePreviewCardSkeleton'
 import type { FragrancePreviewFragment } from '@/generated/graphql'
 import { useContainerRect } from '@/hooks/useContainerRect'
+import { DocumentTitleBuilder } from '@/utils/DocumentTitleBuilder'
 import { useElementScrollRestoration } from '@tanstack/react-router'
-import { useCallback } from 'react'
+import { useCallback, useEffect } from 'react'
 
 export const HomePage = () => {
   const { fragrances, isLoading, isLoadingMore, loadMore } = useFragrances()
@@ -39,6 +40,12 @@ export const HomePage = () => {
     },
     [loadMore]
   )
+
+  useEffect(() => {
+    new DocumentTitleBuilder()
+      .reset()
+      .apply()
+  }, [])
 
   return (
     <div

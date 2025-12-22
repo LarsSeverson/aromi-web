@@ -43,7 +43,7 @@ const SignUpDialog = () => {
         <DialogBackdrop />
 
         <DialogPopup
-          className='min-w-96'
+          className='max-w-96 min-w-96'
         >
           {showBack && (
             <BackButton

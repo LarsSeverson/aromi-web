@@ -64,7 +64,6 @@ const SaveFragrancePopoverPopup = (props: SaveFragrancePopoverPopupProps) => {
         <div
           className='flex h-full w-full flex-1 justify-between p-2 shadow-[0_0px_10px_0px_rgba(0,0,0,0.1)]'
         >
-
           <div
             className='text-md ml-auto flex items-center gap-2 font-semibold'
           >

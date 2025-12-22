@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as UsersRouteRouteImport } from './routes/users/route'
 import { Route as SettingsRouteRouteImport } from './routes/settings/route'
 import { Route as SearchRouteRouteImport } from './routes/search/route'
+import { Route as PrivacyRouteRouteImport } from './routes/privacy/route'
 import { Route as FragrancesRouteRouteImport } from './routes/fragrances/route'
 import { Route as CollectionsRouteRouteImport } from './routes/collections/route'
 import { Route as IndexRouteImport } from './routes/index'
@@ -46,6 +47,11 @@ const SettingsRouteRoute = SettingsRouteRouteImport.update({
 const SearchRouteRoute = SearchRouteRouteImport.update({
   id: '/search',
   path: '/search',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRouteRoute = PrivacyRouteRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FragrancesRouteRoute = FragrancesRouteRouteImport.update({
@@ -153,6 +159,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/collections': typeof CollectionsRouteRouteWithChildren
   '/fragrances': typeof FragrancesRouteRouteWithChildren
+  '/privacy': typeof PrivacyRouteRoute
   '/search': typeof SearchRouteRouteWithChildren
   '/settings': typeof SettingsRouteRouteWithChildren
   '/users': typeof UsersRouteRouteWithChildren
@@ -177,6 +184,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/collections': typeof CollectionsRouteRouteWithChildren
+  '/privacy': typeof PrivacyRouteRoute
   '/auth/account-recovery': typeof AuthAccountRecoveryRoute
   '/fragrances': typeof FragrancesIndexRoute
   '/search': typeof SearchIndexRoute
@@ -196,6 +204,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/collections': typeof CollectionsRouteRouteWithChildren
   '/fragrances': typeof FragrancesRouteRouteWithChildren
+  '/privacy': typeof PrivacyRouteRoute
   '/search': typeof SearchRouteRouteWithChildren
   '/settings': typeof SettingsRouteRouteWithChildren
   '/users': typeof UsersRouteRouteWithChildren
@@ -223,6 +232,7 @@ export interface FileRouteTypes {
     | '/'
     | '/collections'
     | '/fragrances'
+    | '/privacy'
     | '/search'
     | '/settings'
     | '/users'
@@ -247,6 +257,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/collections'
+    | '/privacy'
     | '/auth/account-recovery'
     | '/fragrances'
     | '/search'
@@ -265,6 +276,7 @@ export interface FileRouteTypes {
     | '/'
     | '/collections'
     | '/fragrances'
+    | '/privacy'
     | '/search'
     | '/settings'
     | '/users'
@@ -291,6 +303,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CollectionsRouteRoute: typeof CollectionsRouteRouteWithChildren
   FragrancesRouteRoute: typeof FragrancesRouteRouteWithChildren
+  PrivacyRouteRoute: typeof PrivacyRouteRoute
   SearchRouteRoute: typeof SearchRouteRouteWithChildren
   SettingsRouteRoute: typeof SettingsRouteRouteWithChildren
   UsersRouteRoute: typeof UsersRouteRouteWithChildren
@@ -318,6 +331,13 @@ declare module '@tanstack/react-router' {
       path: '/search'
       fullPath: '/search'
       preLoaderRoute: typeof SearchRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/fragrances': {
@@ -588,6 +608,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CollectionsRouteRoute: CollectionsRouteRouteWithChildren,
   FragrancesRouteRoute: FragrancesRouteRouteWithChildren,
+  PrivacyRouteRoute: PrivacyRouteRoute,
   SearchRouteRoute: SearchRouteRouteWithChildren,
   SettingsRouteRoute: SettingsRouteRouteWithChildren,
   UsersRouteRoute: UsersRouteRouteWithChildren,

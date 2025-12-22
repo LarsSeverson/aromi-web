@@ -7,6 +7,7 @@ import AuthDialogHeading from './AuthDialogHeading'
 import PasswordInput from '@/features/auth/components/PasswordInput'
 import EmailInput from './EmailInput'
 import SubmitButton from '@/components/SubmitButton'
+import { Link } from '@tanstack/react-router'
 
 export interface InformationSignUpStepProps {
   onNotConfirmed: (email: string, password: string) => void
@@ -16,7 +17,7 @@ const InformationSignUpStep = (props: InformationSignUpStepProps) => {
   const { onNotConfirmed } = props
 
   const { signUp, dialogs } = useAuthContext()
-  const { openLogInDialog } = dialogs
+  const { openLogInDialog, closeAllDialogs } = dialogs
 
   const [error, setError] = useState<string | null>(null)
   const [errors, setErrors] = useState({})
@@ -98,6 +99,19 @@ const InformationSignUpStep = (props: InformationSignUpStepProps) => {
           </span>
         </button>
       </Form>
+
+      <p
+        className='mt-4 text-center text-xs text-black/80'
+      >
+        By continuing, you acknowledge that you have read and understood our&nbsp;
+        <Link
+          to='/privacy'
+          className='cursor-pointer underline'
+          onClick={closeAllDialogs}
+        >
+          Privacy Policy
+        </Link>
+      </p>
     </div>
   )
 }

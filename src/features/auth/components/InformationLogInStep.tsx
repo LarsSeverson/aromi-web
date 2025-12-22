@@ -111,6 +111,19 @@ const InformationLogInStep = (props: InformationLogInStepProps) => {
           </span>
         </button>
       </Form>
+
+      <p
+        className='mt-4 text-center text-xs text-black/80'
+      >
+        By continuing, you acknowledge that you have read and understood our&nbsp;
+        <Link
+          to='/privacy'
+          className='cursor-pointer underline'
+          onClick={closeAllDialogs}
+        >
+          Privacy Policy
+        </Link>
+      </p>
     </div>
   )
 }

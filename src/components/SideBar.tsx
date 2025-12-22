@@ -8,7 +8,7 @@ import HomeSvg from './HomeSvg'
 import ProfileSvg from './ProfileSvg'
 import { NAV_HOME, NAV_PROFILE } from '@/common/nav'
 import { useMyContext } from '@/features/users'
-import { FaCog } from 'react-icons/fa'
+import SettingsPopover from './SettingsPopover'
 
 const SideBar = () => {
   const router = useRouter()
@@ -84,19 +84,9 @@ const SideBar = () => {
         />
       </Link>
 
-      <Link
-        to='/settings'
-        className={clsx(
-          'relative mt-auto flex items-center justify-center p-3 backdrop-brightness-100 select-none hover:backdrop-brightness-90',
-          'transition-transform active:scale-95',
-          'aspect-square rounded-xl',
-          currentPath.includes('settings') && 'bg-black/10'
-        )}
-      >
-        <FaCog
-          size={20}
-        />
-      </Link>
+      <SettingsPopover
+        isActive={currentPath.includes('settings')}
+      />
     </nav>
   )
 }
