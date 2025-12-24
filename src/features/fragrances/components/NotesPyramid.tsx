@@ -18,32 +18,29 @@ const NotesPyramid = (props: NotesPyramidProps) => {
 
   return (
     <div
-      className={clsx(
-        className
-      )}
+      className={clsx(className)}
     >
-      {layers
-        .map((layer, index) => (
-          <React.Fragment
-            key={layer.layer}
-          >
-            <NotesPyramidRow
-              notes={layer.notes}
-              layer={layer.layer}
-            />
+      {layers.map((layer, index) => (
+        <React.Fragment
+          key={layer.layer}
+        >
+          <NotesPyramidRow
+            notes={layer.notes}
+            layer={layer.layer}
+          />
 
-            {index < layers.length - 1 && (
-              <div
-                className='my-3 flex flex-col items-center'
-              >
-                <Divider
-                  horizontal
-                  className='border border-dashed bg-transparent'
-                />
-              </div>
-            )}
-          </React.Fragment>
-        ))}
+          {index < layers.length - 1 && (
+            <div
+              className='my-2 flex flex-col items-center md:my-3'
+            >
+              <Divider
+                horizontal
+                className='border border-dashed bg-transparent'
+              />
+            </div>
+          )}
+        </React.Fragment>
+      ))}
     </div>
   )
 }

@@ -26,14 +26,14 @@ const TraitBucket = (props: TraitBucketProps) => {
       <Tooltip.Trigger
         className={clsx(
           className,
-          'group h-8 w-full min-w-0 overflow-hidden'
+          'group w-full min-w-0 overflow-hidden',
+          'h-6 md:h-8'
         )}
         onClick={onBucketClick?.bind(null, bucket.option.id)}
       >
         <div
           className={clsx(
-            'h-8 w-full transition-colors',
-            'bg-sinopia transition-opacity duration-300 ease-in-out'
+            'bg-sinopia h-full w-full transition-opacity duration-300 ease-in-out'
           )}
           style={{ opacity }}
         />
@@ -52,7 +52,7 @@ const TraitBucket = (props: TraitBucketProps) => {
             )}
           >
             <Tooltip.Arrow
-              className="data-[side=bottom]:top-[-9px] data-[side=left]:right-[-13px] data-[side=left]:rotate-90 data-[side=right]:left-[-13px] data-[side=right]:-rotate-90 data-[side=top]:bottom-[-9px] data-[side=top]:rotate-180"
+              className="data-[side=bottom]:-top-2.25 data-[side=left]:-right-3.25 data-[side=left]:rotate-90 data-[side=right]:-left-3.25 data-[side=right]:-rotate-90 data-[side=top]:-bottom-2.25 data-[side=top]:rotate-180"
             >
               <ArrowSvg />
             </Tooltip.Arrow>
@@ -63,16 +63,22 @@ const TraitBucket = (props: TraitBucketProps) => {
       </Tooltip.Portal>
 
       <span
-        className='mt-2 min-w-0 truncate text-center text-sm'
+        className={clsx(
+          'mt-1.5 min-w-0 truncate text-center font-medium md:mt-2',
+          'text-[10px] md:text-sm'
+        )}
       >
         {bucket.option.label}
       </span>
 
       {votes > 0 && (
         <span
-          className='min-w-0 truncate text-center text-xs font-medium text-black/50'
+          className={clsx(
+            'min-w-0 truncate text-center text-black/50',
+            'text-[9px] md:text-xs'
+          )}
         >
-          {formatNumber(votes)} {votes === 1 ? 'vote' : 'votes'}
+          {formatNumber(votes)}
         </span>
       )}
     </Tooltip.Root>

@@ -14,7 +14,7 @@ const DialogPopup = (props: DialogPopupProps) => {
     <Dialog.Popup
       className={clsx(
         className,
-        isMobile && 'inset-0 mt-0 h-screen min-w-screen p-0',
+        isMobile && 'inset-0 mt-0 h-screen min-w-screen',
         'fixed -mt-8 min-w-104 rounded-lg p-6',
         'bg-white',
         'top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2',

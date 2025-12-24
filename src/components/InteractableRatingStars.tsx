@@ -6,7 +6,6 @@ import { ratingMap } from './RatingStars'
 
 export interface InteractableRatingStarsProps extends React.HTMLAttributes<HTMLDivElement> {
   rating: number
-  size?: number
   filledColor?: string
   emptyColor?: string
   onRatingChange?: (rating: number) => void
@@ -15,7 +14,6 @@ export interface InteractableRatingStarsProps extends React.HTMLAttributes<HTMLD
 const InteractableRatingStars = (props: InteractableRatingStarsProps) => {
   const {
     rating,
-    size = 15,
     filledColor = 'black',
     emptyColor = 'black',
     onRatingChange,
@@ -58,21 +56,21 @@ const InteractableRatingStars = (props: InteractableRatingStarsProps) => {
         className={clsx(
           'relative px-0 py-0 hover:backdrop-opacity-0'
         )}
-        style={{ width: size, height: size, marginRight: 2 }}
+        style={{ marginRight: 2 }}
         onMouseEnter={setHoveredRating.bind(null, startNumber)}
         onClick={(e) => { handleStarClick(e, startNumber) }}
       >
         <FaRegStar
-          size={size}
+          className='size-5 md:size-7.5'
           color={emptyColor}
         />
 
         <div
           className='absolute top-0 left-0 overflow-hidden'
-          style={{ width: `${width}%`, height: size }}
+          style={{ width: `${width}%` }}
         >
           <FaStar
-            size={size}
+            className='size-5 md:size-7.5'
             color={filledColor}
           />
         </div>
@@ -93,7 +91,7 @@ const InteractableRatingStars = (props: InteractableRatingStarsProps) => {
       </div>
 
       <p
-        className='text-black/60'
+        className='text-[10px] text-black/60 md:text-xs'
       >
         {ratingMap[effectiveRating as keyof typeof ratingMap] ?? ratingMap[0]}
       </p>

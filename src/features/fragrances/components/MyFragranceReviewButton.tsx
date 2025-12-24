@@ -7,6 +7,7 @@ import { PLACEHOLDER_USER, useMyContext } from '@/features/users'
 import UserAvatar from '@/features/users/components/UserAvatar'
 import { formatDate } from '@/utils/string-utils'
 import type { Nullable } from '@/utils/util'
+import clsx from 'clsx'
 
 export interface MyFragranceReviewButtonProps {
   fragrance: FragranceDetailFragment
@@ -35,17 +36,20 @@ const MyFragranceReviewButton = (props: MyFragranceReviewButtonProps) => {
 
   return (
     <div
-      className='shadow-symmetrical group cursor-pointer p-5'
+      className={clsx(
+        'shadow-symmetrical group cursor-pointer p-4 md:p-5',
+        'rounded-xl md:rounded-2xl'
+      )}
       onClick={handleRouteToReview.bind(null, undefined)}
     >
       <div
-        className='flex flex-col gap-5'
+        className='flex flex-col gap-4 md:gap-5'
       >
         <div
-          className='flex flex-row gap-5'
+          className='flex flex-row items-center gap-3 md:gap-5'
         >
           <div
-            className='h-16'
+            className='size-12 shrink-0 md:size-16'
           >
             <UserAvatar
               user={me}
@@ -55,24 +59,24 @@ const MyFragranceReviewButton = (props: MyFragranceReviewButtonProps) => {
           <Link
             to='/fragrances/$id/review'
             params={{ id }}
-            className='flex flex-col gap-1'
+            className='flex flex-1 flex-col gap-0.5 overflow-hidden md:gap-1'
           >
             <div
-              className='flex items-center gap-3'
+              className='flex items-center gap-2 md:gap-3'
             >
               <p
                 className='truncate'
               >
                 <span
-                  className='text-md font-medium'
+                  className='md:text-md text-sm font-medium'
                 >
                   {user.username}
                 </span>
 
-                <span> • </span>
+                <span className='px-0.5 text-[10px] md:text-base'> • </span>
 
                 <span
-                  className='text-xs'
+                  className='text-[10px] md:text-xs'
                 >
                   {formatDate(new Date())}
                 </span>
@@ -80,7 +84,7 @@ const MyFragranceReviewButton = (props: MyFragranceReviewButtonProps) => {
             </div>
 
             <span
-              className='text-tawny text-md flex-1 truncate font-medium group-hover:underline'
+              className='text-tawny md:text-md min-w-0 truncate text-xs font-medium group-hover:underline'
             >
               {hasReview ? 'Edit' : 'Start'} your review of {fragrance.name}
             </span>
@@ -88,10 +92,9 @@ const MyFragranceReviewButton = (props: MyFragranceReviewButtonProps) => {
 
           <InteractableRatingStars
             rating={myReview?.rating ?? 0}
-            size={30}
             emptyColor={Colors.empty2}
             filledColor={Colors.sinopia}
-            className='text-md ml-auto flex flex-col items-center gap-1'
+            className='text-md ml-auto flex flex-col items-center gap-2'
             onRatingChange={handleRouteToReview}
           />
         </div>

@@ -58,7 +58,7 @@ const SettingsPopover = (props: SettingsPopoverProps) => {
         )}
       >
         <FaCog
-          size={20}
+          className='size-5'
         />
       </Popover.Trigger>
 

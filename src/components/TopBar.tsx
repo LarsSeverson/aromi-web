@@ -7,8 +7,8 @@ import SignUpDialog from '../features/auth/components/SignUpDialog'
 import { useAuthContext } from '@/features/auth'
 import AccountMenu from '@/features/users/components/AccountMenu'
 import TopBarSearch from './TopBarSearch'
-import { BrowserView, MobileView } from 'react-device-detect'
-import { Link, useRouter } from '@tanstack/react-router'
+import { BrowserView, MobileView, isMobile } from 'react-device-detect'
+import { Link, useChildMatches, useLocation } from '@tanstack/react-router'
 import LogoSvg from './LogoSvg'
 import SettingsPopover from './SettingsPopover'
 
@@ -19,10 +19,15 @@ const TopBar = (props: TopBarProps) => {
 
   const { isAuthenticated, me } = useAuthContext()
 
-  const router = useRouter()
-  const match = router.matchRoute('/users/$id')
-  const matchedUserId: string | undefined = (match as { id: string })?.id
+  const matches = useChildMatches()
+  const location = useLocation()
+
+  const profileMatch = matches.find((m) => m.routeId === '/users/$id')
+  const matchedUserId = profileMatch?.params?.id
   const isOnMyProfile = matchedUserId != null && matchedUserId === me?.id
+
+  const isRoot = location.pathname === '/'
+  const shouldShowMobile = isRoot || isOnMyProfile
 
   const [isScrolled, setIsScrolled] = React.useState(false)
 
@@ -39,6 +44,10 @@ const TopBar = (props: TopBarProps) => {
     }
   }, [])
 
+  if (isMobile && !shouldShowMobile) {
+    return null
+  }
+
   return (
     <header
       className={clsx(
@@ -50,15 +59,19 @@ const TopBar = (props: TopBarProps) => {
       {...rest}
     >
       <div
-        className='flex-1'
+        className='h-full flex-1'
       >
-        <MobileView>
-          <Link
-            to='/'
-            className='text-lg font-semibold'
-          >
-            <LogoSvg />
-          </Link>
+        <MobileView
+          className='flex h-full'
+        >
+          {!isOnMyProfile && (
+            <Link
+              to='/'
+              className='aspect-square h-full text-lg font-semibold'
+            >
+              <LogoSvg />
+            </Link>
+          )}
         </MobileView>
       </div>
 

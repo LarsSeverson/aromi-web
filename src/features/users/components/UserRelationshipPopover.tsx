@@ -59,7 +59,7 @@ const UserRelationshipPopover = (props: UserRelationshipPopoverProps) => {
         <DialogBackdrop />
 
         <DialogPopup
-          className='flex max-h-138 w-full max-w-96 flex-col overflow-hidden px-2 pt-4'
+          className='flex max-h-142 min-h-138 w-full max-w-96 flex-col overflow-hidden px-2 pt-4'
         >
           <Dialog.Title
             className='mb-4 flex items-center justify-between px-2 text-center font-semibold'

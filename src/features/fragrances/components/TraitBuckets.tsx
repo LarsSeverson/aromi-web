@@ -21,13 +21,16 @@ const TraitBuckets = (props: TraitBucketsProps) => {
       className='w-full'
     >
       <div
-        className='flex flex-col items-center gap-3'
+        className={clsx(
+          'flex flex-col items-center',
+          'gap-2 md:gap-3'
+        )}
       >
         {getTraitIcon(type)}
 
         {showLabel && (
           <span
-            className='text-md font-semibold'
+            className='md:text-md text-sm font-semibold'
           >
             {name}
           </span>

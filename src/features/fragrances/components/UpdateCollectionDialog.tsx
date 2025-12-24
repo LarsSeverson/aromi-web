@@ -81,27 +81,34 @@ const UpdateCollectionDialog = (props: UpdateCollectionDialogProps) => {
 
       <Dialog.Portal>
         <Dialog.Backdrop
-          className='fixed inset-0 bg-black/30 backdrop-blur-sm'
+          className='fixed inset-0 z-50 bg-black/30 backdrop-blur-sm'
         />
 
         <Dialog.Popup
-          className='fixed top-1/2 left-1/2 w-[720px] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-xl bg-white'
+          className={clsx(
+            'fixed z-50 flex flex-col overflow-hidden bg-white',
+            'inset-0 h-full w-full',
+            'md:top-1/2 md:left-1/2 md:h-auto md:w-180 md:-translate-x-1/2 md:-translate-y-1/2 md:rounded-xl'
+          )}
         >
           <Dialog.Title
-            className='p-6 text-center text-3xl font-medium'
+            className='p-6 text-center text-2xl font-medium md:text-3xl'
           >
             Edit Collection
           </Dialog.Title>
 
           <Form
-            className='relative'
+            className='relative flex flex-1 flex-col overflow-y-auto'
             onSubmit={handleFormSubmit}
           >
             <div
-              className='flex gap-8 px-8 pt-5 pb-8'
+              className={clsx(
+                'flex px-8 pt-5 pb-8',
+                'flex-col gap-6 md:flex-row md:gap-8'
+              )}
             >
               <div
-                className='flex-1 overflow-hidden'
+                className='overflow-hidden md:flex-1'
               >
                 <div
                   className='relative overflow-hidden rounded-2xl'
@@ -122,7 +129,7 @@ const UpdateCollectionDialog = (props: UpdateCollectionDialogProps) => {
               </div>
 
               <div
-                className='flex-2'
+                className='md:flex-2'
               >
                 <Field.Root
                   name='name'
@@ -153,7 +160,10 @@ const UpdateCollectionDialog = (props: UpdateCollectionDialogProps) => {
             </div>
 
             <div
-              className='flex justify-between bg-white px-5 py-2 shadow-[0_0px_10px_0px_rgba(0,0,0,0.1)]'
+              className={clsx(
+                'flex justify-between bg-white px-5 py-4 shadow-[0_-2px_10px_0px_rgba(0,0,0,0.05)] md:py-2 md:shadow-[0_0px_10px_0px_rgba(0,0,0,0.1)]',
+                'sticky bottom-0 mt-auto'
+              )}
             >
               <Dialog.Close
                 className='bg-empty cursor-pointer rounded-full px-7 py-3 hover:brightness-95'

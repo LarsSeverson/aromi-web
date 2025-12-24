@@ -22,6 +22,8 @@ const PageBackButton = (props: PageBackButtonProps) => {
 
     if (canGoBack) {
       router.history.back()
+    } else {
+      navigate({ to: '/' })
     }
   }
 

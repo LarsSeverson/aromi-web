@@ -4,19 +4,29 @@ import clsx from 'clsx'
 import { IoClose } from 'react-icons/io5'
 import ErrorFeedback from '@/components/ErrorFeedback'
 import LogoSvg from '@/components/LogoSvg'
+import BackButton from '@/components/BackButton'
 
 export interface AuthDialogHeadingProps {
   error: string | null
+  showBackButton?: boolean
 }
 
 const AuthDialogHeading = (props: AuthDialogHeadingProps) => {
-  const { error } = props
+  const { error, showBackButton = false } = props
 
   return (
-    <>
+    <div
+      className='mt-3 flex flex-col items-center justify-center gap-4'
+    >
       <div
-        className='absolute top-3 right-3 flex gap-4'
+        className='flex w-full justify-between'
       >
+        <div>
+          {showBackButton && (
+            <BackButton />
+          )}
+        </div>
+
         <Dialog.Close
           className={clsx(
             'flex aspect-square h-9 items-center justify-center rounded-full select-none',
@@ -30,26 +40,21 @@ const AuthDialogHeading = (props: AuthDialogHeadingProps) => {
           />
         </Dialog.Close>
       </div>
+      <LogoSvg
+        width={48}
+        height={48}
+      />
 
-      <div
-        className='mt-3 flex flex-col items-center justify-center gap-4'
+      <h1
+        className='font-jp text-center text-3xl'
       >
-        <LogoSvg
-          width={48}
-          height={48}
-        />
+        Welcome to aromi
+      </h1>
 
-        <h1
-          className='font-jp text-center text-3xl'
-        >
-          Welcome to aromi
-        </h1>
-
-        <ErrorFeedback
-          error={error}
-        />
-      </div>
-    </>
+      <ErrorFeedback
+        error={error}
+      />
+    </div>
   )
 }
 

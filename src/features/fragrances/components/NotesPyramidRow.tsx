@@ -15,12 +15,13 @@ const NotesPyramidRow = (props: NotesPyramidRowProps) => {
     <div
       className={clsx(
         'flex w-full min-w-0 flex-col justify-center',
+        'gap-1 md:gap-2',
         className
       )}
       {...rest}
     >
       <h6
-        className='text-md font-medium text-black/50'
+        className='md:text-md text-xs font-medium text-black/50'
       >
         {layer}
       </h6>
@@ -29,16 +30,18 @@ const NotesPyramidRow = (props: NotesPyramidRowProps) => {
         className='flex justify-center'
       >
         <div
-          className='flex overflow-x-auto'
+          className={clsx(
+            'flex w-full overflow-x-auto pb-1',
+            'justify-center'
+          )}
         >
-          {notes
-            .map(note => (
-              <NotePreviewCard
-                key={note.id}
-                fragranceNote={note}
-                className='w-full max-w-40 min-w-28'
-              />
-            ))}
+          {notes.map(note => (
+            <NotePreviewCard
+              key={note.id}
+              fragranceNote={note}
+              className='w-24 min-w-24 md:w-full md:max-w-40 md:min-w-28'
+            />
+          ))}
         </div>
       </div>
     </div>

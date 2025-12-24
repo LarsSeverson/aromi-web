@@ -19,6 +19,8 @@ import { useFragranceAccords } from '../hooks/useFragranceAccords'
 import { useDebounce } from '@/hooks/useDebounce'
 import { useToastMessage } from '@/hooks/useToastMessage'
 import { useNavigate } from '@tanstack/react-router'
+import clsx from 'clsx'
+import { BrowserView } from 'react-device-detect'
 
 export interface FragranceInfoSectionProps {
   fragrance: FragranceDetailFragment
@@ -61,50 +63,67 @@ const FragranceInfoSection = (props: FragranceInfoSectionProps) => {
   }
 
   return (
-
     <div
-      className='flex max-w-md flex-1 flex-col '
+      className={clsx(
+        'flex flex-1 flex-col',
+        'items-center text-center md:items-start md:text-left',
+        'max-w-full md:max-w-md'
+      )}
     >
-
       <div
-        className='flex items-center justify-between'
+        className='flex w-full items-center justify-between'
       >
+        <div className='hidden md:block' />
+
         <h2
-          className='truncate text-2xl font-semibold'
+          className={clsx(
+            'truncate font-semibold',
+            'text-xl md:text-2xl',
+            'flex-1 text-center md:text-left'
+          )}
         >
           {name}
         </h2>
 
-        <MoreOptionsFragrancePopover
-          fragrance={fragrance}
-        />
+        <BrowserView>
+          <MoreOptionsFragrancePopover
+            fragrance={fragrance}
+          />
+        </BrowserView>
       </div>
 
       <h2
-        className='text-xl'
+        className={clsx(
+          'text-lg md:text-xl'
+        )}
       >
         {brand.name}
       </h2>
 
       <div
-        className='mt-4 mb-2 flex flex-row items-center'
+        className={clsx(
+          'flex flex-col items-center md:flex-row',
+          'my-2 md:mt-4 md:mb-2'
+        )}
       >
         <RatingStars
           rating={averageRating}
-          size={20}
           filledColor={Colors.sinopia}
           emptyColor={Colors.empty2}
+          className='flex items-center justify-center'
         />
 
         <p
-          className='ml-1 text-sm font-semibold opacity-80'
+          className='mt-1 -mb-0.5 text-sm font-semibold opacity-80 md:mt-0 md:ml-1'
         >
           ({averageRating ?? 0} / 5)
         </p>
       </div>
 
       <div
-        className='mb-3 flex flex-row items-end gap-3'
+        className={clsx(
+          'flex w-full flex-row flex-wrap items-end gap-2 md:mb-3 md:items-end md:justify-start md:gap-3'
+        )}
       >
         <VoteButtonGroup
           votes={votes}
@@ -112,16 +131,17 @@ const FragranceInfoSection = (props: FragranceInfoSectionProps) => {
         />
 
         <BouncyButton
-          className='group flex items-center justify-center gap-1 rounded-full border px-3 py-0'
+          className='group mr-auto flex items-center justify-center gap-1 rounded-full border px-3 py-0 md:mr-0'
           onClick={onScrollToReview}
         >
           <div
             className='group-hover:text-sinopia flex h-8 items-center justify-center'
           >
             <TbMessage2Star
-              size={18}
+              className='size-4 md:size-4.5'
             />
           </div>
+
           <p
             className='text-sm font-semibold'
           >
@@ -134,7 +154,7 @@ const FragranceInfoSection = (props: FragranceInfoSectionProps) => {
           onRenderTrigger={() => (
             <Popover.Trigger>
               <div
-                className='group flex h-[34px] cursor-pointer items-center justify-center gap-1 rounded-full border bg-white px-3 hover:brightness-95'
+                className='group flex h-8.5 cursor-pointer items-center justify-center gap-1 rounded-full border bg-white px-3 hover:brightness-95'
               >
                 <PiShareFat
                   className='group-hover:text-sinopia'
@@ -152,7 +172,10 @@ const FragranceInfoSection = (props: FragranceInfoSectionProps) => {
         />
 
         <div
-          className='ml-auto flex'
+          className={clsx(
+            'flex',
+            'ml-0 md:ml-auto'
+          )}
         >
           <SaveFragrancePopover
             fragrance={fragrance}
@@ -162,10 +185,11 @@ const FragranceInfoSection = (props: FragranceInfoSectionProps) => {
 
       <Divider
         horizontal
+        className='my-3 w-full md:my-0'
       />
 
       <div
-        className='flex flex-col overflow-auto'
+        className='flex w-full flex-col overflow-auto'
       >
         <div
           className='flex flex-col gap-3'

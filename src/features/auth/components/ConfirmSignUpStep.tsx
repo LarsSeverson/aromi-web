@@ -6,18 +6,22 @@ import { Form } from '@base-ui-components/react'
 import { useAuthContext } from '../contexts/AuthContext'
 import SubmitButton from '@/components/SubmitButton'
 import ErrorFeedback from '@/components/ErrorFeedback'
+import BackButton from '@/components/BackButton'
 
 export interface ConfirmSignUpStepProps {
   text?: string
   email: string
   password: string
+
+  handleGoBack?: () => void
 }
 
 const ConfirmSignUpStep = (props: ConfirmSignUpStepProps) => {
   const {
     text = `If “${props.email}” isn’t linked to an account, you’ll get a 6-digit code.`,
     email,
-    password
+    password,
+    handleGoBack
   } = props
 
   const { resendSignUpCode, confirmSignUp, logIn } = useAuthContext()
@@ -87,6 +91,10 @@ const ConfirmSignUpStep = (props: ConfirmSignUpStepProps) => {
     <Form
       onSubmit={handleSubmit}
     >
+      <BackButton
+        onClick={handleGoBack}
+      />
+
       <div
         className='my-3 flex w-full flex-col px-2'
       >

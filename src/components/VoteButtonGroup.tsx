@@ -64,17 +64,17 @@ export const VoteButtonGroup = (props: VoteButtonGroupProps) => {
   return (
     <div
       className={clsx(
-        className,
-        'flex flex-row rounded-full border',
-        getBackgroundColor()
+        'flex flex-row items-center rounded-full border',
+        getBackgroundColor(),
+        className
       )}
       {...rest}
     >
       <AuthButton
         className={clsx(
-          'aspect-square cursor-pointer rounded-full p-2',
+          'flex aspect-square cursor-pointer items-center justify-center rounded-full',
+          'p-1.5 md:p-2',
           'hover:bg-black/10',
-          'flex items-center justify-center',
           currentVote === VOTE_TYPES.NOVOTE ? 'hover:text-sinopia' : 'text-white'
         )}
         onClick={onFor}
@@ -82,12 +82,12 @@ export const VoteButtonGroup = (props: VoteButtonGroupProps) => {
         {currentVote === VOTE_TYPES.UPVOTE
           ? (
             <TbArrowBigUpFilled
-              size={18}
+              className='size-4.5'
             />
           )
           : (
             <TbArrowBigUp
-              size={18}
+              className='size-4.5'
             />
           )
         }
@@ -95,7 +95,8 @@ export const VoteButtonGroup = (props: VoteButtonGroupProps) => {
 
       <span
         className={clsx(
-          'mr-2 flex items-center text-sm font-semibold',
+          'flex items-center font-semibold',
+          'mx-1 text-xs md:mr-2 md:text-sm',
           currentVote === VOTE_TYPES.NOVOTE ? '' : 'text-white'
         )}
       >
@@ -103,10 +104,11 @@ export const VoteButtonGroup = (props: VoteButtonGroupProps) => {
       </span>
 
       <div
-        className='px-1 py-2'
+        className='py-2 md:px-1'
       >
         <Divider
           className={clsx(
+            'h-3 md:h-4',
             currentVote === VOTE_TYPES.NOVOTE ? '' : 'bg-white/50'
           )}
         />
@@ -115,9 +117,9 @@ export const VoteButtonGroup = (props: VoteButtonGroupProps) => {
       <AuthButton
         // eslint-disable-next-line tailwindcss/no-custom-classname
         className={clsx(
-          'aspect-square cursor-pointer rounded-full p-2',
+          'flex aspect-square cursor-pointer items-center justify-center rounded-full',
+          'p-1.5 md:p-2',
           ' hover:bg-black/10',
-          'flex items-center justify-center',
           currentVote === VOTE_TYPES.NOVOTE ? 'hover:text-som' : 'text-white'
         )}
         onClick={onAgainst}
@@ -126,12 +128,12 @@ export const VoteButtonGroup = (props: VoteButtonGroupProps) => {
           ?
           (
             <TbArrowBigDownFilled
-              size={18}
+              className='size-4.5'
             />
           )
           : (
             <TbArrowBigDown
-              size={18}
+              className='size-4.5'
             />
           )
         }
@@ -139,3 +141,5 @@ export const VoteButtonGroup = (props: VoteButtonGroupProps) => {
     </div>
   )
 }
+
+export default VoteButtonGroup

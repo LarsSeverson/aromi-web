@@ -4,6 +4,7 @@ import NotesPyramid from './NotesPyramid'
 import { type FragranceDetailFragment, NoteLayer } from '@/generated/graphql'
 import { useFragranceNotes } from '../hooks/useFragranceNotes'
 import { useNavigate } from '@tanstack/react-router'
+import clsx from 'clsx'
 
 export interface FragranceNotesSectionProps {
   fragrance: FragranceDetailFragment
@@ -11,7 +12,6 @@ export interface FragranceNotesSectionProps {
 
 const FragranceNotesSection = (props: FragranceNotesSectionProps) => {
   const { fragrance } = props
-
   const navigate = useNavigate()
 
   const { notes: topNotes, isLoading: isTopLoading } = useFragranceNotes(fragrance.id, { layer: NoteLayer.Top })
@@ -19,18 +19,9 @@ const FragranceNotesSection = (props: FragranceNotesSectionProps) => {
   const { notes: baseNotes, isLoading: isBaseLoading } = useFragranceNotes(fragrance.id, { layer: NoteLayer.Base })
 
   const layers = [
-    {
-      layer: NoteLayer.Top,
-      notes: topNotes
-    },
-    {
-      layer: NoteLayer.Middle,
-      notes: middleNotes
-    },
-    {
-      layer: NoteLayer.Base,
-      notes: baseNotes
-    }
+    { layer: NoteLayer.Top, notes: topNotes },
+    { layer: NoteLayer.Middle, notes: middleNotes },
+    { layer: NoteLayer.Base, notes: baseNotes }
   ].filter(item => item.notes.length > 0)
 
   const handleOnEmptyButtonClick = () => {
@@ -50,7 +41,10 @@ const FragranceNotesSection = (props: FragranceNotesSectionProps) => {
     >
       <NotesPyramid
         layers={layers}
-        className='w-full max-w-4xl self-center'
+        className={clsx(
+          'w-full max-w-4xl self-center',
+          'px-1 md:px-0'
+        )}
       />
     </PageCategory>
   )

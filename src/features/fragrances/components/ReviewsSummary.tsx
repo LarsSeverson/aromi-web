@@ -17,16 +17,17 @@ export const ReviewsSummary = (props: ReviewSummaryProps) => {
   return (
     <div
       className={clsx(
-        'flex flex-row',
+        'flex flex-col md:flex-row',
+        'gap-6 md:gap-0',
         className
       )}
       {...rest}
     >
       <div
-        className='flex flex-1 flex-col items-center justify-center gap-3'
+        className='flex flex-1 flex-col items-center justify-center gap-2 md:gap-3'
       >
         <h5
-          className='text-xl'
+          className='text-xl md:text-2xl'
         >
           {(averageRating ?? 0).toFixed(1)}
         </h5>
@@ -35,11 +36,11 @@ export const ReviewsSummary = (props: ReviewSummaryProps) => {
           rating={averageRating}
           filledColor={Colors.sinopia}
           emptyColor='#f0f0f0'
-          size={32}
+          className='flex size-6 items-center justify-center md:size-8'
         />
 
         <p
-          className='opacity-60'
+          className='text-sm opacity-60 md:text-base'
         >
           {formatNumber(count)} {count === 1 ? 'review' : 'reviews'}
         </p>
@@ -47,7 +48,7 @@ export const ReviewsSummary = (props: ReviewSummaryProps) => {
 
       <ReviewDistributionLadder
         distribution={distribution}
-        className='flex-3'
+        className='flex-3 px-2 md:px-0'
       />
     </div>
   )

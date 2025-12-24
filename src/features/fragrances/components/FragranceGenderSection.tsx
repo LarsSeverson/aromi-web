@@ -3,6 +3,7 @@ import PageCategory from '@/components/PageCategory'
 import { TraitTypeEnum, type FragranceDetailFragment } from '@/generated/graphql'
 import { useFragranceTraits } from '../hooks/useFragranceTraits'
 import TraitBuckets from './TraitBuckets'
+import clsx from 'clsx'
 
 export interface FragranceGenderSectionProps {
   fragrance: FragranceDetailFragment
@@ -26,7 +27,10 @@ const FragranceGenderSection = (props: FragranceGenderSectionProps) => {
       className='flex flex-col'
     >
       <div
-        className='flex flex-col max-w-4xl w-full self-center mt-6'
+        className={clsx(
+          'flex w-full max-w-4xl flex-col self-center',
+          'mt-4 md:mt-6'
+        )}
       >
         <TraitBuckets
           trait={traitMap.get(TraitTypeEnum.Gender)!}

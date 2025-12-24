@@ -67,7 +67,7 @@ export const UserCollectionsTab = (props: UserCollectionsTabProps) => {
 
   return (
     <div
-      className='w-full p-10'
+      className='w-full p-4'
     >
       <ResizeContainer
         onResize={setContainerRect}

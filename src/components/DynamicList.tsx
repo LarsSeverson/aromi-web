@@ -7,7 +7,6 @@ import { isMobile } from 'react-device-detect'
 
 export interface DynamicListProps<T extends Identifiable> extends React.HTMLAttributes<HTMLDivElement> {
   items: T[]
-
   containerWidth: number
   isLoading?: boolean | undefined
   itemWidth?: number | undefined
@@ -17,7 +16,6 @@ export interface DynamicListProps<T extends Identifiable> extends React.HTMLAttr
   gap?: number | undefined
   onEndReachedThreshold?: number | undefined
   initialScrollOffset?: number | undefined
-
   onRenderItem: (item: T, index: number) => React.ReactNode
   onRenderSkeleton?: () => React.ReactNode
   onEndReached?: () => void
@@ -29,7 +27,7 @@ export const DynamicList = <T extends Identifiable, >(props: DynamicListProps<T>
     containerWidth,
     isLoading = false,
     itemWidth = 275,
-    maxWidth = 400,
+    // maxWidth = 400,
     itemHeight = 392,
     gap = 15,
     scale = isMobile ? 0.5 : 0.9,
@@ -43,17 +41,16 @@ export const DynamicList = <T extends Identifiable, >(props: DynamicListProps<T>
 
   const minItemWidth = itemWidth * scale
   const ratio = itemHeight / itemWidth
-  const colCount = Math.max(1, Math.floor(containerWidth / (minItemWidth + gap)))
+
+  const colCount = Math.max(1, Math.floor((containerWidth + gap) / (minItemWidth + gap)))
+
+  const effectiveWidth = (containerWidth - (colCount - 1) * gap) / colCount
+  const effectiveHeight = effectiveWidth * ratio
+
   const remaining = items.length % colCount
   const skeletonCount = isLoading ? (remaining === 0 ? 0 : colCount - remaining) + colCount : 0
   const total = items.length + skeletonCount
   const rowCount = Math.ceil(total / colCount)
-
-  const effectiveWidth = Math.min(
-    maxWidth,
-    (containerWidth - (colCount - 1) * gap) / colCount
-  )
-  const effectiveHeight = effectiveWidth * ratio
 
   const rowVirtualizer = useWindowVirtualizer({
     count: rowCount,

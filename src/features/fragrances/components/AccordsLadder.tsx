@@ -1,6 +1,7 @@
 import React, { useCallback, useMemo } from 'react'
 import LinearScaleBar from '@/components/LinearScaleBar'
 import type { AllFragranceAccordFragment } from '@/generated/graphql'
+import clsx from 'clsx'
 
 export interface AccordBarsProps extends React.HTMLAttributes<HTMLDivElement> {
   accords: AllFragranceAccordFragment[]
@@ -21,7 +22,10 @@ const AccordsLadder = (props: AccordBarsProps) => {
       {...rest}
     >
       <div
-        className='flex flex-col gap-2'
+        className={clsx(
+          'flex flex-col',
+          'gap-3'
+        )}
       >
         {filteredAccords
           .map((fAccord, index) => {
@@ -30,13 +34,15 @@ const AccordsLadder = (props: AccordBarsProps) => {
                 key={index}
               >
                 <p
-                  className='font-pd text-gray-800 mx-3'
+                  className={clsx(
+                    'mx-3 text-gray-800',
+                    'text-start text-sm md:text-base'
+                  )}
                 >
                   {fAccord.accord.name}
                 </p>
 
                 <LinearScaleBar
-                  key={index}
                   value={getWidth(fAccord.votes.score)}
                   color={fAccord.accord.color}
                 />

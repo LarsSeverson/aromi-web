@@ -3,6 +3,7 @@ import PageCategory from '@/components/PageCategory'
 import { TraitTypeEnum, type FragranceDetailFragment } from '@/generated/graphql'
 import { useFragranceTraits } from '../hooks/useFragranceTraits'
 import TraitBuckets from './TraitBuckets'
+import clsx from 'clsx'
 
 export interface FragranceTraitsSectionProps {
   fragrance: FragranceDetailFragment
@@ -20,41 +21,38 @@ const FragranceTraitsSection = (props: FragranceTraitsSectionProps) => {
 
   if (isLoading) return null
 
+  const traitTypes = [
+    TraitTypeEnum.Time,
+    TraitTypeEnum.Season,
+    TraitTypeEnum.Longevity,
+    TraitTypeEnum.Projection,
+    TraitTypeEnum.Balance,
+    TraitTypeEnum.Complexity,
+    TraitTypeEnum.Appeal
+  ]
+
   return (
     <PageCategory
       title='Traits'
       className='flex flex-col'
     >
       <div
-        className='mt-6 flex w-full max-w-4xl flex-col gap-15 self-center'
+        className={clsx(
+          'flex w-full max-w-4xl flex-col self-center',
+          'mt-6 gap-10 md:gap-15'
+        )}
       >
-        <TraitBuckets
-          trait={traitMap.get(TraitTypeEnum.Time)!}
-        />
+        {traitTypes.map((type) => {
+          const trait = traitMap.get(type)
+          if (trait == null) return null
 
-        <TraitBuckets
-          trait={traitMap.get(TraitTypeEnum.Season)!}
-        />
-
-        <TraitBuckets
-          trait={traitMap.get(TraitTypeEnum.Longevity)!}
-        />
-
-        <TraitBuckets
-          trait={traitMap.get(TraitTypeEnum.Projection)!}
-        />
-
-        <TraitBuckets
-          trait={traitMap.get(TraitTypeEnum.Balance)!}
-        />
-
-        <TraitBuckets
-          trait={traitMap.get(TraitTypeEnum.Complexity)!}
-        />
-
-        <TraitBuckets
-          trait={traitMap.get(TraitTypeEnum.Appeal)!}
-        />
+          return (
+            <TraitBuckets
+              key={type}
+              trait={trait}
+            />
+          )
+        })}
       </div>
     </PageCategory>
   )

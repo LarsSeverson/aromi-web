@@ -17,15 +17,15 @@ const LinearScaleBar = (props: LinearScaleBarProps) => {
   return (
     <div
       className={clsx(
-        'rounded-full h-4 overflow-hidden flex flex-row flex-1',
-        className
+        className,
+        'flex h-3 flex-1 flex-row overflow-hidden rounded-full md:h-4'
       )}
       {...rest}
       style={{ ...style, backgroundColor: trackColor }}
     >
       <div
         className={clsx(
-          'h-full rounded-full min-w-4'
+          'h-full min-w-4 rounded-full'
         )}
         style={{ backgroundColor: color, width: `${value}%` }}
       />

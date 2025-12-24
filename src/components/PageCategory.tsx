@@ -36,7 +36,7 @@ const PageCategory = (props: PageCategoryProps) => {
         className='mb-4 flex flex-row items-center justify-between'
       >
         <h2
-          className='text-xl font-semibold'
+          className='text-lg font-semibold md:text-xl'
         >
           {title}
         </h2>

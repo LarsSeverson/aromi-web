@@ -32,17 +32,20 @@ export const FragranceReviewCard = (props: FragranceReviewCardProps) => {
   return (
     <div
       className={clsx(
-        'flex w-full flex-col gap-5 border-b p-5',
+        'flex w-full flex-col border-b',
+        'gap-4 p-4 md:gap-5 md:p-5',
         rest.className
       )}
       {...rest}
     >
       <div
-        className='flex flex-row gap-5'
+        className='flex flex-row gap-4 md:gap-5'
       >
         <div
           className={clsx(
-            isFragranceFocused ? 'h-20' : 'h-14'
+            isFragranceFocused
+              ? 'h-16 w-12 md:h-20 md:w-16'
+              : 'h-10 w-10 md:h-14 md:w-14'
           )}
         >
           {isFragranceFocused ?
@@ -52,7 +55,7 @@ export const FragranceReviewCard = (props: FragranceReviewCardProps) => {
                 params={{ id: fragrance.id }}
               >
                 <div
-                  className='relative h-full w-16 overflow-hidden rounded-lg border'
+                  className='relative h-full w-full overflow-hidden rounded-lg border'
                 >
                   <ProgressiveImage
                     src={url ?? blankPreviewThumbnail}
@@ -77,10 +80,10 @@ export const FragranceReviewCard = (props: FragranceReviewCardProps) => {
         </div>
 
         <div
-          className='flex flex-col gap-1'
+          className='flex min-w-0 flex-col gap-0.5 md:gap-1'
         >
           <div
-            className='flex w-full min-w-0 flex-row items-center gap-3 self-start'
+            className='flex w-full min-w-0 flex-row items-center gap-2 self-start md:gap-3'
           >
             <p
               className='truncate'
@@ -88,15 +91,15 @@ export const FragranceReviewCard = (props: FragranceReviewCardProps) => {
               <Link
                 to={isFragranceFocused ? '/fragrances/$id' : '/users/$id'}
                 params={{ id: isFragranceFocused ? fragrance.id : author.id }}
-                className='text-md font-medium'
+                className='md:text-md text-sm font-medium'
               >
                 {isFragranceFocused ? name : username}
               </Link>
 
-              <span> • </span>
+              <span className='text-gray-400'> • </span>
 
               <span
-                className='text-xs'
+                className='text-[10px] text-gray-500 md:text-xs'
               >
                 {formatDate(createdAt)}
               </span>
@@ -105,7 +108,7 @@ export const FragranceReviewCard = (props: FragranceReviewCardProps) => {
 
           {isFragranceFocused && (
             <span
-              className='text-sm text-black/70'
+              className='truncate text-xs text-black/70 md:text-sm'
             >
               {brand.name}
             </span>
@@ -115,8 +118,7 @@ export const FragranceReviewCard = (props: FragranceReviewCardProps) => {
             rating={rating}
             filledColor={Colors.sinopia}
             emptyColor={Colors.empty}
-            size={18}
-            className='mt-1'
+            className='mt-0.5 md:size-4.5'
           />
         </div>
 
@@ -132,10 +134,10 @@ export const FragranceReviewCard = (props: FragranceReviewCardProps) => {
 
       {showBody && (
         <div
-          className='flex flex-col gap-2'
+          className='flex flex-col gap-1.5 md:gap-2'
         >
           <p
-            className='text-md text-black/90'
+            className='md:text-md text-sm leading-relaxed text-black/90'
           >
             {displayText}
             {(!showFull && isLong) && '...'}
@@ -144,7 +146,7 @@ export const FragranceReviewCard = (props: FragranceReviewCardProps) => {
           {isLong && (
             <button
               onClick={setShowFull.bind(null, prev => !prev)}
-              className='cursor-pointer self-start text-sm font-medium text-black'
+              className='cursor-pointer self-start text-xs font-semibold text-black md:text-sm'
             >
               {showFull ? 'Read less' : 'Read more'}
             </button>
@@ -154,11 +156,7 @@ export const FragranceReviewCard = (props: FragranceReviewCardProps) => {
 
       <div
         className='ml-auto'
-      >
-        {/* <VoteButtonGroup
-          votes={votes}
-        /> */}
-      </div>
+      />
     </div>
   )
 }

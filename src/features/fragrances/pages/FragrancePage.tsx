@@ -8,6 +8,7 @@ import Divider from '@/components/Divider'
 import FragranceNotesSection from '../components/FragranceNotesSection'
 import FragranceTraitsSection from '../components/FragranceTraitsSection'
 import FragranceReviewsSection from '../components/FragranceReviewsSection'
+import clsx from 'clsx'
 
 export interface FragrancePageProps {
   fragrance: FragranceDetailFragment
@@ -29,26 +30,39 @@ export const FragrancePage = (props: FragrancePageProps) => {
 
   return (
     <div
-      className='flex h-full w-full flex-wrap gap-5'
+      className={clsx(
+        'flex h-full w-full flex-wrap',
+        'gap-2 p-3 md:gap-5 md:p-0'
+      )}
     >
-
       <div
-        className='flex pl-4'
+        className={clsx(
+          'flex',
+          'pl-0 md:pl-4'
+        )}
       >
         <PageBackButton
-          className='sticky top-18 mb-auto ml-auto'
+          className={clsx(
+            'mb-auto ml-auto',
+            'static md:sticky md:top-18'
+          )}
         />
       </div>
 
       <div
         className='flex w-full flex-1 flex-col'
       >
-
         <div
-          className='flex flex-1 flex-wrap gap-8'
+          className={clsx(
+            'flex flex-1 flex-wrap',
+            'gap-4 md:gap-8'
+          )}
         >
           <div
-            className='flex flex-1 items-start rounded-xl'
+            className={clsx(
+              'flex items-start rounded-xl',
+              'w-full flex-none md:flex-1'
+            )}
           >
             <FragranceImagesSection
               fragrance={fragrance}
@@ -56,7 +70,10 @@ export const FragrancePage = (props: FragrancePageProps) => {
           </div>
 
           <div
-            className='flex-1 rounded-xl'
+            className={clsx(
+              'rounded-xl',
+              'w-full flex-none md:flex-1'
+            )}
           >
             <FragranceInfoSection
               fragrance={fragrance}
@@ -66,11 +83,16 @@ export const FragrancePage = (props: FragrancePageProps) => {
         </div>
 
         <div
-          className='mt-10 flex w-full max-w-5xl flex-col gap-7 self-center'
+          className={clsx(
+            'flex w-full max-w-5xl flex-col self-center',
+            'mt-6 gap-5 md:mt-10 md:gap-7'
+          )}
         >
           <Divider
             horizontal
-            className='mb-5'
+            className={clsx(
+              'mb-2 md:mb-5'
+            )}
           />
 
           <FragranceGenderSection

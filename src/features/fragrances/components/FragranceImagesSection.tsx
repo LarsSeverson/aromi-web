@@ -33,17 +33,23 @@ export const FragranceImagesSection = (props: FragranceImagesSectionProps) => {
 
   return (
     <div
-      className='flex flex-1 items-center justify-end'
+      className={clsx(
+        'flex flex-1 items-center',
+        'justify-center md:justify-end'
+      )}
     >
       <div
-        className='group w-full max-w-md min-w-3xs overflow-hidden rounded-2xl'
+        className={clsx(
+          'group w-full overflow-hidden rounded-2xl',
+          'max-w-xs sm:max-w-sm md:max-w-md'
+        )}
       >
         <div
           className={clsx(
             'relative',
             className
           )}
-          style={{ aspectRatio: `${images.at(0)?.width} / ${images.at(0)?.height}` }}
+          style={{ aspectRatio: `${images.at(0)?.width ?? 1} / ${images.at(0)?.height ?? 1}` }}
           {...rest}
         >
           <ProgressiveImage
@@ -58,22 +64,28 @@ export const FragranceImagesSection = (props: FragranceImagesSectionProps) => {
           >
             {showBackButton && (
               <BouncyButton
-                className='rounded-xl bg-white px-1.5 py-1.5 opacity-0 drop-shadow-md transition-opacity duration-200 ease-in-out group-hover:opacity-85'
+                className={clsx(
+                  'rounded-xl bg-white p-1.5 drop-shadow-md transition-opacity duration-200 ease-in-out',
+                  'opacity-85 md:opacity-0 md:group-hover:opacity-85'
+                )}
                 onClick={handleOnBackImage}
               >
                 <HiChevronLeft
-                  size={26}
+                  className='size-5 md:size-6.5'
                 />
               </BouncyButton>
             )}
 
             {showForwardButton && (
               <BouncyButton
-                className='rounded-xl bg-white px-1.5 py-1.5 opacity-0 drop-shadow-md transition-opacity duration-200 ease-in-out group-hover:opacity-85'
+                className={clsx(
+                  'rounded-xl bg-white p-1.5 drop-shadow-md transition-opacity duration-200 ease-in-out',
+                  'opacity-85 md:opacity-0 md:group-hover:opacity-85'
+                )}
                 onClick={handleOnForwardImage}
               >
                 <HiChevronRight
-                  size={26}
+                  className='size-5 md:size-6.5'
                 />
               </BouncyButton>
             )}

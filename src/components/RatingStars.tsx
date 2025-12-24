@@ -14,7 +14,6 @@ export const ratingMap = {
 
 export interface RatingStarsProps extends React.HTMLAttributes<HTMLDivElement> {
   rating: Nullable<number>
-  size?: number
   filledColor?: string
   emptyColor?: string
   interactable?: boolean
@@ -24,7 +23,6 @@ export interface RatingStarsProps extends React.HTMLAttributes<HTMLDivElement> {
 const RatingStars = (props: RatingStarsProps) => {
   const {
     rating,
-    size = 15,
     filledColor = 'black',
     emptyColor = 'black',
     interactable = false,
@@ -62,19 +60,19 @@ const RatingStars = (props: RatingStarsProps) => {
           'relative',
           interactable && 'cursor-pointer'
         )}
-        style={{ width: size, height: size, marginRight: 2 }}
+        style={{ marginRight: 2 }}
         onMouseEnter={interactable ? () => { setHoveredRating(startNumber) } : undefined}
       >
         <FaRegStar
-          size={size}
+          className={clsx('size-4.5 md:size-4.5', className)}
           color={emptyColor}
         />
         <div
           className='absolute top-0 left-0 overflow-hidden'
-          style={{ width: `${width}%`, height: size }}
+          style={{ width: `${width}%` }}
         >
           <FaStar
-            size={size}
+            className={clsx('size-4.5 md:size-4.5', className)}
             color={filledColor}
           />
         </div>
@@ -86,7 +84,7 @@ const RatingStars = (props: RatingStarsProps) => {
     <div
       className={clsx(
         className,
-        interactable && 'flex flex-col items-center gap-3'
+        interactable && 'flex flex-col gap-3'
       )}
       {...rest}
     >
@@ -101,7 +99,7 @@ const RatingStars = (props: RatingStarsProps) => {
 
       {interactable && (
         <p
-          className='font-medium opacity-50'
+          className='md:text-md text-sm font-medium opacity-50'
         >
           {ratingMap[effectiveRating as keyof typeof ratingMap] ?? ratingMap[0]}
         </p>

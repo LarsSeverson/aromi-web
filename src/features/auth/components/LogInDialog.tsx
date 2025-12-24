@@ -5,7 +5,6 @@ import DialogBackdrop from '@/components/DialogBackdrop'
 import DialogPopup from '@/components/DialogPopup'
 import InformationLogInStep from './InformationLogInStep'
 import ConfirmSignUpStep from './ConfirmSignUpStep'
-import BackButton from '@/components/BackButton'
 import { useAuthContext } from '../contexts/AuthContext'
 import clsx from 'clsx'
 
@@ -17,7 +16,6 @@ const LogInDialog = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  const showBack = step > 0
   const showInformationStep = step === 0
 
   const handleOnNotConfirmed = (
@@ -48,12 +46,6 @@ const LogInDialog = () => {
             'w-full max-w-96'
           )}
         >
-          {showBack && (
-            <BackButton
-              onClick={handleOnBack}
-            />
-          )}
-
           {showInformationStep
             ? (
               <InformationLogInStep
@@ -65,6 +57,7 @@ const LogInDialog = () => {
                 text={`We sent a code to "${email}".`}
                 email={email}
                 password={password}
+                handleGoBack={handleOnBack}
               />
             )}
         </DialogPopup>

@@ -8,6 +8,7 @@ import { ReviewsSummary } from './ReviewsSummary'
 import { useFragranceReviews } from '../hooks/useFragranceReviews'
 import { useMyFragranceReview } from '../hooks/useMyFragranceReview'
 import { ReviewsList } from './ReviewsList'
+import clsx from 'clsx'
 
 const REVIEWS_PER_PAGE = 4
 
@@ -51,7 +52,10 @@ const FragranceReviewsSection = forwardRef<HTMLDivElement, FragranceReviewsSecti
             className='flex w-full max-w-4xl flex-col'
           >
             <div
-              className='my-10 w-full max-w-3xl self-center'
+              className={clsx(
+                'w-full self-center',
+                'my-6 max-w-full md:my-10 md:max-w-3xl'
+              )}
             >
               <MyFragranceReviewButton
                 fragrance={fragrance}
@@ -61,12 +65,17 @@ const FragranceReviewsSection = forwardRef<HTMLDivElement, FragranceReviewsSecti
 
             <ReviewsSummary
               info={reviewInfo}
-              className='mt-3 w-full max-w-4xl'
+              className={clsx(
+                'w-full max-w-4xl',
+                'mt-1 md:mt-3'
+              )}
             />
 
             <Divider
               horizontal
-              className='my-5'
+              className={clsx(
+                'my-4 md:my-5'
+              )}
             />
 
             <ReviewsList
@@ -76,12 +85,19 @@ const FragranceReviewsSection = forwardRef<HTMLDivElement, FragranceReviewsSecti
               reviewsPerPage={REVIEWS_PER_PAGE}
             />
 
-            <PageNav
-              totalPages={totalPages}
-              curPage={curReviewPage}
-              onPageChange={handleOnPageChange}
-              className='my-2 mr-auto'
-            />
+            <div
+              className={clsx(
+                'flex w-full',
+                'justify-center md:justify-start'
+              )}
+            >
+              <PageNav
+                totalPages={totalPages}
+                curPage={curReviewPage}
+                onPageChange={handleOnPageChange}
+                className='my-4 md:my-2 md:mr-auto'
+              />
+            </div>
           </div>
         </div>
       </PageCategory>
