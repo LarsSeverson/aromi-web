@@ -60,6 +60,7 @@ const UserAvatarInput = (props: UserAvatarInputProps) => {
         className='relative flex w-full flex-col items-center'
       >
         <button
+          type='button'
           onClick={handleOnEdit}
           className='group relative w-50 cursor-pointer overflow-hidden rounded-full border'
         >
@@ -97,6 +98,7 @@ const UserAvatarInput = (props: UserAvatarInputProps) => {
         </div>
 
         <button
+          type='button'
           className='bg-empty text-md cursor-pointer rounded-lg px-4 py-2 font-medium hover:bg-gray-200'
           onClick={handleOnEdit}
         >

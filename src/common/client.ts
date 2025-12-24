@@ -60,7 +60,9 @@ export const client = new ApolloClient({
           collections: customRelayPagination((_, { variables }) => {
             const { fragranceId } = variables ?? {}
             return fragranceId == null ? false : `fragranceId:${fragranceId}`
-          })
+          }),
+          followers: customRelayPagination(),
+          following: customRelayPagination()
         }
       },
 

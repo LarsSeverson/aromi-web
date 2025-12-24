@@ -121,7 +121,7 @@ const SettingsPopover = (props: SettingsPopoverProps) => {
                   className='text-md flex w-full items-center gap-2 rounded-lg p-3 font-medium hover:bg-black/10'
                   onClick={setIsOpen.bind(null, false)}
                 >
-                  Join Our Discord!
+                  Join our Discord!
 
                   <FaDiscord
                     size={20}

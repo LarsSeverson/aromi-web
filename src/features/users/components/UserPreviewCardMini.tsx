@@ -1,7 +1,6 @@
 import type { UserPreviewFragment } from '@/generated/graphql'
 import React from 'react'
 import UserAvatar from './UserAvatar'
-import { formatNumber } from '@/utils/string-utils'
 import { Link } from '@tanstack/react-router'
 import UserRelationshipButton from './UserRelationshipButton'
 import { useFollowUser } from '../hooks/useFollowUser'
@@ -10,11 +9,11 @@ import { useDebounce } from '@/hooks/useDebounce'
 import { useToastMessage } from '@/hooks/useToastMessage'
 import { useMyContext } from '../context/MyContext'
 
-export interface UserPreviewCardProps {
+export interface UserPreviewCardMiniProps {
   user: UserPreviewFragment
 }
 
-const UserPreviewCard = (props: UserPreviewCardProps) => {
+const UserPreviewCardMini = (props: UserPreviewCardMiniProps) => {
   const { user } = props
   const { id, username, relationship } = user
 
@@ -47,15 +46,15 @@ const UserPreviewCard = (props: UserPreviewCardProps) => {
 
   return (
     <div
-      className='group flex rounded-lg pr-5 hover:bg-gray-100'
+      className='group flex w-full rounded-lg pr-2 hover:bg-gray-100'
     >
       <Link
         to='/users/$id'
         params={{ id }}
-        className='flex w-full cursor-pointer gap-2 p-2'
+        className='flex w-full cursor-pointer gap-3 p-2'
       >
         <div
-          className='h-20 w-20'
+          className='h-10 w-10'
         >
           <UserAvatar
             user={user}
@@ -63,18 +62,12 @@ const UserPreviewCard = (props: UserPreviewCardProps) => {
         </div>
 
         <div
-          className='flex flex-col justify-center gap-2'
+          className='flex flex-col justify-center'
         >
           <span
-            className='font-medium'
+            className='text-sm font-medium'
           >
             {username}
-          </span>
-
-          <span
-            className='text-md font-medium text-black/70'
-          >
-            {formatNumber(user.followerCount)}{user.followerCount === 1 ? ' follower' : ' followers'}
           </span>
         </div>
       </Link>
@@ -85,6 +78,7 @@ const UserPreviewCard = (props: UserPreviewCardProps) => {
         <UserRelationshipButton
           isMe={isMe}
           relationship={relationship}
+          className='text-sm'
           onIsFollowingChange={handleOnIsFollowingChange}
         />
       </div>
@@ -92,4 +86,4 @@ const UserPreviewCard = (props: UserPreviewCardProps) => {
   )
 }
 
-export default UserPreviewCard
+export default UserPreviewCardMini

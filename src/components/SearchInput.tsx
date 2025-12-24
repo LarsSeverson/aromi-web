@@ -128,11 +128,11 @@ const SearchInput = (props: SearchInputProps) => {
 
   return (
     <div
-      className='flex w-full'
+      className='flex h-full w-full'
     >
       <ResizeContainer
         onResize={setInputRect}
-        className='relative w-full'
+        className='relative h-full w-full'
       >
         <Input
           {...restInputProps}
@@ -142,7 +142,7 @@ const SearchInput = (props: SearchInputProps) => {
           autoFocus={false}
           className={clsx(
             className,
-            'bg-empty! z-10 w-full rounded-l-3xl border p-2 px-4',
+            'bg-empty! z-10 h-full w-full rounded-l-3xl border p-2 px-4',
             'tracking-normal text-ellipsis whitespace-nowrap',
             showClearButton && 'pe-9'
           )}
@@ -156,7 +156,7 @@ const SearchInput = (props: SearchInputProps) => {
           <button
             type='button'
             className={clsx(
-              'absolute top-1/2 right-0 -translate-y-1/2 p-1.5',
+              'absolute top-1/2 right-0 h-full -translate-y-1/2 p-1.5',
               'cursor-pointer rounded-md hover:bg-gray-200'
             )}
             onClick={handleOnClearButtonClick}

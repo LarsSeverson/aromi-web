@@ -42,10 +42,7 @@ const MainNavBar = (props: MainNavBarProps) => {
           'aspect-square rounded-xl'
         )}
       >
-        <LogoSvg
-          width={22}
-          height={22}
-        />
+        <LogoSvg />
       </Link>
 
       <Link

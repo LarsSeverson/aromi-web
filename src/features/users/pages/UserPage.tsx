@@ -1,18 +1,18 @@
 import React from 'react'
 import { Link, Outlet, useLocation } from '@tanstack/react-router'
 import clsx from 'clsx'
-import { formatNumber } from '@/utils/string-utils'
 import type { UserPreviewFragment } from '@/generated/graphql'
 import Divider from '@/components/Divider'
 import ActiveTabUnderline from '../components/ActiveTabUnderline'
 import UserAvatar from '../components/UserAvatar'
 import { useMyContext } from '../context/MyContext'
 import ShareUserPopover from '../components/ShareUserPopover'
-import UserFollowButton from '../components/UserFollowButton'
+import UserRelationshipButton from '../components/UserRelationshipButton'
 import { useToastMessage } from '@/hooks/useToastMessage'
 import { useFollowUser } from '../hooks/useFollowUser'
 import { useUnfollowUser } from '../hooks/useUnfollowUser'
 import { useDebounce } from '@/hooks/useDebounce'
+import UserRelationshipPopover from '../components/UserRelationshipPopover'
 
 export interface UserPageProps {
   user: UserPreviewFragment
@@ -20,7 +20,7 @@ export interface UserPageProps {
 
 export const UserPage = (props: UserPageProps) => {
   const { user } = props
-  const { id, username, followingCount, followerCount, relationship } = user
+  const { id, username, relationship } = user
 
   const pathname = useLocation({
     select: (location) => location.pathname
@@ -87,7 +87,9 @@ export const UserPage = (props: UserPageProps) => {
           />
         </div>
 
-        <div>
+        <div
+          className=''
+        >
           <h2
             className='text-3xl'
           >
@@ -96,40 +98,26 @@ export const UserPage = (props: UserPageProps) => {
         </div>
 
         <div
-          className='flex flex-row gap-2'
+          className="grid w-full grid-cols-[1fr_auto_1fr] items-center gap-2"
         >
           <div
-            className='flex flex-row gap-1'
+            className="flex justify-end"
           >
-            <p
-              className='font-bold'
-            >
-              {formatNumber(followerCount)}
-            </p>
-
-            <p
-              className='font-medium text-black/60'
-            >
-              {followerCount === 1 ? 'follower' : 'followers'}
-            </p>
+            <UserRelationshipPopover
+              user={user}
+              type="followers"
+            />
           </div>
 
-          <span className='text-black/30'> • </span>
+          <span className="text-black/30"> • </span>
 
           <div
-            className='flex flex-row gap-1'
+            className="text-left"
           >
-            <p
-              className='font-bold'
-            >
-              {formatNumber(followingCount)}
-            </p>
-
-            <p
-              className='font-medium text-black/60'
-            >
-              following
-            </p>
+            <UserRelationshipPopover
+              user={user}
+              type="following"
+            />
           </div>
         </div>
 
@@ -149,7 +137,7 @@ export const UserPage = (props: UserPageProps) => {
           )}
 
           {!isMyProfile && (
-            <UserFollowButton
+            <UserRelationshipButton
               relationship={relationship}
               onIsFollowingChange={handleOnIsFollowingChange}
             />

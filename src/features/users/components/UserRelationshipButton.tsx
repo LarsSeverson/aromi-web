@@ -2,14 +2,15 @@ import AuthButton from '@/features/auth/components/AuthButton'
 import { RelationshipStatus } from '@/generated/graphql'
 import clsx from 'clsx'
 import React from 'react'
+import { RELATIONSHIP_STATUS_IS_FOLLOWING } from '../utils/constants'
 
-export interface UserFollowButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface UserRelationshipButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   isMe?: boolean
   relationship?: RelationshipStatus
   onIsFollowingChange?: (newValue: boolean) => void
 }
 
-const UserFollowButton = (props: UserFollowButtonProps) => {
+const UserRelationshipButton = (props: UserRelationshipButtonProps) => {
   const {
     isMe = false,
     relationship = RelationshipStatus.None,
@@ -17,7 +18,7 @@ const UserFollowButton = (props: UserFollowButtonProps) => {
     className, onClick, ...restButtonProps
   } = props
 
-  const [isFollowing, setIsFollowing] = React.useState(relationship === RelationshipStatus.Following)
+  const [isFollowing, setIsFollowing] = React.useState(RELATIONSHIP_STATUS_IS_FOLLOWING.includes(relationship))
 
   const handleOnClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation()
@@ -49,4 +50,4 @@ const UserFollowButton = (props: UserFollowButtonProps) => {
   )
 }
 
-export default UserFollowButton
+export default UserRelationshipButton

@@ -15,12 +15,12 @@ const AuthDialogHeading = (props: AuthDialogHeadingProps) => {
   return (
     <>
       <div
-        className='absolute right-3 top-3 flex gap-4'
+        className='absolute top-3 right-3 flex gap-4'
       >
         <Dialog.Close
           className={clsx(
-            'flex h-9 aspect-square items-center justify-center select-none rounded-full',
-            'border border-surface2 bg-empty hover:bg-black/10',
+            'flex aspect-square h-9 items-center justify-center rounded-full select-none',
+            'bg-empty border hover:bg-black/10',
             'text-base font-medium',
             'focus-visible:outline-2 focus-visible:-outline-offset-1'
           )}
@@ -32,7 +32,7 @@ const AuthDialogHeading = (props: AuthDialogHeadingProps) => {
       </div>
 
       <div
-        className='gap-4 flex flex-col justify-center items-center mt-3'
+        className='mt-3 flex flex-col items-center justify-center gap-4'
       >
         <LogoSvg
           width={48}
@@ -40,7 +40,7 @@ const AuthDialogHeading = (props: AuthDialogHeadingProps) => {
         />
 
         <h1
-          className='text-3xl text-center font-jp'
+          className='font-jp text-center text-3xl'
         >
           Welcome to aromi
         </h1>

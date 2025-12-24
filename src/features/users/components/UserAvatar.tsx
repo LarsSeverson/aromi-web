@@ -11,7 +11,8 @@ const UserAvatar = (props: UserAvatarProps) => {
   const { user } = props
   const { avatar } = user ?? {}
 
-  const [showAvatar, setShowAvatar] = useState(avatar?.url != null)
+  const [isInError, setIsInError] = useState(false)
+  const showAvatar = !isInError && avatar?.url != null
 
   return (
     <div
@@ -22,7 +23,7 @@ const UserAvatar = (props: UserAvatarProps) => {
           <img
             src={avatar?.url ?? undefined}
             alt={`Avatar of ${user?.username ?? 'Unknown user'}`}
-            onError={setShowAvatar.bind(null, false)}
+            onError={setIsInError.bind(null, true)}
           />
         )
         : (
