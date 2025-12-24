@@ -3,6 +3,7 @@
 import type { Identifiable } from '@/utils/util'
 import { useWindowVirtualizer } from '@tanstack/react-virtual'
 import React, { useEffect, useLayoutEffect } from 'react'
+import { isMobile } from 'react-device-detect'
 
 export interface DynamicListProps<T extends Identifiable> extends React.HTMLAttributes<HTMLDivElement> {
   items: T[]
@@ -31,7 +32,7 @@ export const DynamicList = <T extends Identifiable, >(props: DynamicListProps<T>
     maxWidth = 400,
     itemHeight = 392,
     gap = 15,
-    scale = 0.9,
+    scale = isMobile ? 0.5 : 0.9,
     onEndReachedThreshold = 1000,
     initialScrollOffset = 0,
     onRenderItem,

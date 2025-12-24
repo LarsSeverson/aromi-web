@@ -1,9 +1,14 @@
+import { useAuthContext } from '@/features/auth'
+import { useToastMessage } from '@/hooks/useToastMessage'
 import { Popover } from '@base-ui-components/react'
 import { Link } from '@tanstack/react-router'
 import clsx from 'clsx'
 import React from 'react'
 import { CgClose } from 'react-icons/cg'
-import { FaCog } from 'react-icons/fa'
+import { FaCog, FaDiscord } from 'react-icons/fa'
+import { HiOutlineLogout } from 'react-icons/hi'
+import Spinner from './Spinner'
+import { DISCORD_INVITE_URL } from '@/utils/constants'
 
 export interface SettingsPopoverProps {
   isActive?: boolean
@@ -12,7 +17,32 @@ export interface SettingsPopoverProps {
 const SettingsPopover = (props: SettingsPopoverProps) => {
   const { isActive = false } = props
 
+  const { isAuthenticated, logOut } = useAuthContext()
+  const { toastApolloError } = useToastMessage()
+
+  const [isLoading, setIsLoading] = React.useState(false)
   const [isOpen, setIsOpen] = React.useState(false)
+
+  const handleLogOut = async () => {
+    if (isLoading) return
+
+    setIsLoading(true)
+
+    await logOut()
+      .match(
+        () => {
+          window.location.reload()
+        },
+        toastApolloError
+      )
+
+    setIsLoading(false)
+  }
+
+  const handleOnItemClick = (e: React.SyntheticEvent) => {
+    e.preventDefault()
+    handleLogOut()
+  }
 
   return (
     <Popover.Root
@@ -61,7 +91,6 @@ const SettingsPopover = (props: SettingsPopoverProps) => {
             <div
               className='w-full'
             >
-
               <div
                 className='text-md p-3 text-black/80'
               >
@@ -85,6 +114,21 @@ const SettingsPopover = (props: SettingsPopoverProps) => {
                   Support
                 </div>
 
+                <a
+                  href={DISCORD_INVITE_URL}
+                  target='_blank'
+                  rel='noreferrer'
+                  className='text-md flex w-full items-center gap-2 rounded-lg p-3 font-medium hover:bg-black/10'
+                  onClick={setIsOpen.bind(null, false)}
+                >
+                  Join Our Discord!
+
+                  <FaDiscord
+                    size={20}
+                    className='text-[#5865F2]'
+                  />
+                </a>
+
                 <Link
                   to='/auth/account-recovery'
                   className='text-md block w-full rounded-lg p-3 font-medium hover:bg-black/10'
@@ -100,6 +144,44 @@ const SettingsPopover = (props: SettingsPopoverProps) => {
                 >
                   Privacy Policy
                 </Link>
+
+                {isAuthenticated && (
+                  <button
+                    disabled={isLoading}
+                    onClick={handleOnItemClick}
+                    className={clsx(
+                      'mt-5 w-full rounded-lg',
+                      'cursor-pointer outline-none select-none',
+                      'relative flex items-center p-3 text-sm leading-4',
+                      'data-highlighted:z-0 ',
+                      'data-highlighted:before:absolute data-highlighted:before:content-[""]',
+                      'data-highlighted:before:inset-x-1 data-highlighted:before:inset-y-0',
+                      'data-highlighted:before:z-[-1] data-highlighted:before:rounded',
+                      'data-highlighted:before:bg-empty cursor-pointer hover:bg-black/10 hover:text-red-700'
+                    )}
+                  >
+                    <HiOutlineLogout
+                      size={18}
+                      className='mr-1'
+                    />
+
+                    <span
+                      className='leading-none'
+                    >
+                      Log out
+                    </span>
+
+                    {isLoading && (
+                      <div
+                        className='absolute right-8'
+                      >
+                        <Spinner
+                          size={3}
+                        />
+                      </div>
+                    )}
+                  </button>
+                )}
               </div>
             </div>
           </Popover.Popup>

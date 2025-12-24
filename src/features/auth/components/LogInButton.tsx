@@ -6,11 +6,11 @@ const LogInButton = () => {
   return (
     <Dialog.Trigger
       className={clsx(
-        'h-[33px] select-none inline-flex items-center align-middle px-3.5',
+        'inline-flex h-8.25 items-center px-3.5 align-middle select-none',
         'rounded-md bg-black/10',
-        'text-sm font-medium leading-none',
-        'hover:backdrop-brightness-95 cursor-pointer',
-        'focus-visible:outline-2 focus-visible:-outline-offset-1'
+        'text-sm leading-none font-medium',
+        'cursor-pointer hover:backdrop-brightness-95',
+        'text-nowrap focus-visible:outline-2 focus-visible:-outline-offset-1'
       )}
     >
       Log In

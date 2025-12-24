@@ -6,11 +6,11 @@ const SignUpButton = () => {
   return (
     <Dialog.Trigger
       className={clsx(
-        'flex h-[33px] items-center justify-center px-3.5 select-none align-middle',
+        'flex h-8.25 items-center justify-center px-3.5 align-middle select-none',
         'rounded-md text-white',
-        'text-sm font-medium leading-none',
+        'text-sm leading-none font-medium',
         'bg-sinopia cursor-pointer hover:brightness-105',
-        'focus-visible:outline-2 focus-visible:-outline-offset-1'
+        'text-nowrap focus-visible:outline-2 focus-visible:-outline-offset-1'
       )}
     >
       Sign Up

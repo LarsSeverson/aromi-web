@@ -7,6 +7,7 @@ import InformationLogInStep from './InformationLogInStep'
 import ConfirmSignUpStep from './ConfirmSignUpStep'
 import BackButton from '@/components/BackButton'
 import { useAuthContext } from '../contexts/AuthContext'
+import clsx from 'clsx'
 
 const LogInDialog = () => {
   const { dialogs } = useAuthContext()
@@ -43,7 +44,9 @@ const LogInDialog = () => {
         <DialogBackdrop />
 
         <DialogPopup
-          className='max-w-96 min-w-96'
+          className={clsx(
+            'w-full max-w-96'
+          )}
         >
           {showBack && (
             <BackButton

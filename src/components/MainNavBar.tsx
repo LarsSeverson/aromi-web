@@ -10,7 +10,13 @@ import { NAV_HOME, NAV_PROFILE } from '@/common/nav'
 import { useMyContext } from '@/features/users'
 import SettingsPopover from './SettingsPopover'
 
-const SideBar = () => {
+export interface MainNavBarProps {
+  className?: string
+}
+
+const MainNavBar = (props: MainNavBarProps) => {
+  const { className } = props
+
   const router = useRouter()
   const matches = useRouterState({ select: state => state.matches })
   const currentPath = matches[matches.length - 1]?.routeId
@@ -24,7 +30,10 @@ const SideBar = () => {
 
   return (
     <nav
-      className='relative z-50 flex h-full flex-col gap-7 border-r p-3'
+      className={clsx(
+        className,
+        'relative z-50 flex h-full flex-col gap-7 border-r p-3'
+      )}
     >
       <Link
         to='/'
@@ -91,4 +100,4 @@ const SideBar = () => {
   )
 }
 
-export default SideBar
+export default MainNavBar

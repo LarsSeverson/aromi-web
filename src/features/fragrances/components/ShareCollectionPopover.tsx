@@ -104,7 +104,7 @@ const ShareCollectionPopover = (props: ShareCollectionPopoverProps) => {
                 className='flex'
               >
                 <div
-                  className='flex min-w-[70px] flex-col items-center gap-2 pt-1'
+                  className='flex min-w-17.5 flex-col items-center gap-2 pt-1'
                 >
                   <BouncyButton
                     className='bg-empty hover:brightness-95'

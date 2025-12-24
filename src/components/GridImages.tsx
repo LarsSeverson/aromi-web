@@ -24,8 +24,8 @@ const GridImages = (props: GridImagesProps) => {
   return (
     <div
       className={clsx(
-        'relative grid overflow-hidden rounded-2xl bg-white group-hover:brightness-[.85]',
         className,
+        'relative grid overflow-hidden rounded-2xl bg-white group-hover:brightness-[.85]',
         itemsShown.length === 1 && 'grid-cols-1 grid-rows-1',
         itemsShown.length !== 1 && 'grid-cols-2 grid-rows-2'
       )}

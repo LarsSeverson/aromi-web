@@ -22,20 +22,21 @@ export const UserPage = (props: UserPageProps) => {
   const { user } = props
   const { id, username, followingCount, followerCount, relationship } = user
 
-  const pathname = useLocation({ select: (location) => location.pathname })
+  const pathname = useLocation({
+    select: (location) => location.pathname
+  })
 
   const { me } = useMyContext()
-
   const { toastError } = useToastMessage()
-
   const { follow } = useFollowUser()
   const { unfollow } = useUnfollowUser()
 
   const handleOnRelationshipChange = useDebounce(
     async (newValue: boolean) => {
       const fn = newValue ? follow : unfollow
-
-      const res = await fn({ userId: id })
+      const res = await fn({
+        userId: id
+      })
 
       if (res.isErr()) {
         toastError('')
@@ -54,11 +55,15 @@ export const UserPage = (props: UserPageProps) => {
 
   return (
     <div
-      className='flex min-w-fit flex-col items-center justify-center'
+      className={clsx(
+        'flex min-w-fit flex-col items-center justify-center'
+      )}
     >
-
       <div
-        className='flex w-full max-w-2xl self-center'
+        className={clsx(
+          'flex w-full max-w-2xl self-center px-3',
+          'lg:px-0'
+        )}
       >
         <div
           className='mb-1 ml-auto'
@@ -70,7 +75,9 @@ export const UserPage = (props: UserPageProps) => {
       </div>
 
       <div
-        className='flex w-full max-w-3xl flex-col items-center justify-center gap-5'
+        className={clsx(
+          'flex w-full max-w-3xl flex-col items-center justify-center gap-5'
+        )}
       >
         <div
           className='flex aspect-square w-28 flex-col'
@@ -101,13 +108,13 @@ export const UserPage = (props: UserPageProps) => {
             </p>
 
             <p
-              className='font-medium text-gray-700'
+              className='font-medium text-black/60'
             >
               {followerCount === 1 ? 'follower' : 'followers'}
             </p>
           </div>
 
-          <span> • </span>
+          <span className='text-black/30'> • </span>
 
           <div
             className='flex flex-row gap-1'
@@ -119,7 +126,7 @@ export const UserPage = (props: UserPageProps) => {
             </p>
 
             <p
-              className='font-medium text-gray-700'
+              className='font-medium text-black/60'
             >
               following
             </p>
@@ -132,7 +139,10 @@ export const UserPage = (props: UserPageProps) => {
           {isMyProfile && (
             <Link
               to='/settings/profile'
-              className='bg-empty text-md cursor-pointer rounded-lg px-4 py-2 font-medium hover:bg-gray-200'
+              className={clsx(
+                'bg-empty text-md cursor-pointer rounded-lg px-4 py-2 font-medium',
+                'hover:bg-gray-200'
+              )}
             >
               Edit profile
             </Link>
@@ -151,7 +161,9 @@ export const UserPage = (props: UserPageProps) => {
         className='flex w-full flex-col'
       >
         <div
-          className='mt-4 flex w-full max-w-2xl flex-col items-center justify-center self-center'
+          className={clsx(
+            'mt-4 flex w-full max-w-2xl flex-col items-center justify-center self-center'
+          )}
         >
           <Divider
             horizontal
@@ -163,7 +175,9 @@ export const UserPage = (props: UserPageProps) => {
           className='w-full'
         >
           <nav
-            className='sticky top-16 z-20 flex w-full items-center justify-center bg-white pb-1'
+            className={clsx(
+              'sticky top-16 z-20 flex w-full items-center justify-center bg-white pb-1'
+            )}
           >
             <div
               className='flex w-full max-w-md min-w-fit'
@@ -172,7 +186,8 @@ export const UserPage = (props: UserPageProps) => {
                 from='/users/$id'
                 to='/users/$id'
                 className={clsx(
-                  'hover:bg-empty relative flex flex-1 flex-col py-2.5 text-center font-medium focus:outline-none'
+                  'relative flex flex-1 flex-col py-2.5 text-center font-medium focus:outline-none',
+                  'hover:bg-empty'
                 )}
               >
                 Collections
@@ -183,7 +198,8 @@ export const UserPage = (props: UserPageProps) => {
                 from='/users/$id'
                 to='likes'
                 className={clsx(
-                  'hover:bg-empty relative flex flex-1 flex-col py-2.5 text-center font-medium focus:outline-none'
+                  'relative flex flex-1 flex-col py-2.5 text-center font-medium focus:outline-none',
+                  'hover:bg-empty'
                 )}
               >
                 Likes
@@ -194,7 +210,8 @@ export const UserPage = (props: UserPageProps) => {
                 from='/users/$id'
                 to='reviews'
                 className={clsx(
-                  'hover:bg-empty relative flex flex-1 flex-col py-2.5 text-center font-medium focus:outline-none'
+                  'relative flex flex-1 flex-col py-2.5 text-center font-medium focus:outline-none',
+                  'hover:bg-empty'
                 )}
               >
                 Reviews
