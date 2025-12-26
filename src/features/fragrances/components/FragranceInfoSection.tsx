@@ -94,7 +94,7 @@ const FragranceInfoSection = (props: FragranceInfoSectionProps) => {
 
       <h2
         className={clsx(
-          'text-lg md:text-xl'
+          'text-md md:text-xl'
         )}
       >
         {brand.name}

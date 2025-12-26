@@ -47,19 +47,19 @@ const PageCategory = (props: PageCategoryProps) => {
           className='mt-10 w-full text-center'
         >
           <h2
-            className='text-lg font-semibold'
+            className='text-md font-semibold md:text-lg'
           >
             {emptyTitle}
           </h2>
 
           <h5
-            className='text-md mt-2 mb-5 font-medium opacity-80'
+            className='md:text-md mt-2 mb-5 text-sm font-medium opacity-80'
           >
             {emptyBody}
           </h5>
 
           <button
-            className='text-md w-2/3 max-w-xs cursor-pointer rounded-lg border bg-white px-11 py-3 font-medium hover:brightness-95'
+            className='md:text-md w-2/3 max-w-xs cursor-pointer rounded-lg border bg-white px-11 py-3 text-sm font-medium hover:brightness-95'
             onClick={onEmptyButtonClick}
           >
             {emptyButtonText}

@@ -10,7 +10,7 @@ import SeasonSvg from '../components/SeasonSvg'
 
 export const getTraitIcon = (traitType: TraitTypeEnum) => {
   const iconProps = {
-    className: 'size-7 md:size-auto'
+    className: 'size-6 md:size-auto'
   }
 
   switch (traitType) {
@@ -18,8 +18,6 @@ export const getTraitIcon = (traitType: TraitTypeEnum) => {
       return (
         <GenderSvg
           {...iconProps}
-          width={30}
-          height={30}
         />
       )
 
@@ -27,24 +25,22 @@ export const getTraitIcon = (traitType: TraitTypeEnum) => {
       return (
         <TimeSvg
           {...iconProps}
-          width={28}
-          height={28}
         />
       )
 
     case TraitTypeEnum.Season:
       return (
-        <div className="size-8 md:size-auto">
-          <SeasonSvg />
-        </div>
+        <SeasonSvg
+          {...iconProps}
+          className='size-6 md:size-8'
+        />
       )
 
     case TraitTypeEnum.Longevity:
       return (
         <LongevitySvg
           {...iconProps}
-          width={23}
-          height={23}
+          className='size-5 md:size-7'
         />
       )
 
@@ -52,8 +48,6 @@ export const getTraitIcon = (traitType: TraitTypeEnum) => {
       return (
         <ProjectionSvg
           {...iconProps}
-          width={25}
-          height={25}
         />
       )
 
@@ -61,8 +55,7 @@ export const getTraitIcon = (traitType: TraitTypeEnum) => {
       return (
         <BalanceSvg
           {...iconProps}
-          width={22}
-          height={22}
+          className='size-5 md:size-7'
         />
       )
 
@@ -70,8 +63,7 @@ export const getTraitIcon = (traitType: TraitTypeEnum) => {
       return (
         <ComplexitySvg
           {...iconProps}
-          width={23}
-          height={23}
+          className='size-5 md:size-7'
         />
       )
 
@@ -79,8 +71,7 @@ export const getTraitIcon = (traitType: TraitTypeEnum) => {
       return (
         <AppealSvg
           {...iconProps}
-          width={24}
-          height={24}
+          className='size-5 md:size-7'
         />
       )
   }

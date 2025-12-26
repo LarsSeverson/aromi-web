@@ -30,7 +30,7 @@ const TraitBuckets = (props: TraitBucketsProps) => {
 
         {showLabel && (
           <span
-            className='md:text-md text-sm font-semibold'
+            className='md:text-md text-xs font-semibold'
           >
             {name}
           </span>
