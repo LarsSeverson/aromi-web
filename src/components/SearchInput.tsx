@@ -170,7 +170,7 @@ const SearchInput = (props: SearchInputProps) => {
 
       <button
         className={clsx(
-          'bg-empty flex items-center justify-center rounded-r-3xl p-2 px-5',
+          'bg-empty flex h-full items-center justify-center overflow-hidden rounded-r-3xl p-2 px-5',
           'cursor-pointer hover:bg-gray-200',
           showClearButton && 'border-l border-gray-200'
         )}

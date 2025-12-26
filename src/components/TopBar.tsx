@@ -76,7 +76,7 @@ const TopBar = (props: TopBarProps) => {
       </div>
 
       <BrowserView
-        className='flex-2'
+        className='flex flex-2'
       >
         <TopBarSearch />
       </BrowserView>

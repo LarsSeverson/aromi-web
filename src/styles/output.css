@@ -12,6 +12,7 @@
       "Courier New", monospace;
     --color-red-200: oklch(88.5% 0.062 18.334);
     --color-red-400: oklch(70.4% 0.191 22.216);
+    --color-red-500: oklch(63.7% 0.237 25.331);
     --color-red-600: oklch(57.7% 0.245 27.325);
     --color-red-700: oklch(50.5% 0.213 27.518);
     --color-red-800: oklch(44.4% 0.177 26.899);
@@ -580,10 +581,6 @@
   .aspect-square {
     aspect-ratio: 1 / 1;
   }
-  .size-3 {
-    width: calc(var(--spacing) * 3);
-    height: calc(var(--spacing) * 3);
-  }
   .size-4 {
     width: calc(var(--spacing) * 4);
     height: calc(var(--spacing) * 4);
@@ -599,14 +596,6 @@
   .size-6 {
     width: calc(var(--spacing) * 6);
     height: calc(var(--spacing) * 6);
-  }
-  .size-7 {
-    width: calc(var(--spacing) * 7);
-    height: calc(var(--spacing) * 7);
-  }
-  .size-8 {
-    width: calc(var(--spacing) * 8);
-    height: calc(var(--spacing) * 8);
   }
   .size-10 {
     width: calc(var(--spacing) * 10);
@@ -994,6 +983,9 @@
   .items-start {
     align-items: flex-start;
   }
+  .items-stretch {
+    align-items: stretch;
+  }
   .justify-between {
     justify-content: space-between;
   }
@@ -1192,8 +1184,14 @@
   .border-gray-300 {
     border-color: var(--color-gray-300);
   }
+  .border-red-200 {
+    border-color: var(--color-red-200);
+  }
   .border-red-400 {
     border-color: var(--color-red-400);
+  }
+  .border-red-500 {
+    border-color: var(--color-red-500);
   }
   .border-red-950 {
     border-color: var(--color-red-950);
@@ -3025,12 +3023,6 @@
       height: calc(var(--spacing) * 4.5);
     }
   }
-  .md\:size-6 {
-    @media (width >= 48rem) {
-      width: calc(var(--spacing) * 6);
-      height: calc(var(--spacing) * 6);
-    }
-  }
   .md\:size-6\.5 {
     @media (width >= 48rem) {
       width: calc(var(--spacing) * 6.5);
@@ -3053,12 +3045,6 @@
     @media (width >= 48rem) {
       width: calc(var(--spacing) * 8);
       height: calc(var(--spacing) * 8);
-    }
-  }
-  .md\:size-12 {
-    @media (width >= 48rem) {
-      width: calc(var(--spacing) * 12);
-      height: calc(var(--spacing) * 12);
     }
   }
   .md\:size-16 {
