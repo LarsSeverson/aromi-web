@@ -60,3 +60,10 @@ export const VOTE_TYPES = {
 export type VoteType = typeof VOTE_TYPES[keyof typeof VOTE_TYPES]
 
 export type VoidFn = () => void
+
+export interface SearchItem {
+  id?: string
+  term: string
+  subtext?: string
+  type: 'history' | 'suggestion' | 'custom'
+}

@@ -3,16 +3,16 @@ import { Link } from '@tanstack/react-router'
 import { FaPen } from 'react-icons/fa6'
 import GridImages from '@/components/GridImages'
 import clsx from 'clsx'
-import type { FragranceCollectionPreviewFragment } from '@/generated/graphql'
+import type { AllFragranceCollectionFragment } from '@/generated/graphql'
 import { useMyContext } from '@/features/users'
 
 export interface CollectionPreviewCardProps {
-  collection: FragranceCollectionPreviewFragment
+  collection: AllFragranceCollectionFragment
 }
 
 export const CollectionPreviewCard = (props: CollectionPreviewCardProps) => {
   const { collection } = props
-  const { id, name, previewItems, user } = collection
+  const { id, name, previewItems, user, info } = collection
 
   const { me } = useMyContext()
 
@@ -53,11 +53,11 @@ export const CollectionPreviewCard = (props: CollectionPreviewCardProps) => {
           {name}
         </h4>
 
-        {/* <p
+        <p
           className='mt-1 text-xs font-normal'
         >
-          {items.length} {items.length === 1 ? 'Fragrance' : 'Fragrances'}
-        </p> */}
+          {info.itemCount} {info.itemCount === 1 ? 'Fragrance' : 'Fragrances'}
+        </p>
       </div>
     </Link>
   )

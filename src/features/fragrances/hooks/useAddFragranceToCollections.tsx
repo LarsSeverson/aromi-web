@@ -56,6 +56,7 @@ export const useAddFragranceToCollections = () => {
               edges: [newEdge, ...oldEdges]
             }
           },
+
           previewItems: (existing = [], { readField }) => {
             const fragments = existing as Array<typeof newItem>
 
@@ -63,6 +64,15 @@ export const useAddFragranceToCollections = () => {
             if (alreadyExists) return fragments
 
             return [newItemRef, ...fragments].slice(0, 4)
+          },
+
+          info: (existing = { itemCount: 0 }) => {
+            const typed = existing as { itemCount: number }
+
+            return {
+              ...typed,
+              itemCount: typed.itemCount + 1
+            }
           }
         }
       })

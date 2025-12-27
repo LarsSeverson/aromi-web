@@ -1,13 +1,60 @@
 import { useMutation } from '@apollo/client/react'
 import { VOTE_ON_FRAGRANCE_MUTATION } from '../graphql/mutations'
-import type { AllVoteInfoFragment, FragranceVoteInfoFragment, VoteOnFragranceInput, VoteOnFragranceMutation } from '@/generated/graphql'
-import { type Nullable, wrapQuery } from '@/utils/util'
+import type { AllVoteInfoFragment, FragrancePreviewFragment, FragranceVoteInfoFragment, VoteOnFragranceInput, VoteOnFragranceMutation } from '@/generated/graphql'
+import { type Nullable, VOTE_TYPES, wrapQuery } from '@/utils/util'
 import type { ApolloCache } from '@apollo/client'
 import { client } from '@/common/client'
 import { FRAGRANCE_VOTE_INFO_FRAGMENT } from '../graphql/fragments'
+import { useMyContext } from '@/features/users'
+import type { NodeWithEdges } from '@/utils/pagination'
 
 export const useVoteOnFragrance = () => {
   const [voteInner] = useMutation(VOTE_ON_FRAGRANCE_MUTATION)
+
+  const { me } = useMyContext()
+
+  const updateUserLikes = (
+    cache: ApolloCache,
+    fragranceCacheId: string,
+    vote: number
+  ) => {
+    if (me == null) return
+
+    const userCacheId = cache.identify(me)
+
+    cache.modify({
+      id: userCacheId,
+      fields: {
+        likes: (existing = {}) => {
+          const typed = existing as NodeWithEdges<FragrancePreviewFragment>
+          if (typed == null) return typed
+
+          const isUpvote = vote === VOTE_TYPES.UPVOTE
+          const edges = typed.edges ?? []
+          const exists = edges.some(edge => cache.identify(edge.node) === fragranceCacheId)
+
+          if (isUpvote && !exists) {
+            const newEdge = {
+              __typename: 'FragranceEdge',
+              node: { __ref: fragranceCacheId },
+              cursor: ''
+            }
+
+            return { ...typed, edges: [newEdge, ...edges] }
+          }
+
+          if (!isUpvote && exists) {
+            return {
+              ...typed,
+              edges: edges.filter(edge => cache.identify(edge.node) !== fragranceCacheId)
+            }
+          }
+
+          return typed
+        }
+      }
+    })
+  }
 
   const handleUpdateCache = (
     cache: ApolloCache,
@@ -21,6 +68,7 @@ export const useVoteOnFragrance = () => {
     const { vote, fragranceId } = input
 
     const cachedFragranceId = cache.identify({ __typename: 'Fragrance', id: fragranceId })
+    if (cachedFragranceId == null) return
 
     cache.modify({
       id: cachedFragranceId,
@@ -54,6 +102,8 @@ export const useVoteOnFragrance = () => {
         }
       }
     })
+
+    updateUserLikes(cache, cachedFragranceId, vote)
   }
 
   const vote = (input: VoteOnFragranceInput) => {

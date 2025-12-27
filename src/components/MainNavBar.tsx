@@ -28,6 +28,15 @@ const MainNavBar = (props: MainNavBarProps) => {
 
   const isOnMyProfile = matchedUserId != null && matchedUserId === me?.id
 
+  const handleLogoClick = () => {
+    if (window.location.pathname === '/') {
+      window.scrollTo({
+        top: 0,
+        behavior: 'auto'
+      })
+    }
+  }
+
   return (
     <nav
       className={clsx(
@@ -38,9 +47,10 @@ const MainNavBar = (props: MainNavBarProps) => {
       <Link
         to='/'
         className={clsx(
-          'relative flex items-center justify-center p-3 backdrop-brightness-100 transition-transform select-none hover:backdrop-brightness-90 active:scale-95',
+          'relative flex items-center justify-center p-2 backdrop-brightness-100 transition-transform select-none hover:backdrop-brightness-90 active:scale-95',
           'aspect-square rounded-xl'
         )}
+        onClick={handleLogoClick}
       >
         <LogoSvg />
       </Link>

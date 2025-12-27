@@ -42,9 +42,19 @@ export const useRemoveFragranceFromCollections = () => {
               edges: newEdges
             }
           },
+
           previewItems: (existing = [], { readField }) => {
             const fragments = existing as Array<typeof removedItem>
             return fragments.filter(ref => readField('id', ref) !== removedItem.id)
+          },
+
+          info: (existing = { itemCount: 0 }) => {
+            const typed = existing as { itemCount: number }
+
+            return {
+              ...typed,
+              itemCount: Math.max(0, typed.itemCount - 1)
+            }
           }
         }
       })

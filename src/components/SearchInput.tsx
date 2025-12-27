@@ -6,13 +6,13 @@ import { FiSearch } from 'react-icons/fi'
 import { IoClose } from 'react-icons/io5'
 import SearchPopoverList from './SearchPopoverList'
 import { ResizeContainer } from './ResizeContainer'
-import type { SearchItem } from './SearchPopoverListItem'
 import { ValidSearchTerm } from '@/utils/validation'
+import type { SearchItem } from '@/utils/util'
 
 export interface SearchInputProps extends Input.Props {
   items?: SearchItem[]
-  onSearch?: (term: string, method: 'suggested' | 'custom') => void
-  onClearOneHistory?: (term: string) => void
+  onSearch?: (item: SearchItem) => void
+  onClearOneHistory?: (item: SearchItem) => void
 }
 
 const SearchInput = (props: SearchInputProps) => {
@@ -42,6 +42,8 @@ const SearchInput = (props: SearchInputProps) => {
   const [inputRect, setInputRect] = React.useState(new DOMRect())
   const [isFocused, setIsFocused] = React.useState(false)
   const [isPopoverOpen, setIsPopoverOpen] = React.useState(false)
+  const [activeIndex, setActiveIndex] = React.useState(-1)
+  const [isClearFocused, setIsClearFocused] = React.useState(false)
 
   const filteredItems = useMemo(
     () => currentTerm.length === 0
@@ -53,23 +55,89 @@ const SearchInput = (props: SearchInputProps) => {
   const showClearButton = currentTerm.length > 0
   const showPopoverContent = filteredItems.length > 0
 
-  const handleOnKeyDown = (event: Parameters<NonNullable<Input.Props['onKeyDown']>>[0]) => {
-    if (event.key === 'Enter') {
-      const target = event.target as HTMLInputElement
-      const searchTerm = target.value
+  React.useEffect(
+    () => {
+      setActiveIndex(-1)
+    },
+    [filteredItems, isPopoverOpen]
+  )
 
-      const parsed = ValidSearchTerm.safeParse(searchTerm)
+  const handleManualSearch = (term: string) => {
+    const parsed = ValidSearchTerm.safeParse(term)
+    if (!parsed.success) return
 
-      if (!parsed.success) {
-        return
-      }
-
-      onSearch?.(searchTerm, 'custom')
-      setIsPopoverOpen(false)
-      inputRef.current?.blur()
+    const item: SearchItem = {
+      term,
+      type: 'custom'
     }
 
+    setIsPopoverOpen(false)
+    inputRef.current?.blur()
+
+    onSearch?.(item)
+  }
+
+  const handleOnItemSelect = (item: SearchItem) => {
+    setCurrentTerm(item.term)
+    setIsPopoverOpen(false)
+    inputRef.current?.blur()
+
+    onSearch?.(item)
+  }
+
+  const handleOnKeyDown = (event: Parameters<NonNullable<Input.Props['onKeyDown']>>[0]) => {
     onKeyDown?.(event)
+
+    if (event.key === 'Enter') {
+      event.preventDefault()
+
+      const selectedItem = (isPopoverOpen && activeIndex >= 0)
+        ? filteredItems[activeIndex]
+        : null
+
+      if (selectedItem == null) {
+        handleManualSearch(currentTerm)
+      } else if (isClearFocused) {
+        onClearOneHistory?.(selectedItem)
+      } else {
+        handleOnItemSelect(selectedItem)
+      }
+
+      return
+    }
+
+    if (!isPopoverOpen || !showPopoverContent) return
+
+    const actions: Record<string, () => void> = {
+      ArrowDown: () => {
+        setIsClearFocused(false)
+        setActiveIndex(prev => Math.min(prev + 1, filteredItems.length - 1))
+      },
+
+      ArrowUp: () => {
+        setIsClearFocused(false)
+        setActiveIndex(prev => Math.max(prev - 1, 0))
+      },
+
+      ArrowRight: () => {
+        if (activeIndex >= 0 && filteredItems[activeIndex].type === 'history') {
+          setIsClearFocused(true)
+        }
+      },
+
+      ArrowLeft: () => {
+        setIsClearFocused(false)
+      },
+
+      Escape: () => {
+        setIsPopoverOpen(false)
+      }
+    }
+
+    if (actions[event.key] != null) {
+      event.preventDefault()
+      actions[event.key]()
+    }
   }
 
   const handleOnFocus = (event: React.SyntheticEvent) => {
@@ -80,12 +148,15 @@ const SearchInput = (props: SearchInputProps) => {
     setIsPopoverOpen(true)
   }
 
-  const handleOnBlur = (event: React.SyntheticEvent) => {
+  const handleOnBlur = (event: React.FocusEvent) => {
     event.preventDefault()
     event.stopPropagation()
 
     setIsFocused(false)
-    setIsPopoverOpen(false)
+
+    if (!event.currentTarget.contains(event.relatedTarget as Node)) {
+      setIsPopoverOpen(false)
+    }
   }
 
   const handleOnValueChange: FieldControlProps['onValueChange'] = (value, details) => {
@@ -96,14 +167,7 @@ const SearchInput = (props: SearchInputProps) => {
   }
 
   const handleOnSearchButtonClick = () => {
-    const parsed = ValidSearchTerm.safeParse(currentTerm)
-
-    if (!parsed.success) {
-      inputRef.current?.focus()
-      return
-    }
-
-    onSearch?.(currentTerm, 'custom')
+    handleManualSearch(currentTerm)
   }
 
   const handleOnClearButtonClick = (event: React.SyntheticEvent) => {
@@ -116,14 +180,6 @@ const SearchInput = (props: SearchInputProps) => {
 
   const handleOnPopoverOpenChange = (open: boolean) => {
     setIsPopoverOpen(isFocused || open)
-  }
-
-  const handleOnItemSelect = (item: SearchItem) => {
-    setCurrentTerm(item.term)
-    setIsPopoverOpen(false)
-
-    onSearch?.(item.term, 'suggested')
-    inputRef.current?.blur()
   }
 
   return (
@@ -144,7 +200,7 @@ const SearchInput = (props: SearchInputProps) => {
             className,
             'bg-empty! z-10 h-full w-full rounded-l-3xl border p-2 px-4',
             'tracking-normal text-ellipsis whitespace-nowrap',
-            showClearButton && 'pe-9'
+            showClearButton && 'pe-10'
           )}
           onFocus={handleOnFocus}
           onBlur={handleOnBlur}
@@ -156,7 +212,7 @@ const SearchInput = (props: SearchInputProps) => {
           <button
             type='button'
             className={clsx(
-              'absolute top-1/2 right-0 h-full -translate-y-1/2 p-1.5',
+              'absolute top-1/2 right-1 -translate-y-1/2 p-1.5',
               'cursor-pointer rounded-md hover:bg-gray-200'
             )}
             onClick={handleOnClearButtonClick}
@@ -207,6 +263,8 @@ const SearchInput = (props: SearchInputProps) => {
             >
               <SearchPopoverList
                 items={filteredItems}
+                activeIndex={activeIndex}
+                isClearFocused={isClearFocused}
                 onItemSelect={handleOnItemSelect}
                 onClearOneHistory={onClearOneHistory}
               />

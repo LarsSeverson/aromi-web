@@ -1,6 +1,7 @@
 import type { AllAccordFragment, AllFragranceAccordFragment } from '@/generated/graphql'
 import { Colors } from '@/styles/Colors'
 import React from 'react'
+import { FaMinus } from 'react-icons/fa'
 
 export interface VotedAccordsListItemProps extends React.HTMLAttributes<HTMLButtonElement> {
   accord: AllAccordFragment
@@ -14,21 +15,29 @@ const VotedAccordsListItem = (props: VotedAccordsListItemProps) => {
   return (
     <button
       {...rest}
-      className='group cursor-pointer flex flex-col items-start focus:outline-none'
+      className='group relative flex cursor-pointer flex-col items-start focus:outline-none'
     >
       <div
-        className='p-0.5 group-hover:outline-2 outline-sinopia rounded-md'
+        className='outline-sinopia rounded-md p-0.5 group-hover:outline-2'
       >
         <div
-          className='aspect-square max-w-32 min-w-28 w-full rounded-md overflow-hidden'
+          className='aspect-square w-full max-w-32 min-w-28 overflow-hidden rounded-md'
           style={{
             backgroundColor: color ?? Colors.sinopia
           }}
         />
       </div>
 
+      <div
+        className='absolute -top-1.5 -right-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-gray-200 text-white shadow-sm hover:bg-gray-300'
+      >
+        <FaMinus
+          className='h-2 w-2 text-black/80'
+        />
+      </div>
+
       <span
-        className='mt-1 ml-1 text-sm font-medium text-black/80 block truncate'
+        className='mt-1 ml-1 block truncate text-sm font-medium text-black/80'
       >
         {name}
       </span>

@@ -1,30 +1,48 @@
+import type { SearchItem } from '@/utils/util'
 import clsx from 'clsx'
 import React from 'react'
 import { CgClose } from 'react-icons/cg'
 import { FiSearch } from 'react-icons/fi'
 import { MdHistory } from 'react-icons/md'
 
-export interface SearchItem {
-  term: string
-  subtext?: string
-  type: 'history' | 'suggestion'
-}
-
 export interface SearchPopoverListItemProps {
   item: SearchItem
+  isActive?: boolean
+  isClearFocused?: boolean
   onItemSelect?: (item: SearchItem) => void
-  onClearOneHistory?: (term: string) => void
+  onClearOneHistory?: (item: SearchItem) => void
 }
 
 const SearchPopoverListItem = (props: SearchPopoverListItemProps) => {
-  const { item, onItemSelect, onClearOneHistory } = props
+  const {
+    item, isActive = false, isClearFocused = false,
+    onItemSelect, onClearOneHistory
+  } = props
+
   const { term, subtext, type } = item
+
+  const itemRef = React.useRef<HTMLDivElement>(null)
+
+  React.useEffect(
+    () => {
+      if (isActive) {
+        itemRef.current?.scrollIntoView({ block: 'nearest' })
+      }
+    },
+    [isActive]
+  )
+
+  const handleOnClick = () => {
+    if (!isClearFocused) {
+      onItemSelect?.(item)
+    }
+  }
 
   const handleOnClearClick = (event: React.MouseEvent) => {
     event.preventDefault()
     event.stopPropagation()
 
-    onClearOneHistory?.(term)
+    onClearOneHistory?.(item)
   }
 
   const handleOptionMouseDown = (event: React.MouseEvent) => {
@@ -34,13 +52,15 @@ const SearchPopoverListItem = (props: SearchPopoverListItemProps) => {
 
   return (
     <div
+      ref={itemRef}
       role='option'
       tabIndex={0}
-      onClick={onItemSelect?.bind(null, item)}
+      onClick={handleOnClick}
       className={clsx(
         'flex h-10 w-full items-center gap-4 px-4',
         'group rounded-md',
-        'hover:bg-empty'
+        'hover:bg-empty',
+        isActive && 'bg-empty'
       )}
       onMouseDown={handleOptionMouseDown}
     >
@@ -70,7 +90,11 @@ const SearchPopoverListItem = (props: SearchPopoverListItemProps) => {
       {type === 'history' && (
         <button
           type='button'
-          className='ml-auto hidden cursor-pointer rounded-lg p-2 group-hover:block hover:bg-gray-200'
+          className={clsx(
+            'ml-auto cursor-pointer rounded-lg p-2',
+            isActive ? 'block' : 'hidden group-hover:block',
+            isClearFocused ? 'outline-sinopia outline-2' : 'hover:bg-gray-200'
+          )}
           onMouseDown={handleOptionMouseDown}
           onClick={handleOnClearClick}
         >

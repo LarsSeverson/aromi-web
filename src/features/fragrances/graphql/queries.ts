@@ -208,7 +208,7 @@ export const FRAGRANCE_COLLECTIONS_QUERY = gql(/* GraphQL */ `
     fragranceCollections(input: $input) {
       edges {
         node {
-          ...FragranceCollectionPreview
+          ...AllFragranceCollection
         }
         cursor
       }

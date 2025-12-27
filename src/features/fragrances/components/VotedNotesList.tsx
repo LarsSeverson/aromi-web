@@ -18,7 +18,7 @@ const VotedNotesList = () => {
         </div>
 
         <div
-          className='self-center text-sm font-medium text-black/60 mt-1'
+          className='mt-1 self-center text-sm font-medium text-black/60'
         >
           Search for {layer.toLowerCase()} notes and select the ones that stand out to you the most
         </div>

@@ -2,10 +2,10 @@ import React from 'react'
 import SearchInput from './SearchInput'
 import { useSearchHistory } from '@/hooks/useSearchHistory'
 import { useSearchFragrances } from '@/features/fragrances'
-import type { SearchItem } from './SearchPopoverListItem'
 import { useDebounce } from '@/hooks/useDebounce'
 import { useNavigate, useSearch } from '@tanstack/react-router'
 import TopBarSearchFilter from './TopBarSearchFilter'
+import type { SearchItem } from '@/utils/util'
 
 const TopBarSearch = () => {
   const { term, ...restSearch } = useSearch({ strict: false }) ?? {}
@@ -14,13 +14,9 @@ const TopBarSearch = () => {
   const { history, addTerm, deleteTerm } = useSearchHistory()
   const { fragrances, refresh } = useSearchFragrances({ term, pagination: { first: 10 } })
 
-  const historyItems = React.useMemo<SearchItem[]>(
-    () => history.map(term => ({ term, type: 'history' })),
-    [history]
-  )
-
   const suggestionItems = React.useMemo<SearchItem[]>(
     () => fragrances.map(fragrance => ({
+      id: fragrance.id,
       term: fragrance.name,
       subtext: fragrance.brand.name,
       type: 'suggestion'
@@ -29,8 +25,8 @@ const TopBarSearch = () => {
   )
 
   const allItems = React.useMemo<SearchItem[]>(
-    () => historyItems.concat(suggestionItems),
-    [historyItems, suggestionItems]
+    () => history.concat(suggestionItems),
+    [history, suggestionItems]
   )
 
   const handleSearchFragrances = useDebounce(
@@ -44,17 +40,26 @@ const TopBarSearch = () => {
     handleSearchFragrances(value)
   }
 
-  const handleOnSearch = (term: string, method: 'suggested' | 'custom') => {
-    addTerm(term)
+  const handleOnSearch = (item: SearchItem) => {
+    addTerm(item)
 
-    const shouldReset = method === 'suggested'
-    const newSearch = shouldReset ? { term } : { ...restSearch, term }
+    const newSearch = { ...restSearch, term: item.term }
+
+    if (item.type !== 'custom' && item.id != null) {
+      navigate({
+        to: '/fragrances/$id',
+        params: { id: item.id },
+        search: newSearch
+      })
+
+      return
+    }
 
     navigate({ to: '/search', search: newSearch })
   }
 
-  const handleClearOneHistory = (term: string) => {
-    deleteTerm(term)
+  const handleClearOneHistory = (item: SearchItem) => {
+    deleteTerm(item)
   }
 
   return (
