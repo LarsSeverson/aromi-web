@@ -1,4 +1,4 @@
-import type { FragranceCollectionPreviewFragment, UserPreviewFragment } from '@/generated/graphql'
+import type { AllFragranceCollectionFragment, UserPreviewFragment } from '@/generated/graphql'
 import React, { useCallback } from 'react'
 import { useMyContext } from '../context/MyContext'
 import { useUserCollections } from '../hooks/useUserCollections'
@@ -33,7 +33,7 @@ export const UserCollectionsTab = (props: UserCollectionsTabProps) => {
   const { headline, body } = emptyCollectionText(areMyCollections, username)
 
   const onRenderCollection = useCallback(
-    (collection: FragranceCollectionPreviewFragment) => {
+    (collection: AllFragranceCollectionFragment) => {
       return (
         <CollectionPreviewCard
           collection={collection}
