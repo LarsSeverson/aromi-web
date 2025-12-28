@@ -73,7 +73,7 @@ export const UserCollectionsTab = (props: UserCollectionsTabProps) => {
         onResize={setContainerRect}
       >
         <DynamicList
-          items={collections.slice(0, 4)}
+          items={collections}
           isLoading={isLoading || isLoadingMore}
           containerWidth={containerRect?.width}
           itemHeight={300}
