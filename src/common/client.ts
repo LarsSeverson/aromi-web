@@ -63,6 +63,7 @@ export const client = new ApolloClient({
           }),
 
           likes: customRelayPagination(),
+
           reviews: customRelayPagination(),
 
           followers: customRelayPagination(),

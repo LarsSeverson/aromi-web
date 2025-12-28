@@ -163,17 +163,19 @@ export const USER_COLLECTIONS_QUERY = gql(/* GraphQL */`
 export const USER_LIKES_QUERY = gql(/* GraphQL */`
   query UserLikes(
     $userId: ID!
-    $input: FragrancePaginationInput
+    $input: FragranceVotePaginationInput
   ) {
     user(id: $userId) {
       ...UserPreview
+
       likes(input: $input) {
         edges {
           node {
-            ...FragrancePreview
+            ...AllFragranceVote
           }
           cursor
         }
+        
         pageInfo {
           ...AllPageInfo
         }

@@ -1,4 +1,4 @@
-import type { FragrancePreviewFragment, User } from '@/generated/graphql'
+import type { AllFragranceVoteFragment, User } from '@/generated/graphql'
 import React, { useCallback } from 'react'
 import { useUserLikes } from '../hooks/useUserLikes'
 import { ResizeContainer } from '@/components/ResizeContainer'
@@ -34,11 +34,11 @@ export const UserLikesTab = (props: UserLikesTabProps) => {
   const isEmpty = likes.length === 0 && !isLoading
   const { headline, body } = emptyLikesText(areMyLikes, username)
 
-  const onRenderFragrance = useCallback(
-    (fragrance: FragrancePreviewFragment) => {
+  const onRenderLike = useCallback(
+    (like: AllFragranceVoteFragment) => {
       return (
         <FragrancePreviewCard
-          fragrance={fragrance}
+          fragrance={like.fragrance}
         />
       )
     },
@@ -79,7 +79,7 @@ export const UserLikesTab = (props: UserLikesTabProps) => {
           isLoading={isLoading || isLoadingMore}
           containerWidth={containerRect?.width}
           gap={25}
-          onRenderItem={onRenderFragrance}
+          onRenderItem={onRenderLike}
           onRenderSkeleton={onRenderSkeleton}
           onEndReached={handleOnEndReached}
         />
