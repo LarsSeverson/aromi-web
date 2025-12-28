@@ -61,7 +61,12 @@ export const client = new ApolloClient({
             const { fragranceId } = variables ?? {}
             return fragranceId == null ? false : `fragranceId:${fragranceId}`
           }),
+
+          likes: customRelayPagination(),
+          reviews: customRelayPagination(),
+
           followers: customRelayPagination(),
+
           following: customRelayPagination()
         }
       },
