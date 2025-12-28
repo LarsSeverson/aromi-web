@@ -4,6 +4,7 @@ import CollectionItemsGrid from '../components/CollectionItemsGrid'
 import Divider from '@/components/Divider'
 import useFragranceCollection from '../hooks/useFragranceCollection'
 import { useMyContext } from '@/features/users'
+import { CollectionItemsProvider } from '../contexts/providers/CollectionItemsProvider'
 
 export interface FragranceCollectionPageProps {
   collectionId: string
@@ -53,10 +54,13 @@ const FragranceCollectionPage = (props: FragranceCollectionPageProps) => {
         </div>
       )}
 
-      <CollectionItemsGrid
+      <CollectionItemsProvider
         collectionId={collection.id}
-        isMyCollection={isMyCollection}
-      />
+      >
+        <CollectionItemsGrid
+          isMyCollection={isMyCollection}
+        />
+      </CollectionItemsProvider>
     </div>
   )
 }

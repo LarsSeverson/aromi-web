@@ -8,6 +8,7 @@ import DialogBackdrop from '@/components/DialogBackdrop'
 import clsx from 'clsx'
 import { IoClose } from 'react-icons/io5'
 import { useLocation } from '@tanstack/react-router'
+import { useUser } from '../hooks/useUser'
 
 export interface UserRelationshipPopoverProps {
   user: UserPreviewFragment
@@ -15,8 +16,11 @@ export interface UserRelationshipPopoverProps {
 }
 
 const UserRelationshipPopover = (props: UserRelationshipPopoverProps) => {
-  const { user, type } = props
-  const { followerCount, followingCount } = user
+  const { type } = props
+  const { id } = props.user
+
+  const { user } = useUser(id)
+  const { followerCount = 0, followingCount = 0 } = user ?? {}
 
   const pathname = useLocation({
     select: (location) => location.pathname
@@ -89,7 +93,7 @@ const UserRelationshipPopover = (props: UserRelationshipPopoverProps) => {
           </Dialog.Title>
 
           <UserRelationshipList
-            user={user}
+            user={props.user}
             type={type}
           />
         </DialogPopup>

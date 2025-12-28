@@ -43,7 +43,7 @@ const CollectionItemCard = (props: CollectionItemCardProps) => {
       onMouseEnter={setIsLinkFocused.bind(null, false)}
     >
       <div
-        className='pointer-events-none relative flex flex-1 flex-col rounded-2xl'
+        className='relative flex flex-1 flex-col rounded-2xl'
       >
         <Link
           to='/fragrances/$id'
@@ -61,7 +61,7 @@ const CollectionItemCard = (props: CollectionItemCardProps) => {
 
         <div
           className={clsx(
-            'pointer-events-none absolute inset-0 opacity-0 transition-opacity',
+            'pointer-events-none absolute inset-0 opacity-0 ',
             'group-hover:opacity-100 group-focus:opacity-100',
             (isLinkFocused || isSubPopoverOpen) && 'opacity-100'
           )}
@@ -69,7 +69,7 @@ const CollectionItemCard = (props: CollectionItemCardProps) => {
           <div
             className={clsx(
               isDragging && 'hidden',
-              'pointer-events-auto absolute top-3 right-3'
+              'pointer-events-auto absolute top-3 right-3 z-20'
             )}
           >
             <SaveFragrancePopover
@@ -82,11 +82,12 @@ const CollectionItemCard = (props: CollectionItemCardProps) => {
             <div
               className={clsx(
                 isDragging && 'cursor-grabbing',
-                'pointer-events-auto absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 cursor-grab'
+                'pointer-events-auto absolute top-1/2 left-1/2 z-20 -translate-x-1/2 -translate-y-1/2 cursor-grab'
               )}
             >
               <LuGrip
-                size={25}
+                size={32}
+                className='text-white/90 mix-blend-difference'
               />
             </div>
           )}
@@ -94,7 +95,7 @@ const CollectionItemCard = (props: CollectionItemCardProps) => {
           <div
             className={clsx(
               isDragging && 'hidden',
-              'pointer-events-auto absolute right-3 bottom-3 flex gap-2'
+              'pointer-events-auto absolute right-3 bottom-3 z-20 flex gap-2'
             )}
           >
             <CollectionItemOptionsPopover

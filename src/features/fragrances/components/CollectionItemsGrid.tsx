@@ -1,52 +1,36 @@
 import React, { useCallback } from 'react'
-import { useFragranceCollectionItems } from '../hooks/useFragranceCollectionItems'
 import { ResizeContainer } from '@/components/ResizeContainer'
 import type { AllFragranceCollectionItemFragment } from '@/generated/graphql'
 import FragrancePreviewCardSkeleton from './FragrancePreviewCardSkeleton'
 import DraggableDynamicList from '@/components/DraggableDynamicList'
 import CollectionItemCard from './CollectionItemCard'
-import { useDebounce } from '@/hooks/useDebounce'
-import { useMoveFragranceCollectionItems } from '../hooks/useMoveFragranceCollectionItems'
-import { useToastMessage } from '@/hooks/useToastMessage'
 import { DynamicList } from '@/components/DynamicList'
+import { useCollectionItemsContext } from '../contexts/CollectionItemsContext'
+import type { Nullable } from '@/utils/util'
 
 export interface CollectionItemsGridProps {
-  collectionId: string
   isMyCollection?: boolean
 }
 
 const CollectionItemsGrid = (props: CollectionItemsGridProps) => {
-  const { collectionId, isMyCollection = false } = props
+  const { isMyCollection = false } = props
 
-  const { toastError } = useToastMessage()
+  const {
+    items,
+    isLoading,
+    isLoadingMore,
 
-  const { moveItems } = useMoveFragranceCollectionItems()
-  const { items, isLoading, isLoadingMore, loadMore } = useFragranceCollectionItems(collectionId)
+    loadMore,
+    moveItem
+  } = useCollectionItemsContext()
 
   const [containerRect, setContainerRect] = React.useState(new DOMRect())
 
-  const handleMoveItem = useDebounce(
-    async (rangeStart: string, insertBefore: string | null) => {
-      const res = await moveItems({ collectionId, rangeStart, insertBefore })
-
-      res.match(
-        () => {
-          // do nothing
-        },
-        _ => {
-          toastError('')
-        }
-      )
-    },
-    undefined,
-    [collectionId]
-  )
-
   const handleOnItemMove = useCallback(
-    (movedId: string, beforeId: string | null) => {
-      handleMoveItem(movedId, beforeId)
+    (movedId: string, beforeId: Nullable<string>, updatedItems?: AllFragranceCollectionItemFragment[]) => {
+      moveItem(movedId, beforeId, updatedItems ?? [])
     },
-    [handleMoveItem]
+    [moveItem]
   )
 
   const onRenderItem = useCallback(

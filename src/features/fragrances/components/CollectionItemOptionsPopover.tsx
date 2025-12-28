@@ -4,9 +4,9 @@ import clsx from 'clsx'
 import React from 'react'
 import { AiOutlineDelete } from 'react-icons/ai'
 import { HiDotsHorizontal } from 'react-icons/hi'
-import { useDeleteFragranceCollectionItem } from '../hooks/useDeleteFragranceCollectionItem'
-import { useToastMessage } from '@/hooks/useToastMessage'
 import { useMyContext } from '@/features/users'
+import { useCollectionItemsContext } from '../contexts/CollectionItemsContext'
+import { BsArrowLeft, BsArrowRight } from 'react-icons/bs'
 
 export interface CollectionItemOptionsPopoverProps extends Popover.Root.Props {
   item: AllFragranceCollectionItemFragment
@@ -19,29 +19,30 @@ const CollectionItemOptionsPopover = (props: CollectionItemOptionsPopoverProps) 
 
   const { me } = useMyContext()
 
-  const { toastMessage, toastError } = useToastMessage()
-  const { deleteItem } = useDeleteFragranceCollectionItem()
+  const {
+    deleteItem,
+
+    moveItemLeft,
+    moveItemRight,
+
+    canMoveItemLeft,
+    canMoveItemRight
+  } = useCollectionItemsContext()
 
   const isMyCollection = me?.id === user.id
-
-  const handleDeleteItem = async () => {
-    const collectionId = collection.id
-    const itemId = item.id
-
-    const res = await deleteItem({ collectionId, itemId })
-
-    res.match(
-      () => {
-        toastMessage('Changes saved')
-      },
-      error => {
-        toastError(error.message)
-      }
-    )
-  }
+  const isLeftMovable = canMoveItemLeft(item.id)
+  const isRightMovable = canMoveItemRight(item.id)
 
   const handleOnDeleteClick = () => {
-    handleDeleteItem()
+    deleteItem(item.id)
+  }
+
+  const handleOnMoveItemLeft = () => {
+    moveItemLeft(item.id)
+  }
+
+  const handleOnMoveItemRight = () => {
+    moveItemRight(item.id)
   }
 
   if (!isMyCollection) return null
@@ -70,6 +71,44 @@ const CollectionItemOptionsPopover = (props: CollectionItemOptionsPopoverProps) 
               className='w-full'
             >
               <button
+                disabled={!isLeftMovable}
+                className={clsx(
+                  !isLeftMovable && 'cursor-default! opacity-50 hover:brightness-100',
+                  'group flex w-full cursor-pointer items-center justify-start gap-2 rounded-xl bg-white p-3 hover:brightness-95'
+                )}
+                onClick={handleOnMoveItemLeft}
+              >
+                <BsArrowLeft
+                  size={20}
+                />
+
+                <span
+                  className='text-md font-semibold'
+                >
+                  Move left
+                </span>
+              </button>
+
+              <button
+                disabled={!isRightMovable}
+                className={clsx(
+                  !isRightMovable && 'cursor-default! opacity-50 hover:brightness-100',
+                  'group flex w-full cursor-pointer items-center justify-start gap-2 rounded-xl bg-white p-3 hover:brightness-95'
+                )}
+                onClick={handleOnMoveItemRight}
+              >
+                <BsArrowRight
+                  size={20}
+                />
+
+                <span
+                  className='text-md font-semibold'
+                >
+                  Move right
+                </span>
+              </button>
+
+              <button
                 className='group flex w-full cursor-pointer items-center justify-start gap-2 rounded-xl bg-white p-3 hover:brightness-95'
                 onClick={handleOnDeleteClick}
               >
@@ -84,6 +123,7 @@ const CollectionItemOptionsPopover = (props: CollectionItemOptionsPopoverProps) 
                   Remove from collection
                 </span>
               </button>
+
             </div>
           </Popover.Popup>
         </Popover.Positioner>

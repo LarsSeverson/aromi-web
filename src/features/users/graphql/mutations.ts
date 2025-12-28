@@ -25,7 +25,7 @@ export const FOLLOW_USER_MUTATION = gql(/* GraphQL */ `
     $input: FollowUserInput!
   ) {
     follow(input: $input) {
-      ...UserPreview
+      ...AllUserFollow
     }
   }
 `)
@@ -35,7 +35,7 @@ export const UNFOLLOW_USER_MUTATION = gql(/* GraphQL */`
     $input: UnfollowUserInput!
   ) {
     unfollow(input: $input) {
-      ...UserPreview
+      ...AllUserFollow
     }
   }
 `)

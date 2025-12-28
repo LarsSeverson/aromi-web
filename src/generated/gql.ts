@@ -102,8 +102,8 @@ type Documents = {
     "\n  fragment AllUserFollow on UserFollow {\n    id\n    user {\n      ...UserPreview\n    }\n  }\n": typeof types.AllUserFollowFragmentDoc,
     "\n  mutation UpdateMe(\n    $input: UpdateMeInput!\n  ) {\n    updateMe(input: $input) {\n      ...Me\n    }\n  }\n": typeof types.UpdateMeDocument,
     "\n  mutation SetMyAvatar(\n    $input: SetMyAvatarInput!\n  ) {\n    setMyAvatar(input: $input) {\n      ...Me\n    }\n  }\n": typeof types.SetMyAvatarDocument,
-    "\n  mutation FollowUser(\n    $input: FollowUserInput!\n  ) {\n    follow(input: $input) {\n      ...UserPreview\n    }\n  }\n": typeof types.FollowUserDocument,
-    "\n  mutation UnfollowUser(\n    $input: UnfollowUserInput!\n  ) {\n    unfollow(input: $input) {\n      ...UserPreview\n    }\n  }\n": typeof types.UnfollowUserDocument,
+    "\n  mutation FollowUser(\n    $input: FollowUserInput!\n  ) {\n    follow(input: $input) {\n      ...AllUserFollow\n    }\n  }\n": typeof types.FollowUserDocument,
+    "\n  mutation UnfollowUser(\n    $input: UnfollowUserInput!\n  ) {\n    unfollow(input: $input) {\n      ...AllUserFollow\n    }\n  }\n": typeof types.UnfollowUserDocument,
     "\n  query Me {\n    me {\n      ...Me\n    }\n  }\n": typeof types.MeDocument,
     "\n  query MyCollections(\n    $input: FragranceCollectionPaginationInput\n  ) {\n    me {\n      ...Me\n      collections(input: $input) {\n        edges {\n          node {\n            ...FragranceCollectionPreview\n          }\n          cursor\n        }\n        pageInfo {\n          ...AllPageInfo\n        }\n      }\n    }\n  }\n": typeof types.MyCollectionsDocument,
     "\n  query MyCollectionsHasFragrance(\n    $fragranceId: ID!\n    $input: FragranceCollectionPaginationInput\n  ) {\n    me {\n      ...Me\n      collections(input: $input) { \n        edges {\n          node {\n            ...FragranceCollectionPreview\n            hasFragrance(fragranceId: $fragranceId)\n          }\n          cursor\n        }\n        pageInfo {\n          ...AllPageInfo\n        }\n      }\n    }\n  }\n": typeof types.MyCollectionsHasFragranceDocument,
@@ -209,8 +209,8 @@ const documents: Documents = {
     "\n  fragment AllUserFollow on UserFollow {\n    id\n    user {\n      ...UserPreview\n    }\n  }\n": types.AllUserFollowFragmentDoc,
     "\n  mutation UpdateMe(\n    $input: UpdateMeInput!\n  ) {\n    updateMe(input: $input) {\n      ...Me\n    }\n  }\n": types.UpdateMeDocument,
     "\n  mutation SetMyAvatar(\n    $input: SetMyAvatarInput!\n  ) {\n    setMyAvatar(input: $input) {\n      ...Me\n    }\n  }\n": types.SetMyAvatarDocument,
-    "\n  mutation FollowUser(\n    $input: FollowUserInput!\n  ) {\n    follow(input: $input) {\n      ...UserPreview\n    }\n  }\n": types.FollowUserDocument,
-    "\n  mutation UnfollowUser(\n    $input: UnfollowUserInput!\n  ) {\n    unfollow(input: $input) {\n      ...UserPreview\n    }\n  }\n": types.UnfollowUserDocument,
+    "\n  mutation FollowUser(\n    $input: FollowUserInput!\n  ) {\n    follow(input: $input) {\n      ...AllUserFollow\n    }\n  }\n": types.FollowUserDocument,
+    "\n  mutation UnfollowUser(\n    $input: UnfollowUserInput!\n  ) {\n    unfollow(input: $input) {\n      ...AllUserFollow\n    }\n  }\n": types.UnfollowUserDocument,
     "\n  query Me {\n    me {\n      ...Me\n    }\n  }\n": types.MeDocument,
     "\n  query MyCollections(\n    $input: FragranceCollectionPaginationInput\n  ) {\n    me {\n      ...Me\n      collections(input: $input) {\n        edges {\n          node {\n            ...FragranceCollectionPreview\n          }\n          cursor\n        }\n        pageInfo {\n          ...AllPageInfo\n        }\n      }\n    }\n  }\n": types.MyCollectionsDocument,
     "\n  query MyCollectionsHasFragrance(\n    $fragranceId: ID!\n    $input: FragranceCollectionPaginationInput\n  ) {\n    me {\n      ...Me\n      collections(input: $input) { \n        edges {\n          node {\n            ...FragranceCollectionPreview\n            hasFragrance(fragranceId: $fragranceId)\n          }\n          cursor\n        }\n        pageInfo {\n          ...AllPageInfo\n        }\n      }\n    }\n  }\n": types.MyCollectionsHasFragranceDocument,
@@ -597,11 +597,11 @@ export function gql(source: "\n  mutation SetMyAvatar(\n    $input: SetMyAvatarI
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\n  mutation FollowUser(\n    $input: FollowUserInput!\n  ) {\n    follow(input: $input) {\n      ...UserPreview\n    }\n  }\n"): (typeof documents)["\n  mutation FollowUser(\n    $input: FollowUserInput!\n  ) {\n    follow(input: $input) {\n      ...UserPreview\n    }\n  }\n"];
+export function gql(source: "\n  mutation FollowUser(\n    $input: FollowUserInput!\n  ) {\n    follow(input: $input) {\n      ...AllUserFollow\n    }\n  }\n"): (typeof documents)["\n  mutation FollowUser(\n    $input: FollowUserInput!\n  ) {\n    follow(input: $input) {\n      ...AllUserFollow\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\n  mutation UnfollowUser(\n    $input: UnfollowUserInput!\n  ) {\n    unfollow(input: $input) {\n      ...UserPreview\n    }\n  }\n"): (typeof documents)["\n  mutation UnfollowUser(\n    $input: UnfollowUserInput!\n  ) {\n    unfollow(input: $input) {\n      ...UserPreview\n    }\n  }\n"];
+export function gql(source: "\n  mutation UnfollowUser(\n    $input: UnfollowUserInput!\n  ) {\n    unfollow(input: $input) {\n      ...AllUserFollow\n    }\n  }\n"): (typeof documents)["\n  mutation UnfollowUser(\n    $input: UnfollowUserInput!\n  ) {\n    unfollow(input: $input) {\n      ...AllUserFollow\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
