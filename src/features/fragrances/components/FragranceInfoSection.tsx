@@ -7,35 +7,32 @@ import { TbMessage2Star } from 'react-icons/tb'
 import { formatNumber } from '@/utils/string-utils'
 import { PiShareFat } from 'react-icons/pi'
 import Divider from '@/components/Divider'
-import PageCategory from '@/components/PageCategory'
-import AccordsLadder from './AccordsLadder'
 import { useVoteOnFragrance } from '../hooks/useVoteOnFragrance'
 import ShareFragrancePopover from './ShareFragrancePopover'
 import { Popover } from '@base-ui-components/react'
 import MoreOptionsFragrancePopover from './MoreOptionsFragrancePopover'
-import type { FragranceDetailFragment } from '@/generated/graphql'
 import SaveFragrancePopover from './SaveFragrancePopover'
-import { useFragranceAccords } from '../hooks/useFragranceAccords'
 import { useDebounce } from '@/hooks/useDebounce'
 import { useToastMessage } from '@/hooks/useToastMessage'
-import { useNavigate } from '@tanstack/react-router'
 import clsx from 'clsx'
 import { BrowserView } from 'react-device-detect'
+import FragranceAccordsSection from './FragranceAccordsSection'
+import { useFragranceContext } from '../contexts/FragranceContext'
 
 export interface FragranceInfoSectionProps {
-  fragrance: FragranceDetailFragment
   onScrollToReview?: () => void
 }
 
 const FragranceInfoSection = (props: FragranceInfoSectionProps) => {
-  const { fragrance, onScrollToReview } = props
+  const { fragrance } = useFragranceContext()
+
+  const { onScrollToReview } = props
+
   const { id, name, brand, votes, reviewInfo } = fragrance
   const { averageRating, count } = reviewInfo
 
-  const navigate = useNavigate()
   const { toastError } = useToastMessage()
 
-  const { accords } = useFragranceAccords(id, { first: 10 })
   const { vote } = useVoteOnFragrance()
 
   const handleVoteOnFragrance = useDebounce(
@@ -56,10 +53,6 @@ const FragranceInfoSection = (props: FragranceInfoSectionProps) => {
 
   const handleOnVote = (vote: number) => {
     handleVoteOnFragrance(vote)
-  }
-
-  const handleOnEmptyButtonClick = () => {
-    navigate({ to: '/fragrances/$id/review', params: { id } })
   }
 
   return (
@@ -194,18 +187,9 @@ const FragranceInfoSection = (props: FragranceInfoSectionProps) => {
         <div
           className='flex flex-col gap-3'
         >
-          <PageCategory
-            title='Accords'
-            isEmpty={accords.length === 0}
-            emptyTitle='No accords yet'
-            emptyButtonText='Vote on Accords'
-            onEmptyButtonClick={handleOnEmptyButtonClick}
-          >
-            <AccordsLadder
-              accords={accords}
-              maxVote={accords.at(0)?.votes.score ?? 0}
-            />
-          </PageCategory>
+          <FragranceAccordsSection
+            previewOnly
+          />
         </div>
       </div>
     </div>

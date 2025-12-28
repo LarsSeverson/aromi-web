@@ -1,6 +1,7 @@
 import React from 'react'
 import { useVotedNotesContext } from '../contexts/VotedNotesContext'
 import VotedNotesListItem from './VotedNotesListItem'
+import clsx from 'clsx'
 
 const VotedNotesList = () => {
   const { layer, votedNotes, voteOnNote } = useVotedNotesContext()
@@ -9,16 +10,22 @@ const VotedNotesList = () => {
   if (isEmpty) {
     return (
       <div
-        className='flex flex-col'
+        className='flex flex-col px-4'
       >
         <div
-          className='self-center font-medium text-black/70'
+          className={clsx(
+            'self-center text-center font-medium text-black/70',
+            'text-sm md:text-base'
+          )}
         >
           You haven't added any {layer.toLowerCase()} notes yet.
         </div>
 
         <div
-          className='mt-1 self-center text-sm font-medium text-black/60'
+          className={clsx(
+            'mt-2 self-center text-center font-medium text-black/60',
+            'max-w-70 text-xs sm:max-w-none md:text-sm'
+          )}
         >
           Search for {layer.toLowerCase()} notes and select the ones that stand out to you the most
         </div>

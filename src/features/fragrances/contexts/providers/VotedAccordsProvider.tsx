@@ -15,67 +15,68 @@ export interface VotedAccordsProviderProps {
 }
 
 export const VotedAccordsProvider = (props: VotedAccordsProviderProps) => {
-  const { fragranceId, children } = props
+  const {
+    fragranceId,
+    children
+  } = props
 
+  const { run: debouncedVote } = useDebounces(400, [fragranceId])
   const { checkAuthenticated } = useAuthHelpers()
   const { toastError } = useToastMessage()
 
   const { vote } = useVoteOnFragranceAccord()
   const { accords, isLoading } = useMyFragranceAccords(fragranceId)
 
-  const votedAccordsMapInternal = React.useRef(new Map<string, AllAccordFragment>())
+  const lastFragranceId = React.useRef<string | null>(null)
 
-  const [currentVotedSize, setCurrentVotedSize] = React.useState(0)
   const [votedAccords, setVotedAccords] = React.useState<AllAccordFragment[]>([])
+  const currentVotedSize = votedAccords.length
 
   const votedAccordsMap = React.useMemo(
-    () => new Map(votedAccords.map(accord => [accord.id, accord])),
+    () => new Map(votedAccords.map((a) => [a.id, a])),
     [votedAccords]
   )
 
-  const { run: debouncedVote } = useDebounces(400, [fragranceId])
-
   const handleVoteOnAccord = async (accord: AllAccordFragment, userVote: VoteType) => {
-    const accordId = accord.id
+    const res = await vote({
+      fragranceId,
+      accordId: accord.id,
+      vote: userVote
+    })
 
-    const voteRes = await vote({ fragranceId, accordId, vote: userVote })
-
-    if (voteRes.isErr()) {
-      const error = voteRes.error
-      toastError(error.message)
+    if (res.isErr()) {
+      toastError(res.error.message)
+      setVotedAccords(accords)
     }
   }
 
   const voteOnAccord = (accord: AllAccordFragment) => {
-    if (!checkAuthenticated('You need to log in before voting on accords')) return
+    if (!checkAuthenticated('Log in to vote on accords')) return
 
-    const accordId = accord.id
-    const currentSize = votedAccordsMapInternal.current.size
-    const shouldAdd = !votedAccordsMapInternal.current.has(accordId)
-    const userVote = shouldAdd ? VOTE_TYPES.UPVOTE : VOTE_TYPES.NOVOTE
+    const exists = votedAccordsMap.has(accord.id)
 
-    if (shouldAdd && currentSize >= MAX_ACCORD_VOTES) return
+    if (!exists && currentVotedSize >= MAX_ACCORD_VOTES) return
 
-    debouncedVote(accordId, () => {
-      handleVoteOnAccord(accord, userVote)
+    const nextVote = exists ? VOTE_TYPES.NOVOTE : VOTE_TYPES.UPVOTE
+
+    setVotedAccords((prev) => {
+      if (exists) return prev.filter((a) => a.id !== accord.id)
+      return [...prev, accord]
     })
 
-    if (shouldAdd) votedAccordsMapInternal.current.set(accordId, accord)
-    else votedAccordsMapInternal.current.delete(accordId)
-
-    setVotedAccords(Array.from(votedAccordsMapInternal.current.values()))
-    setCurrentVotedSize(votedAccordsMapInternal.current.size)
+    debouncedVote(accord.id, () => {
+      handleVoteOnAccord(accord, nextVote)
+    })
   }
 
   React.useEffect(
     () => {
-      if (!isLoading) {
-        votedAccordsMapInternal.current = new Map(accords.map(accord => [accord.id, accord]))
+      if (!isLoading && lastFragranceId.current !== fragranceId) {
         setVotedAccords(accords)
-        setCurrentVotedSize(accords.length)
+        lastFragranceId.current = fragranceId
       }
     },
-    [isLoading, accords]
+    [isLoading, accords, fragranceId]
   )
 
   return (

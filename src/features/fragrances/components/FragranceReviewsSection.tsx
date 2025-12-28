@@ -2,22 +2,21 @@ import React, { forwardRef, useState } from 'react'
 import PageCategory from '@/components/PageCategory'
 import Divider from '@/components/Divider'
 import { PageNav } from '@/components/PageNav'
-import type { FragranceDetailFragment } from '@/generated/graphql'
 import MyFragranceReviewButton from './MyFragranceReviewButton'
 import { ReviewsSummary } from './ReviewsSummary'
 import { useFragranceReviews } from '../hooks/useFragranceReviews'
 import { useMyFragranceReview } from '../hooks/useMyFragranceReview'
 import { ReviewsList } from './ReviewsList'
 import clsx from 'clsx'
+import { useFragranceContext } from '../contexts/FragranceContext'
 
 const REVIEWS_PER_PAGE = 4
 
-export interface FragranceReviewsSectionProps extends React.HTMLAttributes<HTMLDivElement> {
-  fragrance: FragranceDetailFragment
-}
+export interface FragranceReviewsSectionProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 const FragranceReviewsSection = forwardRef<HTMLDivElement, FragranceReviewsSectionProps>((props, ref) => {
-  const { fragrance, ...rest } = props
+  const { fragrance } = useFragranceContext()
+  const { ...rest } = props
   const { id, reviewInfo } = fragrance
 
   const { myReview } = useMyFragranceReview(id)

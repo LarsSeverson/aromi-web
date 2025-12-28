@@ -1,6 +1,7 @@
 import React from 'react'
 import { useVotedAccordsContext } from '../contexts/VotedAccordsContext'
 import VotedAccordsListItem from './VotedAccordsListItem'
+import clsx from 'clsx'
 
 const VotedAccordsList = () => {
   const { votedAccords, voteOnAccord } = useVotedAccordsContext()
@@ -9,16 +10,22 @@ const VotedAccordsList = () => {
   if (isEmpty) {
     return (
       <div
-        className='flex flex-col'
+        className='flex flex-col px-4'
       >
         <div
-          className='self-center font-medium text-black/70'
+          className={clsx(
+            'self-center text-center font-medium text-black/70',
+            'text-sm md:text-base'
+          )}
         >
           You haven't added any accords yet.
         </div>
 
         <div
-          className='self-center text-sm font-medium text-black/60 mt-1'
+          className={clsx(
+            'mt-2 self-center text-center font-medium text-black/60',
+            'max-w-70 text-xs sm:max-w-none md:text-sm'
+          )}
         >
           Search for accords and select the ones that stand out to you the most
         </div>

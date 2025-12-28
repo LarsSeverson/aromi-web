@@ -24,25 +24,27 @@ export const useVoteOnFragranceAccord = () => {
       id: input.fragranceId
     })
 
+    const accordCacheId = cache.identify({
+      __typename: 'Accord',
+      id: updatedAccord.id
+    })
+
+    if (fragranceCacheId == null || accordCacheId == null) return
+
     cache.modify({
       id: fragranceCacheId,
       fields: {
-        myAccords: (existingAccords = [], { readField }) => {
-          const accords = existingAccords as AllAccordFragment[]
+        myAccords (existingAccords = [], { readField, toReference }) {
+          const typedExistingAccords = existingAccords as AllAccordFragment[]
 
           if (input.vote !== VOTE_TYPES.UPVOTE) {
-            return accords.filter(ref => readField('id', ref) !== input.accordId)
+            return typedExistingAccords.filter(ref => readField('id', ref) !== input.accordId)
           }
 
-          const exists = accords.find(ref => readField('id', ref) === input.accordId)
+          const exists = typedExistingAccords.some(ref => readField('id', ref) === input.accordId)
+          if (exists) return typedExistingAccords
 
-          if (exists != null) {
-            return accords.map(ref =>
-              readField('id', ref) === input.accordId ? updatedAccord : ref
-            )
-          }
-
-          return [updatedAccord, ...accords]
+          return [...typedExistingAccords, toReference(updatedAccord)]
         }
       }
     })

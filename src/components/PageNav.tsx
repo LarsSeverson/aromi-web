@@ -22,7 +22,7 @@ export const PageNav = (props: PageNavProps) => {
   } = props
 
   const btnClassName = clsx(
-    'flex h-9 w-9 items-center justify-center rounded-full px-[9px] text-sm font-semibold',
+    'flex h-9 w-9 items-center justify-center rounded-full px-2.25 text-sm font-semibold',
     'cursor-pointer bg-gray-200'
   )
 
@@ -39,8 +39,8 @@ export const PageNav = (props: PageNavProps) => {
     >
       <button
         className={clsx(
-          btnClassName,
-          !showBackButton && 'opacity-50 hover:outline-transparent'
+          !showBackButton && 'cursor-default! opacity-50 hover:outline-transparent',
+          btnClassName
         )}
         disabled={!showBackButton}
         onClick={onPageChange?.bind(null, curPage - 1)}
@@ -72,8 +72,8 @@ export const PageNav = (props: PageNavProps) => {
 
       <button
         className={clsx(
-          btnClassName,
-          !showForwardButton && 'cursor-default opacity-50 hover:outline-transparent'
+          !showForwardButton && 'cursor-default! opacity-50 hover:outline-transparent',
+          btnClassName
         )}
         disabled={!showForwardButton}
         onClick={onPageChange?.bind(null, curPage + 1)}

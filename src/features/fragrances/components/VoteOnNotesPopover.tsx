@@ -47,9 +47,12 @@ const VoteOnNotesPopover = () => {
           ref={anchorRef}
           value={searchTerm}
           placeholder='Search notes'
-          className='text-md rounded-xl border-2 px-3 py-2'
+          className={clsx(
+            'w-full min-w-70 rounded-lg border-2 px-3 py-2 text-sm outline-none',
+            'md:w-64 md:rounded-xl md:px-3 md:py-2 md:text-sm',
+            'focus:border-sinopia'
+          )}
           onValueChange={handleOnInputValueChange}
-        // onFocus={setIsPopoverOpen.bind(null, true)}
         />
       </Field.Root>
 
@@ -61,17 +64,18 @@ const VoteOnNotesPopover = () => {
         <Popover.Portal>
           <Popover.Positioner
             anchor={anchorRef}
-            sideOffset={8}
+            sideOffset={6}
             side='top'
+            className='z-50'
           >
             <Popover.Popup
               initialFocus={false}
               className={clsx(
-                'box-border flex max-h-96 w-sm',
-                'overflow-hidden rounded-lg',
-                'border bg-white shadow-md',
-                'origin-(--transform-origin) transition-transform duration-150',
-                'data-ending-style:scale-90 data-ending-style:opacity-0 data-starting-style:scale-90 data-starting-style:opacity-0'
+                'box-border flex max-h-80 w-[calc(100vw-40px)] flex-col overflow-hidden rounded-lg border bg-white shadow-lg',
+                'md:max-h-96 md:w-80 md:rounded-lg',
+                'origin-(--transform-origin) transition-[transform,opacity] duration-150',
+                'data-ending-style:scale-95 data-ending-style:opacity-0',
+                'data-starting-style:scale-95 data-starting-style:opacity-0'
               )}
             >
               <VoteOnNotesPopoverList

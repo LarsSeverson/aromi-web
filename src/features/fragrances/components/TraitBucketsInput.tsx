@@ -3,7 +3,8 @@ import type { AllFragranceTraitFragment, AllFragranceTraitVoteFragment } from '@
 import { getTraitIcon } from '../utils/icons'
 import type { Nullable } from '@/utils/util'
 import TraitBucketInput from './TraitBucketInput'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
+import { Tooltip } from '@base-ui-components/react'
 
 export interface TraitBucketsInputProps {
   trait: AllFragranceTraitFragment
@@ -18,6 +19,26 @@ const TraitBucketsInput = (props: TraitBucketsInputProps) => {
   const { distribution } = stats
 
   const [selectedBucket, setSelectedBucket] = useState(myTraitVote?.option?.id)
+
+  const adjustedDistribution = useMemo(
+    () => {
+      const initialVoteId = myTraitVote?.option?.id
+
+      return distribution.map(bucket => {
+        const shouldAddOne = selectedBucket === bucket.option.id && initialVoteId !== bucket.option.id
+        const shouldRemoveOne = selectedBucket !== bucket.option.id && initialVoteId === bucket.option.id
+        const adjustedVotes = Math.max(0, bucket.votes + (shouldAddOne ? 1 : 0) - (shouldRemoveOne ? 1 : 0))
+
+        return {
+          ...bucket,
+          votes: adjustedVotes
+        }
+      })
+    },
+    [distribution, selectedBucket, myTraitVote]
+  )
+
+  const maxScore = Math.max(...adjustedDistribution.map(d => d.votes), 1)
 
   const handleOnBucketClick = (typeId: string, optionId: string) => {
     setSelectedBucket(prev => {
@@ -44,17 +65,18 @@ const TraitBucketsInput = (props: TraitBucketsInputProps) => {
           </span>
         )}
 
-        <div
-          className='flex w-full'
-        >
-          {distribution.map(
-            (bucket, index) => (
+        <Tooltip.Provider>
+          <div
+            className='flex w-full'
+          >
+            {adjustedDistribution.map((bucket, index) => (
               <div
                 key={bucket.option.id}
                 className='flex w-full flex-col'
               >
                 <TraitBucketInput
                   bucket={bucket}
+                  maxScore={maxScore}
                   isSelected={selectedBucket === bucket.option.id}
                   // eslint-disable-next-line tailwindcss/no-custom-classname
                   className={clsx(
@@ -65,9 +87,9 @@ const TraitBucketsInput = (props: TraitBucketsInputProps) => {
                   onBucketClick={handleOnBucketClick.bind(null, trait.id)}
                 />
               </div>
-            )
-          )}
-        </div>
+            ))}
+          </div>
+        </Tooltip.Provider>
       </div>
     </div>
   )

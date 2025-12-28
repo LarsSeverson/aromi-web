@@ -16,66 +16,72 @@ export interface VotedNotesProviderProps {
 }
 
 export const VotedNotesProvider = (props: VotedNotesProviderProps) => {
-  const { fragranceId, layer, children } = props
+  const {
+    fragranceId,
+    layer,
+    children
+  } = props
 
+  const { run: debouncedVote } = useDebounces(400, [fragranceId, layer])
   const { checkAuthenticated } = useAuthHelpers()
   const { toastError } = useToastMessage()
 
   const { vote } = useVoteOnFragranceNote()
   const { notes, isLoading } = useMyFragranceNotes(fragranceId, layer)
 
-  const votedNotesMapInternal = React.useRef(new Map<string, AllNoteFragment>())
+  const lastInitializedKey = React.useRef<string | null>(null)
 
-  const [currentVotedSize, setCurrentVotedSize] = React.useState(0)
   const [votedNotes, setVotedNotes] = React.useState<AllNoteFragment[]>([])
+  const currentVotedSize = votedNotes.length
 
   const votedNotesMap = React.useMemo(
-    () => new Map(votedNotes.map(note => [note.id, note])),
+    () => new Map(votedNotes.map((note) => [note.id, note])),
     [votedNotes]
   )
 
-  const { run: debouncedVote } = useDebounces(400, [fragranceId, layer])
-
   const handleVoteOnNote = async (note: AllNoteFragment, userVote: VoteType) => {
-    const noteId = note.id
+    const res = await vote({
+      fragranceId,
+      noteId: note.id,
+      layer,
+      vote: userVote
+    })
 
-    const voteRes = await vote({ fragranceId, noteId, layer, vote: userVote })
-
-    if (voteRes.isErr()) {
-      toastError('')
+    if (res.isErr()) {
+      toastError(res.error.message)
+      setVotedNotes(notes)
     }
   }
 
   const voteOnNote = (note: AllNoteFragment) => {
-    if (!checkAuthenticated('You need to log in before voting on notes')) return
+    if (!checkAuthenticated('Log in to vote on notes')) return
 
-    const noteId = note.id
-    const currentSize = votedNotesMapInternal.current.size
-    const shouldAdd = !votedNotesMapInternal.current.has(noteId)
-    const userVote = shouldAdd ? VOTE_TYPES.UPVOTE : VOTE_TYPES.NOVOTE
+    const exists = votedNotesMap.has(note.id)
 
-    if (shouldAdd && currentSize >= MAX_NOTE_VOTES) return
+    if (!exists && currentVotedSize >= MAX_NOTE_VOTES) return
 
-    debouncedVote(noteId, () => {
-      handleVoteOnNote(note, userVote)
+    const nextVote = exists ? VOTE_TYPES.NOVOTE : VOTE_TYPES.UPVOTE
+
+    setVotedNotes((prev) => {
+      if (exists) return prev.filter((n) => n.id !== note.id)
+      return [...prev, note]
     })
 
-    if (shouldAdd) votedNotesMapInternal.current.set(noteId, note)
-    else votedNotesMapInternal.current.delete(noteId)
-
-    setVotedNotes(Array.from(votedNotesMapInternal.current.values()))
-    setCurrentVotedSize(votedNotesMapInternal.current.size)
+    debouncedVote(note.id, () => {
+      handleVoteOnNote(note, nextVote)
+    })
   }
 
   React.useEffect(
     () => {
-      if (!isLoading) {
-        votedNotesMapInternal.current = new Map(notes.map(note => [note.id, note]))
+      const currentKey = `${fragranceId}-${layer}`
+
+      if (!isLoading && lastInitializedKey.current !== currentKey) {
         setVotedNotes(notes)
-        setCurrentVotedSize(notes.length)
+        lastInitializedKey.current = currentKey
       }
     },
-    [isLoading, notes]
+    [notes, isLoading, fragranceId, layer]
   )
 
   return (

@@ -58,6 +58,7 @@ type Documents = {
     "\n  fragment FragranceVoteInfo on Fragrance { \n    id\n    votes {\n      ...AllVoteInfo\n    }\n  }\n": typeof types.FragranceVoteInfoFragmentDoc,
     "\n  fragment MyFragranceReview on Fragrance { \n    id\n    myReview {\n      ...AllFragranceReview\n    }\n  }\n": typeof types.MyFragranceReviewFragmentDoc,
     "\n  fragment AllFragranceVote on FragranceVote { \n    id\n    vote\n\n    fragrance {\n      ...FragrancePreview\n    }\n\n    user {\n      ...UserPreview\n    }\n  }\n": typeof types.AllFragranceVoteFragmentDoc,
+    "\n  fragment CurrentTraitVote on FragranceTrait { \n    id\n    myVote {\n      ...AllFragranceTraitVote\n    }\n  }\n": typeof types.CurrentTraitVoteFragmentDoc,
     "\n  mutation CreateFragranceReview(\n    $input: CreateFragranceReviewInput!\n  ) {\n    createFragranceReview(input: $input) {\n      ...AllFragranceReview\n    }\n  }\n": typeof types.CreateFragranceReviewDocument,
     "\n  mutation DeleteFragranceReview(\n    $input: DeleteFragranceReviewInput!\n  ) {\n    deleteFragranceReview(input: $input) {\n      ...AllFragranceReview\n    }\n  }\n": typeof types.DeleteFragranceReviewDocument,
     "\n  mutation CreateFragranceCollection(\n    $input: CreateFragranceCollectionInput!\n  ) {\n    createFragranceCollection(input: $input) {\n      ...AllFragranceCollection\n    }\n  }\n": typeof types.CreateFragranceCollectionDocument,
@@ -166,6 +167,7 @@ const documents: Documents = {
     "\n  fragment FragranceVoteInfo on Fragrance { \n    id\n    votes {\n      ...AllVoteInfo\n    }\n  }\n": types.FragranceVoteInfoFragmentDoc,
     "\n  fragment MyFragranceReview on Fragrance { \n    id\n    myReview {\n      ...AllFragranceReview\n    }\n  }\n": types.MyFragranceReviewFragmentDoc,
     "\n  fragment AllFragranceVote on FragranceVote { \n    id\n    vote\n\n    fragrance {\n      ...FragrancePreview\n    }\n\n    user {\n      ...UserPreview\n    }\n  }\n": types.AllFragranceVoteFragmentDoc,
+    "\n  fragment CurrentTraitVote on FragranceTrait { \n    id\n    myVote {\n      ...AllFragranceTraitVote\n    }\n  }\n": types.CurrentTraitVoteFragmentDoc,
     "\n  mutation CreateFragranceReview(\n    $input: CreateFragranceReviewInput!\n  ) {\n    createFragranceReview(input: $input) {\n      ...AllFragranceReview\n    }\n  }\n": types.CreateFragranceReviewDocument,
     "\n  mutation DeleteFragranceReview(\n    $input: DeleteFragranceReviewInput!\n  ) {\n    deleteFragranceReview(input: $input) {\n      ...AllFragranceReview\n    }\n  }\n": types.DeleteFragranceReviewDocument,
     "\n  mutation CreateFragranceCollection(\n    $input: CreateFragranceCollectionInput!\n  ) {\n    createFragranceCollection(input: $input) {\n      ...AllFragranceCollection\n    }\n  }\n": types.CreateFragranceCollectionDocument,
@@ -420,6 +422,10 @@ export function gql(source: "\n  fragment MyFragranceReview on Fragrance { \n   
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(source: "\n  fragment AllFragranceVote on FragranceVote { \n    id\n    vote\n\n    fragrance {\n      ...FragrancePreview\n    }\n\n    user {\n      ...UserPreview\n    }\n  }\n"): (typeof documents)["\n  fragment AllFragranceVote on FragranceVote { \n    id\n    vote\n\n    fragrance {\n      ...FragrancePreview\n    }\n\n    user {\n      ...UserPreview\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  fragment CurrentTraitVote on FragranceTrait { \n    id\n    myVote {\n      ...AllFragranceTraitVote\n    }\n  }\n"): (typeof documents)["\n  fragment CurrentTraitVote on FragranceTrait { \n    id\n    myVote {\n      ...AllFragranceTraitVote\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

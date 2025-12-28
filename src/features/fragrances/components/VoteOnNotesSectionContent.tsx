@@ -18,13 +18,13 @@ const VoteOnNotesSectionContent = (props: VoteOnNotesSectionContentProps) => {
 
   return (
     <div
-      className='flex flex-col gap-10'
+      className='mb-5 flex flex-col gap-10'
     >
       <div
-        className='flex justify-between'
+        className='flex items-center justify-between'
       >
         <span
-          className='text-md font-medium text-black/60'
+          className='md:text-md text-sm font-medium text-black/60'
         >
           {currentVotedSize} / {MAX_NOTE_VOTES}
         </span>
@@ -39,7 +39,7 @@ const VoteOnNotesSectionContent = (props: VoteOnNotesSectionContentProps) => {
           >
             <SelectInput
               items={NOTE_LAYER_OPTIONS}
-              defaultValue={layer}
+              value={layer}
               onValueChange={onLayerChange}
             />
           </Field.Root>

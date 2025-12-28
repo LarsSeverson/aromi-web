@@ -15,7 +15,7 @@ export interface SelectInputProps<Value> {
   onValueChange?: (value: Value) => void
 }
 
-const SelectInput = <Value, >(props: SelectInputProps<Value>) => {
+const SelectInput = <Value, > (props: SelectInputProps<Value>) => {
   const { items, value, defaultValue, onValueChange } = props
 
   const handleOnValueChange = (newValue: Value | null) => {
@@ -32,9 +32,9 @@ const SelectInput = <Value, >(props: SelectInputProps<Value>) => {
     >
       <Select.Trigger
         className={clsx(
-          'flex h-full min-w-28 items-center justify-between gap-3',
-          'border-empty rounded-xl border-2 text-black/80',
-          'cursor-default pr-3 pl-3.5 text-base select-none',
+          'flex h-8 w-full items-center justify-between gap-2 md:h-full md:min-w-28 md:gap-3',
+          'border-empty rounded-lg border-2 text-black/80 md:rounded-xl',
+          'cursor-default pr-2.5 pl-3 text-xs select-none md:pr-3 md:pl-3.5 md:text-base',
           'hover:bg-empty',
           'focus-visible:outline-sinopia focus-visible:outline focus-visible:-outline-offset-1',
           'data-popup-open:bg-empty'
@@ -51,12 +51,13 @@ const SelectInput = <Value, >(props: SelectInputProps<Value>) => {
 
       <Select.Portal>
         <Select.Positioner
-          className='z-10 outline-none select-none'
-          sideOffset={8}
+          className='z-50 outline-none select-none'
+          sideOffset={6}
         >
           <Select.Popup
             className={clsx(
               'group origin-(--transform-origin) bg-clip-padding',
+              'w-48 md:w-auto md:min-w-(--anchor-width)',
               'rounded-md bg-white text-black shadow-md shadow-black/10',
               'outline-1 outline-black/10',
               'transition-[transform,scale,opacity]',
@@ -70,8 +71,8 @@ const SelectInput = <Value, >(props: SelectInputProps<Value>) => {
           >
             <Select.ScrollUpArrow
               className={clsx(
-                'top-0 z-1 flex h-4 w-full cursor-default items-center justify-center',
-                'rounded-md bg-white text-center text-xs text-black/60',
+                'top-0 z-1 flex h-3 w-full cursor-default items-center justify-center md:h-4',
+                'rounded-md bg-white text-center text-[10px] text-black/60 md:text-xs',
                 'before:absolute before:left-0 before:h-full before:w-full before:content-[\'\']',
                 'data-[side=none]:before:-top-full'
               )}
@@ -79,8 +80,8 @@ const SelectInput = <Value, >(props: SelectInputProps<Value>) => {
 
             <Select.List
               className={clsx(
-                'relative scroll-py-6 overflow-y-auto py-1',
-                'max-h-(--available-height)'
+                'relative scroll-py-4 overflow-y-auto py-0.5 md:scroll-py-6 md:py-1',
+                'max-h-48 md:max-h-(--available-height)'
               )}
             >
               {items.map(
@@ -89,23 +90,22 @@ const SelectInput = <Value, >(props: SelectInputProps<Value>) => {
                     key={index}
                     value={value}
                     className={clsx(
-                      'grid min-w-(--anchor-width) cursor-default grid-cols-[0.75rem_1fr] items-center',
-                      'gap-2 py-2 pr-4 pl-2.5 text-sm leading-4 outline-none select-none',
+                      'grid cursor-default grid-cols-[0.875rem_1fr] items-center gap-1.5 md:min-w-(--anchor-width) md:grid-cols-[0.75rem_1fr] md:gap-2',
+                      'py-1.5 pr-3 pl-2 text-xs leading-tight outline-none select-none md:py-2 md:pr-4 md:pl-2.5 md:text-sm md:leading-4',
                       'group-data-[side=none]:min-w-[calc(var(--anchor-width)+1rem)]',
                       'group-data-[side=none]:pr-12 group-data-[side=none]:text-base',
                       'group-data-[side=none]:leading-4',
                       'data-highlighted:relative data-highlighted:z-0',
                       'data-highlighted:before:absolute data-highlighted:before:inset-x-1',
                       'data-highlighted:before:inset-y-0 data-highlighted:before:z-[-1]',
-                      'data-highlighted:before:bg-empty data-highlighted:before:rounded-sm',
-                      'pointer-coarse:py-2.5 pointer-coarse:text-[0.925rem]'
+                      'data-highlighted:before:bg-empty data-highlighted:before:rounded-sm'
                     )}
                   >
                     <Select.ItemIndicator
                       className='col-start-1'
                     >
                       <CgCheck
-                        className='size-4'
+                        className='size-3.5 md:size-4'
                       />
                     </Select.ItemIndicator>
 
@@ -121,8 +121,8 @@ const SelectInput = <Value, >(props: SelectInputProps<Value>) => {
 
             <Select.ScrollDownArrow
               className={clsx(
-                'bottom-0 z-1 flex h-4 w-full cursor-default items-center justify-center',
-                'rounded-md bg-white text-center text-xs text-black/60',
+                'bottom-0 z-1 flex h-3 w-full cursor-default items-center justify-center md:h-4',
+                'rounded-md bg-white text-center text-[10px] text-black/60 md:text-xs',
                 'before:absolute before:left-0 before:h-full before:w-full before:content-[\'\']',
                 'data-[side=none]:before:-bottom-full'
               )}

@@ -4,16 +4,16 @@ import { HiChevronLeft, HiChevronRight } from 'react-icons/hi'
 import clsx from 'clsx'
 import BouncyButton from '@/components/BouncyButton'
 import { Overlay } from '@/components/Overlay'
-import type { FragrancePreviewFragment } from '@/generated/graphql'
 import { useFragranceImages } from '../hooks/useFragranceImages'
 import ProgressiveImage from '@/components/ProgressiveImage'
+import { useFragranceContext } from '../contexts/FragranceContext'
 
-export interface FragranceImagesSectionProps extends HTMLAttributes<HTMLDivElement> {
-  fragrance: FragrancePreviewFragment
-}
+export interface FragranceImagesSectionProps extends HTMLAttributes<HTMLDivElement> {}
 
 export const FragranceImagesSection = (props: FragranceImagesSectionProps) => {
-  const { fragrance, className, ...rest } = props
+  const { fragrance } = useFragranceContext()
+
+  const { className, ...rest } = props
 
   const { images } = useFragranceImages(fragrance.id)
 

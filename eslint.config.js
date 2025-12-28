@@ -68,6 +68,7 @@ export default [
       '@typescript-eslint/init-declarations': 'off',
       '@typescript-eslint/no-unnecessary-type-parameters': 'off',
       '@typescript-eslint/only-throw-error': 'off',
+      '@typescript-eslint/no-empty-object-type': 'off',
       // '@typescript-eslint/unbound-method': 'off',
 
       // Core stylistic formatting

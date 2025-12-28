@@ -1,3 +1,4 @@
+import { FragranceProvider } from '@/features/fragrances/contexts/providers/FragranceProvider'
 import { FragrancePage } from '@/features/fragrances/pages/FragrancePage'
 import { createFileRoute, getRouteApi } from '@tanstack/react-router'
 
@@ -10,8 +11,10 @@ function RouteComponent () {
   const { fragrance } = api.useLoaderData()
 
   return (
-    <FragrancePage
+    <FragranceProvider
       fragrance={fragrance}
-    />
+    >
+      <FragrancePage />
+    </FragranceProvider>
   )
 }

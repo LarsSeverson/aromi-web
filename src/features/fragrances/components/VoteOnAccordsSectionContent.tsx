@@ -9,13 +9,13 @@ const VoteOnAccordsSectionContent = () => {
 
   return (
     <div
-      className='flex flex-col gap-10'
+      className='my-5 flex flex-col gap-10'
     >
       <div
-        className='flex justify-between'
+        className='flex items-center justify-between'
       >
         <span
-          className='text-md font-medium text-black/60'
+          className='md:text-md text-sm font-medium text-black/60'
         >
           {currentVotedSize} / {MAX_ACCORD_VOTES}
         </span>

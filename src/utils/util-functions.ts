@@ -6,3 +6,8 @@ export const getSearchQuery = (filter?: typeof SEARCH_FILTER_OPTIONS[number]['va
   if (filter === 'users') return SEARCH_USERS_QUERY
   return SEARCH_FRAGRANCES_QUERY
 }
+
+export const pluralizer = (count: number, str: string) => {
+  if (count === 1) return str
+  return `${str}s`
+}

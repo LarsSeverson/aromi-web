@@ -1,15 +1,11 @@
 import React from 'react'
 import Divider from '@/components/Divider'
-import { Accordion, Form } from '@base-ui-components/react'
+import { Form } from '@base-ui-components/react'
 import type { CreateFragranceReviewInput, FragranceDetailFragment } from '@/generated/graphql'
 import { useMyFragranceReview } from '../hooks/useMyFragranceReview'
 import PageBackButton from '@/components/PageBackButton'
-import VoteOnGenderSection from '../components/VoteOnGenderSection'
-import VoteOnAccordsSection from '../components/VoteOnAccordsSection'
-import VoteOnNotesSection from '../components/VoteOnNotesSection'
 import blankPreviewThumbnail from '@/assets/blank-fragrance-thumbnail.svg'
 import ProgressiveImage from '@/components/ProgressiveImage'
-import VoteOnTraitsSection from '../components/VoteOnTraitsSection'
 import WriteReviewSection from '../components/WriteReviewSection'
 import RatingSection from '../components/RatingSection'
 import { ValidFragranceReview } from '../utils/validation'
@@ -90,7 +86,7 @@ const FragranceReviewPage = (props: FragranceReviewPageProps) => {
         className='flex-1 pl-4'
       >
         <PageBackButton
-          className='sticky top-[87px] ml-auto'
+          className='sticky top-21.75 ml-auto'
         />
       </div>
 
@@ -136,34 +132,9 @@ const FragranceReviewPage = (props: FragranceReviewPageProps) => {
           />
         </div>
 
-        <Accordion.Root
-          className='flex flex-col gap-7'
-          defaultValue={['gender', 'accords', 'notes', 'traits']}
-        >
-          <RatingSection
-            defaultRating={rating ?? myReview?.rating}
-          />
-
-          <div
-            className='flex flex-col gap-5'
-          >
-            <VoteOnGenderSection
-              fragranceId={id}
-            />
-
-            <VoteOnAccordsSection
-              fragranceId={id}
-            />
-
-            <VoteOnNotesSection
-              fragranceId={id}
-            />
-
-            <VoteOnTraitsSection
-              fragranceId={id}
-            />
-          </div>
-        </Accordion.Root>
+        <RatingSection
+          defaultRating={rating ?? myReview?.rating}
+        />
 
         <WriteReviewSection
           fragranceId={id}

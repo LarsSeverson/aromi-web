@@ -1,7 +1,6 @@
 import React, { useRef } from 'react'
 import FragranceInfoSection from '../components/FragranceInfoSection'
 import PageBackButton from '../../../components/PageBackButton'
-import type { FragranceDetailFragment } from '@/generated/graphql'
 import { FragranceImagesSection } from '../components/FragranceImagesSection'
 import FragranceGenderSection from '../components/FragranceGenderSection'
 import Divider from '@/components/Divider'
@@ -9,13 +8,13 @@ import FragranceNotesSection from '../components/FragranceNotesSection'
 import FragranceTraitsSection from '../components/FragranceTraitsSection'
 import FragranceReviewsSection from '../components/FragranceReviewsSection'
 import clsx from 'clsx'
+import FragranceAccordsSection from '../components/FragranceAccordsSection'
+import { useFragranceContext } from '../contexts/FragranceContext'
 
-export interface FragrancePageProps {
-  fragrance: FragranceDetailFragment
-}
+export interface FragrancePageProps {}
 
-export const FragrancePage = (props: FragrancePageProps) => {
-  const { fragrance } = props
+export const FragrancePage = (_: FragrancePageProps) => {
+  const { isVotingOnAccords } = useFragranceContext()
 
   const reviewSectionRef = useRef<HTMLDivElement>(null)
 
@@ -64,9 +63,7 @@ export const FragrancePage = (props: FragrancePageProps) => {
               'w-full flex-none md:flex-1'
             )}
           >
-            <FragranceImagesSection
-              fragrance={fragrance}
-            />
+            <FragranceImagesSection />
           </div>
 
           <div
@@ -76,7 +73,6 @@ export const FragrancePage = (props: FragrancePageProps) => {
             )}
           >
             <FragranceInfoSection
-              fragrance={fragrance}
               onScrollToReview={scrollToReview}
             />
           </div>
@@ -95,21 +91,18 @@ export const FragrancePage = (props: FragrancePageProps) => {
             )}
           />
 
-          <FragranceGenderSection
-            fragrance={fragrance}
-          />
+          {isVotingOnAccords && (
+            <FragranceAccordsSection />
+          )}
 
-          <FragranceNotesSection
-            fragrance={fragrance}
-          />
+          <FragranceGenderSection />
 
-          <FragranceTraitsSection
-            fragrance={fragrance}
-          />
+          <FragranceNotesSection />
+
+          <FragranceTraitsSection />
 
           <FragranceReviewsSection
             ref={reviewSectionRef}
-            fragrance={fragrance}
           />
         </div>
       </div>

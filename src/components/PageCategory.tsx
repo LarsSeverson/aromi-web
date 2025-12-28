@@ -7,8 +7,9 @@ export interface PageCategoryProps extends React.HTMLAttributes<HTMLDivElement> 
   emptyTitle?: string
   emptyBody?: string
   emptyButtonText?: string
+  showButton?: boolean
   children?: React.ReactNode
-  onEmptyButtonClick?: () => void
+  onButtonClick?: () => void
 }
 
 const PageCategory = (props: PageCategoryProps) => {
@@ -19,16 +20,17 @@ const PageCategory = (props: PageCategoryProps) => {
     emptyTitle = 'Nothing to show here',
     emptyBody = 'Tried this fragrance? Help out the community by sharing your experience',
     emptyButtonText = 'Write a review',
+    showButton = false,
     className,
-    onEmptyButtonClick,
+    onButtonClick,
     ...rest
   } = props
 
   return (
     <div
       className={clsx(
-        'py-2',
-        className
+        className,
+        'flex flex-col py-2'
       )}
       {...rest}
     >
@@ -57,17 +59,19 @@ const PageCategory = (props: PageCategoryProps) => {
           >
             {emptyBody}
           </h5>
-
-          <button
-            className='md:text-md w-2/3 max-w-xs cursor-pointer rounded-lg border bg-white px-11 py-3 text-sm font-medium hover:brightness-95'
-            onClick={onEmptyButtonClick}
-          >
-            {emptyButtonText}
-          </button>
         </div>
       )}
 
       {children}
+
+      {showButton && (
+        <button
+          className='md:text-md mt-5 w-2/3 max-w-xs cursor-pointer self-center rounded-lg border bg-white px-11 py-3 text-sm font-medium hover:brightness-95'
+          onClick={onButtonClick}
+        >
+          {emptyButtonText}
+        </button>
+      )}
     </div>
   )
 }

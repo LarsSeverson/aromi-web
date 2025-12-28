@@ -217,3 +217,12 @@ export const ALL_FRAGRANCE_VOTE_FRAGMENT = gql(/* GraphQL */ `
     }
   }
 `)
+
+export const CURRENT_TRAIT_VOTE_FRAGMENT = gql(/* GraphQL */ `
+  fragment CurrentTraitVote on FragranceTrait { 
+    id
+    myVote {
+      ...AllFragranceTraitVote
+    }
+  }
+`)
