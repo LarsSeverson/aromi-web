@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useAuthContext } from '../contexts/AuthContext'
-import { Form } from '@base-ui-components/react'
+import { Form } from '@base-ui/react'
 import CodeInput from './CodeInput'
 import PasswordInput from './PasswordInput'
 import SubmitButton from '@/components/SubmitButton'

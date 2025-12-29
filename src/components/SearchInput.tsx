@@ -1,5 +1,5 @@
 /* eslint-disable tailwindcss/no-custom-classname */
-import { type FieldControlProps, Input, Popover } from '@base-ui-components/react'
+import { type FieldControlProps, Input, Popover } from '@base-ui/react'
 import clsx from 'clsx'
 import React, { useMemo, useRef } from 'react'
 import { FiSearch } from 'react-icons/fi'

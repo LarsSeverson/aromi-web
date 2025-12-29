@@ -1,6 +1,6 @@
 import type { UserPreviewFragment } from '@/generated/graphql'
 import { formatNumber } from '@/utils/string-utils'
-import { Dialog } from '@base-ui-components/react'
+import { Dialog } from '@base-ui/react'
 import React from 'react'
 import UserRelationshipList from './UserRelationshipList'
 import DialogPopup from '@/components/DialogPopup'

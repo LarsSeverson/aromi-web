@@ -1,4 +1,4 @@
-import { Dialog } from '@base-ui-components/react'
+import { Dialog } from '@base-ui/react'
 import React, { type SyntheticEvent } from 'react'
 import DialogBackdrop from './DialogBackdrop'
 import DialogPopup from './DialogPopup'

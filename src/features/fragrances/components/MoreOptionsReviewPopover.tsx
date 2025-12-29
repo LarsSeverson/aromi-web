@@ -1,4 +1,4 @@
-import { Popover } from '@base-ui-components/react'
+import { Popover } from '@base-ui/react'
 import React from 'react'
 import { HiDotsHorizontal } from 'react-icons/hi'
 import clsx from 'clsx'

@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react'
-import { Dialog, Form } from '@base-ui-components/react'
+import { Dialog, Form } from '@base-ui/react'
 import { TbFlag } from 'react-icons/tb'
 import clsx from 'clsx'
 import Spinner from '@/components/Spinner'

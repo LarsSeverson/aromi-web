@@ -1,5 +1,5 @@
 import { useSearchAccords } from '@/features/accords'
-import { Field, Input, Popover } from '@base-ui-components/react'
+import { Field, Input, Popover } from '@base-ui/react'
 import clsx from 'clsx'
 import React from 'react'
 import VoteOnAccordsPopoverList from './VoteOnAccordsPopoverList'

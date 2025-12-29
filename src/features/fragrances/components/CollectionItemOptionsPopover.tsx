@@ -1,5 +1,5 @@
 import type { AllFragranceCollectionItemFragment } from '@/generated/graphql'
-import { Popover } from '@base-ui-components/react'
+import { Popover } from '@base-ui/react'
 import clsx from 'clsx'
 import React from 'react'
 import { AiOutlineDelete } from 'react-icons/ai'

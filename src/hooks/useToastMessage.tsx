@@ -1,5 +1,5 @@
 import { getServerErrorInfo } from '@/utils/error'
-import { Toast } from '@base-ui-components/react'
+import { Toast } from '@base-ui/react'
 
 export const useToastMessage = () => {
   const mngr = Toast.useToastManager()

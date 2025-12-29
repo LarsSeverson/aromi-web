@@ -1,4 +1,4 @@
-import { Popover } from '@base-ui-components/react'
+import { Popover } from '@base-ui/react'
 import React, { type SyntheticEvent, useState } from 'react'
 import CollectionPopoverList from './CollectionPopoverList'
 import BouncyButton from '@/components/BouncyButton'

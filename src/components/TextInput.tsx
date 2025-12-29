@@ -1,5 +1,5 @@
 import React from 'react'
-import { Field } from '@base-ui-components/react'
+import { Field } from '@base-ui/react'
 import clsx from 'clsx'
 
 export interface TextInputProps extends Field.Control.Props {

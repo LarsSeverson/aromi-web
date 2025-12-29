@@ -1,5 +1,5 @@
 import { useToastMessage } from '@/hooks/useToastMessage'
-import { Dialog, Form } from '@base-ui-components/react'
+import { Dialog, Form } from '@base-ui/react'
 import React from 'react'
 import { useChangePassword } from '../hooks/useChangePassword'
 import { ChangePasswordSchema } from '../utils/validation'

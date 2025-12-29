@@ -3,7 +3,7 @@ import ArrowSvg from '@/components/ArrowSvg'
 import type { AllTraitVoteDistributionFragment } from '@/generated/graphql'
 import { formatNumber } from '@/utils/string-utils'
 import { pluralizer } from '@/utils/util-functions'
-import { Tooltip } from '@base-ui-components/react'
+import { Tooltip } from '@base-ui/react'
 import clsx from 'clsx'
 import React from 'react'
 

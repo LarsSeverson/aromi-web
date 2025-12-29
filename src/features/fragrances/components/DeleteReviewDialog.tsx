@@ -1,7 +1,7 @@
 import React from 'react'
 import ConfirmationDialog from '@/components/ConfirmationDialog'
 import { AiOutlineDelete } from 'react-icons/ai'
-import { Dialog } from '@base-ui-components/react'
+import { Dialog } from '@base-ui/react'
 
 export interface DeleteReviewDialogProps {
   onConfirm?: () => void

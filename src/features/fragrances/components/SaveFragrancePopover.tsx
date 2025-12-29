@@ -1,5 +1,5 @@
 import React, { useState, type SyntheticEvent } from 'react'
-import { Popover } from '@base-ui-components/react'
+import { Popover } from '@base-ui/react'
 import clsx from 'clsx'
 import type { FragrancePreviewFragment } from '@/generated/graphql'
 import { SaveFragranceProvider } from '../contexts/SaveFragranceContext'

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Dialog } from '@base-ui-components/react'
+import { Dialog } from '@base-ui/react'
 import clsx from 'clsx'
 import { IoClose } from 'react-icons/io5'
 import ErrorFeedback from '@/components/ErrorFeedback'
@@ -40,6 +40,7 @@ const AuthDialogHeading = (props: AuthDialogHeadingProps) => {
           />
         </Dialog.Close>
       </div>
+
       <LogoSvg
         width={48}
         height={48}

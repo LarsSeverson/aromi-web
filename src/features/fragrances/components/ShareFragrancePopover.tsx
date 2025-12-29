@@ -1,5 +1,5 @@
 import React, { useState, type SyntheticEvent } from 'react'
-import { Popover } from '@base-ui-components/react'
+import { Popover } from '@base-ui/react'
 import { GoShare } from 'react-icons/go'
 import BouncyButton from '@/components/BouncyButton'
 import { HiOutlineLink } from 'react-icons/hi'

@@ -1,5 +1,5 @@
 import StarRating from '@/components/StarRating'
-import { Fieldset } from '@base-ui-components/react'
+import { Fieldset } from '@base-ui/react'
 import React from 'react'
 
 export interface RatingSectionProps {

@@ -1,4 +1,4 @@
-import { Field } from '@base-ui-components/react'
+import { Field } from '@base-ui/react'
 import clsx from 'clsx'
 import React from 'react'
 

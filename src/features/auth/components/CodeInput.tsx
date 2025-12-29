@@ -1,4 +1,4 @@
-import { Field } from '@base-ui-components/react'
+import { Field } from '@base-ui/react'
 import React from 'react'
 
 export interface CodeInputProps {
@@ -12,10 +12,10 @@ const CodeInput = (props: CodeInputProps) => {
   return (
     <Field.Root
       name='code'
-      className='flex flex-col max-w-3xs'
+      className='flex max-w-3xs flex-col'
     >
       <Field.Label
-        className='font-semibold text-md mb-1'
+        className='text-md mb-1 font-semibold'
       >
         {label}
       </Field.Label>
@@ -29,11 +29,11 @@ const CodeInput = (props: CodeInputProps) => {
         maxLength={6}
         pattern='[0-9]*'
         autoComplete='one-time-code'
-        className='h-full border-2 rounded-md outline-offset-[-3px] p-2 border-surface2'
+        className='h-full rounded-md border-2 p-2 outline-offset-[-3px]'
       />
 
       <Field.Error
-        className='text-red-600 font-pd text-sm mt-2'
+        className='font-pd mt-2 text-sm text-red-600'
       />
     </Field.Root>
   )

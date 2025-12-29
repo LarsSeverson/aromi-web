@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Field } from '@base-ui-components/react'
+import { Field } from '@base-ui/react'
 import clsx from 'clsx'
 import { IoEyeOffOutline, IoEyeOutline } from 'react-icons/io5'
 
@@ -32,7 +32,7 @@ const PasswordInput = (props: PasswordInputProps) => {
           required
           placeholder={placeholder}
           className={({ valid }) => clsx(
-            'my-1 w-full rounded-md border-2 p-2 pe-[43px]',
+            'my-1 w-full rounded-md border-2 p-2 pe-10.75',
             'tracking-normal text-ellipsis whitespace-nowrap',
             valid === false && 'outline-red-700'
           )}

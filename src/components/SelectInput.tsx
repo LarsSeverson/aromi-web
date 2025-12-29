@@ -1,5 +1,5 @@
 import React from 'react'
-import { Select } from '@base-ui-components/react'
+import { Select } from '@base-ui/react'
 import clsx from 'clsx'
 import { CgCheck, CgChevronDown } from 'react-icons/cg'
 

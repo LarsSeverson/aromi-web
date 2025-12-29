@@ -1,5 +1,5 @@
 import React from 'react'
-import { Menu } from '@base-ui-components/react'
+import { Menu } from '@base-ui/react'
 import UserAvatar from './UserAvatar'
 import MenuPopup from '@/components/MenuPopup'
 import LogOutItem from './LogOutItem'

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Popover } from '@base-ui-components/react'
+import { Popover } from '@base-ui/react'
 import { HiDotsHorizontal } from 'react-icons/hi'
 import ReportFragranceDialog from './ReportFragranceDialog'
 import type { FragranceDetailFragment } from '@/generated/graphql'

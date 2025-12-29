@@ -1,6 +1,6 @@
 import React from 'react'
 import Divider from '@/components/Divider'
-import { Form } from '@base-ui-components/react'
+import { Form } from '@base-ui/react'
 import type { CreateFragranceReviewInput, FragranceDetailFragment } from '@/generated/graphql'
 import { useMyFragranceReview } from '../hooks/useMyFragranceReview'
 import PageBackButton from '@/components/PageBackButton'

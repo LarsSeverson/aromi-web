@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Dialog } from '@base-ui-components/react'
+import { Dialog } from '@base-ui/react'
 import LogInButton from './LogInButton'
 import DialogBackdrop from '@/components/DialogBackdrop'
 import DialogPopup from '@/components/DialogPopup'

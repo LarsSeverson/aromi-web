@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Checkbox } from '@base-ui-components/react'
+import { Checkbox } from '@base-ui/react'
 import CollectionPreviewBar from './CollectionPreviewBar'
 import { BsCheck } from 'react-icons/bs'
 import clsx from 'clsx'

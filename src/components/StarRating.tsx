@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import * as React from 'react'
-import { Field } from '@base-ui-components/react'
+import { Field } from '@base-ui/react'
 import { ratingMap } from './RatingStars'
 import { FaStar } from 'react-icons/fa'
 import clsx from 'clsx'

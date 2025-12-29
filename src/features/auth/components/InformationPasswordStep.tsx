@@ -1,4 +1,4 @@
-import { Form } from '@base-ui-components/react'
+import { Form } from '@base-ui/react'
 import React, { useState } from 'react'
 import EmailInput from './EmailInput'
 import SubmitButton from '@/components/SubmitButton'

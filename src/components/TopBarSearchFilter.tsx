@@ -1,5 +1,5 @@
 import { SEARCH_FILTER_OPTIONS } from '@/utils/constants'
-import { Popover, Radio, RadioGroup } from '@base-ui-components/react'
+import { Popover, Radio, RadioGroup } from '@base-ui/react'
 import { useNavigate, useSearch } from '@tanstack/react-router'
 import clsx from 'clsx'
 import React from 'react'

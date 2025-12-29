@@ -3,7 +3,7 @@ import { useMyFragranceReview } from '../hooks/useMyFragranceReview'
 import TextAreaAutoSize from 'react-textarea-autosize'
 import clsx from 'clsx'
 import { MIN_REVIEW_BODY_LENGTH, ValidFragranceReviewBody } from '../utils/validation'
-import { Field } from '@base-ui-components/react'
+import { Field } from '@base-ui/react'
 import { useAuthHelpers } from '@/features/auth/hooks/useAuthHelpers'
 
 export interface WriteReviewSectionProps {

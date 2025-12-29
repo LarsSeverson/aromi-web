@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Dialog, Field, Form } from '@base-ui-components/react'
+import { Dialog, Field, Form } from '@base-ui/react'
 import clsx from 'clsx'
 import blankFragranceThumbnail from '@/assets/blank-fragrance-thumbnail.svg'
 import { Overlay } from '@/components/Overlay'

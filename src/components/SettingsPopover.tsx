@@ -1,6 +1,6 @@
 import { useAuthContext } from '@/features/auth'
 import { useToastMessage } from '@/hooks/useToastMessage'
-import { Popover } from '@base-ui-components/react'
+import { Popover } from '@base-ui/react'
 import { Link } from '@tanstack/react-router'
 import clsx from 'clsx'
 import React from 'react'

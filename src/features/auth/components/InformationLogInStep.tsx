@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import AuthDialogHeading from './AuthDialogHeading'
-import { Form } from '@base-ui-components/react'
+import { Form } from '@base-ui/react'
 import EmailInput from './EmailInput'
 import PasswordInput from './PasswordInput'
 import { Link } from '@tanstack/react-router'

@@ -1,6 +1,6 @@
 import ConfirmationDialog from '@/components/ConfirmationDialog'
 import type { AllFragranceCollectionFragment } from '@/generated/graphql'
-import { Dialog, Popover } from '@base-ui-components/react'
+import { Dialog, Popover } from '@base-ui/react'
 import clsx from 'clsx'
 import React from 'react'
 import { AiOutlineDelete } from 'react-icons/ai'

@@ -4,7 +4,8 @@ import { getTraitIcon } from '../utils/icons'
 import type { Nullable } from '@/utils/util'
 import TraitBucketInput from './TraitBucketInput'
 import { useMemo, useState } from 'react'
-import { Tooltip } from '@base-ui-components/react'
+import { Tooltip } from '@base-ui/react'
+import { useAuthHelpers } from '@/features/auth'
 
 export interface TraitBucketsInputProps {
   trait: AllFragranceTraitFragment
@@ -17,6 +18,8 @@ const TraitBucketsInput = (props: TraitBucketsInputProps) => {
   const { trait, showLabel = true, myTraitVote, onBucketVote } = props
   const { name, type, stats } = trait
   const { distribution } = stats
+
+  const { checkAuthenticated } = useAuthHelpers()
 
   const [selectedBucket, setSelectedBucket] = useState(myTraitVote?.option?.id)
 
@@ -41,6 +44,9 @@ const TraitBucketsInput = (props: TraitBucketsInputProps) => {
   const maxScore = Math.max(...adjustedDistribution.map(d => d.votes), 1)
 
   const handleOnBucketClick = (typeId: string, optionId: string) => {
+    const isAuthenticated = checkAuthenticated('You need to log in before voting on traits')
+    if (!isAuthenticated) return
+
     setSelectedBucket(prev => {
       const newSelection = prev === optionId ? undefined : optionId
       onBucketVote?.(typeId, newSelection)

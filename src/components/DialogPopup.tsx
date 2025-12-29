@@ -1,4 +1,4 @@
-import { Dialog } from '@base-ui-components/react'
+import { Dialog } from '@base-ui/react'
 import clsx from 'clsx'
 import React from 'react'
 import { isMobile } from 'react-device-detect'
@@ -15,7 +15,7 @@ const DialogPopup = (props: DialogPopupProps) => {
       className={clsx(
         className,
         isMobile && 'inset-0 mt-0 h-screen min-w-screen',
-        'fixed -mt-8 min-w-104 rounded-lg p-6',
+        'fixed -mt-8 min-w-104 rounded-lg p-6 md:pt-2',
         'bg-white',
         'top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2',
         'transition-all duration-150',

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Form } from '@base-ui-components/react'
+import { Form } from '@base-ui/react'
 import { useAuthContext } from '@/features/auth'
 import { getFieldErrors } from '@/utils/validation'
 import { SignUpSchema } from '../utils/validation'

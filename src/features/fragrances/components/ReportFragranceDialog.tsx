@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react'
 import blankFragranceThumbnail from '@/assets/blank-fragrance-thumbnail.svg'
-import { Dialog, Form } from '@base-ui-components/react'
+import { Dialog, Form } from '@base-ui/react'
 import { TbFlag } from 'react-icons/tb'
 import { Overlay } from '@/components/Overlay'
 import clsx from 'clsx'

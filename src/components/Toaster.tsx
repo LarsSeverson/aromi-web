@@ -1,5 +1,5 @@
 import React from 'react'
-import { Toast } from '@base-ui-components/react'
+import { Toast } from '@base-ui/react'
 import { CgClose } from 'react-icons/cg'
 import clsx from 'clsx'
 
@@ -10,9 +10,9 @@ export const Toaster = () => {
     <Toast.Portal>
       <Toast.Viewport
         className={clsx(
-          'fixed z-[1]',
-          'w-[250px] bottom-4 right-4 left-auto top-auto',
-          'sm:bottom-8 sm:right-8 sm:w-[300px]'
+          'fixed z-1',
+          'top-auto right-4 bottom-4 left-auto w-62.5',
+          'sm:right-8 sm:bottom-8 sm:w-75'
         )}
       >
         {toasts
@@ -31,7 +31,7 @@ export const Toaster = () => {
                 'z-[calc(1000-var(--toast-index))]',
                 'mr-0 w-full origin-bottom',
                 '[transform:translateX(var(--toast-swipe-movement-x))_translateY(calc(var(--toast-swipe-movement-y)-(var(--toast-index)*var(--peek))-(var(--shrink)*var(--height))))_scale(var(--scale))]',
-                'rounded-lg border border-surface bg-white text-light bg-clip-padding p-4 shadow-md select-none',
+                'border-surface text-light rounded-lg border bg-white bg-clip-padding p-4 shadow-md select-none',
                 'after:absolute after:top-full after:left-0 after:h-[calc(var(--gap)+1px)] after:w-full after:content-[\'\']',
                 'data-[ending-style]:opacity-0',
                 'data-[expanded]:[transform:translateX(var(--toast-swipe-movement-x))_translateY(calc(var(--offset-y)))]',
@@ -53,13 +53,19 @@ export const Toaster = () => {
 
               <Toast.Content
                 className={clsx(
-                  'overflow-hidden transition-opacity [transition-duration:250ms]',
-                  'data-[behind]:pointer-events-none data-[behind]:opacity-0',
-                  'data-[expanded]:pointer-events-auto data-[expanded]:opacity-100'
+                  'overflow-hidden transition-opacity duration-250',
+                  'data-behind:pointer-events-none data-behind:opacity-0',
+                  'data-expanded:pointer-events-auto data-expanded:opacity-100'
                 )}
               >
-                <Toast.Title className='text-[0.975rem] leading-5 font-medium text-light' />
-                <Toast.Description className='text-[0.925rem] leading-5 text-light3' />
+                <Toast.Title
+                  className='text-[0.975rem] leading-5 font-medium'
+                />
+
+                <Toast.Description
+                  className='text-[0.925rem] leading-5'
+                />
+
                 <Toast.Close
                   aria-label='Close'
                   className={clsx(
