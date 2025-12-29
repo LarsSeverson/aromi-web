@@ -3346,11 +3346,6 @@
       padding-top: calc(var(--spacing) * 2);
     }
   }
-  .md\:pt-3 {
-    @media (width >= 48rem) {
-      padding-top: calc(var(--spacing) * 3);
-    }
-  }
   .md\:pr-3 {
     @media (width >= 48rem) {
       padding-right: calc(var(--spacing) * 3);

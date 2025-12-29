@@ -32,9 +32,9 @@ export const FragranceReviewCard = (props: FragranceReviewCardProps) => {
   return (
     <div
       className={clsx(
+        rest.className,
         'flex w-full flex-col border-b',
-        'gap-4 p-4 md:gap-5 md:p-5',
-        rest.className
+        'gap-4 p-4 md:gap-5 md:p-5'
       )}
       {...rest}
     >
@@ -153,10 +153,6 @@ export const FragranceReviewCard = (props: FragranceReviewCardProps) => {
           )}
         </div>
       )}
-
-      <div
-        className='ml-auto'
-      />
     </div>
   )
 }

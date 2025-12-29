@@ -10,9 +10,8 @@ import FragranceReviewCardSkeleton from '@/features/fragrances/components/Fragra
 import EmptyTab from './EmptyTab'
 
 const SKELETON_COUNT = 4
-const ESTIMATE_HEIGHT = 184
+const ESTIMATE_HEIGHT = 165
 const OVERSCAN = 5
-const GAP = 5
 const END_SCROLL_THRESHOLD = 1000
 
 const emptyReviewsText = (areMyReviews: boolean, username: string) => ({
@@ -42,7 +41,6 @@ const UserReviewsTab = (props: UserReviewsTabProps) => {
   const rowVirtualizer = useWindowVirtualizer({
     count: totalCount,
     overscan: OVERSCAN,
-    gap: GAP,
     estimateSize: () => ESTIMATE_HEIGHT
   })
 
