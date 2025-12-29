@@ -3344,11 +3344,6 @@
       padding-block: calc(var(--spacing) * 2);
     }
   }
-  .md\:py-4 {
-    @media (width >= 48rem) {
-      padding-block: calc(var(--spacing) * 4);
-    }
-  }
   .md\:pt-2 {
     @media (width >= 48rem) {
       padding-top: calc(var(--spacing) * 2);

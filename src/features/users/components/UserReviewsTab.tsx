@@ -100,7 +100,7 @@ const UserReviewsTab = (props: UserReviewsTabProps) => {
                   key={key}
                   data-index={index}
                   ref={rowVirtualizer.measureElement}
-                  className={clsx('absolute top-0 left-0 w-full py-2 md:py-4')}
+                  className={clsx('absolute top-0 left-0 w-full')}
                   style={{
                     transform: `translateY(${virtualItem.start}px)`
                   }}
