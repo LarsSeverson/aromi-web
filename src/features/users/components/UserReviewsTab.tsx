@@ -8,6 +8,7 @@ import { useWindowVirtualizer } from '@tanstack/react-virtual'
 import { FragranceReviewCard } from '@/features/fragrances/components/FragranceReviewCard'
 import FragranceReviewCardSkeleton from '@/features/fragrances/components/FragranceReviewCardSkeleton'
 import EmptyTab from './EmptyTab'
+import clsx from 'clsx'
 
 const SKELETON_COUNT = 4
 const ESTIMATE_HEIGHT = 165
@@ -41,7 +42,8 @@ const UserReviewsTab = (props: UserReviewsTabProps) => {
   const rowVirtualizer = useWindowVirtualizer({
     count: totalCount,
     overscan: OVERSCAN,
-    estimateSize: () => ESTIMATE_HEIGHT
+    estimateSize: () => ESTIMATE_HEIGHT,
+    measureElement: el => el.getBoundingClientRect().height
   })
 
   useEffect(
@@ -96,12 +98,10 @@ const UserReviewsTab = (props: UserReviewsTabProps) => {
               return (
                 <div
                   key={key}
+                  data-index={index}
+                  ref={rowVirtualizer.measureElement}
+                  className={clsx('absolute top-0 left-0 w-full py-2 md:py-4')}
                   style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    width: '100%',
-                    height: `${virtualItem.size}px`,
                     transform: `translateY(${virtualItem.start}px)`
                   }}
                 >

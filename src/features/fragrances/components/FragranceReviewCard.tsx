@@ -137,7 +137,7 @@ export const FragranceReviewCard = (props: FragranceReviewCardProps) => {
           className='flex flex-col gap-1.5 md:gap-2'
         >
           <p
-            className='md:text-md text-sm leading-relaxed text-black/90'
+            className='md:text-md text-sm leading-relaxed whitespace-pre-wrap text-black/90'
           >
             {displayText}
             {(!showFull && isLong) && '...'}
