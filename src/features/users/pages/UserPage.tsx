@@ -13,6 +13,7 @@ import { useFollowUser } from '../hooks/useFollowUser'
 import { useUnfollowUser } from '../hooks/useUnfollowUser'
 import { useDebounce } from '@/hooks/useDebounce'
 import UserRelationshipPopover from '../components/UserRelationshipPopover'
+import { isMobile } from 'react-device-detect'
 
 export interface UserPageProps {
   user: UserPreviewFragment
@@ -164,7 +165,8 @@ export const UserPage = (props: UserPageProps) => {
         >
           <nav
             className={clsx(
-              'sticky top-16 z-20 flex w-full items-center justify-center bg-white pb-1'
+              (isMobile && !isMyProfile) ? 'top-0' : 'top-16',
+              'sticky z-20 flex w-full items-center justify-center bg-white pb-1'
             )}
           >
             <div

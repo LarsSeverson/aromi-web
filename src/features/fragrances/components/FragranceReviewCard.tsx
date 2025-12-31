@@ -16,6 +16,8 @@ export interface FragranceReviewCardProps extends React.HTMLAttributes<HTMLDivEl
   isFragranceFocused?: boolean
 }
 
+const MAX_NEWLINES = 4
+
 export const FragranceReviewCard = (props: FragranceReviewCardProps) => {
   const { review, isFragranceFocused = false, ...rest } = props
   const { author, rating, body, createdAt, fragrance } = review
@@ -26,8 +28,17 @@ export const FragranceReviewCard = (props: FragranceReviewCardProps) => {
 
   const { url, primaryColor } = thumbnail ?? {}
   const showBody = body != null && body.length > 0
-  const isLong = (body?.length ?? 0) > MAX_REVIEW_BODY_DISPLAY_LENGTH
-  const displayText = showFull ? body : body?.slice(0, MAX_REVIEW_BODY_DISPLAY_LENGTH)
+
+  const newlineCount = (body?.match(/\n/g) ?? []).length
+  const isTooLong = (body?.length ?? 0) > MAX_REVIEW_BODY_DISPLAY_LENGTH
+  const hasTooManyLines = newlineCount > MAX_NEWLINES
+  const isLong = isTooLong || hasTooManyLines
+
+  const displayText = showFull
+    ? body
+    : body?.split('\n').slice(0, MAX_NEWLINES + 1)
+      .join('\n')
+      .slice(0, MAX_REVIEW_BODY_DISPLAY_LENGTH)
 
   return (
     <div
@@ -91,12 +102,12 @@ export const FragranceReviewCard = (props: FragranceReviewCardProps) => {
               <Link
                 to={isFragranceFocused ? '/fragrances/$id' : '/users/$id'}
                 params={{ id: isFragranceFocused ? fragrance.id : author.id }}
-                className='md:text-md text-sm font-medium'
+                className='text-sm font-medium md:text-base'
               >
                 {isFragranceFocused ? name : username}
               </Link>
 
-              <span className='text-gray-400'> • </span>
+              <span className='h-min w-min text-xs text-gray-600'> • </span>
 
               <span
                 className='text-[10px] text-gray-500 md:text-xs'
@@ -118,7 +129,7 @@ export const FragranceReviewCard = (props: FragranceReviewCardProps) => {
             rating={rating}
             filledColor={Colors.sinopia}
             emptyColor={Colors.empty}
-            className='mt-0.5 md:size-4.5'
+            className='mt-0.5 md:size-5'
           />
         </div>
 
@@ -129,7 +140,6 @@ export const FragranceReviewCard = (props: FragranceReviewCardProps) => {
             review={review}
           />
         </div>
-
       </div>
 
       {showBody && (
@@ -137,7 +147,7 @@ export const FragranceReviewCard = (props: FragranceReviewCardProps) => {
           className='flex flex-col gap-1.5 md:gap-2'
         >
           <p
-            className='md:text-md text-sm leading-relaxed whitespace-pre-wrap text-black/90'
+            className='text-sm leading-relaxed whitespace-pre-wrap text-black/90 md:text-base'
           >
             {displayText}
             {(!showFull && isLong) && '...'}
@@ -145,7 +155,7 @@ export const FragranceReviewCard = (props: FragranceReviewCardProps) => {
 
           {isLong && (
             <button
-              onClick={setShowFull.bind(null, prev => !prev)}
+              onClick={() => { setShowFull(prev => !prev) }}
               className='cursor-pointer self-start text-xs font-semibold text-black md:text-sm'
             >
               {showFull ? 'Read less' : 'Read more'}

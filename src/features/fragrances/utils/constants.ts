@@ -19,3 +19,4 @@ export const NOTE_LAYER_OPTIONS = [
 ]
 
 export const MAX_REVIEW_BODY_DISPLAY_LENGTH = 500
+export const MAX_REVIEW_BODY_NEWLINES = 4

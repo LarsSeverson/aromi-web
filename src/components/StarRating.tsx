@@ -33,7 +33,7 @@ export const StarRating = (props: StarRatingProps) => {
   return (
     <Field.Root
       name='rating'
-      className="flex flex-col items-center justify-center"
+      className='flex flex-col items-center justify-center'
     >
       <div
         className='flex flex-row-reverse justify-end'
@@ -48,25 +48,26 @@ export const StarRating = (props: StarRatingProps) => {
               <label
                 key={starValue}
                 className={clsx(
-                  'cursor-pointer px-1 transition-colors',
+                  'cursor-pointer px-1.5 transition-colors',
+                  'md:px-1',
                   'hover:text-sinopia text-gray-300'
                 )}
                 onMouseEnter={setHoverValue.bind(null, starValue)}
                 onMouseLeave={setHoverValue.bind(null, 0)}
               >
                 <Field.Control
-                  type="radio"
-                  name="rating"
+                  type='radio'
+                  name='rating'
                   value={starValue}
                   checked={value === starValue}
                   onChange={handleOnStarClick.bind(null, starValue)}
-                  className="sr-only"
+                  className='sr-only'
                 />
 
                 <FaStar
-                  size={40}
                   className={clsx(
-                    'transition-colors',
+                    'h-8 w-8 transition-colors',
+                    'md:h-10 md:w-10',
                     isActive ? 'text-sinopia' : 'text-gray-300'
                   )}
                 />
@@ -76,14 +77,17 @@ export const StarRating = (props: StarRatingProps) => {
       </div>
 
       <Field.Description
-        className='text-md mt-2 text-gray-600'
+        className={clsx(
+          'mt-3 text-xs text-gray-600',
+          'md:mt-2 md:text-base'
+        )}
       >
         {ratingMap[(hoverValue || value) as keyof typeof ratingMap] ?? ratingMap[0]}
       </Field.Description>
 
       <Field.Error
         match='valueMissing'
-        className='mt-2 text-red-700'
+        className='mt-2 text-sm text-red-700'
       >
         Please add a rating before submitting your review
       </Field.Error>

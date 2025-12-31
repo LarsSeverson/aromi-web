@@ -14,6 +14,7 @@ import { useCreateFragranceReview } from '../hooks/useCreateFragranceReview'
 import { useToastMessage } from '@/hooks/useToastMessage'
 import { useNavigate } from '@tanstack/react-router'
 import SubmitButton from '@/components/SubmitButton'
+import clsx from 'clsx'
 
 export interface FragranceReviewPageProps {
   fragrance: FragranceDetailFragment
@@ -56,10 +57,10 @@ const FragranceReviewPage = (props: FragranceReviewPageProps) => {
     setErrors({})
 
     const formData = new FormData(event.currentTarget as HTMLFormElement)
-    const rating = Number(formData.get('rating'))
+    const ratingValue = Number(formData.get('rating'))
     const body = formData.get('body')
 
-    const input = { rating, body }
+    const input = { rating: ratingValue, body }
     const result = ValidFragranceReview.safeParse(input)
 
     if (!result.success) {
@@ -80,26 +81,44 @@ const FragranceReviewPage = (props: FragranceReviewPageProps) => {
 
   return (
     <div
-      className='flex flex-wrap gap-5'
+      className={clsx(
+        'flex flex-col gap-4 px-4 py-6',
+        'md:flex-row md:gap-5 md:px-0 md:py-10'
+      )}
     >
       <div
-        className='flex-1 pl-4'
+        className={clsx(
+          'flex-none',
+          'md:flex-1 md:pl-4'
+        )}
       >
         <PageBackButton
-          className='sticky top-21.75 ml-auto'
+          className={clsx(
+            'static',
+            'md:sticky md:top-24 md:ml-auto'
+          )}
         />
       </div>
 
       <Form
         errors={errors}
-        className='w-full max-w-4xl flex-6 flex-col gap-5 pb-40'
+        className={clsx(
+          'flex w-full flex-col gap-4 pb-20',
+          'md:max-w-4xl md:flex-6 md:gap-5 md:pb-40'
+        )}
         onSubmit={handleOnSubmit}
       >
         <div
-          className='flex h-26 gap-4'
+          className={clsx(
+            'flex h-20 gap-3',
+            'md:h-26 md:gap-4'
+          )}
         >
           <div
-            className='h-full w-20 overflow-hidden rounded-xl'
+            className={clsx(
+              'h-full w-16 shrink-0 overflow-hidden rounded-lg',
+              'md:w-20 md:rounded-xl'
+            )}
           >
             <ProgressiveImage
               src={thumbnail?.url ?? blankPreviewThumbnail}
@@ -109,15 +128,23 @@ const FragranceReviewPage = (props: FragranceReviewPageProps) => {
             />
           </div>
 
-          <div>
+          <div
+            className='flex flex-col justify-center gap-1'
+          >
             <p
-              className='truncate text-xl font-semibold'
+              className={clsx(
+                'text-md truncate leading-tight font-semibold',
+                'md:text-xl'
+              )}
             >
               {name}
             </p>
 
             <p
-              className='text-lg font-light'
+              className={clsx(
+                'mb-auto text-sm font-light',
+                'md:text-lg'
+              )}
             >
               {brand.name}
             </p>
@@ -125,7 +152,7 @@ const FragranceReviewPage = (props: FragranceReviewPageProps) => {
         </div>
 
         <div
-          className='my-3 w-full px-3'
+          className='my-2 w-full md:my-3'
         >
           <Divider
             horizontal
@@ -134,6 +161,7 @@ const FragranceReviewPage = (props: FragranceReviewPageProps) => {
 
         <RatingSection
           defaultRating={rating ?? myReview?.rating}
+          onRatingChange={setHasChanges.bind(null, true)}
         />
 
         <WriteReviewSection
@@ -142,10 +170,10 @@ const FragranceReviewPage = (props: FragranceReviewPageProps) => {
         />
 
         <div
-          className='mt-4 flex w-full items-center justify-center'
+          className='mt-6 flex w-full items-center justify-center'
         >
           <div
-            className='w-full max-w-3xs'
+            className='w-full max-w-xs'
           >
             <SubmitButton
               disabled={!hasChanges || isLoading}
@@ -157,7 +185,7 @@ const FragranceReviewPage = (props: FragranceReviewPageProps) => {
       </Form>
 
       <div
-        className='flex-1'
+        className='hidden md:block md:flex-1'
       />
     </div>
   )

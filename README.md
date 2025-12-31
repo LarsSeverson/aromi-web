@@ -1,54 +1,56 @@
-# React + TypeScript + Vite
+# Aromi Web
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aromi is an open-source fragrance discovery platform. This repository contains the React-based web frontend.
 
-Currently, two official plugins are available:
+## Tech Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Framework: React 19
+- Build Tool: Vite
+- Styling: Tailwind CSS
+- State Management and Data Fetching: Apollo Client (GraphQL)
 
-## Expanding the ESLint configuration
+## Getting Started
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Prerequisites
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+- Node.js v20 or higher
+- Yarn v1.22.22 or higher
+
+### Installation
+
+Clone the repository
+
+```bash
+git clone https://github.com/LarsSeverson/aromi-web.git
+cd aromi-web
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Install dependencies
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+```bash
+yarn install
 ```
+
+Create a `.env` file in the project root
+
+```env
+VITE_API_ENDPOINT=
+```
+
+Start the development server
+
+```bash
+yarn dev
+```
+
+## Contributing
+
+Contributions are welcome. Please follow the ESLint configuration and all defined linting rules.
+
+Fork the repository and create a feature branch from the default branch. Make focused, incremental commits with clear messages that explain the intent of the change. Ensure all checks pass locally before opening a pull request.
+
+When submitting a pull request, provide a concise description of the problem being solved, the approach taken, and any relevant context or tradeoffs. Link related issues when applicable. All pull requests are reviewed by maintainers and may require changes before approval. By contributing, you agree that your work will be licensed under the project’s MIT License.
+
+## License
+
+This project is open source and available under the MIT License.

@@ -5,10 +5,10 @@ import { Link } from '@tanstack/react-router'
 import clsx from 'clsx'
 import React from 'react'
 import { CgClose } from 'react-icons/cg'
-import { FaCog, FaDiscord } from 'react-icons/fa'
+import { FaCog, FaDiscord, FaGithub } from 'react-icons/fa'
 import { HiOutlineLogout } from 'react-icons/hi'
 import Spinner from './Spinner'
-import { DISCORD_INVITE_URL } from '@/utils/constants'
+import { DISCORD_INVITE_URL, GITHUB_REPO_URL } from '@/utils/constants'
 
 export interface SettingsPopoverProps {
   isActive?: boolean
@@ -69,7 +69,7 @@ const SettingsPopover = (props: SettingsPopoverProps) => {
         >
           <Popover.Popup
             className={clsx(
-              'flex max-h-128 w-104 flex-col items-center justify-center overflow-hidden rounded-xl bg-white p-3',
+              'flex w-104 flex-col items-center justify-center overflow-hidden rounded-xl bg-white p-3',
               'shadow-symmetrical'
             )}
           >
@@ -114,21 +114,6 @@ const SettingsPopover = (props: SettingsPopoverProps) => {
                   Support
                 </div>
 
-                <a
-                  href={DISCORD_INVITE_URL}
-                  target='_blank'
-                  rel='noreferrer'
-                  className='text-md flex w-full items-center gap-2 rounded-lg p-3 font-medium hover:bg-black/10'
-                  onClick={setIsOpen.bind(null, false)}
-                >
-                  Join our Discord!
-
-                  <FaDiscord
-                    size={20}
-                    className='text-[#5865F2]'
-                  />
-                </a>
-
                 <Link
                   to='/auth/account-recovery'
                   className='text-md block w-full rounded-lg p-3 font-medium hover:bg-black/10'
@@ -144,6 +129,46 @@ const SettingsPopover = (props: SettingsPopoverProps) => {
                 >
                   Privacy Policy
                 </Link>
+
+                <div
+                  className='mt-5'
+                >
+                  <div
+                    className='text-md p-3 text-black/80'
+                  >
+                    Resources
+                  </div>
+
+                  <a
+                    href={DISCORD_INVITE_URL}
+                    target='_blank'
+                    rel='noreferrer'
+                    className='text-md flex w-full items-center gap-2 rounded-lg p-3 font-medium hover:bg-black/10'
+                    onClick={setIsOpen.bind(null, false)}
+                  >
+                    Join our Discord
+
+                    <FaDiscord
+                      size={20}
+                      className='text-[#5865F2]'
+                    />
+                  </a>
+
+                  <a
+                    href={GITHUB_REPO_URL}
+                    target='_blank'
+                    rel='noreferrer'
+                    className='text-md flex w-full items-center gap-2 rounded-lg p-3 font-medium hover:bg-black/10'
+                    onClick={setIsOpen.bind(null, false)}
+                  >
+                    We're open source
+
+                    <FaGithub
+                      size={20}
+                      className='text-black'
+                    />
+                  </a>
+                </div>
 
                 {isAuthenticated && (
                   <button

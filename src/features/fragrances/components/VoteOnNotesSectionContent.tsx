@@ -24,7 +24,7 @@ const VoteOnNotesSectionContent = (props: VoteOnNotesSectionContentProps) => {
         className='flex items-center justify-between'
       >
         <span
-          className='md:text-md text-sm font-medium text-black/60'
+          className='md:text-md text-xs font-medium text-black/60'
         >
           {currentVotedSize} / {MAX_NOTE_VOTES}
         </span>

@@ -40,6 +40,10 @@ const WriteReviewSection = (props: WriteReviewSectionProps) => {
     helpers.checkAuthenticated('You need to log in to write a review')
   }
 
+  React.useEffect(() => {
+    setBody(myReview?.body ?? '')
+  }, [myReview])
+
   if (isLoading) return null
 
   return (
@@ -47,10 +51,16 @@ const WriteReviewSection = (props: WriteReviewSectionProps) => {
       className='flex w-full flex-col'
     >
       <div
-        className='p-3'
+        className={clsx(
+          'p-2',
+          'md:p-3'
+        )}
       >
         <span
-          className='text-lg font-bold'
+          className={clsx(
+            'text-base font-bold',
+            'md:text-lg'
+          )}
         >
           {myReview == null ? 'Tell us about your experience' : 'Your review'}
         </span>
@@ -58,20 +68,22 @@ const WriteReviewSection = (props: WriteReviewSectionProps) => {
 
       <Field.Root
         name='body'
-        className='mt-3 w-full px-10'
         validate={handleValidate}
+        className={clsx(
+          'mt-2 w-full px-2',
+          'md:mt-3 md:px-10'
+        )}
       >
         <Field.Control
           value={body}
           placeholder='Got compliments or regrets? Tell us here...'
-          // disabled={!isAuthenticated}
-          className={clsx(
-            'hover:border-sinopia min-h-44 w-full resize-none overflow-auto rounded-md border-2 p-4',
-            'focus:border-sinopia transition-colors duration-150 ease-in-out focus:outline-none'
-          )}
           onValueChange={handleOnValueChange}
           onFocus={handleOnFocus}
-
+          className={clsx(
+            'min-h-32 w-full resize-none overflow-auto rounded-lg border-2 p-3 text-sm',
+            'md:text-md md:min-h-44 md:rounded-xl md:p-4',
+            'hover:border-sinopia focus:border-sinopia transition-colors duration-150 ease-in-out focus:outline-none'
+          )}
           render={props => {
             const { style: _style, ...rest } = props
 
@@ -87,12 +99,12 @@ const WriteReviewSection = (props: WriteReviewSectionProps) => {
         />
 
         <Field.Description
-          className={
-            state => clsx(
-              !(state.valid ?? true) && 'text-red-700',
-              'mt-1 text-sm text-black/80 transition-opacity duration-200 ease-in-out',
-              isValidBody && 'opacity-0'
-            )}
+          className={state => clsx(
+            'mt-2 text-xs transition-opacity duration-200 ease-in-out',
+            'md:mt-1 md:text-sm',
+            (state.valid ?? true) ? 'text-black/80' : 'text-red-700',
+            isValidBody && 'opacity-0'
+          )}
         >
           Reviews need to be at least {MIN_REVIEW_BODY_LENGTH} characters.
         </Field.Description>

@@ -4,6 +4,7 @@ import React from 'react'
 import { useDebounce } from '@/hooks/useDebounce'
 import { useSearchNotes } from '@/features/notes'
 import VoteOnNotesPopoverList from './VoteOnNotesPopoverList'
+import { isMobile } from 'react-device-detect'
 
 const VoteOnNotesPopover = () => {
   const {
@@ -48,8 +49,8 @@ const VoteOnNotesPopover = () => {
           value={searchTerm}
           placeholder='Search notes'
           className={clsx(
-            'w-full min-w-70 rounded-lg border-2 px-3 py-2 text-sm outline-none',
-            'md:w-64 md:rounded-xl md:px-3 md:py-2 md:text-sm',
+            'h-8 w-full rounded-lg border-2 px-2 py-1.5 text-sm outline-none',
+            'md:w-64 md:rounded-xl md:px-3 md:py-2',
             'focus:border-sinopia'
           )}
           onValueChange={handleOnInputValueChange}
@@ -64,14 +65,13 @@ const VoteOnNotesPopover = () => {
         <Popover.Portal>
           <Popover.Positioner
             anchor={anchorRef}
-            sideOffset={6}
-            side='top'
-            className='z-50'
+            sideOffset={0}
+            side={isMobile ? 'bottom' : 'top'}
           >
             <Popover.Popup
               initialFocus={false}
               className={clsx(
-                'box-border flex max-h-80 w-[calc(100vw-40px)] flex-col overflow-hidden rounded-lg border bg-white shadow-lg',
+                'box-border flex max-h-80 w-[calc(100vw-10px)] flex-col overflow-hidden rounded-lg border bg-white shadow-lg',
                 'md:max-h-96 md:w-80 md:rounded-lg',
                 'origin-(--transform-origin) transition-[transform,opacity] duration-150',
                 'data-ending-style:scale-95 data-ending-style:opacity-0',

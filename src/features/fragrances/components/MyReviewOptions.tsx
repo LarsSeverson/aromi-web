@@ -34,7 +34,9 @@ const MyReviewOptions = (props: MyReviewOptionsProps) => {
   }
 
   const handleEditReviewClick = () => {
-    navigate({ to: '/fragrances/$id/review', params: { id: fragranceId } })
+    const params = { id: fragranceId }
+    const search = { rating: review.rating }
+    navigate({ to: '/fragrances/$id/review', params, search })
   }
 
   const handleOnConfirmDelete = () => {

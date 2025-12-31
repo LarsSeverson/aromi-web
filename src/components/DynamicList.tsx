@@ -42,7 +42,8 @@ export const DynamicList = <T extends Identifiable, >(props: DynamicListProps<T>
   const minItemWidth = itemWidth * scale
   const ratio = itemHeight / itemWidth
 
-  const colCount = Math.max(1, Math.floor((containerWidth + gap) / (minItemWidth + gap)))
+  const calculatedCols = Math.floor((containerWidth + gap) / (minItemWidth + gap))
+  const colCount = items.length <= 1 ? 1 : Math.max(2, calculatedCols)
 
   const effectiveWidth = (containerWidth - (colCount - 1) * gap) / colCount
   const effectiveHeight = effectiveWidth * ratio
