@@ -5,6 +5,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@100..900&display=swap');
 
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 @tailwind utilities;
 
@@ -49,6 +50,7 @@
   --color-som: #769ae3;
   --color-heart: #e20020;
   --color-empty: #f0f0f0;
+  --color-empty2: #f9f9f9;
   
   --font-inter: "Inter", sans-serif;
   --font-jp: "Noto Sans JP", sans-serif;

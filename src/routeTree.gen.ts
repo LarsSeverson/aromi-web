@@ -13,20 +13,26 @@ import { Route as UsersRouteRouteImport } from './routes/users/route'
 import { Route as SettingsRouteRouteImport } from './routes/settings/route'
 import { Route as SearchRouteRouteImport } from './routes/search/route'
 import { Route as PrivacyRouteRouteImport } from './routes/privacy/route'
+import { Route as PostsRouteRouteImport } from './routes/posts/route'
 import { Route as FragrancesRouteRouteImport } from './routes/fragrances/route'
 import { Route as CollectionsRouteRouteImport } from './routes/collections/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as UsersIndexRouteImport } from './routes/users/index'
 import { Route as SettingsIndexRouteImport } from './routes/settings/index'
 import { Route as SearchIndexRouteImport } from './routes/search/index'
+import { Route as PostsIndexRouteImport } from './routes/posts/index'
 import { Route as FragrancesIndexRouteImport } from './routes/fragrances/index'
 import { Route as AuthAccountRecoveryRouteImport } from './routes/auth/account-recovery'
 import { Route as UsersIdRouteRouteImport } from './routes/users/$id/route'
+import { Route as PostsNewRouteRouteImport } from './routes/posts/new/route'
+import { Route as PostsIdRouteRouteImport } from './routes/posts/$id/route'
 import { Route as FragrancesIdRouteRouteImport } from './routes/fragrances/$id/route'
 import { Route as CollectionsIdRouteRouteImport } from './routes/collections/$id/route'
 import { Route as UsersIdIndexRouteImport } from './routes/users/$id/index'
 import { Route as SettingsProfileIndexRouteImport } from './routes/settings/profile/index'
 import { Route as SettingsAccountIndexRouteImport } from './routes/settings/account/index'
+import { Route as PostsNewIndexRouteImport } from './routes/posts/new/index'
+import { Route as PostsIdIndexRouteImport } from './routes/posts/$id/index'
 import { Route as FragrancesIdIndexRouteImport } from './routes/fragrances/$id/index'
 import { Route as CollectionsIdIndexRouteImport } from './routes/collections/$id/index'
 import { Route as UsersIdReviewsRouteImport } from './routes/users/$id/reviews'
@@ -52,6 +58,11 @@ const SearchRouteRoute = SearchRouteRouteImport.update({
 const PrivacyRouteRoute = PrivacyRouteRouteImport.update({
   id: '/privacy',
   path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PostsRouteRoute = PostsRouteRouteImport.update({
+  id: '/posts',
+  path: '/posts',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FragrancesRouteRoute = FragrancesRouteRouteImport.update({
@@ -84,6 +95,11 @@ const SearchIndexRoute = SearchIndexRouteImport.update({
   path: '/',
   getParentRoute: () => SearchRouteRoute,
 } as any)
+const PostsIndexRoute = PostsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => PostsRouteRoute,
+} as any)
 const FragrancesIndexRoute = FragrancesIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -98,6 +114,16 @@ const UsersIdRouteRoute = UsersIdRouteRouteImport.update({
   id: '/$id',
   path: '/$id',
   getParentRoute: () => UsersRouteRoute,
+} as any)
+const PostsNewRouteRoute = PostsNewRouteRouteImport.update({
+  id: '/new',
+  path: '/new',
+  getParentRoute: () => PostsRouteRoute,
+} as any)
+const PostsIdRouteRoute = PostsIdRouteRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => PostsRouteRoute,
 } as any)
 const FragrancesIdRouteRoute = FragrancesIdRouteRouteImport.update({
   id: '/$id',
@@ -123,6 +149,16 @@ const SettingsAccountIndexRoute = SettingsAccountIndexRouteImport.update({
   id: '/account/',
   path: '/account/',
   getParentRoute: () => SettingsRouteRoute,
+} as any)
+const PostsNewIndexRoute = PostsNewIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => PostsNewRouteRoute,
+} as any)
+const PostsIdIndexRoute = PostsIdIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => PostsIdRouteRoute,
 } as any)
 const FragrancesIdIndexRoute = FragrancesIdIndexRouteImport.update({
   id: '/',
@@ -159,15 +195,19 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/collections': typeof CollectionsRouteRouteWithChildren
   '/fragrances': typeof FragrancesRouteRouteWithChildren
+  '/posts': typeof PostsRouteRouteWithChildren
   '/privacy': typeof PrivacyRouteRoute
   '/search': typeof SearchRouteRouteWithChildren
   '/settings': typeof SettingsRouteRouteWithChildren
   '/users': typeof UsersRouteRouteWithChildren
   '/collections/$id': typeof CollectionsIdRouteRouteWithChildren
   '/fragrances/$id': typeof FragrancesIdRouteRouteWithChildren
+  '/posts/$id': typeof PostsIdRouteRouteWithChildren
+  '/posts/new': typeof PostsNewRouteRouteWithChildren
   '/users/$id': typeof UsersIdRouteRouteWithChildren
   '/auth/account-recovery': typeof AuthAccountRecoveryRoute
   '/fragrances/': typeof FragrancesIndexRoute
+  '/posts/': typeof PostsIndexRoute
   '/search/': typeof SearchIndexRoute
   '/settings/': typeof SettingsIndexRoute
   '/users/': typeof UsersIndexRoute
@@ -176,6 +216,8 @@ export interface FileRoutesByFullPath {
   '/users/$id/reviews': typeof UsersIdReviewsRoute
   '/collections/$id/': typeof CollectionsIdIndexRoute
   '/fragrances/$id/': typeof FragrancesIdIndexRoute
+  '/posts/$id/': typeof PostsIdIndexRoute
+  '/posts/new/': typeof PostsNewIndexRoute
   '/settings/account': typeof SettingsAccountIndexRoute
   '/settings/profile': typeof SettingsProfileIndexRoute
   '/users/$id/': typeof UsersIdIndexRoute
@@ -187,6 +229,7 @@ export interface FileRoutesByTo {
   '/privacy': typeof PrivacyRouteRoute
   '/auth/account-recovery': typeof AuthAccountRecoveryRoute
   '/fragrances': typeof FragrancesIndexRoute
+  '/posts': typeof PostsIndexRoute
   '/search': typeof SearchIndexRoute
   '/settings': typeof SettingsIndexRoute
   '/users': typeof UsersIndexRoute
@@ -194,6 +237,8 @@ export interface FileRoutesByTo {
   '/users/$id/reviews': typeof UsersIdReviewsRoute
   '/collections/$id': typeof CollectionsIdIndexRoute
   '/fragrances/$id': typeof FragrancesIdIndexRoute
+  '/posts/$id': typeof PostsIdIndexRoute
+  '/posts/new': typeof PostsNewIndexRoute
   '/settings/account': typeof SettingsAccountIndexRoute
   '/settings/profile': typeof SettingsProfileIndexRoute
   '/users/$id': typeof UsersIdIndexRoute
@@ -204,15 +249,19 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/collections': typeof CollectionsRouteRouteWithChildren
   '/fragrances': typeof FragrancesRouteRouteWithChildren
+  '/posts': typeof PostsRouteRouteWithChildren
   '/privacy': typeof PrivacyRouteRoute
   '/search': typeof SearchRouteRouteWithChildren
   '/settings': typeof SettingsRouteRouteWithChildren
   '/users': typeof UsersRouteRouteWithChildren
   '/collections/$id': typeof CollectionsIdRouteRouteWithChildren
   '/fragrances/$id': typeof FragrancesIdRouteRouteWithChildren
+  '/posts/$id': typeof PostsIdRouteRouteWithChildren
+  '/posts/new': typeof PostsNewRouteRouteWithChildren
   '/users/$id': typeof UsersIdRouteRouteWithChildren
   '/auth/account-recovery': typeof AuthAccountRecoveryRoute
   '/fragrances/': typeof FragrancesIndexRoute
+  '/posts/': typeof PostsIndexRoute
   '/search/': typeof SearchIndexRoute
   '/settings/': typeof SettingsIndexRoute
   '/users/': typeof UsersIndexRoute
@@ -221,6 +270,8 @@ export interface FileRoutesById {
   '/users/$id/reviews': typeof UsersIdReviewsRoute
   '/collections/$id/': typeof CollectionsIdIndexRoute
   '/fragrances/$id/': typeof FragrancesIdIndexRoute
+  '/posts/$id/': typeof PostsIdIndexRoute
+  '/posts/new/': typeof PostsNewIndexRoute
   '/settings/account/': typeof SettingsAccountIndexRoute
   '/settings/profile/': typeof SettingsProfileIndexRoute
   '/users/$id/': typeof UsersIdIndexRoute
@@ -232,15 +283,19 @@ export interface FileRouteTypes {
     | '/'
     | '/collections'
     | '/fragrances'
+    | '/posts'
     | '/privacy'
     | '/search'
     | '/settings'
     | '/users'
     | '/collections/$id'
     | '/fragrances/$id'
+    | '/posts/$id'
+    | '/posts/new'
     | '/users/$id'
     | '/auth/account-recovery'
     | '/fragrances/'
+    | '/posts/'
     | '/search/'
     | '/settings/'
     | '/users/'
@@ -249,6 +304,8 @@ export interface FileRouteTypes {
     | '/users/$id/reviews'
     | '/collections/$id/'
     | '/fragrances/$id/'
+    | '/posts/$id/'
+    | '/posts/new/'
     | '/settings/account'
     | '/settings/profile'
     | '/users/$id/'
@@ -260,6 +317,7 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/auth/account-recovery'
     | '/fragrances'
+    | '/posts'
     | '/search'
     | '/settings'
     | '/users'
@@ -267,6 +325,8 @@ export interface FileRouteTypes {
     | '/users/$id/reviews'
     | '/collections/$id'
     | '/fragrances/$id'
+    | '/posts/$id'
+    | '/posts/new'
     | '/settings/account'
     | '/settings/profile'
     | '/users/$id'
@@ -276,15 +336,19 @@ export interface FileRouteTypes {
     | '/'
     | '/collections'
     | '/fragrances'
+    | '/posts'
     | '/privacy'
     | '/search'
     | '/settings'
     | '/users'
     | '/collections/$id'
     | '/fragrances/$id'
+    | '/posts/$id'
+    | '/posts/new'
     | '/users/$id'
     | '/auth/account-recovery'
     | '/fragrances/'
+    | '/posts/'
     | '/search/'
     | '/settings/'
     | '/users/'
@@ -293,6 +357,8 @@ export interface FileRouteTypes {
     | '/users/$id/reviews'
     | '/collections/$id/'
     | '/fragrances/$id/'
+    | '/posts/$id/'
+    | '/posts/new/'
     | '/settings/account/'
     | '/settings/profile/'
     | '/users/$id/'
@@ -303,6 +369,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CollectionsRouteRoute: typeof CollectionsRouteRouteWithChildren
   FragrancesRouteRoute: typeof FragrancesRouteRouteWithChildren
+  PostsRouteRoute: typeof PostsRouteRouteWithChildren
   PrivacyRouteRoute: typeof PrivacyRouteRoute
   SearchRouteRoute: typeof SearchRouteRouteWithChildren
   SettingsRouteRoute: typeof SettingsRouteRouteWithChildren
@@ -338,6 +405,13 @@ declare module '@tanstack/react-router' {
       path: '/privacy'
       fullPath: '/privacy'
       preLoaderRoute: typeof PrivacyRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/posts': {
+      id: '/posts'
+      path: '/posts'
+      fullPath: '/posts'
+      preLoaderRoute: typeof PostsRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/fragrances': {
@@ -382,6 +456,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SearchIndexRouteImport
       parentRoute: typeof SearchRouteRoute
     }
+    '/posts/': {
+      id: '/posts/'
+      path: '/'
+      fullPath: '/posts/'
+      preLoaderRoute: typeof PostsIndexRouteImport
+      parentRoute: typeof PostsRouteRoute
+    }
     '/fragrances/': {
       id: '/fragrances/'
       path: '/'
@@ -402,6 +483,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/users/$id'
       preLoaderRoute: typeof UsersIdRouteRouteImport
       parentRoute: typeof UsersRouteRoute
+    }
+    '/posts/new': {
+      id: '/posts/new'
+      path: '/new'
+      fullPath: '/posts/new'
+      preLoaderRoute: typeof PostsNewRouteRouteImport
+      parentRoute: typeof PostsRouteRoute
+    }
+    '/posts/$id': {
+      id: '/posts/$id'
+      path: '/$id'
+      fullPath: '/posts/$id'
+      preLoaderRoute: typeof PostsIdRouteRouteImport
+      parentRoute: typeof PostsRouteRoute
     }
     '/fragrances/$id': {
       id: '/fragrances/$id'
@@ -437,6 +532,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/settings/account'
       preLoaderRoute: typeof SettingsAccountIndexRouteImport
       parentRoute: typeof SettingsRouteRoute
+    }
+    '/posts/new/': {
+      id: '/posts/new/'
+      path: '/'
+      fullPath: '/posts/new/'
+      preLoaderRoute: typeof PostsNewIndexRouteImport
+      parentRoute: typeof PostsNewRouteRoute
+    }
+    '/posts/$id/': {
+      id: '/posts/$id/'
+      path: '/'
+      fullPath: '/posts/$id/'
+      preLoaderRoute: typeof PostsIdIndexRouteImport
+      parentRoute: typeof PostsIdRouteRoute
     }
     '/fragrances/$id/': {
       id: '/fragrances/$id/'
@@ -546,6 +655,46 @@ const FragrancesRouteRouteWithChildren = FragrancesRouteRoute._addFileChildren(
   FragrancesRouteRouteChildren,
 )
 
+interface PostsIdRouteRouteChildren {
+  PostsIdIndexRoute: typeof PostsIdIndexRoute
+}
+
+const PostsIdRouteRouteChildren: PostsIdRouteRouteChildren = {
+  PostsIdIndexRoute: PostsIdIndexRoute,
+}
+
+const PostsIdRouteRouteWithChildren = PostsIdRouteRoute._addFileChildren(
+  PostsIdRouteRouteChildren,
+)
+
+interface PostsNewRouteRouteChildren {
+  PostsNewIndexRoute: typeof PostsNewIndexRoute
+}
+
+const PostsNewRouteRouteChildren: PostsNewRouteRouteChildren = {
+  PostsNewIndexRoute: PostsNewIndexRoute,
+}
+
+const PostsNewRouteRouteWithChildren = PostsNewRouteRoute._addFileChildren(
+  PostsNewRouteRouteChildren,
+)
+
+interface PostsRouteRouteChildren {
+  PostsIdRouteRoute: typeof PostsIdRouteRouteWithChildren
+  PostsNewRouteRoute: typeof PostsNewRouteRouteWithChildren
+  PostsIndexRoute: typeof PostsIndexRoute
+}
+
+const PostsRouteRouteChildren: PostsRouteRouteChildren = {
+  PostsIdRouteRoute: PostsIdRouteRouteWithChildren,
+  PostsNewRouteRoute: PostsNewRouteRouteWithChildren,
+  PostsIndexRoute: PostsIndexRoute,
+}
+
+const PostsRouteRouteWithChildren = PostsRouteRoute._addFileChildren(
+  PostsRouteRouteChildren,
+)
+
 interface SearchRouteRouteChildren {
   SearchIndexRoute: typeof SearchIndexRoute
 }
@@ -608,6 +757,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CollectionsRouteRoute: CollectionsRouteRouteWithChildren,
   FragrancesRouteRoute: FragrancesRouteRouteWithChildren,
+  PostsRouteRoute: PostsRouteRouteWithChildren,
   PrivacyRouteRoute: PrivacyRouteRoute,
   SearchRouteRoute: SearchRouteRouteWithChildren,
   SettingsRouteRoute: SettingsRouteRouteWithChildren,

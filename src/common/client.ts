@@ -39,6 +39,7 @@ export const client = new ApolloClient({
       Query: {
         fields: {
           fragrances: customRelayPagination(),
+          posts: customRelayPagination(),
 
           searchFragrances: customSearchPagination((_, { variables }) => {
             const { term = '' } = (variables?.input as SearchInput) ?? {}
@@ -51,7 +52,9 @@ export const client = new ApolloClient({
           }),
 
           searchAccords: customSearchPagination(),
-          searchNotes: customSearchPagination()
+          searchNotes: customSearchPagination(),
+
+          searchPosts: customSearchPagination()
         }
       },
 

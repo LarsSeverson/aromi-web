@@ -1,14 +1,13 @@
 'use no memo'
 
-import type { UserPreviewFragment } from '@/generated/graphql'
-import React, { useEffect } from 'react'
-import { useMyContext } from '../context/MyContext'
-import { useUserReviews } from '../hooks/useUserReviews'
-import { useWindowVirtualizer } from '@tanstack/react-virtual'
+import type { AllFragranceReviewFragment, UserPreviewFragment } from '@/generated/graphql'
 import { FragranceReviewCard } from '@/features/fragrances/components/FragranceReviewCard'
 import FragranceReviewCardSkeleton from '@/features/fragrances/components/FragranceReviewCardSkeleton'
+import React from 'react'
+import { useMyContext } from '../context/MyContext'
+import { useUserReviews } from '../hooks/useUserReviews'
 import EmptyTab from './EmptyTab'
-import clsx from 'clsx'
+import { FlatList } from '@/components/FlatList'
 
 const SKELETON_COUNT = 4
 const ESTIMATE_HEIGHT = 165
@@ -31,32 +30,36 @@ const UserReviewsTab = (props: UserReviewsTabProps) => {
   const { id, username } = user
 
   const { me } = useMyContext()
+
   const { reviews, isLoading, isLoadingMore, loadMore } = useUserReviews(id)
 
-  const skeletonCount = isLoading || isLoadingMore ? SKELETON_COUNT : 0
-  const totalCount = reviews.length + skeletonCount
   const isEmpty = reviews.length === 0 && !isLoading
+
   const areMyReviews = me?.id === id
+
   const { headline, body } = emptyReviewsText(areMyReviews, username)
 
-  const rowVirtualizer = useWindowVirtualizer({
-    count: totalCount,
-    overscan: OVERSCAN,
-    estimateSize: () => ESTIMATE_HEIGHT,
-    measureElement: el => el.getBoundingClientRect().height
-  })
+  const onRenderReview = React.useCallback(
+    (review: AllFragranceReviewFragment) => (
+      <FragranceReviewCard
+        key={review.id}
+        review={review}
+        isFragranceFocused
+      />
+    ),
+    []
+  )
 
-  useEffect(
+  const onRenderSkeleton = React.useCallback(
+    () => (
+      <FragranceReviewCardSkeleton />
+    ),
+    []
+  )
+
+  const handleOnEndReached = React.useCallback(
     () => {
-      const handleScroll = () => {
-        const { scrollTop, scrollHeight, clientHeight } = document.documentElement
-        if (scrollHeight - scrollTop - clientHeight <= END_SCROLL_THRESHOLD) {
-          loadMore()
-        }
-      }
-
-      window.addEventListener('scroll', handleScroll)
-      return () => { window.removeEventListener('scroll', handleScroll) }
+      loadMore()
     },
     [loadMore]
   )
@@ -77,50 +80,17 @@ const UserReviewsTab = (props: UserReviewsTabProps) => {
       <div
         className='w-full max-w-4xl'
       >
-        <div
-          style={{
-            height: `${rowVirtualizer.getTotalSize()}px`,
-            position: 'relative',
-            width: '100%'
-          }}
-        >
-          {rowVirtualizer
-            .getVirtualItems()
-            .map(virtualItem => {
-              const index = virtualItem.index
-              const isSkeleton = index >= reviews.length
-              const key = isSkeleton
-                ? `skeleton-${index}`
-                : reviews[index].id
-
-              const review = reviews[index]
-
-              return (
-                <div
-                  key={key}
-                  data-index={index}
-                  ref={rowVirtualizer.measureElement}
-                  className={clsx('absolute top-0 left-0 w-full')}
-                  style={{
-                    transform: `translateY(${virtualItem.start}px)`
-                  }}
-                >
-                  {isSkeleton ?
-                    (
-                      <FragranceReviewCardSkeleton />
-                    )
-                    :
-                    (
-                      <FragranceReviewCard
-                        review={review}
-                        isFragranceFocused
-                      />
-                    )
-                  }
-                </div>
-              )
-            })}
-        </div>
+        <FlatList
+          items={reviews}
+          estimateSize={ESTIMATE_HEIGHT}
+          isLoading={isLoading || isLoadingMore}
+          skeletonCount={SKELETON_COUNT}
+          overscan={OVERSCAN}
+          onEndReachedThreshold={END_SCROLL_THRESHOLD}
+          onEndReached={handleOnEndReached}
+          onRenderItem={onRenderReview}
+          onRenderSkeleton={onRenderSkeleton}
+        />
       </div>
     </div>
   )

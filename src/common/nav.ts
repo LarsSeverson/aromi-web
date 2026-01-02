@@ -10,8 +10,8 @@ export const NAV_HOME: NavItem = {
   activePaths: ['/']
 }
 
-export const NAV_SEARCH: NavItem = {
-  activePaths: ['/search/']
+export const NAV_COMMUNITY: NavItem = {
+  activePaths: ['/posts', '/posts/', '/posts/$id', '/posts/$id/']
 }
 
 export const NAV_PROFILE: NavItem = {

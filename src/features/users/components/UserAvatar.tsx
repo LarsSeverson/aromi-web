@@ -16,11 +16,12 @@ const UserAvatar = (props: UserAvatarProps) => {
 
   return (
     <div
-      className='bg-empty aspect-square h-full overflow-hidden rounded-full border'
+      className='bg-empty aspect-square h-full w-full overflow-hidden rounded-full border select-none'
     >
       {showAvatar
         ? (
           <img
+            className='h-full w-full'
             src={avatar?.url ?? undefined}
             alt={`Avatar of ${user?.username ?? 'Unknown user'}`}
             onError={setIsInError.bind(null, true)}

@@ -7,27 +7,20 @@ import SignUpDialog from '../features/auth/components/SignUpDialog'
 import { useAuthContext } from '@/features/auth'
 import AccountMenu from '@/features/users/components/AccountMenu'
 import TopBarSearch from './TopBarSearch'
-import { BrowserView, MobileView, isMobile } from 'react-device-detect'
-import { Link, useChildMatches, useLocation } from '@tanstack/react-router'
-import LogoSvg from './LogoSvg'
-import SettingsPopover from './SettingsPopover'
+import PostButton from '@/features/posts/components/PostButton'
 
 export interface TopBarProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 const TopBar = (props: TopBarProps) => {
-  const { className, ...rest } = props
+  const {
+    className,
+    ...rest
+  } = props
 
-  const { isAuthenticated, me } = useAuthContext()
-
-  const matches = useChildMatches()
-  const location = useLocation()
-
-  const profileMatch = matches.find((m) => m.routeId === '/users/$id')
-  const matchedUserId = profileMatch?.params?.id
-  const isOnMyProfile = matchedUserId != null && matchedUserId === me?.id
-
-  const isRoot = location.pathname === '/'
-  const shouldShowMobile = isRoot || isOnMyProfile
+  const {
+    isAuthenticated,
+    me
+  } = useAuthContext()
 
   const [isScrolled, setIsScrolled] = React.useState(false)
 
@@ -44,67 +37,43 @@ const TopBar = (props: TopBarProps) => {
     }
   }, [])
 
-  if (isMobile && !shouldShowMobile) {
-    return null
-  }
-
   return (
     <header
       className={clsx(
         'flex flex-row p-3',
         'sticky top-0 z-40 h-16 overflow-hidden bg-white',
         'flex items-center justify-center',
-        isScrolled && 'shadow-[0_2px_4px_rgba(0,0,0,0.04)]'
+        isScrolled && 'shadow-[0_2px_4px_rgba(0,0,0,0.04)]',
+        className
       )}
       {...rest}
     >
       <div
         className='h-full flex-1'
-      >
-        <MobileView
-          className='flex h-full'
-        >
-          {!isOnMyProfile && (
-            <Link
-              to='/'
-              className='aspect-square h-full text-lg font-semibold'
-            >
-              <LogoSvg />
-            </Link>
-          )}
-        </MobileView>
-      </div>
+      />
 
-      <BrowserView
+      <div
         className='flex flex-2'
       >
         <TopBarSearch />
-      </BrowserView>
+      </div>
 
       <div
-        className='flex h-full flex-1 flex-row items-center justify-end'
+        className='flex h-full flex-1 flex-row items-center justify-end gap-3'
       >
-        {isAuthenticated && me != null
-          ?
-          (
-            <>
-              <BrowserView
-                className='h-full'
-              >
-                <AccountMenu
-                  user={me}
-                />
-              </BrowserView>
+        <PostButton />
 
-              {isOnMyProfile && (
-                <MobileView>
-                  <SettingsPopover />
-                </MobileView>
-              )}
-            </>
+        {isAuthenticated && me != null
+          ? (
+            <div
+              className='h-full'
+            >
+              <AccountMenu
+                user={me}
+              />
+            </div>
           )
-          :
-          (
+          : (
             <div
               className='flex flex-row gap-2'
             >

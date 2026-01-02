@@ -96,6 +96,24 @@ type Documents = {
     "\n  query Note(\n    $id: ID!\n  ) {\n    note(id: $id) {\n      ...NotePreview\n    }\n  }\n": typeof types.NoteDocument,
     "\n  query Notes(\n    $input: NotePaginationInput\n  ) {\n    notes(input: $input) {\n      edges {\n        node {\n          ...NotePreview\n        }\n      }\n      pageInfo {\n        ...AllPageInfo\n      }\n    }\n  }\n": typeof types.NotesDocument,
     "\n  query SearchNotes(\n    $input: SearchInput\n  ) {\n    searchNotes(input: $input) {\n      edges {\n        node {\n          ...NotePreview\n        }\n        offset\n      }\n      pageInfo {\n        ...AllSearchPageInfo\n      }\n    }\n  }\n": typeof types.SearchNotesDocument,
+    "\n  fragment PostPreview on Post { \n    id\n    type\n\n    title\n    content\n\n    user {\n      ...UserPreview\n    }\n\n    fragrance {\n      ...FragrancePreview\n    }\n\n    assets {\n      ...AllPostAsset\n    }\n\n    commentCount\n\n    votes {\n      ...AllVoteInfo\n    }\n\n    createdAt\n  }\n": typeof types.PostPreviewFragmentDoc,
+    "\n  fragment AllPostAsset on PostAsset { \n    id\n    displayOrder\n    asset {\n      ...AllAsset\n    }\n  }\n": typeof types.AllPostAssetFragmentDoc,
+    "\n  fragment PostCommentShell on PostComment { \n    id\n    depth\n    content\n\n    user {\n      ...UserPreview\n    }\n  }\n": typeof types.PostCommentShellFragmentDoc,
+    "\n  fragment PostCommentPreview on PostComment { \n    id\n\n    depth\n    content\n\n    parent {\n      ...PostCommentShell\n    }\n\n    user {\n      ...UserPreview\n    }\n\n    assets {\n      ...AllPostCommentAsset\n    }\n\n    createdAt\n  }\n": typeof types.PostCommentPreviewFragmentDoc,
+    "\n  fragment AllPostCommentAsset on PostCommentAsset { \n    id\n    displayOrder\n    asset {\n      ...AllAsset\n    }\n  }\n": typeof types.AllPostCommentAssetFragmentDoc,
+    "\n  mutation CreatePost($input: CreatePostInput!) {\n    createPost(input: $input) {\n      ...PostPreview\n    }\n  }\n": typeof types.CreatePostDocument,
+    "\n  mutation UpdatePost($input: UpdatePostInput!) {\n    updatePost(input: $input) {\n      ...PostPreview\n    }\n  }\n": typeof types.UpdatePostDocument,
+    "\n  mutation DeletePost($input: DeletePostInput!) {\n    deletePost(input: $input) {\n      ...PostPreview\n    } \n  }\n": typeof types.DeletePostDocument,
+    "\n  mutation VoteOnPost($input: VoteOnPostInput!) {\n    voteOnPost(input: $input) {\n      ...PostPreview\n    }\n  }\n": typeof types.VoteOnPostDocument,
+    "\n  mutation CreatePostComment($input: CreatePostCommentInput!) {\n    createPostComment(input: $input) {\n      ...PostCommentPreview\n    }\n  }\n": typeof types.CreatePostCommentDocument,
+    "\n  mutation UpdatePostComment($input: UpdatePostCommentInput!) {\n    updatePostComment(input: $input) {\n      ...PostCommentPreview\n    }\n  }\n": typeof types.UpdatePostCommentDocument,
+    "\n  mutation DeletePostComment($input: DeletePostCommentInput!) {\n    deletePostComment(input: $input) {\n      ...PostCommentPreview\n    }\n  }\n": typeof types.DeletePostCommentDocument,
+    "\n  query Post($id: ID!) { \n    post(id: $id) {\n      ...PostPreview\n    }\n  }\n": typeof types.PostDocument,
+    "\n  query Posts($input: PostPaginationInput) {\n    posts(input: $input) {\n      edges {\n        node {\n          ...PostPreview\n        }\n        cursor\n      }\n\n      pageInfo { \n        ...AllPageInfo\n      }\n    }\n  }\n": typeof types.PostsDocument,
+    "\n  query SearchPosts($input: SearchInput) {\n    searchPosts(input: $input) {\n      edges {\n        node {\n          ...PostPreview\n        }\n        offset\n      }\n\n      pageInfo {\n        ...AllSearchPageInfo\n      }\n    }\n  }\n": typeof types.SearchPostsDocument,
+    "\n  query PostComments(\n    $postId: ID!\n    $input: PostCommentPaginationInput\n  ) {\n    post(id: $postId) {\n      comments(input: $input) {\n        edges {\n          node {\n            ...PostCommentPreview\n          }\n          cursor\n        }\n\n        pageInfo {\n          ...AllPageInfo\n        }\n      }\n    }\n  }\n": typeof types.PostCommentsDocument,
+    "\n  query SearchPostComments(\n    $postId: ID!\n    $input: SearchInput\n  ) {\n    post(id: $postId) {\n      searchComments(input: $input) {\n        edges {\n          node {\n            ...PostCommentPreview\n          }\n          offset\n        }\n\n        pageInfo {\n          ...AllSearchPageInfo\n        }\n      }\n    }\n  }\n": typeof types.SearchPostCommentsDocument,
+    "\n  query PostCommentReplies(\n    $parentId: ID!\n    $input: PostCommentPaginationInput\n  ) {\n    postComment(id: $parentId) { \n      comments(input: $input) {\n        edges {\n          node {\n            ...PostCommentPreview\n          }\n          cursor\n        }\n\n        pageInfo {\n          ...AllPageInfo\n        }\n      }\n    }\n  }\n": typeof types.PostCommentRepliesDocument,
     "\n  fragment AllTraitOption on TraitOption {\n    id\n    label\n    score\n  }\n": typeof types.AllTraitOptionFragmentDoc,
     "\n  fragment AllTraitVoteDistribution on TraitVoteDistribution {\n    option {\n      ...AllTraitOption\n    }\n    votes\n  }\n": typeof types.AllTraitVoteDistributionFragmentDoc,
     "\n  fragment AllTraitStats on TraitStats {\n    averageScore \n    totalVotes\n    distribution {\n      ...AllTraitVoteDistribution\n    }\n  }\n": typeof types.AllTraitStatsFragmentDoc,
@@ -205,6 +223,24 @@ const documents: Documents = {
     "\n  query Note(\n    $id: ID!\n  ) {\n    note(id: $id) {\n      ...NotePreview\n    }\n  }\n": types.NoteDocument,
     "\n  query Notes(\n    $input: NotePaginationInput\n  ) {\n    notes(input: $input) {\n      edges {\n        node {\n          ...NotePreview\n        }\n      }\n      pageInfo {\n        ...AllPageInfo\n      }\n    }\n  }\n": types.NotesDocument,
     "\n  query SearchNotes(\n    $input: SearchInput\n  ) {\n    searchNotes(input: $input) {\n      edges {\n        node {\n          ...NotePreview\n        }\n        offset\n      }\n      pageInfo {\n        ...AllSearchPageInfo\n      }\n    }\n  }\n": types.SearchNotesDocument,
+    "\n  fragment PostPreview on Post { \n    id\n    type\n\n    title\n    content\n\n    user {\n      ...UserPreview\n    }\n\n    fragrance {\n      ...FragrancePreview\n    }\n\n    assets {\n      ...AllPostAsset\n    }\n\n    commentCount\n\n    votes {\n      ...AllVoteInfo\n    }\n\n    createdAt\n  }\n": types.PostPreviewFragmentDoc,
+    "\n  fragment AllPostAsset on PostAsset { \n    id\n    displayOrder\n    asset {\n      ...AllAsset\n    }\n  }\n": types.AllPostAssetFragmentDoc,
+    "\n  fragment PostCommentShell on PostComment { \n    id\n    depth\n    content\n\n    user {\n      ...UserPreview\n    }\n  }\n": types.PostCommentShellFragmentDoc,
+    "\n  fragment PostCommentPreview on PostComment { \n    id\n\n    depth\n    content\n\n    parent {\n      ...PostCommentShell\n    }\n\n    user {\n      ...UserPreview\n    }\n\n    assets {\n      ...AllPostCommentAsset\n    }\n\n    createdAt\n  }\n": types.PostCommentPreviewFragmentDoc,
+    "\n  fragment AllPostCommentAsset on PostCommentAsset { \n    id\n    displayOrder\n    asset {\n      ...AllAsset\n    }\n  }\n": types.AllPostCommentAssetFragmentDoc,
+    "\n  mutation CreatePost($input: CreatePostInput!) {\n    createPost(input: $input) {\n      ...PostPreview\n    }\n  }\n": types.CreatePostDocument,
+    "\n  mutation UpdatePost($input: UpdatePostInput!) {\n    updatePost(input: $input) {\n      ...PostPreview\n    }\n  }\n": types.UpdatePostDocument,
+    "\n  mutation DeletePost($input: DeletePostInput!) {\n    deletePost(input: $input) {\n      ...PostPreview\n    } \n  }\n": types.DeletePostDocument,
+    "\n  mutation VoteOnPost($input: VoteOnPostInput!) {\n    voteOnPost(input: $input) {\n      ...PostPreview\n    }\n  }\n": types.VoteOnPostDocument,
+    "\n  mutation CreatePostComment($input: CreatePostCommentInput!) {\n    createPostComment(input: $input) {\n      ...PostCommentPreview\n    }\n  }\n": types.CreatePostCommentDocument,
+    "\n  mutation UpdatePostComment($input: UpdatePostCommentInput!) {\n    updatePostComment(input: $input) {\n      ...PostCommentPreview\n    }\n  }\n": types.UpdatePostCommentDocument,
+    "\n  mutation DeletePostComment($input: DeletePostCommentInput!) {\n    deletePostComment(input: $input) {\n      ...PostCommentPreview\n    }\n  }\n": types.DeletePostCommentDocument,
+    "\n  query Post($id: ID!) { \n    post(id: $id) {\n      ...PostPreview\n    }\n  }\n": types.PostDocument,
+    "\n  query Posts($input: PostPaginationInput) {\n    posts(input: $input) {\n      edges {\n        node {\n          ...PostPreview\n        }\n        cursor\n      }\n\n      pageInfo { \n        ...AllPageInfo\n      }\n    }\n  }\n": types.PostsDocument,
+    "\n  query SearchPosts($input: SearchInput) {\n    searchPosts(input: $input) {\n      edges {\n        node {\n          ...PostPreview\n        }\n        offset\n      }\n\n      pageInfo {\n        ...AllSearchPageInfo\n      }\n    }\n  }\n": types.SearchPostsDocument,
+    "\n  query PostComments(\n    $postId: ID!\n    $input: PostCommentPaginationInput\n  ) {\n    post(id: $postId) {\n      comments(input: $input) {\n        edges {\n          node {\n            ...PostCommentPreview\n          }\n          cursor\n        }\n\n        pageInfo {\n          ...AllPageInfo\n        }\n      }\n    }\n  }\n": types.PostCommentsDocument,
+    "\n  query SearchPostComments(\n    $postId: ID!\n    $input: SearchInput\n  ) {\n    post(id: $postId) {\n      searchComments(input: $input) {\n        edges {\n          node {\n            ...PostCommentPreview\n          }\n          offset\n        }\n\n        pageInfo {\n          ...AllSearchPageInfo\n        }\n      }\n    }\n  }\n": types.SearchPostCommentsDocument,
+    "\n  query PostCommentReplies(\n    $parentId: ID!\n    $input: PostCommentPaginationInput\n  ) {\n    postComment(id: $parentId) { \n      comments(input: $input) {\n        edges {\n          node {\n            ...PostCommentPreview\n          }\n          cursor\n        }\n\n        pageInfo {\n          ...AllPageInfo\n        }\n      }\n    }\n  }\n": types.PostCommentRepliesDocument,
     "\n  fragment AllTraitOption on TraitOption {\n    id\n    label\n    score\n  }\n": types.AllTraitOptionFragmentDoc,
     "\n  fragment AllTraitVoteDistribution on TraitVoteDistribution {\n    option {\n      ...AllTraitOption\n    }\n    votes\n  }\n": types.AllTraitVoteDistributionFragmentDoc,
     "\n  fragment AllTraitStats on TraitStats {\n    averageScore \n    totalVotes\n    distribution {\n      ...AllTraitVoteDistribution\n    }\n  }\n": types.AllTraitStatsFragmentDoc,
@@ -574,6 +610,78 @@ export function gql(source: "\n  query Notes(\n    $input: NotePaginationInput\n
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(source: "\n  query SearchNotes(\n    $input: SearchInput\n  ) {\n    searchNotes(input: $input) {\n      edges {\n        node {\n          ...NotePreview\n        }\n        offset\n      }\n      pageInfo {\n        ...AllSearchPageInfo\n      }\n    }\n  }\n"): (typeof documents)["\n  query SearchNotes(\n    $input: SearchInput\n  ) {\n    searchNotes(input: $input) {\n      edges {\n        node {\n          ...NotePreview\n        }\n        offset\n      }\n      pageInfo {\n        ...AllSearchPageInfo\n      }\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  fragment PostPreview on Post { \n    id\n    type\n\n    title\n    content\n\n    user {\n      ...UserPreview\n    }\n\n    fragrance {\n      ...FragrancePreview\n    }\n\n    assets {\n      ...AllPostAsset\n    }\n\n    commentCount\n\n    votes {\n      ...AllVoteInfo\n    }\n\n    createdAt\n  }\n"): (typeof documents)["\n  fragment PostPreview on Post { \n    id\n    type\n\n    title\n    content\n\n    user {\n      ...UserPreview\n    }\n\n    fragrance {\n      ...FragrancePreview\n    }\n\n    assets {\n      ...AllPostAsset\n    }\n\n    commentCount\n\n    votes {\n      ...AllVoteInfo\n    }\n\n    createdAt\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  fragment AllPostAsset on PostAsset { \n    id\n    displayOrder\n    asset {\n      ...AllAsset\n    }\n  }\n"): (typeof documents)["\n  fragment AllPostAsset on PostAsset { \n    id\n    displayOrder\n    asset {\n      ...AllAsset\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  fragment PostCommentShell on PostComment { \n    id\n    depth\n    content\n\n    user {\n      ...UserPreview\n    }\n  }\n"): (typeof documents)["\n  fragment PostCommentShell on PostComment { \n    id\n    depth\n    content\n\n    user {\n      ...UserPreview\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  fragment PostCommentPreview on PostComment { \n    id\n\n    depth\n    content\n\n    parent {\n      ...PostCommentShell\n    }\n\n    user {\n      ...UserPreview\n    }\n\n    assets {\n      ...AllPostCommentAsset\n    }\n\n    createdAt\n  }\n"): (typeof documents)["\n  fragment PostCommentPreview on PostComment { \n    id\n\n    depth\n    content\n\n    parent {\n      ...PostCommentShell\n    }\n\n    user {\n      ...UserPreview\n    }\n\n    assets {\n      ...AllPostCommentAsset\n    }\n\n    createdAt\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  fragment AllPostCommentAsset on PostCommentAsset { \n    id\n    displayOrder\n    asset {\n      ...AllAsset\n    }\n  }\n"): (typeof documents)["\n  fragment AllPostCommentAsset on PostCommentAsset { \n    id\n    displayOrder\n    asset {\n      ...AllAsset\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation CreatePost($input: CreatePostInput!) {\n    createPost(input: $input) {\n      ...PostPreview\n    }\n  }\n"): (typeof documents)["\n  mutation CreatePost($input: CreatePostInput!) {\n    createPost(input: $input) {\n      ...PostPreview\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation UpdatePost($input: UpdatePostInput!) {\n    updatePost(input: $input) {\n      ...PostPreview\n    }\n  }\n"): (typeof documents)["\n  mutation UpdatePost($input: UpdatePostInput!) {\n    updatePost(input: $input) {\n      ...PostPreview\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation DeletePost($input: DeletePostInput!) {\n    deletePost(input: $input) {\n      ...PostPreview\n    } \n  }\n"): (typeof documents)["\n  mutation DeletePost($input: DeletePostInput!) {\n    deletePost(input: $input) {\n      ...PostPreview\n    } \n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation VoteOnPost($input: VoteOnPostInput!) {\n    voteOnPost(input: $input) {\n      ...PostPreview\n    }\n  }\n"): (typeof documents)["\n  mutation VoteOnPost($input: VoteOnPostInput!) {\n    voteOnPost(input: $input) {\n      ...PostPreview\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation CreatePostComment($input: CreatePostCommentInput!) {\n    createPostComment(input: $input) {\n      ...PostCommentPreview\n    }\n  }\n"): (typeof documents)["\n  mutation CreatePostComment($input: CreatePostCommentInput!) {\n    createPostComment(input: $input) {\n      ...PostCommentPreview\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation UpdatePostComment($input: UpdatePostCommentInput!) {\n    updatePostComment(input: $input) {\n      ...PostCommentPreview\n    }\n  }\n"): (typeof documents)["\n  mutation UpdatePostComment($input: UpdatePostCommentInput!) {\n    updatePostComment(input: $input) {\n      ...PostCommentPreview\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation DeletePostComment($input: DeletePostCommentInput!) {\n    deletePostComment(input: $input) {\n      ...PostCommentPreview\n    }\n  }\n"): (typeof documents)["\n  mutation DeletePostComment($input: DeletePostCommentInput!) {\n    deletePostComment(input: $input) {\n      ...PostCommentPreview\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  query Post($id: ID!) { \n    post(id: $id) {\n      ...PostPreview\n    }\n  }\n"): (typeof documents)["\n  query Post($id: ID!) { \n    post(id: $id) {\n      ...PostPreview\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  query Posts($input: PostPaginationInput) {\n    posts(input: $input) {\n      edges {\n        node {\n          ...PostPreview\n        }\n        cursor\n      }\n\n      pageInfo { \n        ...AllPageInfo\n      }\n    }\n  }\n"): (typeof documents)["\n  query Posts($input: PostPaginationInput) {\n    posts(input: $input) {\n      edges {\n        node {\n          ...PostPreview\n        }\n        cursor\n      }\n\n      pageInfo { \n        ...AllPageInfo\n      }\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  query SearchPosts($input: SearchInput) {\n    searchPosts(input: $input) {\n      edges {\n        node {\n          ...PostPreview\n        }\n        offset\n      }\n\n      pageInfo {\n        ...AllSearchPageInfo\n      }\n    }\n  }\n"): (typeof documents)["\n  query SearchPosts($input: SearchInput) {\n    searchPosts(input: $input) {\n      edges {\n        node {\n          ...PostPreview\n        }\n        offset\n      }\n\n      pageInfo {\n        ...AllSearchPageInfo\n      }\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  query PostComments(\n    $postId: ID!\n    $input: PostCommentPaginationInput\n  ) {\n    post(id: $postId) {\n      comments(input: $input) {\n        edges {\n          node {\n            ...PostCommentPreview\n          }\n          cursor\n        }\n\n        pageInfo {\n          ...AllPageInfo\n        }\n      }\n    }\n  }\n"): (typeof documents)["\n  query PostComments(\n    $postId: ID!\n    $input: PostCommentPaginationInput\n  ) {\n    post(id: $postId) {\n      comments(input: $input) {\n        edges {\n          node {\n            ...PostCommentPreview\n          }\n          cursor\n        }\n\n        pageInfo {\n          ...AllPageInfo\n        }\n      }\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  query SearchPostComments(\n    $postId: ID!\n    $input: SearchInput\n  ) {\n    post(id: $postId) {\n      searchComments(input: $input) {\n        edges {\n          node {\n            ...PostCommentPreview\n          }\n          offset\n        }\n\n        pageInfo {\n          ...AllSearchPageInfo\n        }\n      }\n    }\n  }\n"): (typeof documents)["\n  query SearchPostComments(\n    $postId: ID!\n    $input: SearchInput\n  ) {\n    post(id: $postId) {\n      searchComments(input: $input) {\n        edges {\n          node {\n            ...PostCommentPreview\n          }\n          offset\n        }\n\n        pageInfo {\n          ...AllSearchPageInfo\n        }\n      }\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  query PostCommentReplies(\n    $parentId: ID!\n    $input: PostCommentPaginationInput\n  ) {\n    postComment(id: $parentId) { \n      comments(input: $input) {\n        edges {\n          node {\n            ...PostCommentPreview\n          }\n          cursor\n        }\n\n        pageInfo {\n          ...AllPageInfo\n        }\n      }\n    }\n  }\n"): (typeof documents)["\n  query PostCommentReplies(\n    $parentId: ID!\n    $input: PostCommentPaginationInput\n  ) {\n    postComment(id: $parentId) { \n      comments(input: $input) {\n        edges {\n          node {\n            ...PostCommentPreview\n          }\n          cursor\n        }\n\n        pageInfo {\n          ...AllPageInfo\n        }\n      }\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

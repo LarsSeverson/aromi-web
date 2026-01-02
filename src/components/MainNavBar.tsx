@@ -6,9 +6,10 @@ import clsx from 'clsx'
 import LogoSvg from './LogoSvg'
 import HomeSvg from './HomeSvg'
 import ProfileSvg from './ProfileSvg'
-import { NAV_HOME, NAV_PROFILE } from '@/common/nav'
+import { NAV_COMMUNITY, NAV_HOME, NAV_PROFILE } from '@/common/nav'
 import { useMyContext } from '@/features/users'
 import SettingsPopover from './SettingsPopover'
+import { HiUserGroup } from 'react-icons/hi'
 
 export interface MainNavBarProps {
   className?: string
@@ -70,20 +71,19 @@ const MainNavBar = (props: MainNavBarProps) => {
         />
       </Link>
 
-      {/* <Link
-        to='/search'
+      <Link
+        to='/posts'
         className={clsx(
           'relative flex items-center justify-center p-3 backdrop-brightness-100 select-none hover:backdrop-brightness-90',
           'transition-transform active:scale-95',
-          'aspect-square rounded-xl',
-          NAV_SEARCH.activePaths.includes(currentPath) && 'bg-black/10'
+          'aspect-square overflow-hidden rounded-xl',
+          NAV_COMMUNITY.activePaths.includes(currentPath) && 'bg-black/10'
         )}
       >
-        <SearchSvg
-          width={20}
-          height={20}
+        <HiUserGroup
+          size={25}
         />
-      </Link> */}
+      </Link>
 
       <Link
         to='/users'

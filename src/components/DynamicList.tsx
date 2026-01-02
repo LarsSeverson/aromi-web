@@ -43,13 +43,21 @@ export const DynamicList = <T extends Identifiable, >(props: DynamicListProps<T>
   const ratio = itemHeight / itemWidth
 
   const calculatedCols = Math.floor((containerWidth + gap) / (minItemWidth + gap))
-  const colCount = items.length <= 1 ? 1 : Math.max(2, calculatedCols)
+  const colCount = Math.max(2, calculatedCols)
 
   const effectiveWidth = (containerWidth - (colCount - 1) * gap) / colCount
   const effectiveHeight = effectiveWidth * ratio
 
-  const remaining = items.length % colCount
-  const skeletonCount = isLoading ? (remaining === 0 ? 0 : colCount - remaining) + colCount : 0
+  const getSkeletonCount = () => {
+    if (!isLoading) return 0
+    if (items.length === 0) return colCount * 2
+
+    const remainder = items.length % colCount
+    const itemsToCompleteRow = remainder === 0 ? 0 : colCount - remainder
+    return itemsToCompleteRow + colCount
+  }
+
+  const skeletonCount = getSkeletonCount()
   const total = items.length + skeletonCount
   const rowCount = Math.ceil(total / colCount)
 

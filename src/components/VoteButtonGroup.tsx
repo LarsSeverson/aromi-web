@@ -9,11 +9,20 @@ import AuthButton from '@/features/auth/components/AuthButton'
 
 export interface VoteButtonGroupProps extends React.HTMLAttributes<HTMLDivElement> {
   votes: AllVoteInfoFragment
+  noSeparator?: boolean
   onVote?: (vote: number) => void | Promise<void>
 }
 
 export const VoteButtonGroup = (props: VoteButtonGroupProps) => {
-  const { votes, onVote, className, ...rest } = props
+  const {
+    votes,
+    noSeparator = false,
+    onVote,
+
+    className,
+    ...rest
+  } = props
+
   const { score, myVote } = votes
   const myVoteNormalized = myVote ?? VOTE_TYPES.NOVOTE
 
@@ -58,15 +67,16 @@ export const VoteButtonGroup = (props: VoteButtonGroupProps) => {
   const getBackgroundColor = () => {
     if (currentVote === VOTE_TYPES.UPVOTE) return 'bg-sinopia border-sinopia'
     if (currentVote === VOTE_TYPES.DOWNVOTE) return 'bg-som border-som'
-    return 'bg-white border-gray-200'
+    const fromClassName = (className?.includes('bg-') ?? false) ? '' : 'bg-white'
+    return clsx(fromClassName, 'border-black/10')
   }
 
   return (
     <div
       className={clsx(
+        className,
         'flex flex-row items-center rounded-full border',
-        getBackgroundColor(),
-        className
+        getBackgroundColor()
       )}
       {...rest}
     >
@@ -103,16 +113,18 @@ export const VoteButtonGroup = (props: VoteButtonGroupProps) => {
         {currentScore === 0 ? 'vote' : formatNumber(currentScore)}
       </span>
 
-      <div
-        className='py-2 md:px-1'
-      >
-        <Divider
-          className={clsx(
-            'h-3 md:h-4',
-            currentVote === VOTE_TYPES.NOVOTE ? '' : 'bg-white/50'
-          )}
-        />
-      </div>
+      {!noSeparator && (
+        <div
+          className='py-2 md:px-1'
+        >
+          <Divider
+            className={clsx(
+              'h-3 md:h-4',
+              currentVote === VOTE_TYPES.NOVOTE ? '' : 'bg-white/50'
+            )}
+          />
+        </div>
+      )}
 
       <AuthButton
         // eslint-disable-next-line tailwindcss/no-custom-classname
