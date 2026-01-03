@@ -9,6 +9,7 @@ export interface TextInputProps extends Field.Control.Props {
 const TextInput = (props: TextInputProps) => {
   const {
     label = '',
+    className,
     ...rest
   } = props
 
@@ -26,6 +27,7 @@ const TextInput = (props: TextInputProps) => {
       <Field.Control
         className={({ valid }) =>
           clsx(
+            className,
             'my-1 rounded-md border-2 p-2',
             valid === false && 'outline-red-600'
           )}
@@ -33,7 +35,7 @@ const TextInput = (props: TextInputProps) => {
       />
 
       <Field.Error
-        className='text-md ml-1 font-medium text-red-600'
+        className='text-md ml-2 font-medium text-red-600'
       />
     </Field.Root>
   )

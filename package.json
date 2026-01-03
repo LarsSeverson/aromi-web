@@ -5,6 +5,7 @@
   "type": "module",
   "license": "MIT",
   "scripts": {
+    "start": "yarn run dev",
     "dev": "concurrently \"vite\" \"yarn run gen:css\"",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
@@ -28,6 +29,7 @@
     "clsx": "^2.1.1",
     "graphql": "^16.10.0",
     "lodash": "^4.17.21",
+    "nanoid": "^5.1.6",
     "neverthrow": "^8.2.0",
     "react": "^19.0.0",
     "react-device-detect": "^2.2.3",

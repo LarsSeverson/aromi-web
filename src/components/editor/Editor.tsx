@@ -1,16 +1,8 @@
-import {
-  useEditor,
-  EditorContent
-} from '@tiptap/react'
+import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import Placeholder from '@tiptap/extension-placeholder'
 import { clsx } from 'clsx'
-import {
-  MdFormatBold,
-  MdFormatItalic,
-  MdFormatListBulleted,
-  MdFormatListNumbered
-} from 'react-icons/md'
+import { MdFormatBold, MdFormatItalic, MdFormatListBulleted, MdFormatListNumbered } from 'react-icons/md'
 import ToolbarButton from './ToolbarButton'
 
 export interface EditorProps {
@@ -45,6 +37,46 @@ const Editor = (props: EditorProps) => {
     }
   })
 
+  const handleOnBoldClick = () => {
+    if (editor == null) return
+
+    editor
+      .chain()
+      .focus()
+      .toggleBold()
+      .run()
+  }
+
+  const handleOnItalicClick = () => {
+    if (editor == null) return
+
+    editor
+      .chain()
+      .focus()
+      .toggleItalic()
+      .run()
+  }
+
+  const handleOnBulletListClick = () => {
+    if (editor == null) return
+
+    editor
+      .chain()
+      .focus()
+      .toggleBulletList()
+      .run()
+  }
+
+  const handleOnOrderedListClick = () => {
+    if (editor == null) return
+
+    editor
+      .chain()
+      .focus()
+      .toggleOrderedList()
+      .run()
+  }
+
   if (editor == null) {
     return null
   }
@@ -52,30 +84,26 @@ const Editor = (props: EditorProps) => {
   return (
     <div
       className={clsx(
-        'w-full overflow-hidden rounded-2xl border border-slate-200 bg-white',
-        'focus-within:border-sinopia'
+        'w-full overflow-hidden rounded-2xl border bg-white',
+        'focus-within:outline-sinopia focus-within:outline-2'
       )}
     >
       <div
         className={clsx(
-          'flex items-center justify-between border-b border-slate-100 px-2 py-1.5'
+          'flex items-center justify-between border-b px-2 py-1.5'
         )}
       >
         <div
           className="flex items-center gap-0.5 md:gap-1"
         >
           <ToolbarButton
-            onClick={() => editor.chain().focus()
-              .toggleBold()
-              .run()}
+            onClick={handleOnBoldClick}
             active={editor.isActive('bold')}
             icon={MdFormatBold}
           />
 
           <ToolbarButton
-            onClick={() => editor.chain().focus()
-              .toggleItalic()
-              .run()}
+            onClick={handleOnItalicClick}
             active={editor.isActive('italic')}
             icon={MdFormatItalic}
           />
@@ -85,17 +113,13 @@ const Editor = (props: EditorProps) => {
           />
 
           <ToolbarButton
-            onClick={() => editor.chain().focus()
-              .toggleBulletList()
-              .run()}
+            onClick={handleOnBulletListClick}
             active={editor.isActive('bulletList')}
             icon={MdFormatListBulleted}
           />
 
           <ToolbarButton
-            onClick={() => editor.chain().focus()
-              .toggleOrderedList()
-              .run()}
+            onClick={handleOnOrderedListClick}
             active={editor.isActive('orderedList')}
             icon={MdFormatListNumbered}
           />

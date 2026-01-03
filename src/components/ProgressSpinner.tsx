@@ -17,7 +17,10 @@ const ProgressSpinner = (props: ProgressSpinnerProps) => {
   return (
     <div className='inset-0 flex items-center justify-end'>
       <div className={clsx('aspect-square', `h-${size}`)}>
-        <svg viewBox='0 0 100 100' className='w-full h-full'>
+        <svg
+          viewBox='0 0 100 100'
+          className='h-full w-full'
+        >
           <circle
             cx='50'
             cy='50'

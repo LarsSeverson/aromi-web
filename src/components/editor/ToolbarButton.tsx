@@ -16,7 +16,7 @@ const ToolbarButton = (props: ToolbarButtonProps) => {
       onClick={onClick}
       className={clsx(
         'flex h-8 w-8 items-center justify-center rounded transition-colors',
-        'hover:bg-slate-200 focus:outline-none',
+        'hover:bg-empty cursor-pointer',
         active ? 'bg-slate-200 text-slate-900' : 'text-slate-500'
       )}
     >

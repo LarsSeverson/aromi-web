@@ -7,8 +7,8 @@ export interface UploadingAsset {
   errorMessage: string | null
 }
 
-export interface CombinedUploadAsset<O extends { id: string }> {
-  id: string
+export interface CombinedUploadAsset<O> {
+  id?: string
   type?: 'upload' | 'existing'
   file?: File
   loadingProgress?: number | null

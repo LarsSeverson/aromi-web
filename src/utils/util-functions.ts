@@ -11,3 +11,7 @@ export const pluralizer = (count: number, str: string) => {
   if (count === 1) return str
   return `${str}s`
 }
+
+export const allCapsToFirstCap = (word: string) => {
+  return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+}
