@@ -1,12 +1,13 @@
 import ProgressSpinner from '@/components/ProgressSpinner'
 import clsx from 'clsx'
 import React from 'react'
+import { CgClose } from 'react-icons/cg'
 
 export interface ImageUploadCardProps extends React.HTMLAttributes<HTMLDivElement> {
   src?: string
   alt?: string
   uploadProgress?: number
-  onRemoveClick?: () => void
+  onRemoveClick?: (event: React.MouseEvent) => void
 }
 
 const ImageUploadCard = (props: ImageUploadCardProps) => {
@@ -18,6 +19,11 @@ const ImageUploadCard = (props: ImageUploadCardProps) => {
     className,
     ...rest
   } = props
+
+  const handleOnButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation()
+    onRemoveClick?.(e)
+  }
 
   return (
     <div
@@ -35,6 +41,16 @@ const ImageUploadCard = (props: ImageUploadCardProps) => {
             'h-full w-full object-cover'
           )}
         />
+      )}
+
+      {src != null && (
+        <button
+          type='button'
+          className='absolute top-2 right-2 z-20 cursor-pointer rounded-full bg-black/50 p-1 text-white hover:bg-black/70'
+          onClick={handleOnButtonClick}
+        >
+          <CgClose />
+        </button>
       )}
 
       {uploadProgress != null && uploadProgress < 100 && (

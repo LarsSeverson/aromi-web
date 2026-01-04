@@ -4,8 +4,15 @@ import NewPostTitle from '../components/NewPostTitle'
 import NewPostContent from '../components/NewPostContent'
 import NewPostType from '../components/NewPostType'
 import NewPostMedia from '../components/NewPostMedia'
+import { useNewPostContext } from '../contexts/NewPostContext'
+import { PostType } from '@/generated/graphql'
+import NewPostFragrance from '../components/NewPostFragrance'
 
 const NewPostPage = () => {
+  const { type } = useNewPostContext()
+
+  const showMedia = type === PostType.Media
+  const showFragrance = type === PostType.Fragrance
 
   return (
     <div
@@ -26,7 +33,8 @@ const NewPostPage = () => {
       >
         <NewPostType />
         <NewPostTitle />
-        <NewPostMedia />
+        {showMedia && <NewPostMedia />}
+        {showFragrance && <NewPostFragrance />}
         <NewPostContent />
       </Form>
     </div>

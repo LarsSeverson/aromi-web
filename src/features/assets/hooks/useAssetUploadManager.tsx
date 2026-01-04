@@ -1,9 +1,9 @@
-import { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { useStageAsset } from './useStageAsset'
 import type { AssetKey } from '@/generated/graphql'
 import { nanoid } from 'nanoid'
 import type { ServerErrorInfo } from '@/utils/error'
-import { useToastMessage } from '@/hooks/useToastMessage'
+import { useDeleteAsset } from './useDeleteAsset'
 
 export interface UploadTask {
   id: string
@@ -14,121 +14,170 @@ export interface UploadTask {
 }
 
 export interface AssetUploadManagerOptions {
+  maxUploads?: number
   deleteAfterUpload?: boolean
   deleteAfterError?: boolean
+  onError?: (file: File, errorInfo: ServerErrorInfo) => void
 }
 
 export const useAssetUploadManager = (options?: AssetUploadManagerOptions) => {
   const {
+    maxUploads = Infinity,
     deleteAfterUpload = false,
-    deleteAfterError = false
+    deleteAfterError = false,
+
+    onError
   } = options ?? {}
 
   const [tasks, setTasks] = useState<UploadTask[]>([])
 
-  const { toastError } = useToastMessage()
   const { stageAssetWithFile } = useStageAsset()
+  const { deleteAsset } = useDeleteAsset()
 
-  const handleOnProgress = (id: string, pct: number) => {
-    setTasks(
-      prev => prev.map(task => (
-        task.id === id
-          ? {
-            ...task,
-            progress: pct
-          }
-          : task
-      ))
-    )
-  }
+  const handleOnProgress = React.useCallback(
+    (id: string, pct: number) => {
+      setTasks(
+        prev => prev.map(task => (
+          task.id === id
+            ? {
+              ...task,
+              progress: pct
+            }
+            : task
+        ))
+      )
+    },
+    []
+  )
 
-  const handleOnSuccess = (id: string, assetId: string) => {
-    if (deleteAfterUpload) {
-      setTasks(prev => prev.filter(t => t.id !== id))
-      return
-    }
+  const handleOnSuccess = React.useCallback(
+    (id: string, assetId: string) => {
+      if (deleteAfterUpload) {
+        setTasks(prev => prev.filter(t => t.id !== id))
+        return
+      }
 
-    setTasks(
-      prev => prev.map(task => (
-        task.id === id
-          ? {
-            ...task,
-            status: 'success',
-            assetId
-          }
-          : task
-      ))
-    )
-  }
+      setTasks(
+        prev => prev.map(task => (
+          task.id === id
+            ? {
+              ...task,
+              status: 'success',
+              assetId
+            }
+            : task
+        ))
+      )
+    },
+    [deleteAfterUpload]
+  )
 
-  const handleOnError = (id: string, errorInfo: ServerErrorInfo) => {
-    if (deleteAfterError) {
-      toastError(errorInfo.message)
-      setTasks(prev => prev.filter(t => t.id !== id))
-      return
-    }
+  const handleOnError = React.useCallback(
+    (id: string, errorInfo: ServerErrorInfo) => {
+      const task = tasks.find(t => t.id === id)
 
-    setTasks(
-      prev => prev.map(task => (
-        task.id === id
-          ? {
-            ...task,
-            status: 'error'
-          }
-          : task
-      ))
-    )
-  }
+      if (task != null) {
+        onError?.(task.file, errorInfo)
+      }
 
-  const uploadFile = (
-    file: File,
-    key: AssetKey
-  ) => {
-    const id = nanoid()
+      if (deleteAfterError) {
+        setTasks(prev => prev.filter(t => t.id !== id))
+        return
+      }
 
-    const newTask: UploadTask = {
-      id,
-      file,
-      progress: 0,
-      status: 'uploading'
-    }
+      setTasks(
+        prev => prev.map(task => (
+          task.id === id
+            ? {
+              ...task,
+              status: 'error'
+            }
+            : task
+        ))
+      )
+    },
+    [deleteAfterError, onError, tasks]
+  )
 
-    setTasks(prev => [
-      ...prev,
-      newTask
-    ])
+  const handleDelete = useCallback(
+    (task?: UploadTask) => {
+      if (task?.assetId != null) {
+        deleteAsset({ id: task.assetId })
+      }
+    },
+    [deleteAsset]
+  )
 
-    return stageAssetWithFile(
-      file,
-      key,
-      pct => { handleOnProgress(id, pct) }
-    )
-      .andTee(data => {
-        handleOnSuccess(id, data.assetId)
+  const uploadFile = React.useCallback(
+    (
+      file: File,
+      key: AssetKey
+    ) => {
+      const id = nanoid()
+
+      const newTask: UploadTask = {
+        id,
+        file,
+        progress: 0,
+        status: 'uploading'
+      }
+
+      setTasks(prev => {
+        const nextTasks = [...prev]
+
+        if (nextTasks.length >= maxUploads) {
+          const ejected = nextTasks.shift()
+          handleDelete(ejected)
+        }
+
+        nextTasks.push(newTask)
+
+        return nextTasks
       })
-      .orTee(data => {
-        handleOnError(id, data)
+
+      return stageAssetWithFile(
+        file,
+        key,
+        pct => { handleOnProgress(id, pct) }
+      )
+        .andTee(data => {
+          handleOnSuccess(id, data.assetId)
+        })
+        .orTee(data => {
+          handleOnError(id, data)
+        })
+        .map(data => ({ data, task: newTask }))
+    },
+    [handleDelete, handleOnError, handleOnProgress, handleOnSuccess, maxUploads, stageAssetWithFile]
+  )
+
+  const deleteTask = React.useCallback(
+    (id: string) => {
+      setTasks(prev => {
+        const task = prev.find(t => t.id === id)
+        handleDelete(task)
+        return prev.filter(t => t.id !== id)
       })
-      .map(data => ({ data, task: newTask }))
-  }
+    },
+    [handleDelete]
+  )
 
-  const deleteTask = (id: string) => {
-    setTasks(prev => prev.filter(t => t.id !== id))
-  }
+  const moveTask = React.useCallback(
+    (
+      fromIndex: number,
+      toIndex: number
+    ) => {
+      setTasks(prev => {
+        const newTasks = [...prev]
 
-  const moveTask = (
-    fromIndex: number,
-    toIndex: number
-  ) => {
-    setTasks(prev => {
-      const newTasks = [...prev]
+        const [movedItem] = newTasks.splice(fromIndex, 1)
+        newTasks.splice(toIndex, 0, movedItem)
 
-      const [movedItem] = newTasks.splice(fromIndex, 1)
-      newTasks.splice(toIndex, 0, movedItem)
-
-      return newTasks
-    })
-  }
+        return newTasks
+      })
+    },
+    []
+  )
 
   return {
     tasks,

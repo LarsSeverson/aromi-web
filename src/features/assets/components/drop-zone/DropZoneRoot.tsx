@@ -2,7 +2,12 @@ import React from 'react'
 import { DropZoneProvider } from '../../contexts/providers/DropZoneProvider'
 import type { DropZoneFileRejection } from './types'
 
-export interface DropZoneRootProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface DropZoneState {
+  isDragging: boolean
+  isDisabled: boolean
+}
+
+export interface DropZoneRootProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'className'> {
   isTrigger?: boolean
   isDisabled?: boolean
   allowMultiple?: boolean
@@ -10,6 +15,8 @@ export interface DropZoneRootProps extends React.HTMLAttributes<HTMLDivElement> 
 
   maxFiles?: number
   maxFileSizeInBytes?: number
+
+  className?: string | ((state: DropZoneState) => string)
 
   onFilesDropped?: (files: File[]) => void
   onFilesRejected?: (rejected: DropZoneFileRejection[]) => void
@@ -25,8 +32,11 @@ const DropZoneRoot = (props: DropZoneRootProps) => {
     maxFiles = 4,
     maxFileSizeInBytes = 20 * 1024 * 1024, // 20 MB
 
+    className,
+
     onFilesDropped,
     onFilesRejected,
+
     children,
     ...rest
   } = props
@@ -35,6 +45,46 @@ const DropZoneRoot = (props: DropZoneRootProps) => {
   const dragCounter = React.useRef(0)
 
   const [isDragging, setIsDragging] = React.useState(false)
+
+  const state: DropZoneState = {
+    isDragging,
+    isDisabled
+  }
+
+  const resolvedClassName = typeof className === 'function'
+    ? className(state)
+    : className
+
+  const validateFiles = (fileList: File[]) => {
+    const accepted: File[] = []
+    const rejected: DropZoneFileRejection[] = []
+
+    fileList.forEach((file) => {
+      const errors: string[] = []
+
+      if (acceptedFileTypes.length > 0 && !acceptedFileTypes.includes(file.type)) {
+        errors.push(`File type ${file.type} is not accepted`)
+      }
+
+      if (file.size > maxFileSizeInBytes) {
+        errors.push('File size exceeds the maximum limit')
+      }
+
+      if (errors.length > 0) {
+        rejected.push({
+          file,
+          errors
+        })
+      } else {
+        accepted.push(file)
+      }
+    })
+
+    return {
+      accepted: accepted.slice(0, maxFiles),
+      rejected
+    }
+  }
 
   const handleDragEnter = (e: React.DragEvent) => {
     e.preventDefault()
@@ -49,12 +99,16 @@ const DropZoneRoot = (props: DropZoneRootProps) => {
 
   const handleDragLeave = (e: React.DragEvent) => {
     e.preventDefault()
+
     e.stopPropagation()
 
     dragCounter.current -= 1
 
-    if (dragCounter.current === 0) {
+    if (dragCounter.current <= 0) {
       setIsDragging(false)
+      console.log(1)
+
+      dragCounter.current = 0
     }
   }
 
@@ -69,17 +123,10 @@ const DropZoneRoot = (props: DropZoneRootProps) => {
       .from(e.dataTransfer.files)
       .slice(0, maxFiles)
 
-    const acceptedFiles = files.filter(f => f.size <= maxFileSizeInBytes)
+    const { accepted, rejected } = validateFiles(files)
 
-    const rejected = files
-      .filter(f => f.size > maxFileSizeInBytes)
-      .map(f => ({
-        file: f,
-        errors: ['File size exceeds the maximum limit']
-      }))
-
-    if (acceptedFiles.length > 0) {
-      onFilesDropped?.(acceptedFiles)
+    if (accepted.length > 0) {
+      onFilesDropped?.(accepted)
     }
 
     if (rejected.length > 0) {
@@ -99,17 +146,10 @@ const DropZoneRoot = (props: DropZoneRootProps) => {
         .from(e.target.files)
         .slice(0, maxFiles)
 
-    const acceptedFiles = files.filter(f => f.size <= maxFileSizeInBytes)
+    const { accepted, rejected } = validateFiles(files)
 
-    const rejected = files
-      .filter(f => f.size > maxFileSizeInBytes)
-      .map(f => ({
-        file: f,
-        errors: ['File size exceeds the maximum limit']
-      }))
-
-    if (acceptedFiles.length > 0) {
-      onFilesDropped?.(acceptedFiles)
+    if (accepted.length > 0) {
+      onFilesDropped?.(accepted)
     }
 
     if (rejected.length > 0) {
@@ -133,6 +173,7 @@ const DropZoneRoot = (props: DropZoneRootProps) => {
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
         onClick={isTrigger ? handleOnOpen : undefined}
+        className={resolvedClassName}
         {...rest}
       >
         <input

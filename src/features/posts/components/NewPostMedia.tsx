@@ -1,49 +1,73 @@
 import { DropZone } from '@/features/assets/components/drop-zone'
-import ImageUploadCard from '@/features/assets/components/ImageUploadCard'
 import { Field } from '@base-ui/react'
 import clsx from 'clsx'
 import React from 'react'
 import { useNewPostContext } from '../contexts/NewPostContext'
 import { MdOutlineCloudUpload } from 'react-icons/md'
 import type { DropZoneFileRejection } from '@/features/assets'
+import { MAX_POST_ASSET_SIZE, MAX_POST_ASSETS, ValidPostAssetType } from '../utils/validation'
+import { truncate } from 'lodash'
+import NewPostMediaUploads from './NewPostMediaUploads'
 
 const NewPostMedia = () => {
-  const { uploadTasks, onUploadAsset } = useNewPostContext()
+  const { uploadTasks, uploadErrors, onUploadAsset } = useNewPostContext()
   const hasNoTasks = uploadTasks.length === 0
 
   const [dropZoneRejections, setDropZoneRejections] = React.useState<DropZoneFileRejection[]>([])
+  const shouldShowErrors = dropZoneRejections.length > 0 || uploadErrors.length > 0
+
+  const uploadAssets = async (files: File[]) => {
+    const promises = files.map(file => onUploadAsset(file))
+    await Promise.all(promises)
+  }
+
+  const handleOnFiledDropped = (files: File[]) => {
+    uploadAssets(files)
+  }
 
   const handleOnFilesRejected = (rejections: DropZoneFileRejection[]) => {
     setDropZoneRejections(rejections)
+
+    setTimeout(() => {
+      setDropZoneRejections([])
+    }, 10000)
   }
 
   return (
     <Field.Root
       className='flex flex-col'
     >
-      <Field.Label
-        className='text-md mb-2 font-semibold'
+      <div
+        className='mb-2 flex items-center justify-between'
       >
-        Media
-      </Field.Label>
+        <Field.Label
+          className='text-md font-semibold'
+        >
+          Media
+        </Field.Label>
+
+        <span
+          className='text-xs text-black/70'
+        >
+          {uploadTasks.length} / {MAX_POST_ASSETS}
+        </span>
+      </div>
 
       <DropZone.Root
         allowMultiple
-        className={clsx(
-          'h-50 w-full cursor-pointer rounded-2xl border-2 p-4',
+        acceptedFileTypes={ValidPostAssetType.options}
+        maxFileSizeInBytes={MAX_POST_ASSET_SIZE}
+        className={({ isDragging }) => clsx(
+          'min-h-50 w-full cursor-pointer rounded-2xl border-2 p-4',
           'group transition-opacity duration-100 hover:border-black/20',
           hasNoTasks && 'flex flex-col items-center justify-center',
-          hasNoTasks && 'border-dashed'
+          hasNoTasks && 'border-dashed',
+          isDragging && 'border-blue-400! bg-blue-100/10'
         )}
         onFilesRejected={handleOnFilesRejected}
+        onFilesDropped={handleOnFiledDropped}
       >
-        {uploadTasks.map(task => (
-          <ImageUploadCard
-            key={task.id}
-            uploadProgress={task.progress}
-            className='aspect-square h-full'
-          />
-        ))}
+        <NewPostMediaUploads />
 
         {hasNoTasks && (
           <DropZone.Trigger
@@ -61,6 +85,28 @@ const NewPostMedia = () => {
           </DropZone.Trigger>
         )}
       </DropZone.Root>
+
+      {shouldShowErrors && (
+        <div
+          className='mt-2 ml-2 flex flex-col gap-1 text-sm text-red-700'
+        >
+          {dropZoneRejections.map((rejection, index) => (
+            <div
+              key={index}
+            >
+              Failed to upload {truncate(rejection.file.name, { length: 20 })}: {rejection.errors.at(0)}
+            </div>
+          ))}
+
+          {uploadErrors.map((error, index) => (
+            <div
+              key={index}
+            >
+              {error}
+            </div>
+          ))}
+        </div>
+      )}
     </Field.Root>
   )
 }
