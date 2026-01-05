@@ -1,3 +1,3 @@
 import { Popover } from '@base-ui/react'
 
-export default Popover.Portal
+export const InputPopoverPortal = Popover.Portal

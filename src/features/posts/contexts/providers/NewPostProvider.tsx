@@ -1,10 +1,15 @@
 import React from 'react'
 import { NewPostContext } from '../NewPostContext'
-import { AssetKey, PostType } from '@/generated/graphql'
+import { AssetKey, type CreatePostInput, PostType } from '@/generated/graphql'
 import { useAssetUploadManager } from '@/features/assets'
 import type { NewPostAsset } from '../../types'
 import { truncate } from 'lodash'
-import { MAX_POST_ASSETS } from '../../utils/validation'
+import { CreatePostSchema, MAX_POST_ASSETS } from '../../utils/validation'
+import { useDebounce } from '@/hooks/useDebounce'
+import type { Form } from '@base-ui/react'
+import { parseSchema } from '@/utils/validation'
+import { useCreatePost } from '../../hooks/useCreatePost'
+import { useToastMessage } from '@/hooks/useToastMessage'
 
 export interface NewPostProviderProps {
   children: React.ReactNode
@@ -12,6 +17,9 @@ export interface NewPostProviderProps {
 
 export const NewPostProvider = (props: NewPostProviderProps) => {
   const { children } = props
+
+  const { toastError } = useToastMessage()
+  const { createPost } = useCreatePost()
 
   const {
     tasks: uploadTasks,
@@ -26,6 +34,9 @@ export const NewPostProvider = (props: NewPostProviderProps) => {
   const [type, setType] = React.useState<PostType>(PostType.Text)
   const [fragranceId, setFragranceId] = React.useState<string | null>(null)
   const [uploadErrors, setUploadErrors] = React.useState<string[]>([])
+
+  const [isLoading, setIsLoading] = React.useState(false)
+  const [formErrors, setFormErrors] = React.useState({})
 
   const handleOnTypeChange = (newType: PostType) => {
     setType(newType)
@@ -88,8 +99,38 @@ export const NewPostProvider = (props: NewPostProviderProps) => {
     }))
   }
 
-  const handleOnCreatePost = () => {
-    hasSubmitted.current = true
+  const handleOnCreatePost = useDebounce(
+    async (input: CreatePostInput) => {
+      const result = await createPost(input)
+
+      setIsLoading(false)
+
+      result.match(
+        () => {
+          hasSubmitted.current = true
+        },
+        _error => {
+          toastError('')
+        }
+      )
+    }
+  )
+
+  const handleOnSubmit = (formData: Form.Values) => {
+    const parsed = parseSchema(CreatePostSchema, formData)
+    setFormErrors(parsed.fieldErrors)
+
+    if (!parsed.success) {
+      return
+    }
+
+    const input = {
+      ...parsed.data,
+      assets: assets.current
+    }
+
+    setIsLoading(true)
+    handleOnCreatePost(input)
   }
 
   React.useEffect(
@@ -111,11 +152,13 @@ export const NewPostProvider = (props: NewPostProviderProps) => {
     <NewPostContext.Provider
       value={{
         type,
-
         fragranceId,
 
         uploadTasks,
         uploadErrors,
+        formErrors,
+
+        isLoading,
 
         onTypeChange: handleOnTypeChange,
 
@@ -125,7 +168,7 @@ export const NewPostProvider = (props: NewPostProviderProps) => {
         onDeleteAsset: handleOnDeleteAsset,
         onMoveAsset: handleOnMoveAsset,
 
-        onCreatePost: handleOnCreatePost
+        onSubmit: handleOnSubmit
       }}
     >
       {children}

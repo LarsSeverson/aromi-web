@@ -4,7 +4,9 @@ export interface InputPopoverContextValue<T> {
   isPopoverOpen: boolean
   isInputFocused: boolean
   activeIndex: number
+
   inputRef: React.RefObject<HTMLInputElement | null>
+  inputRect: DOMRect
 
   items: T[]
 
@@ -14,6 +16,8 @@ export interface InputPopoverContextValue<T> {
   onIsPopoverOpenChange: (isOpen: boolean) => void
   onIsInputFocusedChange: (isFocused: boolean) => void
   onResetActiveIndex?: () => void
+
+  onInputResize: (rect: DOMRect) => void
 }
 
 export const InputPopoverContext = React.createContext<InputPopoverContextValue<unknown> | undefined>(undefined)

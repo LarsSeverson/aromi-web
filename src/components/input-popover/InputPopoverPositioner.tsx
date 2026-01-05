@@ -4,7 +4,7 @@ import { useInputPopoverContext } from './InputPopoverContext'
 
 export interface InputPopoverPositionerProps extends Popover.Positioner.Props {}
 
-const InputPopoverPositioner = (props: InputPopoverPositionerProps) => {
+export const InputPopoverPositioner = (props: InputPopoverPositionerProps) => {
   const { inputRef } = useInputPopoverContext()
 
   return (
@@ -14,5 +14,3 @@ const InputPopoverPositioner = (props: InputPopoverPositionerProps) => {
     />
   )
 }
-
-export default InputPopoverPositioner

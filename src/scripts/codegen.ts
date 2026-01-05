@@ -14,7 +14,7 @@ export const config: CodegenConfig = {
       config: {
         scalars: {
           DateTime: 'Date',
-          JSON: 'JSON'
+          JSON: 'any'
         },
         enumsAsConst: true
       }

@@ -7,7 +7,7 @@ import SignUpDialog from '../features/auth/components/SignUpDialog'
 import { useAuthContext } from '@/features/auth'
 import AccountMenu from '@/features/users/components/AccountMenu'
 import TopBarSearch from './TopBarSearch'
-import PostButton from '@/features/posts/components/PostButton'
+import NewPostButton from '@/features/posts/components/NewPostButton'
 
 export interface TopBarProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -61,7 +61,7 @@ const TopBar = (props: TopBarProps) => {
       <div
         className='flex h-full flex-1 flex-row items-center justify-end gap-3'
       >
-        <PostButton />
+        <NewPostButton />
 
         {isAuthenticated && me != null
           ? (

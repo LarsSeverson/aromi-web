@@ -14,6 +14,35 @@ export const getFieldErrors = <T>(
   return {}
 }
 
+export const parseSchema = <T>(
+  schema: ZodType<T>,
+  data: unknown
+) => {
+  const result = schema.safeParse(data)
+  const fieldErrors = result.success ? {} : z.flattenError(result.error).fieldErrors
+
+  return {
+    ...result,
+    fieldErrors
+  }
+}
+
+export const getErrorMessagesForFieldErrors = (
+  fieldErrors: Record<string, string[] | undefined>
+) => {
+  const messages = Object.values(fieldErrors).reduce<string[]>(
+    (acc, errors) => {
+      if (errors != null && errors.length > 0) {
+        acc.push(...errors)
+      }
+      return acc
+    },
+    []
+  )
+
+  return messages
+}
+
 export const getFirstErrorMessage = <T>(
   schema: ZodType<T>,
   data: unknown

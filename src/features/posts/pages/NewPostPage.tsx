@@ -7,9 +7,17 @@ import NewPostMedia from '../components/NewPostMedia'
 import { useNewPostContext } from '../contexts/NewPostContext'
 import { PostType } from '@/generated/graphql'
 import NewPostFragrance from '../components/NewPostFragrance'
+import NewPostSubmit from '../components/NewPostSubmit'
+import NewPostErrors from '../components/NewPostErrors'
 
 const NewPostPage = () => {
-  const { type } = useNewPostContext()
+  const {
+    type,
+
+    formErrors,
+
+    onSubmit
+  } = useNewPostContext()
 
   const showMedia = type === PostType.Media
   const showFragrance = type === PostType.Fragrance
@@ -30,12 +38,22 @@ const NewPostPage = () => {
 
       <Form
         className='flex w-full max-w-3xl flex-col gap-6'
+        onFormSubmit={onSubmit}
+        errors={formErrors}
       >
         <NewPostType />
+
         <NewPostTitle />
+
         {showMedia && <NewPostMedia />}
+
         {showFragrance && <NewPostFragrance />}
+
         <NewPostContent />
+
+        <NewPostErrors />
+
+        <NewPostSubmit />
       </Form>
     </div>
   )

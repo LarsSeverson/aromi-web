@@ -6,7 +6,7 @@ export interface InputPopoverRootProps<T> {
   children?: React.ReactNode
 }
 
-const InputPopoverRoot = <T, >(props: InputPopoverRootProps<T>) => {
+export const InputPopoverRoot = <T, >(props: InputPopoverRootProps<T>) => {
   const {
     items = [],
 
@@ -14,6 +14,7 @@ const InputPopoverRoot = <T, >(props: InputPopoverRootProps<T>) => {
   } = props
 
   const inputRef = React.useRef<HTMLInputElement>(null)
+  const [inputRect, setInputRect] = React.useState(new DOMRect())
 
   const [isPopoverOpen, setIsPopoverOpen] = React.useState(false)
   const [isInputFocused, setIsInputFocused] = React.useState(false)
@@ -41,6 +42,10 @@ const InputPopoverRoot = <T, >(props: InputPopoverRootProps<T>) => {
     setActiveIndex(-1)
   }
 
+  const handleOnInputResize = (rect: DOMRect) => {
+    setInputRect(rect)
+  }
+
   React.useEffect(
     () => {
       setActiveIndex(-1)
@@ -51,24 +56,26 @@ const InputPopoverRoot = <T, >(props: InputPopoverRootProps<T>) => {
   return (
     <InputPopoverContext.Provider
       value={{
+        items,
+
         isPopoverOpen,
         isInputFocused,
         activeIndex,
-        inputRef,
 
-        items,
+        inputRef,
+        inputRect,
 
         navigateUpList: handleNavigateUpList,
         navigateDownList: handleNavigateDownList,
 
         onIsPopoverOpenChange: handleOnIsPopoverOpenChange,
         onIsInputFocusedChange: handleOnIsInputFocusedChange,
-        onResetActiveIndex: handleOnResetActiveIndex
+        onResetActiveIndex: handleOnResetActiveIndex,
+
+        onInputResize: handleOnInputResize
       }}
     >
       {children}
     </InputPopoverContext.Provider>
   )
 }
-
-export default InputPopoverRoot

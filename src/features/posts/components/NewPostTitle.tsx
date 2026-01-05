@@ -14,13 +14,17 @@ const NewPostTitle = () => {
       </Field.Label>
 
       <Field.Control
-        className='rounded-3xl border p-3 px-5'
+        required
         placeholder='Add a title...'
+        className='rounded-3xl border p-3 px-5'
       />
 
       <Field.Error
-        className='text-md ml-2 font-medium text-red-600'
-      />
+        match='valueMissing'
+        className='mt-1 ml-2 text-sm font-medium text-red-700'
+      >
+        A title is required
+      </Field.Error>
     </Field.Root>
   )
 }

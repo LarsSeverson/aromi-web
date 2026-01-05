@@ -2303,6 +2303,11 @@
   resolved "https://registry.yarnpkg.com/@tiptap/extensions/-/extensions-3.14.0.tgz#8367d3d644cf68b85341e059f5685b13b5722b1a"
   integrity sha512-qQBVKqzU4ZVjRn8W0UbdfE4LaaIgcIWHOMrNnJ+PutrRzQ6ZzhmD/kRONvRWBfG9z3DU7pSKGwVYSR2hztsGuQ==
 
+"@tiptap/html@^3.14.0":
+  version "3.14.0"
+  resolved "https://registry.yarnpkg.com/@tiptap/html/-/html-3.14.0.tgz#e8af238dba29acc8924ef210a97f35a55eeda437"
+  integrity sha512-a8spWLiyJeBtRXljnHswRr6nyenyx0VeQuE/EzDT8ls+o7Sn9+OnbI5DUrZPPXJVGQReKeglfLQdNgmrcoXhog==
+
 "@tiptap/pm@^3.14.0":
   version "3.14.0"
   resolved "https://registry.yarnpkg.com/@tiptap/pm/-/pm-3.14.0.tgz#4536c351ec8ab2b7d44a8b4f0eba4b8c46437532"
@@ -2368,6 +2373,11 @@
     "@tiptap/extension-underline" "^3.14.0"
     "@tiptap/extensions" "^3.14.0"
     "@tiptap/pm" "^3.14.0"
+
+"@tiptap/static-renderer@^3.14.0":
+  version "3.14.0"
+  resolved "https://registry.yarnpkg.com/@tiptap/static-renderer/-/static-renderer-3.14.0.tgz#16ec1cc17b3dae183af7cfb7f8cb1b29c2b82467"
+  integrity sha512-H+UxjtMOUGA9E9TksYu17YT9wdCghXTtBPmievDPfiVanyDKNSsCtCAVB2UKh7TXWy8C8mGc2/F0aTFVwFkxBw==
 
 "@tybys/wasm-util@^0.10.1":
   version "0.10.1"

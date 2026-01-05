@@ -1,20 +1,25 @@
 import { Input } from '@base-ui/react'
 import React from 'react'
 import { useInputPopoverContext } from './InputPopoverContext'
+import { useResizeable } from '@/hooks/useResizable'
+import type { InputPopoverKeyDownEvent } from './types'
 
-export interface InputPopoverInputProps extends Input.Props {}
+export interface InputPopoverInputProps<T = unknown> extends Omit<Input.Props, 'onKeyDown'> {
+  onKeyDown?: (event: InputPopoverKeyDownEvent<T>) => void
+}
 
-const InputPopoverInput = (props: InputPopoverInputProps) => {
+export const InputPopoverInput = <T, >(props: InputPopoverInputProps<T>) => {
   const {
     onKeyDown,
     onFocus,
     onBlur,
     onValueChange,
-    className,
     ...rest
   } = props
 
   const {
+    items,
+    activeIndex,
     inputRef,
 
     isPopoverOpen,
@@ -23,14 +28,20 @@ const InputPopoverInput = (props: InputPopoverInputProps) => {
     navigateDownList,
 
     onIsPopoverOpenChange,
-    onIsInputFocusedChange
+    onIsInputFocusedChange,
+    onInputResize
   } = useInputPopoverContext()
 
+  const { rect } = useResizeable({ ref: inputRef })
+
   const handleKeyDown = (event: Parameters<NonNullable<Input.Props['onKeyDown']>>[0]) => {
-    onKeyDown?.(event)
-    event.preventDefault()
+    const item = (items?.at(activeIndex) ?? null) as T | null
+    const customEvent: InputPopoverKeyDownEvent<T> = Object.assign(event, { item })
+
+    onKeyDown?.(customEvent)
 
     if (event.key === 'ArrowDown') {
+      event.preventDefault()
       if (!isPopoverOpen) {
         onIsPopoverOpenChange(true)
         return
@@ -40,10 +51,13 @@ const InputPopoverInput = (props: InputPopoverInputProps) => {
     }
 
     if (event.key === 'ArrowUp') {
+      event.preventDefault()
       navigateUpList()
     }
 
     if (event.key === 'Escape') {
+      event.preventDefault()
+      onIsInputFocusedChange(false)
       onIsPopoverOpenChange(false)
     }
   }
@@ -70,6 +84,15 @@ const InputPopoverInput = (props: InputPopoverInputProps) => {
     onIsPopoverOpenChange(true)
   }
 
+  React.useEffect(
+    () => {
+      if (rect != null) {
+        onInputResize(rect)
+      }
+    },
+    [rect, onInputResize]
+  )
+
   return (
     <Input
       {...rest}
@@ -81,5 +104,3 @@ const InputPopoverInput = (props: InputPopoverInputProps) => {
     />
   )
 }
-
-export default InputPopoverInput

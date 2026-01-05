@@ -3,7 +3,7 @@ import clsx from 'clsx'
 import React from 'react'
 import { FaRegSquarePlus } from 'react-icons/fa6'
 
-const PostButton = () => {
+const NewPostButton = () => {
   return (
     <Link
       to='/posts/new'
@@ -22,4 +22,4 @@ const PostButton = () => {
   )
 }
 
-export default PostButton
+export default NewPostButton

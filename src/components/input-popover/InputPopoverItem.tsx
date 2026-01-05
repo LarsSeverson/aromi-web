@@ -1,21 +1,23 @@
 import React from 'react'
 import { useInputPopoverContext } from './InputPopoverContext'
 
-export interface InputPopoverItemProps {
-  index: number
+export interface InputPopoverItemProps extends React.HTMLAttributes<HTMLDivElement> {
+  index?: number
+  scrollIntoView?: boolean
 
-  className?: string
-  children: React.ReactNode | ((props: { isActive: boolean }) => React.ReactNode)
-
-  onClick?: React.MouseEventHandler<HTMLDivElement>
+  onActiveChange?: (isActive: boolean) => void
 }
 
-const InputPopoverItem = (props: InputPopoverItemProps) => {
+export const InputPopoverItem = (props: InputPopoverItemProps) => {
   const {
     index,
+    scrollIntoView = true,
+
     children,
-    className,
+
     onClick,
+    onActiveChange,
+
     ...rest
   } = props
 
@@ -24,25 +26,35 @@ const InputPopoverItem = (props: InputPopoverItemProps) => {
     onIsPopoverOpenChange
   } = useInputPopoverContext()
 
-  const isActive = activeIndex === index
+  const itemRef = React.useRef<HTMLDivElement>(null)
+  const isActive = React.useMemo(() => activeIndex === index, [activeIndex, index])
 
   const handleOnClick = (event: React.MouseEvent<HTMLDivElement>) => {
     onClick?.(event)
     onIsPopoverOpenChange(false)
   }
 
+  React.useEffect(
+    () => {
+      onActiveChange?.(isActive)
+
+      const shouldScrollIntoView = isActive && itemRef.current != null && scrollIntoView
+      if (shouldScrollIntoView) {
+        itemRef.current!.scrollIntoView({ block: 'center', behavior: 'smooth' })
+      }
+    },
+    [isActive, scrollIntoView, onActiveChange]
+  )
+
   return (
     <div
-      {...rest}
+      ref={itemRef}
       role='option'
       aria-selected={isActive}
+      {...rest}
       onClick={handleOnClick}
     >
-      {typeof children === 'function'
-        ? children({ isActive })
-        : children}
+      {children}
     </div>
   )
 }
-
-export default InputPopoverItem

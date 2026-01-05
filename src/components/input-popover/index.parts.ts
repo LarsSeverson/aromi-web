@@ -1,9 +1,9 @@
-export { default as Root } from './InputPopoverRoot'
-export { default as Input } from './InputPopoverInput'
-export { default as Item } from './InputPopoverItem'
+export { InputPopoverRoot as Root } from './InputPopoverRoot'
+export { InputPopoverInput as Input } from './InputPopoverInput'
+export { InputPopoverItem as Item } from './InputPopoverItem'
 
-export { default as PopoverRoot } from './InputPopoverPopover'
-export { default as PopoverPositioner } from './InputPopoverPositioner'
+export { InputPopoverPopover as PopoverRoot } from './InputPopoverPopover'
+export { InputPopoverPositioner as PopoverPositioner } from './InputPopoverPositioner'
 
-export { default as PopoverPortal } from './InputPopoverPortal'
-export { default as PopoverPopup } from './InputPopoverPopup'
+export { InputPopoverPortal as PopoverPortal } from './InputPopoverPortal'
+export { InputPopoverPopup as PopoverPopup } from './InputPopoverPopup'

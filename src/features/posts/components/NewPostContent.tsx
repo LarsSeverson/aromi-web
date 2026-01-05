@@ -1,10 +1,13 @@
-import Editor from '@/components/editor/Editor'
+import type { JSONContent } from '@tiptap/react'
+import Editor from '@/components/tiptap/Editor'
 import { Field } from '@base-ui/react'
 import React from 'react'
 
 export interface NewPostContentProps {}
 
 const NewPostContent = (_props: NewPostContentProps) => {
+  const [content, setContent] = React.useState<JSONContent | null>(null)
+
   return (
     <Field.Root
       name='content'
@@ -17,13 +20,12 @@ const NewPostContent = (_props: NewPostContentProps) => {
       </Field.Label>
 
       <Field.Control
-        render={() => (
-          <Editor />
-        )}
+        className='sr-only'
+        value={JSON.stringify(content ?? {})}
       />
 
-      <Field.Error
-        className='text-md ml-1 font-medium text-red-600'
+      <Editor
+        onUpdate={setContent}
       />
     </Field.Root>
   )

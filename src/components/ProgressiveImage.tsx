@@ -21,7 +21,7 @@ const ProgressiveImage = (props: ProgressiveImageProps) => {
   return (
     <div
       className={clsx(
-        'w-full h-full relative overflow-hidden bg-empty'
+        'bg-empty relative h-full w-full overflow-hidden'
       )}
       style={{
         backgroundColor: placeholderColor ?? undefined,
@@ -32,7 +32,7 @@ const ProgressiveImage = (props: ProgressiveImageProps) => {
         src={src ?? fallbackImage}
         alt={alt}
         loading='lazy'
-        className='object-cover absolute w-full h-full'
+        className='absolute h-full w-full object-cover'
         onLoad={() => { setIsLoading(false) }}
         onError={({ currentTarget }) => {
           currentTarget.onerror = null
@@ -41,7 +41,7 @@ const ProgressiveImage = (props: ProgressiveImageProps) => {
       />
 
       <div
-        className='bg-gray-400 w-full h-full absolute opacity-10'
+        className='absolute h-full w-full bg-gray-400 opacity-10'
       />
     </div>
   )

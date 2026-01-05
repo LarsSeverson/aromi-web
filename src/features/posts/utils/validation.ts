@@ -1,7 +1,9 @@
 import { VALID_IMAGE_TYPES, VALID_VIDEO_TYPES } from '@/features/assets/utils/validation'
 import { PostType } from '@/generated/graphql'
 import { ValidVote } from '@/utils/validation'
+import { Result } from 'neverthrow'
 import z from 'zod'
+import { getSanitizedTiptapContent } from './tiptap'
 
 export const MIN_POST_TITLE_LENGTH = 1
 export const MAX_POST_TITLE_LENGTH = 300
@@ -24,7 +26,10 @@ export const MAX_POST_COMMENT_ASSET_SIZE = 20 * 1024 * 1024 // 20 MB
 
 export const MAX_POST_COMMENT_DEPTH = 2
 
-export const ValidPostType = z.enum(Object.values(PostType))
+export const ValidPostType = z.preprocess(
+  (val) => (typeof val === 'string' ? val.toUpperCase() : val),
+  z.enum(Object.values(PostType))
+)
 
 export const ValidPostTitle = z
   .string()
@@ -39,6 +44,32 @@ export const ValidPostTitle = z
 
 export const ValidPostContent = z
   .any()
+  .transform((value, ctx) => {
+    if (value == null) return null
+
+    const processContent = Result.fromThrowable(() => {
+      const jsond = JSON.parse(value as string) as JSON
+
+      return getSanitizedTiptapContent(
+        jsond,
+        MAX_POST_CONTENT_LENGTH
+      )
+    }
+    )()
+
+    if (processContent.isErr()) {
+      const error = processContent.error
+
+      ctx.addIssue({
+        code: 'custom',
+        message: error instanceof Error ? error.message : 'Invalid content'
+      })
+
+      return z.NEVER
+    }
+
+    return processContent.value
+  })
 
 export const ValidPostCommentContent = z
   .string()

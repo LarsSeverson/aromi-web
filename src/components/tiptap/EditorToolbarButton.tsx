@@ -1,13 +1,13 @@
 import { clsx } from 'clsx'
 import type { IconType } from 'react-icons'
 
-interface ToolbarButtonProps {
+interface EditorToolbarButtonProps {
   icon: IconType
   active?: boolean
   onClick: () => void
 }
 
-const ToolbarButton = (props: ToolbarButtonProps) => {
+const EditorToolbarButton = (props: EditorToolbarButtonProps) => {
   const { icon: Icon, active = false, onClick } = props
 
   return (
@@ -17,7 +17,7 @@ const ToolbarButton = (props: ToolbarButtonProps) => {
       className={clsx(
         'flex h-8 w-8 items-center justify-center rounded transition-colors',
         'hover:bg-empty cursor-pointer',
-        active ? 'bg-slate-200 text-slate-900' : 'text-slate-500'
+        active ? 'bg-empty' : 'text-gray-600'
       )}
     >
       <Icon
@@ -27,4 +27,4 @@ const ToolbarButton = (props: ToolbarButtonProps) => {
   )
 }
 
-export default ToolbarButton
+export default EditorToolbarButton

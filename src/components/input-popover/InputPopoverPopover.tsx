@@ -4,16 +4,15 @@ import { useInputPopoverContext } from './InputPopoverContext'
 
 export interface InputPopoverPopoverProps extends Popover.Root.Props {}
 
-const InputPopoverPopover = (props: InputPopoverPopoverProps) => {
+export const InputPopoverPopover = (props: InputPopoverPopoverProps) => {
+  const { ...rest } = props
   const { isPopoverOpen, onIsPopoverOpenChange } = useInputPopoverContext()
 
   return (
     <Popover.Root
-      {...props}
+      {...rest}
       open={isPopoverOpen}
       onOpenChange={onIsPopoverOpenChange}
     />
   )
 }
-
-export default InputPopoverPopover

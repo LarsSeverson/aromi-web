@@ -6,6 +6,8 @@ import { Link, useNavigate } from '@tanstack/react-router'
 import clsx from 'clsx'
 import React from 'react'
 import { FaRegComment } from 'react-icons/fa'
+import { TiptapRenderer } from '@/components/tiptap/TiptapRenderer'
+import type { JSONContent } from '@tiptap/core'
 
 export interface PostPreviewCardProps {
   post: PostPreviewFragment
@@ -40,6 +42,7 @@ const PostPreviewCard = (props: PostPreviewCardProps) => {
       tabIndex={0}
       onClick={handleOnCardClick}
       onKeyDown={handleOnKeyDown}
+      // eslint-disable-next-line tailwindcss/no-custom-classname
       className='group hover:bg-empty2 flex w-full cursor-pointer flex-col overflow-hidden rounded-lg p-3 pb-1'
     >
       <div
@@ -92,6 +95,11 @@ const PostPreviewCard = (props: PostPreviewCardProps) => {
           >
             {title}
           </h2>
+
+          <TiptapRenderer
+            content={post.content as JSONContent}
+            className='line-clamp-6 text-sm text-black/70 select-none'
+          />
 
           <div
             className='mt-2 flex items-center gap-3'
