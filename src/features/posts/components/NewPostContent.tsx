@@ -6,11 +6,32 @@ import React from 'react'
 export interface NewPostContentProps {}
 
 const NewPostContent = (_props: NewPostContentProps) => {
-  const [content, setContent] = React.useState<JSONContent | null>(null)
+  const inputRef = React.useRef<HTMLInputElement>(null)
+  const [contentStr, setContentStr] = React.useState('{}')
+
+  const handleContentUpdate = (json: JSONContent) => {
+    const val = JSON.stringify(json ?? {})
+
+    setContentStr(val)
+
+    if (inputRef.current != null) {
+      const descriptor = Object.getOwnPropertyDescriptor(
+        window.HTMLInputElement.prototype,
+        'value'
+      )
+
+      // eslint-disable-next-line @typescript-eslint/unbound-method
+      const nativeInputValueSetter = descriptor?.set
+      nativeInputValueSetter?.call(inputRef.current, val)
+
+      inputRef.current.dispatchEvent(new Event('input', { bubbles: true }))
+    }
+  }
 
   return (
     <Field.Root
       name='content'
+      validationMode='onChange'
       className='flex flex-col'
     >
       <Field.Label
@@ -20,12 +41,13 @@ const NewPostContent = (_props: NewPostContentProps) => {
       </Field.Label>
 
       <Field.Control
-        className='sr-only'
-        value={JSON.stringify(content ?? {})}
+        ref={inputRef}
+        value={contentStr}
+        onValueChange={setContentStr}
       />
 
       <Editor
-        onUpdate={setContent}
+        onUpdate={handleContentUpdate}
       />
     </Field.Root>
   )

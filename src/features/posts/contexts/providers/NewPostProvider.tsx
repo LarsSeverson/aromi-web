@@ -10,6 +10,7 @@ import type { Form } from '@base-ui/react'
 import { parseSchema } from '@/utils/validation'
 import { useCreatePost } from '../../hooks/useCreatePost'
 import { useToastMessage } from '@/hooks/useToastMessage'
+import { useNavigate } from '@tanstack/react-router'
 
 export interface NewPostProviderProps {
   children: React.ReactNode
@@ -18,6 +19,7 @@ export interface NewPostProviderProps {
 export const NewPostProvider = (props: NewPostProviderProps) => {
   const { children } = props
 
+  const navigate = useNavigate()
   const { toastError } = useToastMessage()
   const { createPost } = useCreatePost()
 
@@ -106,8 +108,9 @@ export const NewPostProvider = (props: NewPostProviderProps) => {
       setIsLoading(false)
 
       result.match(
-        () => {
+        _data => {
           hasSubmitted.current = true
+          navigate({ to: '/posts' })
         },
         _error => {
           toastError('')
@@ -120,9 +123,18 @@ export const NewPostProvider = (props: NewPostProviderProps) => {
     const parsed = parseSchema(CreatePostSchema, formData)
     setFormErrors(parsed.fieldErrors)
 
+    console.log(parsed)
+
     if (!parsed.success) {
       return
     }
+
+    const inputAssets = assets
+      .current
+      .map(({ assetId, displayOrder }) => ({
+        assetId,
+        displayOrder
+      }))
 
     const input = {
       ...parsed.data,

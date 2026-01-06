@@ -50,6 +50,10 @@ export const ValidPostContent = z
     const processContent = Result.fromThrowable(() => {
       const jsond = JSON.parse(value as string) as JSON
 
+      // if (Object.keys(jsond).length === 0) {
+      //   return null
+      // }
+
       return getSanitizedTiptapContent(
         jsond,
         MAX_POST_CONTENT_LENGTH
@@ -58,11 +62,9 @@ export const ValidPostContent = z
     )()
 
     if (processContent.isErr()) {
-      const error = processContent.error
-
       ctx.addIssue({
         code: 'custom',
-        message: error instanceof Error ? error.message : 'Invalid content'
+        message: 'Invalid content'
       })
 
       return z.NEVER

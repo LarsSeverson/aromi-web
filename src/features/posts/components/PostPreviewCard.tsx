@@ -6,8 +6,7 @@ import { Link, useNavigate } from '@tanstack/react-router'
 import clsx from 'clsx'
 import React from 'react'
 import { FaRegComment } from 'react-icons/fa'
-import { TiptapRenderer } from '@/components/tiptap/TiptapRenderer'
-import type { JSONContent } from '@tiptap/core'
+import PostPreviewCardContent from './PostPreviewCardContent'
 
 export interface PostPreviewCardProps {
   post: PostPreviewFragment
@@ -96,9 +95,8 @@ const PostPreviewCard = (props: PostPreviewCardProps) => {
             {title}
           </h2>
 
-          <TiptapRenderer
-            content={post.content as JSONContent}
-            className='line-clamp-6 text-sm text-black/70 select-none'
+          <PostPreviewCardContent
+            post={post}
           />
 
           <div

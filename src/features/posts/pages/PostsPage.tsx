@@ -5,6 +5,7 @@ import type { PostPreviewFragment } from '@/generated/graphql'
 import { DocumentTitleBuilder } from '@/utils/DocumentTitleBuilder'
 import { FlatList } from '@/components/FlatList'
 import PostPageListItemCard from '../components/PostListItemCard'
+import PostPreviewCardSkeleton from '../components/PostPreviewCardSkeleton'
 
 const SKELETON_COUNT = 4
 const ESTIMATE_HEIGHT = 165
@@ -30,7 +31,7 @@ const PostsPage = () => {
 
   const onRenderPostSkeleton = React.useCallback(
     () => (
-      <div>Loading...</div>
+      <PostPreviewCardSkeleton />
     ),
     []
   )

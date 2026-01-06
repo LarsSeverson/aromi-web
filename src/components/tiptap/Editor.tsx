@@ -29,6 +29,7 @@ const Editor = (props: EditorProps) => {
 
     editorProps: {
       attributes: {
+        tabindex: '0',
         class: clsx(
           'prose prose-sm max-w-none focus:outline-none',
           'min-h-30 px-4 py-3',
