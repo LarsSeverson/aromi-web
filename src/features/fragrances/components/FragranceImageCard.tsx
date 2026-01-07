@@ -7,10 +7,11 @@ import blankPreviewThumbnail from '@/assets/blank-fragrance-thumbnail.svg'
 export interface FragranceImageCardProps {
   isActive: boolean
   fragrance: FragrancePreviewFragment
+  className?: string
 }
 
 const FragranceImageCard = (props: FragranceImageCardProps) => {
-  const { isActive, fragrance } = props
+  const { isActive, fragrance, className } = props
   const { thumbnail } = fragrance
   const { url, primaryColor } = thumbnail ?? {}
 
@@ -18,6 +19,7 @@ const FragranceImageCard = (props: FragranceImageCardProps) => {
 
     <div
       className={clsx(
+        className,
         'flex-1 overflow-hidden rounded-2xl',
         'group-hover:brightness-[0.85] group-focus:brightness-[0.85]',
         isActive && 'brightness-[0.85]'

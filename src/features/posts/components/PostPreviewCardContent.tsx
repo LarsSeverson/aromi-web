@@ -3,6 +3,7 @@ import { PostType, type PostPreviewFragment } from '@/generated/graphql'
 import type { JSONContent } from '@tiptap/core'
 import React from 'react'
 import PostPreviewCardAssets from './PostPreviewCardAssets'
+import PostPreviewCardFragrance from './PostPreviewCardFragrance'
 
 export interface PostPreviewCardContentProps {
   post: PostPreviewFragment
@@ -13,7 +14,9 @@ const PostPreviewCardContent = (props: PostPreviewCardContentProps) => {
   const { type, assets } = post
 
   return (
-    <div>
+    <div
+      className='z-10'
+    >
       {type === PostType.Text && (
         <TiptapRenderer
           content={post.content as JSONContent}
@@ -24,6 +27,12 @@ const PostPreviewCardContent = (props: PostPreviewCardContentProps) => {
       {type === PostType.Media && (
         <PostPreviewCardAssets
           assets={assets}
+        />
+      )}
+
+      {type === PostType.Fragrance && (
+        <PostPreviewCardFragrance
+          fragrance={post.fragrance!}
         />
       )}
     </div>

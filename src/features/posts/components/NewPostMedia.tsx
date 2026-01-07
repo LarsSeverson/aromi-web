@@ -35,6 +35,7 @@ const NewPostMedia = () => {
 
   return (
     <Field.Root
+      name='assets'
       className='flex flex-col'
     >
       <div
@@ -58,9 +59,8 @@ const NewPostMedia = () => {
         acceptedFileTypes={ValidPostAssetType.options}
         maxFileSizeInBytes={MAX_POST_ASSET_SIZE}
         className={({ isDragging }) => clsx(
-          'min-h-50 w-full cursor-pointer rounded-2xl border-2 p-4',
+          'flex min-h-50 w-full cursor-pointer flex-col items-center justify-center rounded-2xl border-2 p-4',
           'group transition-opacity duration-100 hover:border-black/20',
-          hasNoTasks && 'flex flex-col items-center justify-center',
           hasNoTasks && 'border-dashed',
           isDragging && 'border-blue-400! bg-blue-100/10'
         )}
@@ -107,6 +107,10 @@ const NewPostMedia = () => {
           ))}
         </div>
       )}
+
+      <Field.Error
+        className='mt-2 ml-2 text-sm font-medium text-red-700'
+      />
     </Field.Root>
   )
 }

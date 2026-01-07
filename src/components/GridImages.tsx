@@ -2,12 +2,12 @@ import React from 'react'
 import clsx from 'clsx'
 import blankFragranceThumbnail from '@/assets/blank-fragrance-thumbnail.svg'
 import emptyCollectionThumbnail from '@/assets/empty-collection-thumbnail.svg'
-import { Overlay } from './Overlay'
 
 export interface GridImagesProps extends React.HTMLAttributes<HTMLDivElement> {
   urls: string[]
   fallback?: string
   emptyImage?: string
+  showSeparator?: boolean
 }
 
 const GridImages = (props: GridImagesProps) => {
@@ -15,6 +15,7 @@ const GridImages = (props: GridImagesProps) => {
     urls,
     fallback = blankFragranceThumbnail,
     emptyImage = emptyCollectionThumbnail,
+    showSeparator = false,
     className,
     ...rest
   } = props
@@ -25,7 +26,8 @@ const GridImages = (props: GridImagesProps) => {
     <div
       className={clsx(
         className,
-        'relative grid overflow-hidden rounded-2xl bg-white group-hover:brightness-[.85]',
+        'bg-empty2 relative grid overflow-hidden rounded-2xl group-hover:brightness-[.85]',
+        showSeparator && 'gap-0.5',
         itemsShown.length === 1 && 'grid-cols-1 grid-rows-1',
         itemsShown.length !== 1 && 'grid-cols-2 grid-rows-2'
       )}
@@ -35,7 +37,7 @@ const GridImages = (props: GridImagesProps) => {
         <img
           key={index}
           className={clsx(
-            'h-full w-full object-cover',
+            'h-full w-full object-cover hover:brightness-95',
             itemsShown.length === 2 && 'row-span-2',
             (itemsShown.length === 3 && index === 0) && 'row-span-2'
           )}
@@ -50,7 +52,9 @@ const GridImages = (props: GridImagesProps) => {
         />
       )}
 
-      <Overlay />
+      <div
+        className="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-black/5 ring-inset"
+      />
     </div>
   )
 }

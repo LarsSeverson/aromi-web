@@ -2,7 +2,6 @@ import React from 'react'
 import { NewPostContext } from '../NewPostContext'
 import { AssetKey, type CreatePostInput, PostType } from '@/generated/graphql'
 import { useAssetUploadManager } from '@/features/assets'
-import type { NewPostAsset } from '../../types'
 import { truncate } from 'lodash'
 import { CreatePostSchema, MAX_POST_ASSETS } from '../../utils/validation'
 import { useDebounce } from '@/hooks/useDebounce'
@@ -11,6 +10,7 @@ import { parseSchema } from '@/utils/validation'
 import { useCreatePost } from '../../hooks/useCreatePost'
 import { useToastMessage } from '@/hooks/useToastMessage'
 import { useNavigate } from '@tanstack/react-router'
+import type { Nullable } from '@/utils/util'
 
 export interface NewPostProviderProps {
   children: React.ReactNode
@@ -30,8 +30,9 @@ export const NewPostProvider = (props: NewPostProviderProps) => {
     moveTask
   } = useAssetUploadManager({ maxUploads: MAX_POST_ASSETS, deleteAfterError: true })
 
+  const tasksRef = React.useRef(uploadTasks)
   const hasSubmitted = React.useRef(false)
-  const assets = React.useRef<NewPostAsset[]>([])
+  const content = React.useRef<Nullable<string>>(undefined)
 
   const [type, setType] = React.useState<PostType>(PostType.Text)
   const [fragranceId, setFragranceId] = React.useState<string | null>(null)
@@ -39,6 +40,8 @@ export const NewPostProvider = (props: NewPostProviderProps) => {
 
   const [isLoading, setIsLoading] = React.useState(false)
   const [formErrors, setFormErrors] = React.useState({})
+
+  const isUploading = uploadTasks.length > 0 && uploadTasks.some(task => task.status === 'uploading')
 
   const handleOnTypeChange = (newType: PostType) => {
     setType(newType)
@@ -50,24 +53,6 @@ export const NewPostProvider = (props: NewPostProviderProps) => {
 
   const handleOnUploadAsset = (file: File) => {
     return uploadFile(file, AssetKey.PostAssets)
-      .andTee(({ data, task }) => {
-        if (assets.current.length >= MAX_POST_ASSETS) {
-          assets.current.shift()
-        }
-
-        assets.current.push({
-          taskId: task.id,
-          assetId: data.assetId,
-          displayOrder: assets.current.length
-        })
-
-        assets.current = assets.current.map(
-          (asset, index) => ({
-            ...asset,
-            displayOrder: index
-          })
-        )
-      })
       .orTee(errorInfo => {
         const errStr = `Failed to upload ${truncate(file.name, { length: 20 })}: ${errorInfo.message}`
         setUploadErrors(prev => [...prev, errStr])
@@ -80,25 +65,14 @@ export const NewPostProvider = (props: NewPostProviderProps) => {
 
   const handleOnDeleteAsset = (id: string) => {
     deleteTask(id)
-
-    assets.current = assets.current
-      .filter(a => a.taskId !== id)
-      .map((asset, index) => ({
-        ...asset,
-        displayOrder: index
-      }))
   }
 
   const handleOnMoveAsset = (fromIndex: number, toIndex: number) => {
     moveTask(fromIndex, toIndex)
+  }
 
-    const assetToMove = assets.current.splice(fromIndex, 1)[0]
-    assets.current.splice(toIndex, 0, assetToMove)
-
-    assets.current = assets.current.map((asset, index) => ({
-      ...asset,
-      displayOrder: index
-    }))
+  const handleOnUpdateContent = (newContent: Nullable<string>) => {
+    content.current = newContent
   }
 
   const handleOnCreatePost = useDebounce(
@@ -120,45 +94,45 @@ export const NewPostProvider = (props: NewPostProviderProps) => {
   )
 
   const handleOnSubmit = (formData: Form.Values) => {
-    const parsed = parseSchema(CreatePostSchema, formData)
-    setFormErrors(parsed.fieldErrors)
+    const inputAssets = uploadTasks
+      .map((task, index) => ({
+        assetId: task.assetId,
+        displayOrder: index
+      }))
 
-    console.log(parsed)
+    const input = {
+      ...formData,
+      content: content.current,
+      assets: inputAssets
+    }
+
+    const parsed = parseSchema(CreatePostSchema, input)
+    setFormErrors(parsed.fieldErrors)
 
     if (!parsed.success) {
       return
     }
 
-    const inputAssets = assets
-      .current
-      .map(({ assetId, displayOrder }) => ({
-        assetId,
-        displayOrder
-      }))
-
-    const input = {
-      ...parsed.data,
-      assets: assets.current
-    }
-
     setIsLoading(true)
-    handleOnCreatePost(input)
+    handleOnCreatePost(parsed.data)
   }
 
   React.useEffect(
     () => {
-      return () => {
-        const assetsLength = assets.current.length
-
-        if (!hasSubmitted.current && assetsLength > 0) {
-          assets.current.forEach(asset => {
-            deleteTask(asset.taskId)
-          })
-        }
-      }
+      tasksRef.current = uploadTasks
     },
-    [deleteTask]
+    [uploadTasks]
   )
+
+  React.useEffect(() => {
+    return () => {
+      if (!hasSubmitted.current && tasksRef.current.length > 0) {
+        tasksRef.current.forEach(task => {
+          deleteTask(task.id)
+        })
+      }
+    }
+  }, [deleteTask])
 
   return (
     <NewPostContext.Provider
@@ -171,6 +145,7 @@ export const NewPostProvider = (props: NewPostProviderProps) => {
         formErrors,
 
         isLoading,
+        isUploading,
 
         onTypeChange: handleOnTypeChange,
 
@@ -179,6 +154,8 @@ export const NewPostProvider = (props: NewPostProviderProps) => {
         onUploadAsset: handleOnUploadAsset,
         onDeleteAsset: handleOnDeleteAsset,
         onMoveAsset: handleOnMoveAsset,
+
+        onUpdateContent: handleOnUpdateContent,
 
         onSubmit: handleOnSubmit
       }}

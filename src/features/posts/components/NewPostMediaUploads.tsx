@@ -38,7 +38,7 @@ const NewPostMediaUploads = () => {
         strategy={rectSortingStrategy}
       >
         <div
-          className='flex w-full flex-wrap justify-center gap-3'
+          className='grid w-fit grid-cols-2 justify-items-center gap-3'
         >
           {uploadTasks.map(task => (
             <NewPostMediaUploadCard

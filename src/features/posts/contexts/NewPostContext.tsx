@@ -3,6 +3,7 @@ import React from 'react'
 import type { UploadTask } from '@/features/assets'
 import type { ResultAsync } from 'neverthrow'
 import type { ServerErrorInfo } from '@/utils/error'
+import type { Nullable } from '@/utils/util'
 
 export interface NewPostContextValue {
   type: PostType
@@ -13,6 +14,7 @@ export interface NewPostContextValue {
   formErrors: {}
 
   isLoading: boolean
+  isUploading: boolean
 
   onTypeChange: (newType: PostType) => void
 
@@ -21,6 +23,8 @@ export interface NewPostContextValue {
   onUploadAsset: (file: File) => ResultAsync<{ data: PresignedUpload, task: UploadTask }, ServerErrorInfo>
   onDeleteAsset: (id: string) => void
   onMoveAsset: (fromIndex: number, toIndex: number) => void
+
+  onUpdateContent: (newContent: Nullable<string>) => void
 
   onSubmit: (event: React.FormEvent) => void
 }

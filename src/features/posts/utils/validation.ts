@@ -50,9 +50,9 @@ export const ValidPostContent = z
     const processContent = Result.fromThrowable(() => {
       const jsond = JSON.parse(value as string) as JSON
 
-      // if (Object.keys(jsond).length === 0) {
-      //   return null
-      // }
+      if (Object.keys(jsond).length === 0) {
+        return null
+      }
 
       return getSanitizedTiptapContent(
         jsond,
@@ -193,12 +193,22 @@ export const CreatePostSchema = z
     assets: CreatePostSchemaAssets.nullish()
   })
   .strip()
-  .refine(data => {
+  .superRefine((data, ctx) => {
     if (data.type === PostType.Fragrance && data.fragranceId == null) {
-      return false
+      ctx.addIssue({
+        code: 'custom',
+        message: 'Fragrance posts must have a fragrance selected',
+        path: ['fragranceId']
+      })
     }
 
-    return true
+    if (data.type === PostType.Media && (data.assets == null || data.assets.length === 0)) {
+      ctx.addIssue({
+        code: 'custom',
+        message: 'Media posts must have at least one asset attached',
+        path: ['assets']
+      })
+    }
   })
 
 export const CreatePostCommentSchema = z

@@ -41,7 +41,6 @@ const PostPreviewCard = (props: PostPreviewCardProps) => {
       tabIndex={0}
       onClick={handleOnCardClick}
       onKeyDown={handleOnKeyDown}
-      // eslint-disable-next-line tailwindcss/no-custom-classname
       className='group hover:bg-empty2 flex w-full cursor-pointer flex-col overflow-hidden rounded-lg p-3 pb-1'
     >
       <div
@@ -59,7 +58,7 @@ const PostPreviewCard = (props: PostPreviewCardProps) => {
         </Link>
 
         <div
-          className='flex min-w-0 flex-col gap-1'
+          className='flex w-full min-w-0 flex-col gap-1'
         >
           <div
             className='flex items-center'
@@ -67,7 +66,7 @@ const PostPreviewCard = (props: PostPreviewCardProps) => {
             <Link
               to='/users/$id'
               params={{ id: user.id }}
-              className='text-sm font-medium hover:underline'
+              className='truncate text-sm font-medium hover:underline'
               onClick={handleOnChildClick}
             >
               {user.username}
@@ -80,7 +79,7 @@ const PostPreviewCard = (props: PostPreviewCardProps) => {
             </span>
 
             <span
-              className='text-xs text-black/50'
+              className='text-xs text-nowrap text-black/50'
             >
               {formatDateRelative(createdAt)}
             </span>

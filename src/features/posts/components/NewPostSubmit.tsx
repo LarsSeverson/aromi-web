@@ -5,7 +5,7 @@ import Spinner from '@/components/Spinner'
 export interface NewPostSubmitProps { }
 
 const NewPostSubmit = (_props: NewPostSubmitProps) => {
-  const { isLoading } = useNewPostContext()
+  const { isLoading, isUploading } = useNewPostContext()
 
   return (
     <div
@@ -13,7 +13,7 @@ const NewPostSubmit = (_props: NewPostSubmitProps) => {
     >
       <button
         type='submit'
-        disabled={isLoading}
+        disabled={isLoading || isUploading}
         className={clsx(
           'group hover:shadow-symmetrical flex cursor-pointer overflow-hidden rounded-3xl px-6 py-2 text-white',
           'bg-sinopia transition-opacity duration-150 hover:brightness-110',
