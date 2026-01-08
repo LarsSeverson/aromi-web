@@ -2,7 +2,7 @@ import { NewPostProvider } from '@/features/posts/contexts/providers/NewPostProv
 import NewPostPage from '@/features/posts/pages/NewPostPage'
 import { createFileRoute } from '@tanstack/react-router'
 
-export const Route = createFileRoute('/posts/new/')({
+export const Route = createFileRoute('/community/posts/new/')({
   component: RouteComponent
 })
 

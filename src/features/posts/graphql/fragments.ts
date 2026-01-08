@@ -84,3 +84,12 @@ export const ALL_POST_COMMENT_ASSET_FRAGMENT = gql(/* GraphQL */ `
     }
   }
 `)
+
+export const POST_VOTE_INFO_FRAGMENT = gql(/* GraphQL */ `
+  fragment PostVoteInfo on Post {
+    id
+    votes {
+      ...AllVoteInfo
+    }
+  } 
+`)

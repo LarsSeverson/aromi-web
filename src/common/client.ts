@@ -60,6 +60,8 @@ export const client = new ApolloClient({
 
       User: {
         fields: {
+          posts: customRelayPagination(),
+
           collections: customRelayPagination((_, { variables }) => {
             const { fragranceId } = variables ?? {}
             return fragranceId == null ? false : `fragranceId:${fragranceId}`

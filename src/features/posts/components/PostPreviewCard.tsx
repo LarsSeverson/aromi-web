@@ -7,6 +7,11 @@ import clsx from 'clsx'
 import React from 'react'
 import { FaRegComment } from 'react-icons/fa'
 import PostPreviewCardContent from './PostPreviewCardContent'
+import SharePostPopover from './SharePostPopover'
+import MoreOptionsPostPopover from './MoreOptionsPostPopover'
+import { useVoteOnPost } from '../hooks/useVoteOnPost'
+import { useDebounce } from '@/hooks/useDebounce'
+import { useToastMessage } from '@/hooks/useToastMessage'
 
 export interface PostPreviewCardProps {
   post: PostPreviewFragment
@@ -17,10 +22,33 @@ const PostPreviewCard = (props: PostPreviewCardProps) => {
   const { title, user, commentCount, votes, createdAt } = post
 
   const navigate = useNavigate()
+  const { toastError } = useToastMessage()
+
+  const { voteOnPost } = useVoteOnPost()
+
+  const handleVoteOnPost = useDebounce(
+    async (userVote: number) => {
+      const res = await voteOnPost({ postId: post.id, vote: userVote })
+
+      res.match(
+        () => {
+          //
+        },
+        () => {
+          toastError('', 'Something went wrong')
+        }
+      )
+    },
+    150
+  )
+
+  const handleOnVote = (vote: number) => {
+    handleVoteOnPost(vote)
+  }
 
   const handleOnCardClick = () => {
     navigate({
-      to: '/posts/$id',
+      to: '/community/posts/$id',
       params: { id: post.id }
     })
   }
@@ -83,6 +111,11 @@ const PostPreviewCard = (props: PostPreviewCardProps) => {
             >
               {formatDateRelative(createdAt)}
             </span>
+
+            <MoreOptionsPostPopover
+              post={post}
+              className='ml-auto'
+            />
           </div>
 
           <h2
@@ -105,10 +138,11 @@ const PostPreviewCard = (props: PostPreviewCardProps) => {
               className='bg-empty border-none'
               noSeparator
               votes={votes}
+              onVote={handleOnVote}
             />
 
             <Link
-              to='/posts/$id'
+              to='/community/posts/$id'
               params={{ id: post.id }}
               className='bg-empty flex items-center gap-2 rounded-full p-2 px-4 text-sm hover:bg-gray-200'
             >
@@ -118,6 +152,10 @@ const PostPreviewCard = (props: PostPreviewCardProps) => {
 
               {formatNumber(commentCount)}
             </Link>
+
+            <SharePostPopover
+              post={post}
+            />
           </div>
         </div>
       </div>

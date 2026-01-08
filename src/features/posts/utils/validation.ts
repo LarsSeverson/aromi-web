@@ -223,11 +223,31 @@ export const CreatePostCommentSchema = z
 export const UpdatePostSchema = z
   .object({
     id: z.string(),
+    type: ValidPostType,
     title: ValidPostTitle.nullish(),
     content: ValidPostContent.nullish(),
+    fragranceId: ValidPostFragranceId.nullish(),
     assets: UpdatePostSchemaAssets.nullish()
   })
   .strip()
+  .superRefine((data, ctx) => {
+    if (data.type === PostType.Fragrance && data.fragranceId == null) {
+      ctx.addIssue({
+        code: 'custom',
+        message: 'Fragrance posts must have a fragrance selected'
+      })
+    }
+
+    if (data.type === PostType.Media) {
+      const assets = data.assets ?? []
+      if (assets.length === 0) {
+        ctx.addIssue({
+          code: 'custom',
+          message: 'Media posts must have at least one asset attached'
+        })
+      }
+    }
+  })
 
 export const UpdatePostCommentSchema = z
   .object({

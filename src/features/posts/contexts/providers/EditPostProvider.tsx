@@ -1,51 +1,51 @@
 import React from 'react'
-import { NewPostContext } from '../NewPostContext'
-import { AssetKey, type CreatePostInput, PostType } from '@/generated/graphql'
+import { AssetKey, type PostPreviewFragment, type UpdatePostInput } from '@/generated/graphql'
 import { useAssetUploadManager } from '@/features/assets'
 import { truncate } from 'lodash'
-import { CreatePostSchema, MAX_POST_ASSETS } from '../../utils/validation'
+import { MAX_POST_ASSETS, UpdatePostSchema } from '../../utils/validation'
 import { useDebounce } from '@/hooks/useDebounce'
 import type { Form } from '@base-ui/react'
 import { parseSchema } from '@/utils/validation'
-import { useCreatePost } from '../../hooks/useCreatePost'
 import { useToastMessage } from '@/hooks/useToastMessage'
 import { useNavigate } from '@tanstack/react-router'
 import type { Nullable } from '@/utils/util'
+import { useUpdatePost } from '../../hooks/useUpdatePost'
+import { EditPostContext } from '../EditPostContext'
 
-export interface NewPostProviderProps {
+export interface EditPostProviderProps {
+  post: PostPreviewFragment
   children: React.ReactNode
 }
 
-export const NewPostProvider = (props: NewPostProviderProps) => {
-  const { children } = props
+export const EditPostProvider = (props: EditPostProviderProps) => {
+  const { post, children } = props
 
   const navigate = useNavigate()
-  const { toastError } = useToastMessage()
-  const { createPost } = useCreatePost()
+  const { toastMessage, toastError } = useToastMessage()
+  const { updatePost } = useUpdatePost()
 
   const {
     tasks: uploadTasks,
     uploadFile,
     deleteTask,
     moveTask
-  } = useAssetUploadManager({ maxUploads: MAX_POST_ASSETS, deleteAfterError: true })
+  } = useAssetUploadManager({
+    assets: post.assets.map(a => a.asset),
+    maxUploads: MAX_POST_ASSETS,
+    deleteAfterError: true
+  })
 
   const tasksRef = React.useRef(uploadTasks)
   const hasSubmitted = React.useRef(false)
-  const content = React.useRef<Nullable<string>>(undefined)
+  const content = React.useRef<Nullable<string>>(JSON.stringify(post.content))
 
-  const [type, setType] = React.useState<PostType>(PostType.Text)
-  const [fragranceId, setFragranceId] = React.useState<string | null>(null)
+  const [fragranceId, setFragranceId] = React.useState<string | null>(post.fragrance?.id ?? null)
   const [uploadErrors, setUploadErrors] = React.useState<string[]>([])
 
   const [isLoading, setIsLoading] = React.useState(false)
   const [formErrors, setFormErrors] = React.useState({})
 
   const isUploading = uploadTasks.length > 0 && uploadTasks.some(task => task.status === 'uploading')
-
-  const handleOnTypeChange = (newType: PostType) => {
-    setType(newType)
-  }
 
   const handleOnFragranceIdChange = (id: string | null) => {
     setFragranceId(id)
@@ -75,16 +75,23 @@ export const NewPostProvider = (props: NewPostProviderProps) => {
     content.current = newContent
   }
 
-  const handleOnCreatePost = useDebounce(
-    async (input: CreatePostInput) => {
-      const result = await createPost(input)
+  const handleOnEditPost = useDebounce(
+    async (input: UpdatePostInput) => {
+      const result = await updatePost(input)
 
       setIsLoading(false)
 
       result.match(
         _data => {
           hasSubmitted.current = true
-          navigate({ to: '/community/posts', resetScroll: true })
+
+          toastMessage('Your post has been updated')
+
+          navigate({
+            to: '/community/posts/$id',
+            params: { id: post.id },
+            resetScroll: true
+          })
         },
         _error => {
           toastError('')
@@ -106,7 +113,7 @@ export const NewPostProvider = (props: NewPostProviderProps) => {
       assets: inputAssets
     }
 
-    const parsed = parseSchema(CreatePostSchema, input)
+    const parsed = parseSchema(UpdatePostSchema, input)
     setFormErrors(parsed.fieldErrors)
 
     if (!parsed.success) {
@@ -114,7 +121,7 @@ export const NewPostProvider = (props: NewPostProviderProps) => {
     }
 
     setIsLoading(true)
-    handleOnCreatePost(parsed.data)
+    handleOnEditPost(parsed.data)
   }
 
   React.useEffect(
@@ -128,16 +135,19 @@ export const NewPostProvider = (props: NewPostProviderProps) => {
     return () => {
       if (!hasSubmitted.current && tasksRef.current.length > 0) {
         tasksRef.current.forEach(task => {
-          deleteTask(task.id)
+          if (task.status !== 'previous') {
+            deleteTask(task.id)
+          }
         })
       }
     }
   }, [deleteTask])
 
   return (
-    <NewPostContext.Provider
+    <EditPostContext.Provider
       value={{
-        type,
+        post,
+
         fragranceId,
 
         uploadTasks,
@@ -146,8 +156,6 @@ export const NewPostProvider = (props: NewPostProviderProps) => {
 
         isLoading,
         isUploading,
-
-        onTypeChange: handleOnTypeChange,
 
         onFragranceIdChange: handleOnFragranceIdChange,
 
@@ -161,6 +169,6 @@ export const NewPostProvider = (props: NewPostProviderProps) => {
       }}
     >
       {children}
-    </NewPostContext.Provider>
+    </EditPostContext.Provider>
   )
 }

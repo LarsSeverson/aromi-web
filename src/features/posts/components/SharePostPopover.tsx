@@ -1,22 +1,21 @@
-import React, { useState, type SyntheticEvent } from 'react'
-import { Popover } from '@base-ui/react'
-import { GoShare } from 'react-icons/go'
 import BouncyButton from '@/components/BouncyButton'
-import { HiOutlineLink } from 'react-icons/hi'
+import Divider from '@/components/Divider'
+import type { PostPreviewFragment } from '@/generated/graphql'
+import { useToastMessage } from '@/hooks/useToastMessage'
+import { Popover } from '@base-ui/react'
 import { useRouter } from '@tanstack/react-router'
 import { ResultAsync } from 'neverthrow'
-import Divider from '@/components/Divider'
-import type { FragrancePreviewFragment } from '@/generated/graphql'
-import { useToastMessage } from '@/hooks/useToastMessage'
+import React, { type SyntheticEvent, useState } from 'react'
+import { HiOutlineLink } from 'react-icons/hi'
+import { PiShareFat } from 'react-icons/pi'
 
-export interface ShareFragrancePopoverProps extends Popover.Root.Props {
-  fragrance: FragrancePreviewFragment
-  onRenderTrigger?: () => React.ReactNode
+export interface SharePostPopoverProps {
+  post: PostPreviewFragment
 }
 
-const ShareFragrancePopover = (props: ShareFragrancePopoverProps) => {
-  const { fragrance, onRenderTrigger, ...rest } = props
-  const { id } = fragrance
+const SharePostPopover = (props: SharePostPopoverProps) => {
+  const { post } = props
+  const { id } = post
 
   const router = useRouter()
   const { toastError } = useToastMessage()
@@ -37,7 +36,7 @@ const ShareFragrancePopover = (props: ShareFragrancePopoverProps) => {
     setIsLinkLoading(true)
 
     const location = router.buildLocation({
-      to: '/fragrances/$id',
+      to: '/community/posts/$id',
       params: { id }
     })
 
@@ -64,21 +63,18 @@ const ShareFragrancePopover = (props: ShareFragrancePopoverProps) => {
   }
 
   return (
-    <Popover.Root
-      {...rest}
-    >
-      {onRenderTrigger?.() ??
-        (
-          <Popover.Trigger
-            className='hover:bg-empty cursor-pointer rounded-full border bg-white p-2 text-center'
-            disabled={showLinkFeedback}
-            onClick={handlePopoverTriggerClick}
-          >
-            <GoShare
-              size={18}
-            />
-          </Popover.Trigger>
-        )}
+    <Popover.Root>
+      <Popover.Trigger
+        className='bg-empty group/trigger flex cursor-pointer items-center gap-2 rounded-full p-2 px-4 text-sm hover:bg-gray-200'
+        disabled={showLinkFeedback}
+        onClick={handlePopoverTriggerClick}
+      >
+        <PiShareFat
+          className='group-hover/trigger:text-sinopia size-4.5'
+        />
+
+        Share
+      </Popover.Trigger>
 
       <Popover.Portal>
         <Popover.Positioner
@@ -93,18 +89,6 @@ const ShareFragrancePopover = (props: ShareFragrancePopoverProps) => {
             >
               <p>
                 Share
-              </p>
-
-              <p
-                className='text-sm font-medium text-gray-600'
-              >
-                {fragrance.name}
-              </p>
-
-              <p
-                className='text-xs font-light text-gray-500'
-              >
-                {fragrance.brand.name}
               </p>
             </Popover.Title>
 
@@ -121,7 +105,7 @@ const ShareFragrancePopover = (props: ShareFragrancePopoverProps) => {
                   <BouncyButton
                     className='bg-empty hover:brightness-95'
                     disabled={isLinkLoading || showLinkFeedback}
-                    onClick={() => { void handleShareLink() }}
+                    onClick={(handleShareLink as () => void)}
                   >
                     <HiOutlineLink
                       size={20}
@@ -151,4 +135,4 @@ const ShareFragrancePopover = (props: ShareFragrancePopoverProps) => {
   )
 }
 
-export default ShareFragrancePopover
+export default SharePostPopover

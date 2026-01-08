@@ -1,7 +1,7 @@
-import { UserPostsTab } from '@/features/users/components/UserPostsTab'
+import { UserCollectionsTab } from '@/features/users/components/UserCollectionsTab'
 import { createFileRoute, getRouteApi } from '@tanstack/react-router'
 
-export const Route = createFileRoute('/users/$id/')({
+export const Route = createFileRoute('/users/$id/collections')({
   component: RouteComponent
 })
 
@@ -10,7 +10,7 @@ function RouteComponent () {
   const { user } = api.useLoaderData()
 
   return (
-    <UserPostsTab
+    <UserCollectionsTab
       user={user}
     />
   )

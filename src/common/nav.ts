@@ -11,7 +11,7 @@ export const NAV_HOME: NavItem = {
 }
 
 export const NAV_COMMUNITY: NavItem = {
-  activePaths: ['/posts', '/posts/', '/posts/$id', '/posts/$id/']
+  activePaths: ['/community', '/community/posts', '/community/posts/', '/community/posts/$id/']
 }
 
 export const NAV_PROFILE: NavItem = {

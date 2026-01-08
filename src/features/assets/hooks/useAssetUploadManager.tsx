@@ -1,27 +1,29 @@
 import React, { useCallback, useState } from 'react'
 import { useStageAsset } from './useStageAsset'
-import type { AssetKey } from '@/generated/graphql'
+import type { AllAssetFragment, AssetKey } from '@/generated/graphql'
 import { nanoid } from 'nanoid'
 import type { ServerErrorInfo } from '@/utils/error'
 import { useDeleteAsset } from './useDeleteAsset'
 
 export interface UploadTask {
   id: string
-  file: File
+  file?: File
   progress: number
-  status: 'idle' | 'uploading' | 'success' | 'error'
+  status: 'idle' | 'uploading' | 'success' | 'error' | 'previous'
   assetId?: string
 }
 
 export interface AssetUploadManagerOptions {
+  assets?: AllAssetFragment[]
   maxUploads?: number
   deleteAfterUpload?: boolean
   deleteAfterError?: boolean
-  onError?: (file: File, errorInfo: ServerErrorInfo) => void
+  onError?: (file: File | undefined, errorInfo: ServerErrorInfo) => void
 }
 
 export const useAssetUploadManager = (options?: AssetUploadManagerOptions) => {
   const {
+    assets = [],
     maxUploads = Infinity,
     deleteAfterUpload = false,
     deleteAfterError = false,
@@ -29,7 +31,12 @@ export const useAssetUploadManager = (options?: AssetUploadManagerOptions) => {
     onError
   } = options ?? {}
 
-  const [tasks, setTasks] = useState<UploadTask[]>([])
+  const [tasks, setTasks] = useState<UploadTask[]>(assets.map(asset => ({
+    id: nanoid(),
+    progress: 100,
+    status: 'previous',
+    assetId: asset.id
+  })))
 
   const { stageAssetWithFile } = useStageAsset()
   const { deleteAsset } = useDeleteAsset()

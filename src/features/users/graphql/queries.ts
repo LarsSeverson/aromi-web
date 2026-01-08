@@ -8,6 +8,27 @@ export const MY_QUERY = gql(/* GraphQL */ `
   }
 `)
 
+export const MY_POSTS_QUERY = gql(/* GraphQL */`
+  query MyPosts(
+    $input: PostPaginationInput
+  ) {
+    me {
+      ...Me
+      posts(input: $input) {
+        edges {
+          node {
+            ...PostPreview
+          }
+          cursor
+        }
+        pageInfo {
+          ...AllPageInfo
+        }
+      }
+    }
+  }
+`)
+
 export const MY_COLLECTIONS_QUERY = gql(/* GraphQL */`
   query MyCollections(
     $input: FragranceCollectionPaginationInput
@@ -121,6 +142,28 @@ export const USER_FOLLOWING_QUERY = gql(/* GraphQL */ `
         }
       }
     } 
+  }
+`)
+
+export const USER_POSTS_QUERY = gql(/* GraphQL */`
+  query UserPosts(
+    $userId: ID!
+    $input: PostPaginationInput
+  ) {
+    user(id: $userId) {
+      ...UserPreview
+      posts(input: $input) {
+        edges {
+          node {
+            ...PostPreview
+          }
+          cursor
+        }
+        pageInfo {
+          ...AllPageInfo
+        }
+      }
+    }
   }
 `)
 

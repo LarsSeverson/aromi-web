@@ -11,7 +11,7 @@ export interface ConfirmationDialogProps extends Dialog.Root.Props {
   cancelText?: string
   confirmText?: string
 
-  children: React.ReactNode
+  children?: React.ReactNode
 
   onCancel?: () => void
   onConfirm?: () => void | Promise<void>
@@ -65,7 +65,7 @@ const ConfirmationDialog = (props: ConfirmationDialogProps) => {
           onClick={(e) => { e.stopPropagation() }}
         >
           <Dialog.Title
-            className='text-center text-xl'
+            className='py-3 text-center text-xl'
           >
             {text}
           </Dialog.Title>

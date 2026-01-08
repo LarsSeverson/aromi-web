@@ -13,32 +13,37 @@ import { Route as UsersRouteRouteImport } from './routes/users/route'
 import { Route as SettingsRouteRouteImport } from './routes/settings/route'
 import { Route as SearchRouteRouteImport } from './routes/search/route'
 import { Route as PrivacyRouteRouteImport } from './routes/privacy/route'
-import { Route as PostsRouteRouteImport } from './routes/posts/route'
 import { Route as FragrancesRouteRouteImport } from './routes/fragrances/route'
+import { Route as CommunityRouteRouteImport } from './routes/community/route'
 import { Route as CollectionsRouteRouteImport } from './routes/collections/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as UsersIndexRouteImport } from './routes/users/index'
 import { Route as SettingsIndexRouteImport } from './routes/settings/index'
 import { Route as SearchIndexRouteImport } from './routes/search/index'
-import { Route as PostsIndexRouteImport } from './routes/posts/index'
 import { Route as FragrancesIndexRouteImport } from './routes/fragrances/index'
+import { Route as CommunityIndexRouteImport } from './routes/community/index'
 import { Route as AuthAccountRecoveryRouteImport } from './routes/auth/account-recovery'
 import { Route as UsersIdRouteRouteImport } from './routes/users/$id/route'
-import { Route as PostsNewRouteRouteImport } from './routes/posts/new/route'
-import { Route as PostsIdRouteRouteImport } from './routes/posts/$id/route'
 import { Route as FragrancesIdRouteRouteImport } from './routes/fragrances/$id/route'
+import { Route as CommunityPostsRouteRouteImport } from './routes/community/posts/route'
 import { Route as CollectionsIdRouteRouteImport } from './routes/collections/$id/route'
 import { Route as UsersIdIndexRouteImport } from './routes/users/$id/index'
 import { Route as SettingsProfileIndexRouteImport } from './routes/settings/profile/index'
 import { Route as SettingsAccountIndexRouteImport } from './routes/settings/account/index'
-import { Route as PostsNewIndexRouteImport } from './routes/posts/new/index'
-import { Route as PostsIdIndexRouteImport } from './routes/posts/$id/index'
 import { Route as FragrancesIdIndexRouteImport } from './routes/fragrances/$id/index'
+import { Route as CommunityPostsIndexRouteImport } from './routes/community/posts/index'
 import { Route as CollectionsIdIndexRouteImport } from './routes/collections/$id/index'
 import { Route as UsersIdReviewsRouteImport } from './routes/users/$id/reviews'
 import { Route as UsersIdLikesRouteImport } from './routes/users/$id/likes'
+import { Route as UsersIdCollectionsRouteImport } from './routes/users/$id/collections'
 import { Route as FragrancesIdReviewRouteRouteImport } from './routes/fragrances/$id/review/route'
+import { Route as CommunityPostsNewRouteRouteImport } from './routes/community/posts/new/route'
+import { Route as CommunityPostsIdRouteRouteImport } from './routes/community/posts/$id/route'
 import { Route as FragrancesIdReviewIndexRouteImport } from './routes/fragrances/$id/review/index'
+import { Route as CommunityPostsNewIndexRouteImport } from './routes/community/posts/new/index'
+import { Route as CommunityPostsIdIndexRouteImport } from './routes/community/posts/$id/index'
+import { Route as CommunityPostsIdEditRouteRouteImport } from './routes/community/posts/$id/edit/route'
+import { Route as CommunityPostsIdEditIndexRouteImport } from './routes/community/posts/$id/edit/index'
 
 const UsersRouteRoute = UsersRouteRouteImport.update({
   id: '/users',
@@ -60,14 +65,14 @@ const PrivacyRouteRoute = PrivacyRouteRouteImport.update({
   path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
-const PostsRouteRoute = PostsRouteRouteImport.update({
-  id: '/posts',
-  path: '/posts',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const FragrancesRouteRoute = FragrancesRouteRouteImport.update({
   id: '/fragrances',
   path: '/fragrances',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CommunityRouteRoute = CommunityRouteRouteImport.update({
+  id: '/community',
+  path: '/community',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CollectionsRouteRoute = CollectionsRouteRouteImport.update({
@@ -95,15 +100,15 @@ const SearchIndexRoute = SearchIndexRouteImport.update({
   path: '/',
   getParentRoute: () => SearchRouteRoute,
 } as any)
-const PostsIndexRoute = PostsIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => PostsRouteRoute,
-} as any)
 const FragrancesIndexRoute = FragrancesIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => FragrancesRouteRoute,
+} as any)
+const CommunityIndexRoute = CommunityIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => CommunityRouteRoute,
 } as any)
 const AuthAccountRecoveryRoute = AuthAccountRecoveryRouteImport.update({
   id: '/auth/account-recovery',
@@ -115,20 +120,15 @@ const UsersIdRouteRoute = UsersIdRouteRouteImport.update({
   path: '/$id',
   getParentRoute: () => UsersRouteRoute,
 } as any)
-const PostsNewRouteRoute = PostsNewRouteRouteImport.update({
-  id: '/new',
-  path: '/new',
-  getParentRoute: () => PostsRouteRoute,
-} as any)
-const PostsIdRouteRoute = PostsIdRouteRouteImport.update({
-  id: '/$id',
-  path: '/$id',
-  getParentRoute: () => PostsRouteRoute,
-} as any)
 const FragrancesIdRouteRoute = FragrancesIdRouteRouteImport.update({
   id: '/$id',
   path: '/$id',
   getParentRoute: () => FragrancesRouteRoute,
+} as any)
+const CommunityPostsRouteRoute = CommunityPostsRouteRouteImport.update({
+  id: '/posts',
+  path: '/posts',
+  getParentRoute: () => CommunityRouteRoute,
 } as any)
 const CollectionsIdRouteRoute = CollectionsIdRouteRouteImport.update({
   id: '/$id',
@@ -150,20 +150,15 @@ const SettingsAccountIndexRoute = SettingsAccountIndexRouteImport.update({
   path: '/account/',
   getParentRoute: () => SettingsRouteRoute,
 } as any)
-const PostsNewIndexRoute = PostsNewIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => PostsNewRouteRoute,
-} as any)
-const PostsIdIndexRoute = PostsIdIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => PostsIdRouteRoute,
-} as any)
 const FragrancesIdIndexRoute = FragrancesIdIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => FragrancesIdRouteRoute,
+} as any)
+const CommunityPostsIndexRoute = CommunityPostsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => CommunityPostsRouteRoute,
 } as any)
 const CollectionsIdIndexRoute = CollectionsIdIndexRouteImport.update({
   id: '/',
@@ -180,196 +175,259 @@ const UsersIdLikesRoute = UsersIdLikesRouteImport.update({
   path: '/likes',
   getParentRoute: () => UsersIdRouteRoute,
 } as any)
+const UsersIdCollectionsRoute = UsersIdCollectionsRouteImport.update({
+  id: '/collections',
+  path: '/collections',
+  getParentRoute: () => UsersIdRouteRoute,
+} as any)
 const FragrancesIdReviewRouteRoute = FragrancesIdReviewRouteRouteImport.update({
   id: '/review',
   path: '/review',
   getParentRoute: () => FragrancesIdRouteRoute,
+} as any)
+const CommunityPostsNewRouteRoute = CommunityPostsNewRouteRouteImport.update({
+  id: '/new',
+  path: '/new',
+  getParentRoute: () => CommunityPostsRouteRoute,
+} as any)
+const CommunityPostsIdRouteRoute = CommunityPostsIdRouteRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => CommunityPostsRouteRoute,
 } as any)
 const FragrancesIdReviewIndexRoute = FragrancesIdReviewIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => FragrancesIdReviewRouteRoute,
 } as any)
+const CommunityPostsNewIndexRoute = CommunityPostsNewIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => CommunityPostsNewRouteRoute,
+} as any)
+const CommunityPostsIdIndexRoute = CommunityPostsIdIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => CommunityPostsIdRouteRoute,
+} as any)
+const CommunityPostsIdEditRouteRoute =
+  CommunityPostsIdEditRouteRouteImport.update({
+    id: '/edit',
+    path: '/edit',
+    getParentRoute: () => CommunityPostsIdRouteRoute,
+  } as any)
+const CommunityPostsIdEditIndexRoute =
+  CommunityPostsIdEditIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => CommunityPostsIdEditRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/collections': typeof CollectionsRouteRouteWithChildren
+  '/community': typeof CommunityRouteRouteWithChildren
   '/fragrances': typeof FragrancesRouteRouteWithChildren
-  '/posts': typeof PostsRouteRouteWithChildren
   '/privacy': typeof PrivacyRouteRoute
   '/search': typeof SearchRouteRouteWithChildren
   '/settings': typeof SettingsRouteRouteWithChildren
   '/users': typeof UsersRouteRouteWithChildren
   '/collections/$id': typeof CollectionsIdRouteRouteWithChildren
+  '/community/posts': typeof CommunityPostsRouteRouteWithChildren
   '/fragrances/$id': typeof FragrancesIdRouteRouteWithChildren
-  '/posts/$id': typeof PostsIdRouteRouteWithChildren
-  '/posts/new': typeof PostsNewRouteRouteWithChildren
   '/users/$id': typeof UsersIdRouteRouteWithChildren
   '/auth/account-recovery': typeof AuthAccountRecoveryRoute
+  '/community/': typeof CommunityIndexRoute
   '/fragrances/': typeof FragrancesIndexRoute
-  '/posts/': typeof PostsIndexRoute
   '/search/': typeof SearchIndexRoute
   '/settings/': typeof SettingsIndexRoute
   '/users/': typeof UsersIndexRoute
+  '/community/posts/$id': typeof CommunityPostsIdRouteRouteWithChildren
+  '/community/posts/new': typeof CommunityPostsNewRouteRouteWithChildren
   '/fragrances/$id/review': typeof FragrancesIdReviewRouteRouteWithChildren
+  '/users/$id/collections': typeof UsersIdCollectionsRoute
   '/users/$id/likes': typeof UsersIdLikesRoute
   '/users/$id/reviews': typeof UsersIdReviewsRoute
   '/collections/$id/': typeof CollectionsIdIndexRoute
+  '/community/posts/': typeof CommunityPostsIndexRoute
   '/fragrances/$id/': typeof FragrancesIdIndexRoute
-  '/posts/$id/': typeof PostsIdIndexRoute
-  '/posts/new/': typeof PostsNewIndexRoute
   '/settings/account': typeof SettingsAccountIndexRoute
   '/settings/profile': typeof SettingsProfileIndexRoute
   '/users/$id/': typeof UsersIdIndexRoute
+  '/community/posts/$id/edit': typeof CommunityPostsIdEditRouteRouteWithChildren
+  '/community/posts/$id/': typeof CommunityPostsIdIndexRoute
+  '/community/posts/new/': typeof CommunityPostsNewIndexRoute
   '/fragrances/$id/review/': typeof FragrancesIdReviewIndexRoute
+  '/community/posts/$id/edit/': typeof CommunityPostsIdEditIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/collections': typeof CollectionsRouteRouteWithChildren
   '/privacy': typeof PrivacyRouteRoute
   '/auth/account-recovery': typeof AuthAccountRecoveryRoute
+  '/community': typeof CommunityIndexRoute
   '/fragrances': typeof FragrancesIndexRoute
-  '/posts': typeof PostsIndexRoute
   '/search': typeof SearchIndexRoute
   '/settings': typeof SettingsIndexRoute
   '/users': typeof UsersIndexRoute
+  '/users/$id/collections': typeof UsersIdCollectionsRoute
   '/users/$id/likes': typeof UsersIdLikesRoute
   '/users/$id/reviews': typeof UsersIdReviewsRoute
   '/collections/$id': typeof CollectionsIdIndexRoute
+  '/community/posts': typeof CommunityPostsIndexRoute
   '/fragrances/$id': typeof FragrancesIdIndexRoute
-  '/posts/$id': typeof PostsIdIndexRoute
-  '/posts/new': typeof PostsNewIndexRoute
   '/settings/account': typeof SettingsAccountIndexRoute
   '/settings/profile': typeof SettingsProfileIndexRoute
   '/users/$id': typeof UsersIdIndexRoute
+  '/community/posts/$id': typeof CommunityPostsIdIndexRoute
+  '/community/posts/new': typeof CommunityPostsNewIndexRoute
   '/fragrances/$id/review': typeof FragrancesIdReviewIndexRoute
+  '/community/posts/$id/edit': typeof CommunityPostsIdEditIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/collections': typeof CollectionsRouteRouteWithChildren
+  '/community': typeof CommunityRouteRouteWithChildren
   '/fragrances': typeof FragrancesRouteRouteWithChildren
-  '/posts': typeof PostsRouteRouteWithChildren
   '/privacy': typeof PrivacyRouteRoute
   '/search': typeof SearchRouteRouteWithChildren
   '/settings': typeof SettingsRouteRouteWithChildren
   '/users': typeof UsersRouteRouteWithChildren
   '/collections/$id': typeof CollectionsIdRouteRouteWithChildren
+  '/community/posts': typeof CommunityPostsRouteRouteWithChildren
   '/fragrances/$id': typeof FragrancesIdRouteRouteWithChildren
-  '/posts/$id': typeof PostsIdRouteRouteWithChildren
-  '/posts/new': typeof PostsNewRouteRouteWithChildren
   '/users/$id': typeof UsersIdRouteRouteWithChildren
   '/auth/account-recovery': typeof AuthAccountRecoveryRoute
+  '/community/': typeof CommunityIndexRoute
   '/fragrances/': typeof FragrancesIndexRoute
-  '/posts/': typeof PostsIndexRoute
   '/search/': typeof SearchIndexRoute
   '/settings/': typeof SettingsIndexRoute
   '/users/': typeof UsersIndexRoute
+  '/community/posts/$id': typeof CommunityPostsIdRouteRouteWithChildren
+  '/community/posts/new': typeof CommunityPostsNewRouteRouteWithChildren
   '/fragrances/$id/review': typeof FragrancesIdReviewRouteRouteWithChildren
+  '/users/$id/collections': typeof UsersIdCollectionsRoute
   '/users/$id/likes': typeof UsersIdLikesRoute
   '/users/$id/reviews': typeof UsersIdReviewsRoute
   '/collections/$id/': typeof CollectionsIdIndexRoute
+  '/community/posts/': typeof CommunityPostsIndexRoute
   '/fragrances/$id/': typeof FragrancesIdIndexRoute
-  '/posts/$id/': typeof PostsIdIndexRoute
-  '/posts/new/': typeof PostsNewIndexRoute
   '/settings/account/': typeof SettingsAccountIndexRoute
   '/settings/profile/': typeof SettingsProfileIndexRoute
   '/users/$id/': typeof UsersIdIndexRoute
+  '/community/posts/$id/edit': typeof CommunityPostsIdEditRouteRouteWithChildren
+  '/community/posts/$id/': typeof CommunityPostsIdIndexRoute
+  '/community/posts/new/': typeof CommunityPostsNewIndexRoute
   '/fragrances/$id/review/': typeof FragrancesIdReviewIndexRoute
+  '/community/posts/$id/edit/': typeof CommunityPostsIdEditIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/collections'
+    | '/community'
     | '/fragrances'
-    | '/posts'
     | '/privacy'
     | '/search'
     | '/settings'
     | '/users'
     | '/collections/$id'
+    | '/community/posts'
     | '/fragrances/$id'
-    | '/posts/$id'
-    | '/posts/new'
     | '/users/$id'
     | '/auth/account-recovery'
+    | '/community/'
     | '/fragrances/'
-    | '/posts/'
     | '/search/'
     | '/settings/'
     | '/users/'
+    | '/community/posts/$id'
+    | '/community/posts/new'
     | '/fragrances/$id/review'
+    | '/users/$id/collections'
     | '/users/$id/likes'
     | '/users/$id/reviews'
     | '/collections/$id/'
+    | '/community/posts/'
     | '/fragrances/$id/'
-    | '/posts/$id/'
-    | '/posts/new/'
     | '/settings/account'
     | '/settings/profile'
     | '/users/$id/'
+    | '/community/posts/$id/edit'
+    | '/community/posts/$id/'
+    | '/community/posts/new/'
     | '/fragrances/$id/review/'
+    | '/community/posts/$id/edit/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/collections'
     | '/privacy'
     | '/auth/account-recovery'
+    | '/community'
     | '/fragrances'
-    | '/posts'
     | '/search'
     | '/settings'
     | '/users'
+    | '/users/$id/collections'
     | '/users/$id/likes'
     | '/users/$id/reviews'
     | '/collections/$id'
+    | '/community/posts'
     | '/fragrances/$id'
-    | '/posts/$id'
-    | '/posts/new'
     | '/settings/account'
     | '/settings/profile'
     | '/users/$id'
+    | '/community/posts/$id'
+    | '/community/posts/new'
     | '/fragrances/$id/review'
+    | '/community/posts/$id/edit'
   id:
     | '__root__'
     | '/'
     | '/collections'
+    | '/community'
     | '/fragrances'
-    | '/posts'
     | '/privacy'
     | '/search'
     | '/settings'
     | '/users'
     | '/collections/$id'
+    | '/community/posts'
     | '/fragrances/$id'
-    | '/posts/$id'
-    | '/posts/new'
     | '/users/$id'
     | '/auth/account-recovery'
+    | '/community/'
     | '/fragrances/'
-    | '/posts/'
     | '/search/'
     | '/settings/'
     | '/users/'
+    | '/community/posts/$id'
+    | '/community/posts/new'
     | '/fragrances/$id/review'
+    | '/users/$id/collections'
     | '/users/$id/likes'
     | '/users/$id/reviews'
     | '/collections/$id/'
+    | '/community/posts/'
     | '/fragrances/$id/'
-    | '/posts/$id/'
-    | '/posts/new/'
     | '/settings/account/'
     | '/settings/profile/'
     | '/users/$id/'
+    | '/community/posts/$id/edit'
+    | '/community/posts/$id/'
+    | '/community/posts/new/'
     | '/fragrances/$id/review/'
+    | '/community/posts/$id/edit/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CollectionsRouteRoute: typeof CollectionsRouteRouteWithChildren
+  CommunityRouteRoute: typeof CommunityRouteRouteWithChildren
   FragrancesRouteRoute: typeof FragrancesRouteRouteWithChildren
-  PostsRouteRoute: typeof PostsRouteRouteWithChildren
   PrivacyRouteRoute: typeof PrivacyRouteRoute
   SearchRouteRoute: typeof SearchRouteRouteWithChildren
   SettingsRouteRoute: typeof SettingsRouteRouteWithChildren
@@ -407,18 +465,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrivacyRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/posts': {
-      id: '/posts'
-      path: '/posts'
-      fullPath: '/posts'
-      preLoaderRoute: typeof PostsRouteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/fragrances': {
       id: '/fragrances'
       path: '/fragrances'
       fullPath: '/fragrances'
       preLoaderRoute: typeof FragrancesRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/community': {
+      id: '/community'
+      path: '/community'
+      fullPath: '/community'
+      preLoaderRoute: typeof CommunityRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/collections': {
@@ -456,19 +514,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SearchIndexRouteImport
       parentRoute: typeof SearchRouteRoute
     }
-    '/posts/': {
-      id: '/posts/'
-      path: '/'
-      fullPath: '/posts/'
-      preLoaderRoute: typeof PostsIndexRouteImport
-      parentRoute: typeof PostsRouteRoute
-    }
     '/fragrances/': {
       id: '/fragrances/'
       path: '/'
       fullPath: '/fragrances/'
       preLoaderRoute: typeof FragrancesIndexRouteImport
       parentRoute: typeof FragrancesRouteRoute
+    }
+    '/community/': {
+      id: '/community/'
+      path: '/'
+      fullPath: '/community/'
+      preLoaderRoute: typeof CommunityIndexRouteImport
+      parentRoute: typeof CommunityRouteRoute
     }
     '/auth/account-recovery': {
       id: '/auth/account-recovery'
@@ -484,26 +542,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UsersIdRouteRouteImport
       parentRoute: typeof UsersRouteRoute
     }
-    '/posts/new': {
-      id: '/posts/new'
-      path: '/new'
-      fullPath: '/posts/new'
-      preLoaderRoute: typeof PostsNewRouteRouteImport
-      parentRoute: typeof PostsRouteRoute
-    }
-    '/posts/$id': {
-      id: '/posts/$id'
-      path: '/$id'
-      fullPath: '/posts/$id'
-      preLoaderRoute: typeof PostsIdRouteRouteImport
-      parentRoute: typeof PostsRouteRoute
-    }
     '/fragrances/$id': {
       id: '/fragrances/$id'
       path: '/$id'
       fullPath: '/fragrances/$id'
       preLoaderRoute: typeof FragrancesIdRouteRouteImport
       parentRoute: typeof FragrancesRouteRoute
+    }
+    '/community/posts': {
+      id: '/community/posts'
+      path: '/posts'
+      fullPath: '/community/posts'
+      preLoaderRoute: typeof CommunityPostsRouteRouteImport
+      parentRoute: typeof CommunityRouteRoute
     }
     '/collections/$id': {
       id: '/collections/$id'
@@ -533,26 +584,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SettingsAccountIndexRouteImport
       parentRoute: typeof SettingsRouteRoute
     }
-    '/posts/new/': {
-      id: '/posts/new/'
-      path: '/'
-      fullPath: '/posts/new/'
-      preLoaderRoute: typeof PostsNewIndexRouteImport
-      parentRoute: typeof PostsNewRouteRoute
-    }
-    '/posts/$id/': {
-      id: '/posts/$id/'
-      path: '/'
-      fullPath: '/posts/$id/'
-      preLoaderRoute: typeof PostsIdIndexRouteImport
-      parentRoute: typeof PostsIdRouteRoute
-    }
     '/fragrances/$id/': {
       id: '/fragrances/$id/'
       path: '/'
       fullPath: '/fragrances/$id/'
       preLoaderRoute: typeof FragrancesIdIndexRouteImport
       parentRoute: typeof FragrancesIdRouteRoute
+    }
+    '/community/posts/': {
+      id: '/community/posts/'
+      path: '/'
+      fullPath: '/community/posts/'
+      preLoaderRoute: typeof CommunityPostsIndexRouteImport
+      parentRoute: typeof CommunityPostsRouteRoute
     }
     '/collections/$id/': {
       id: '/collections/$id/'
@@ -575,6 +619,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UsersIdLikesRouteImport
       parentRoute: typeof UsersIdRouteRoute
     }
+    '/users/$id/collections': {
+      id: '/users/$id/collections'
+      path: '/collections'
+      fullPath: '/users/$id/collections'
+      preLoaderRoute: typeof UsersIdCollectionsRouteImport
+      parentRoute: typeof UsersIdRouteRoute
+    }
     '/fragrances/$id/review': {
       id: '/fragrances/$id/review'
       path: '/review'
@@ -582,12 +633,54 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FragrancesIdReviewRouteRouteImport
       parentRoute: typeof FragrancesIdRouteRoute
     }
+    '/community/posts/new': {
+      id: '/community/posts/new'
+      path: '/new'
+      fullPath: '/community/posts/new'
+      preLoaderRoute: typeof CommunityPostsNewRouteRouteImport
+      parentRoute: typeof CommunityPostsRouteRoute
+    }
+    '/community/posts/$id': {
+      id: '/community/posts/$id'
+      path: '/$id'
+      fullPath: '/community/posts/$id'
+      preLoaderRoute: typeof CommunityPostsIdRouteRouteImport
+      parentRoute: typeof CommunityPostsRouteRoute
+    }
     '/fragrances/$id/review/': {
       id: '/fragrances/$id/review/'
       path: '/'
       fullPath: '/fragrances/$id/review/'
       preLoaderRoute: typeof FragrancesIdReviewIndexRouteImport
       parentRoute: typeof FragrancesIdReviewRouteRoute
+    }
+    '/community/posts/new/': {
+      id: '/community/posts/new/'
+      path: '/'
+      fullPath: '/community/posts/new/'
+      preLoaderRoute: typeof CommunityPostsNewIndexRouteImport
+      parentRoute: typeof CommunityPostsNewRouteRoute
+    }
+    '/community/posts/$id/': {
+      id: '/community/posts/$id/'
+      path: '/'
+      fullPath: '/community/posts/$id/'
+      preLoaderRoute: typeof CommunityPostsIdIndexRouteImport
+      parentRoute: typeof CommunityPostsIdRouteRoute
+    }
+    '/community/posts/$id/edit': {
+      id: '/community/posts/$id/edit'
+      path: '/edit'
+      fullPath: '/community/posts/$id/edit'
+      preLoaderRoute: typeof CommunityPostsIdEditRouteRouteImport
+      parentRoute: typeof CommunityPostsIdRouteRoute
+    }
+    '/community/posts/$id/edit/': {
+      id: '/community/posts/$id/edit/'
+      path: '/'
+      fullPath: '/community/posts/$id/edit/'
+      preLoaderRoute: typeof CommunityPostsIdEditIndexRouteImport
+      parentRoute: typeof CommunityPostsIdEditRouteRoute
     }
   }
 }
@@ -613,6 +706,78 @@ const CollectionsRouteRouteChildren: CollectionsRouteRouteChildren = {
 
 const CollectionsRouteRouteWithChildren =
   CollectionsRouteRoute._addFileChildren(CollectionsRouteRouteChildren)
+
+interface CommunityPostsIdEditRouteRouteChildren {
+  CommunityPostsIdEditIndexRoute: typeof CommunityPostsIdEditIndexRoute
+}
+
+const CommunityPostsIdEditRouteRouteChildren: CommunityPostsIdEditRouteRouteChildren =
+  {
+    CommunityPostsIdEditIndexRoute: CommunityPostsIdEditIndexRoute,
+  }
+
+const CommunityPostsIdEditRouteRouteWithChildren =
+  CommunityPostsIdEditRouteRoute._addFileChildren(
+    CommunityPostsIdEditRouteRouteChildren,
+  )
+
+interface CommunityPostsIdRouteRouteChildren {
+  CommunityPostsIdEditRouteRoute: typeof CommunityPostsIdEditRouteRouteWithChildren
+  CommunityPostsIdIndexRoute: typeof CommunityPostsIdIndexRoute
+}
+
+const CommunityPostsIdRouteRouteChildren: CommunityPostsIdRouteRouteChildren = {
+  CommunityPostsIdEditRouteRoute: CommunityPostsIdEditRouteRouteWithChildren,
+  CommunityPostsIdIndexRoute: CommunityPostsIdIndexRoute,
+}
+
+const CommunityPostsIdRouteRouteWithChildren =
+  CommunityPostsIdRouteRoute._addFileChildren(
+    CommunityPostsIdRouteRouteChildren,
+  )
+
+interface CommunityPostsNewRouteRouteChildren {
+  CommunityPostsNewIndexRoute: typeof CommunityPostsNewIndexRoute
+}
+
+const CommunityPostsNewRouteRouteChildren: CommunityPostsNewRouteRouteChildren =
+  {
+    CommunityPostsNewIndexRoute: CommunityPostsNewIndexRoute,
+  }
+
+const CommunityPostsNewRouteRouteWithChildren =
+  CommunityPostsNewRouteRoute._addFileChildren(
+    CommunityPostsNewRouteRouteChildren,
+  )
+
+interface CommunityPostsRouteRouteChildren {
+  CommunityPostsIdRouteRoute: typeof CommunityPostsIdRouteRouteWithChildren
+  CommunityPostsNewRouteRoute: typeof CommunityPostsNewRouteRouteWithChildren
+  CommunityPostsIndexRoute: typeof CommunityPostsIndexRoute
+}
+
+const CommunityPostsRouteRouteChildren: CommunityPostsRouteRouteChildren = {
+  CommunityPostsIdRouteRoute: CommunityPostsIdRouteRouteWithChildren,
+  CommunityPostsNewRouteRoute: CommunityPostsNewRouteRouteWithChildren,
+  CommunityPostsIndexRoute: CommunityPostsIndexRoute,
+}
+
+const CommunityPostsRouteRouteWithChildren =
+  CommunityPostsRouteRoute._addFileChildren(CommunityPostsRouteRouteChildren)
+
+interface CommunityRouteRouteChildren {
+  CommunityPostsRouteRoute: typeof CommunityPostsRouteRouteWithChildren
+  CommunityIndexRoute: typeof CommunityIndexRoute
+}
+
+const CommunityRouteRouteChildren: CommunityRouteRouteChildren = {
+  CommunityPostsRouteRoute: CommunityPostsRouteRouteWithChildren,
+  CommunityIndexRoute: CommunityIndexRoute,
+}
+
+const CommunityRouteRouteWithChildren = CommunityRouteRoute._addFileChildren(
+  CommunityRouteRouteChildren,
+)
 
 interface FragrancesIdReviewRouteRouteChildren {
   FragrancesIdReviewIndexRoute: typeof FragrancesIdReviewIndexRoute
@@ -655,46 +820,6 @@ const FragrancesRouteRouteWithChildren = FragrancesRouteRoute._addFileChildren(
   FragrancesRouteRouteChildren,
 )
 
-interface PostsIdRouteRouteChildren {
-  PostsIdIndexRoute: typeof PostsIdIndexRoute
-}
-
-const PostsIdRouteRouteChildren: PostsIdRouteRouteChildren = {
-  PostsIdIndexRoute: PostsIdIndexRoute,
-}
-
-const PostsIdRouteRouteWithChildren = PostsIdRouteRoute._addFileChildren(
-  PostsIdRouteRouteChildren,
-)
-
-interface PostsNewRouteRouteChildren {
-  PostsNewIndexRoute: typeof PostsNewIndexRoute
-}
-
-const PostsNewRouteRouteChildren: PostsNewRouteRouteChildren = {
-  PostsNewIndexRoute: PostsNewIndexRoute,
-}
-
-const PostsNewRouteRouteWithChildren = PostsNewRouteRoute._addFileChildren(
-  PostsNewRouteRouteChildren,
-)
-
-interface PostsRouteRouteChildren {
-  PostsIdRouteRoute: typeof PostsIdRouteRouteWithChildren
-  PostsNewRouteRoute: typeof PostsNewRouteRouteWithChildren
-  PostsIndexRoute: typeof PostsIndexRoute
-}
-
-const PostsRouteRouteChildren: PostsRouteRouteChildren = {
-  PostsIdRouteRoute: PostsIdRouteRouteWithChildren,
-  PostsNewRouteRoute: PostsNewRouteRouteWithChildren,
-  PostsIndexRoute: PostsIndexRoute,
-}
-
-const PostsRouteRouteWithChildren = PostsRouteRoute._addFileChildren(
-  PostsRouteRouteChildren,
-)
-
 interface SearchRouteRouteChildren {
   SearchIndexRoute: typeof SearchIndexRoute
 }
@@ -724,12 +849,14 @@ const SettingsRouteRouteWithChildren = SettingsRouteRoute._addFileChildren(
 )
 
 interface UsersIdRouteRouteChildren {
+  UsersIdCollectionsRoute: typeof UsersIdCollectionsRoute
   UsersIdLikesRoute: typeof UsersIdLikesRoute
   UsersIdReviewsRoute: typeof UsersIdReviewsRoute
   UsersIdIndexRoute: typeof UsersIdIndexRoute
 }
 
 const UsersIdRouteRouteChildren: UsersIdRouteRouteChildren = {
+  UsersIdCollectionsRoute: UsersIdCollectionsRoute,
   UsersIdLikesRoute: UsersIdLikesRoute,
   UsersIdReviewsRoute: UsersIdReviewsRoute,
   UsersIdIndexRoute: UsersIdIndexRoute,
@@ -756,8 +883,8 @@ const UsersRouteRouteWithChildren = UsersRouteRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CollectionsRouteRoute: CollectionsRouteRouteWithChildren,
+  CommunityRouteRoute: CommunityRouteRouteWithChildren,
   FragrancesRouteRoute: FragrancesRouteRouteWithChildren,
-  PostsRouteRoute: PostsRouteRouteWithChildren,
   PrivacyRouteRoute: PrivacyRouteRoute,
   SearchRouteRoute: SearchRouteRouteWithChildren,
   SettingsRouteRoute: SettingsRouteRouteWithChildren,

@@ -51,7 +51,7 @@ export const UserPage = (props: UserPageProps) => {
     handleOnRelationshipChange(newValue)
   }
 
-  const activeTab = (/\/(likes|reviews)$/.exec(pathname))?.[1] ?? '/'
+  const activeTab = (/\/(likes|reviews|collections)$/.exec(pathname))?.[1] ?? '/'
   const isMyProfile = me?.id === id
 
   return (
@@ -180,8 +180,20 @@ export const UserPage = (props: UserPageProps) => {
                   'hover:bg-empty'
                 )}
               >
-                Collections
+                Posts
                 {activeTab === '/' && <ActiveTabUnderline />}
+              </Link>
+
+              <Link
+                from='/users/$id'
+                to='collections'
+                className={clsx(
+                  'relative flex flex-1 flex-col py-2.5 text-center font-medium focus:outline-none',
+                  'hover:bg-empty'
+                )}
+              >
+                Collections
+                {activeTab === 'collections' && <ActiveTabUnderline />}
               </Link>
 
               <Link

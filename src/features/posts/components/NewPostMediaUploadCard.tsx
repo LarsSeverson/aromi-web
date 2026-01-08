@@ -26,7 +26,7 @@ const NewPostMediaUploadCard = (props: NewPostMediaCardProps) => {
   } = useSortable({ id })
 
   const previewUrl = React.useMemo(() => {
-    return URL.createObjectURL(file)
+    return file == null ? undefined : URL.createObjectURL(file)
   }, [file])
 
   const handleOnRemove = () => {
@@ -35,7 +35,9 @@ const NewPostMediaUploadCard = (props: NewPostMediaCardProps) => {
 
   React.useEffect(() => {
     return () => {
-      URL.revokeObjectURL(previewUrl)
+      if (previewUrl != null) {
+        URL.revokeObjectURL(previewUrl)
+      }
     }
   }, [previewUrl])
 
