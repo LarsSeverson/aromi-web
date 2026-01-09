@@ -1,10 +1,10 @@
 import React from 'react'
-import { useNewPostContext } from '../contexts/NewPostContext'
+import { useEditPostContext } from '../contexts/EditPostContext'
 import NewPostFragranceInput from './NewPostFragranceInput'
 import NewPostFragrancePreview from './NewPostFragrancePreview'
 
-const NewPostFragrance = () => {
-  const { fragranceId, onFragranceIdChange } = useNewPostContext()
+const EditPostFragrance = () => {
+  const { fragranceId, onFragranceIdChange } = useEditPostContext()
 
   if (fragranceId == null) {
     return (
@@ -22,4 +22,4 @@ const NewPostFragrance = () => {
   )
 }
 
-export default NewPostFragrance
+export default EditPostFragrance

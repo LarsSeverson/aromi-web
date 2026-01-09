@@ -1,21 +1,23 @@
 import React from 'react'
-import { useNewPostContext } from '../contexts/NewPostContext'
 import { useFragrance } from '@/features/fragrances'
 import { INVALID_ID } from '@/utils/util'
 import ProgressiveImage from '@/components/ProgressiveImage'
 import { CgClose } from 'react-icons/cg'
 import { Field } from '@base-ui/react'
 
-export interface NewPostFragrancePreviewProps {}
+export interface NewPostFragrancePreviewProps {
+  fragranceId: string
+  onFragranceIdChange?: (id: string | null) => void
+}
 
-const NewPostFragrancePreview = (_props: NewPostFragrancePreviewProps) => {
-  const { fragranceId, onFragranceIdChange } = useNewPostContext()
+const NewPostFragrancePreview = (props: NewPostFragrancePreviewProps) => {
+  const { fragranceId, onFragranceIdChange } = props
 
   const { fragrance } = useFragrance(fragranceId ?? INVALID_ID)
   const { name, brand, thumbnail } = fragrance ?? {}
 
   const handleOnClearClick = () => {
-    onFragranceIdChange(null)
+    onFragranceIdChange?.(null)
   }
 
   if (fragrance == null || fragranceId == null) return null

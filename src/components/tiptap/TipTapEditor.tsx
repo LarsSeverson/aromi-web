@@ -4,14 +4,16 @@ import Placeholder from '@tiptap/extension-placeholder'
 import { clsx } from 'clsx'
 import EditorToolbar from './EditorToolbar'
 
-export interface EditorProps {
+export interface TipTapEditorProps {
   placeholder?: string
+  defaultContent?: JSONContent
   onUpdate?: (content: JSONContent) => void
 }
 
-const Editor = (props: EditorProps) => {
+const TipTapEditor = (props: TipTapEditorProps) => {
   const {
     placeholder = 'Body (optional)...',
+    defaultContent,
 
     onUpdate
   } = props
@@ -25,7 +27,7 @@ const Editor = (props: EditorProps) => {
       })
     ],
 
-    content: '',
+    content: defaultContent ?? undefined,
 
     editorProps: {
       attributes: {
@@ -71,4 +73,4 @@ const Editor = (props: EditorProps) => {
   )
 }
 
-export default Editor
+export default TipTapEditor

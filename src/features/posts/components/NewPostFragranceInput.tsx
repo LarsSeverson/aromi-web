@@ -4,12 +4,15 @@ import React from 'react'
 import { useSearchFragrances } from '@/features/fragrances'
 import { useDebounce } from '@/hooks/useDebounce'
 import NewPostFragranceItem from './NewPostFragranceItem'
-import { useNewPostContext } from '../contexts/NewPostContext'
 import type { FragrancePreviewFragment } from '@/generated/graphql'
 import { Field } from '@base-ui/react'
 
-const NewPostFragranceInput = () => {
-  const { onFragranceIdChange } = useNewPostContext()
+export interface NewPostFragranceInputProps {
+  onFragranceIdChange?: (id: string | null) => void
+}
+
+const NewPostFragranceInput = (props: NewPostFragranceInputProps) => {
+  const { onFragranceIdChange } = props
 
   const { fragrances, refresh } = useSearchFragrances({ pagination: { first: 10 } })
 
@@ -32,7 +35,7 @@ const NewPostFragranceInput = () => {
       event.preventDefault()
 
       const { item: fragrance } = event
-      onFragranceIdChange(fragrance?.id ?? null)
+      onFragranceIdChange?.(fragrance?.id ?? null)
     }
   }
 

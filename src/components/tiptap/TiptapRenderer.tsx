@@ -4,11 +4,11 @@ import type { JSONContent } from '@tiptap/core'
 import { renderToReactElement } from '@tiptap/static-renderer/pm/react'
 import { Result } from 'neverthrow'
 
-interface TiptapRendererProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'content'> {
+interface TipTapRendererProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'content'> {
   content: JSONContent
 }
 
-export function TiptapRenderer (props: TiptapRendererProps) {
+export function TipTapRenderer (props: TipTapRendererProps) {
   const { content, ...rest } = props
 
   const node = React.useMemo(

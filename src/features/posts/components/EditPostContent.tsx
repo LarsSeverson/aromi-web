@@ -1,13 +1,11 @@
-import type { JSONContent } from '@tiptap/react'
-import TipTapEditor from '@/components/tiptap/TipTapEditor'
-import { Field } from '@base-ui/react'
 import React from 'react'
-import { useNewPostContext } from '../contexts/NewPostContext'
+import { useEditPostContext } from '../contexts/EditPostContext'
+import type { JSONContent } from '@tiptap/core'
+import { Field } from '@base-ui/react'
+import TipTapEditor from '@/components/tiptap/TipTapEditor'
 
-export interface NewPostContentProps {}
-
-const NewPostContent = (_props: NewPostContentProps) => {
-  const { onUpdateContent } = useNewPostContext()
+const EditPostContent = () => {
+  const { post, onUpdateContent } = useEditPostContext()
 
   const handleContentUpdate = (json: JSONContent) => {
     const val = JSON.stringify(json ?? {})
@@ -26,10 +24,11 @@ const NewPostContent = (_props: NewPostContentProps) => {
       </Field.Label>
 
       <TipTapEditor
+        defaultContent={post.content as JSONContent}
         onUpdate={handleContentUpdate}
       />
     </Field.Root>
   )
 }
 
-export default NewPostContent
+export default EditPostContent

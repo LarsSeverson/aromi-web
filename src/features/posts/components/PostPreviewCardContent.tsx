@@ -1,4 +1,4 @@
-import { TiptapRenderer } from '@/components/tiptap/TiptapRenderer'
+import { TipTapRenderer } from '@/components/tiptap/TipTapRenderer'
 import { PostType, type PostPreviewFragment } from '@/generated/graphql'
 import type { JSONContent } from '@tiptap/core'
 import React from 'react'
@@ -18,7 +18,7 @@ const PostPreviewCardContent = (props: PostPreviewCardContentProps) => {
       className='z-10'
     >
       {type === PostType.Text && (
-        <TiptapRenderer
+        <TipTapRenderer
           content={post.content as JSONContent}
           className='line-clamp-6 text-sm text-black/70 select-none'
         />
