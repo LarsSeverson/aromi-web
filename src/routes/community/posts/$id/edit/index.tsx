@@ -1,6 +1,7 @@
 import { EditPostProvider } from '@/features/posts/contexts/providers/EditPostProvider'
 import EditPostPage from '@/features/posts/pages/EditPostPage'
 import { createFileRoute, getRouteApi } from '@tanstack/react-router'
+import React from 'react'
 
 export const Route = createFileRoute('/community/posts/$id/edit/')({
   component: RouteComponent

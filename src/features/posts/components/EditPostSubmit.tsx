@@ -5,7 +5,7 @@ import Spinner from '@/components/Spinner'
 import { useCanGoBack, useNavigate, useRouter } from '@tanstack/react-router'
 
 const EditPostSubmit = () => {
-  const { isLoading, isUploading } = useEditPostContext()
+  const { hasChanges, isLoading } = useEditPostContext()
 
   const navigate = useNavigate()
   const canGoBack = useCanGoBack()
@@ -25,7 +25,7 @@ const EditPostSubmit = () => {
     >
       <button
         type='button'
-        disabled={isLoading || isUploading}
+        disabled={isLoading}
         className={clsx(
           'group  flex cursor-pointer overflow-hidden rounded-3xl px-6 py-2 text-black',
           'bg-gray-200 transition-opacity duration-150 hover:brightness-95',
@@ -41,10 +41,11 @@ const EditPostSubmit = () => {
 
       <button
         type='submit'
-        disabled={isLoading || isUploading}
+        disabled={isLoading || !hasChanges}
         className={clsx(
-          'group hover:shadow-symmetrical flex cursor-pointer overflow-hidden rounded-3xl px-6 py-2 text-white',
-          'bg-sinopia transition-opacity duration-150 hover:brightness-110',
+          hasChanges ? 'group hover:shadow-symmetrical cursor-pointer hover:brightness-110' : 'opacity-50',
+          'flex overflow-hidden rounded-3xl px-6 py-2 text-white',
+          'bg-sinopia transition-opacity duration-150',
           'items-center gap-1.5',
           'relative'
         )}
@@ -61,7 +62,7 @@ const EditPostSubmit = () => {
             isLoading ? 'opacity-0' : 'opacity-100'
           )}
         >
-          Done
+          Save
         </span>
       </button>
     </div>

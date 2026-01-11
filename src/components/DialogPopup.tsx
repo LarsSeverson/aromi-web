@@ -4,7 +4,7 @@ import React from 'react'
 import { isMobile } from 'react-device-detect'
 
 export interface DialogPopupProps extends React.HTMLAttributes<HTMLDivElement> {
-  children: React.ReactNode
+  children?: React.ReactNode
 }
 
 const DialogPopup = (props: DialogPopupProps) => {

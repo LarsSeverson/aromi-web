@@ -37,6 +37,9 @@ export const ALL_POST_ASSET_FRAGMENT = gql(/* GraphQL */ `
     asset {
       ...AllAsset
     }
+    post {
+      id
+    }
   }
 `)
 

@@ -36,6 +36,7 @@ import { Route as CollectionsIdIndexRouteImport } from './routes/collections/$id
 import { Route as UsersIdReviewsRouteImport } from './routes/users/$id/reviews'
 import { Route as UsersIdLikesRouteImport } from './routes/users/$id/likes'
 import { Route as UsersIdCollectionsRouteImport } from './routes/users/$id/collections'
+import { Route as CommunityPostsIdRouteImport } from './routes/community/posts_.$id'
 import { Route as FragrancesIdReviewRouteRouteImport } from './routes/fragrances/$id/review/route'
 import { Route as CommunityPostsNewRouteRouteImport } from './routes/community/posts/new/route'
 import { Route as CommunityPostsIdRouteRouteImport } from './routes/community/posts/$id/route'
@@ -180,6 +181,11 @@ const UsersIdCollectionsRoute = UsersIdCollectionsRouteImport.update({
   path: '/collections',
   getParentRoute: () => UsersIdRouteRoute,
 } as any)
+const CommunityPostsIdRoute = CommunityPostsIdRouteImport.update({
+  id: '/posts_/$id',
+  path: '/posts/$id',
+  getParentRoute: () => CommunityRouteRoute,
+} as any)
 const FragrancesIdReviewRouteRoute = FragrancesIdReviewRouteRouteImport.update({
   id: '/review',
   path: '/review',
@@ -242,7 +248,7 @@ export interface FileRoutesByFullPath {
   '/search/': typeof SearchIndexRoute
   '/settings/': typeof SettingsIndexRoute
   '/users/': typeof UsersIndexRoute
-  '/community/posts/$id': typeof CommunityPostsIdRouteRouteWithChildren
+  '/community/posts/$id': typeof CommunityPostsIdRoute
   '/community/posts/new': typeof CommunityPostsNewRouteRouteWithChildren
   '/fragrances/$id/review': typeof FragrancesIdReviewRouteRouteWithChildren
   '/users/$id/collections': typeof UsersIdCollectionsRoute
@@ -270,6 +276,7 @@ export interface FileRoutesByTo {
   '/search': typeof SearchIndexRoute
   '/settings': typeof SettingsIndexRoute
   '/users': typeof UsersIndexRoute
+  '/community/posts/$id': typeof CommunityPostsIdIndexRoute
   '/users/$id/collections': typeof UsersIdCollectionsRoute
   '/users/$id/likes': typeof UsersIdLikesRoute
   '/users/$id/reviews': typeof UsersIdReviewsRoute
@@ -279,7 +286,6 @@ export interface FileRoutesByTo {
   '/settings/account': typeof SettingsAccountIndexRoute
   '/settings/profile': typeof SettingsProfileIndexRoute
   '/users/$id': typeof UsersIdIndexRoute
-  '/community/posts/$id': typeof CommunityPostsIdIndexRoute
   '/community/posts/new': typeof CommunityPostsNewIndexRoute
   '/fragrances/$id/review': typeof FragrancesIdReviewIndexRoute
   '/community/posts/$id/edit': typeof CommunityPostsIdEditIndexRoute
@@ -307,6 +313,7 @@ export interface FileRoutesById {
   '/community/posts/$id': typeof CommunityPostsIdRouteRouteWithChildren
   '/community/posts/new': typeof CommunityPostsNewRouteRouteWithChildren
   '/fragrances/$id/review': typeof FragrancesIdReviewRouteRouteWithChildren
+  '/community/posts_/$id': typeof CommunityPostsIdRoute
   '/users/$id/collections': typeof UsersIdCollectionsRoute
   '/users/$id/likes': typeof UsersIdLikesRoute
   '/users/$id/reviews': typeof UsersIdReviewsRoute
@@ -371,6 +378,7 @@ export interface FileRouteTypes {
     | '/search'
     | '/settings'
     | '/users'
+    | '/community/posts/$id'
     | '/users/$id/collections'
     | '/users/$id/likes'
     | '/users/$id/reviews'
@@ -380,7 +388,6 @@ export interface FileRouteTypes {
     | '/settings/account'
     | '/settings/profile'
     | '/users/$id'
-    | '/community/posts/$id'
     | '/community/posts/new'
     | '/fragrances/$id/review'
     | '/community/posts/$id/edit'
@@ -407,6 +414,7 @@ export interface FileRouteTypes {
     | '/community/posts/$id'
     | '/community/posts/new'
     | '/fragrances/$id/review'
+    | '/community/posts_/$id'
     | '/users/$id/collections'
     | '/users/$id/likes'
     | '/users/$id/reviews'
@@ -626,6 +634,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UsersIdCollectionsRouteImport
       parentRoute: typeof UsersIdRouteRoute
     }
+    '/community/posts_/$id': {
+      id: '/community/posts_/$id'
+      path: '/posts/$id'
+      fullPath: '/community/posts/$id'
+      preLoaderRoute: typeof CommunityPostsIdRouteImport
+      parentRoute: typeof CommunityRouteRoute
+    }
     '/fragrances/$id/review': {
       id: '/fragrances/$id/review'
       path: '/review'
@@ -768,11 +783,13 @@ const CommunityPostsRouteRouteWithChildren =
 interface CommunityRouteRouteChildren {
   CommunityPostsRouteRoute: typeof CommunityPostsRouteRouteWithChildren
   CommunityIndexRoute: typeof CommunityIndexRoute
+  CommunityPostsIdRoute: typeof CommunityPostsIdRoute
 }
 
 const CommunityRouteRouteChildren: CommunityRouteRouteChildren = {
   CommunityPostsRouteRoute: CommunityPostsRouteRouteWithChildren,
   CommunityIndexRoute: CommunityIndexRoute,
+  CommunityPostsIdRoute: CommunityPostsIdRoute,
 }
 
 const CommunityRouteRouteWithChildren = CommunityRouteRoute._addFileChildren(

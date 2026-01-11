@@ -1,5 +1,6 @@
 'use no memo'
 
+import type { MeasurementsCache } from '@/hooks/useMeasurementsCache'
 import type { Identifiable } from '@/utils/util'
 import { useVirtualizer, useWindowVirtualizer } from '@tanstack/react-virtual'
 import { clsx } from 'clsx'
@@ -17,9 +18,11 @@ export interface FlatListProps<T extends Identifiable> extends React.HTMLAttribu
   overscan?: number
   initialScrollOffset?: number
   onEndReachedThreshold?: number
+  initialMeasurementsCache?: MeasurementsCache
   onRenderItem: (item: T, index: number) => React.ReactNode
   onRenderSkeleton?: (index: number) => React.ReactNode
   onEndReached?: () => void
+  onSaveMeasurements?: (measurements: MeasurementsCache) => void
 }
 
 export const FlatList = <T extends Identifiable, >(props: FlatListProps<T>) => {
@@ -35,9 +38,11 @@ export const FlatList = <T extends Identifiable, >(props: FlatListProps<T>) => {
     overscan = 5,
     initialScrollOffset = 0,
     onEndReachedThreshold = 500,
+    initialMeasurementsCache,
     onRenderItem,
     onRenderSkeleton,
     onEndReached,
+    onSaveMeasurements,
     className,
     ...rest
   } = props
@@ -53,7 +58,8 @@ export const FlatList = <T extends Identifiable, >(props: FlatListProps<T>) => {
     estimateSize: () => estimateSize,
     overscan,
     gap,
-    initialScrollOffset,
+    initialOffset: initialScrollOffset,
+    initialMeasurementsCache,
     horizontal: !isVertical,
     measureElement: (el: HTMLElement) => {
       return isVertical
@@ -78,8 +84,7 @@ export const FlatList = <T extends Identifiable, >(props: FlatListProps<T>) => {
     if (scrollElement == null || onEndReached == null) return
 
     const handleScroll = () => {
-      const { scrollTop, scrollLeft, scrollHeight, scrollWidth, clientHeight, clientWidth } =
-        useWindow ? document.documentElement : scrollElement
+      const { scrollTop, scrollLeft, scrollHeight, scrollWidth, clientHeight, clientWidth } = scrollElement
 
       const offset = isVertical ? scrollTop : scrollLeft
       const extent = isVertical ? scrollHeight : scrollWidth
@@ -98,6 +103,12 @@ export const FlatList = <T extends Identifiable, >(props: FlatListProps<T>) => {
       target.removeEventListener('scroll', handleScroll)
     }
   }, [useWindow, onEndReached, onEndReachedThreshold, isVertical, scrollRef])
+
+  useEffect(() => {
+    return () => {
+      onSaveMeasurements?.(virtualizer.measurementsCache)
+    }
+  }, [onSaveMeasurements, virtualizer])
 
   return (
     <div

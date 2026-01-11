@@ -99,6 +99,7 @@ const NewPostFragranceInput = (props: NewPostFragranceInputProps) => {
                       key={fragrance.id}
                       index={index}
                       fragrance={fragrance}
+                      onFragranceIdChange={onFragranceIdChange}
                     />
                   ))}
 

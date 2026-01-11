@@ -26,13 +26,13 @@ const PostPreviewCardContent = (props: PostPreviewCardContentProps) => {
 
       {type === PostType.Media && (
         <PostPreviewCardAssets
-          assets={assets}
+          postAssets={assets}
         />
       )}
 
       {type === PostType.Fragrance && (
         <PostPreviewCardFragrance
-          fragrance={post.fragrance!}
+          fragrance={post.fragrance}
         />
       )}
     </div>

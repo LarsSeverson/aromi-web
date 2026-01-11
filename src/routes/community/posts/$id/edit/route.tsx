@@ -1,14 +1,11 @@
-import { client } from '@/common/client'
-import { POST_QUERY } from '@/features/posts'
-import { wrapQuery } from '@/utils/util'
 import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
-import topbar from 'topbar'
+import React from 'react'
 
 export const Route = createFileRoute('/community/posts/$id/edit')({
   component: RouteComponent,
-  loader: async ({ context, params, location }) => {
-    const { me, utils, auth } = context
-    const { id } = params
+
+  loader: ({ context, location }) => {
+    const { post, isMyPost, me, utils, auth } = context
 
     if (me == null) {
       utils?.toastMessage('Hold On', 'You need to log in first')
@@ -22,17 +19,7 @@ export const Route = createFileRoute('/community/posts/$id/edit')({
       })
     }
 
-    topbar.show()
-
-    const postRes = await wrapQuery(client.query({ query: POST_QUERY, variables: { id } }))
-
-    topbar.hide()
-
-    if (postRes.isErr()) throw postRes.error
-
-    const post = postRes.value.post
-
-    if (post.user.id !== me.id) {
+    if (!isMyPost) {
       utils?.toastMessage('You cannot edit this post')
       throw redirect({ to: '/' })
     }

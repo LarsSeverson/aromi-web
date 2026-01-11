@@ -64,7 +64,7 @@ const MyPostOptions = (props: MyPostOptionsProps) => {
         <span
           className='text-md font-semibold'
         >
-          Edit post
+          Edit content
         </span>
       </button>
 

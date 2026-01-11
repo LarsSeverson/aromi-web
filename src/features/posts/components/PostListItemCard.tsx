@@ -11,7 +11,9 @@ const PostPageListItemCard = (props: PostPageListItemCardProps) => {
   const { post } = props
 
   return (
-    <div>
+    <div
+      className='overflow-hidden'
+    >
       <PostPreviewCard
         post={post}
       />

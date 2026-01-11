@@ -1,28 +1,47 @@
-import GridImages from '@/components/GridImages'
 import type { PostPreviewFragment } from '@/generated/graphql'
+import clsx from 'clsx'
 import React from 'react'
+import PostPreviewCardAsset from './PostPreviewCardAsset'
 
 export interface PostPreviewCardAssetsProps {
-  assets: PostPreviewFragment['assets']
+  postAssets: PostPreviewFragment['assets']
+  isEnlarged?: boolean
 }
 
 const PostPreviewCardAssets = (props: PostPreviewCardAssetsProps) => {
-  const { assets } = props
+  const { postAssets, isEnlarged = false } = props
 
-  const assetUrls = assets.map(asset => asset.asset.url).filter(url => url != null)
+  const totalAssetCount = postAssets.length
+
+  const sortedAssets = React.useMemo(
+    () => [...postAssets].sort((a, b) => a.displayOrder - b.displayOrder),
+    [postAssets]
+  )
 
   return (
     <div
-      className='flex h-full max-h-100 w-full overflow-hidden rounded-2xl'
+      className={clsx(
+        isEnlarged ? 'max-h-120' : 'max-h-100',
+        'flex h-full w-full overflow-hidden rounded-2xl'
+      )}
     >
       <div
-        className='flex h-full max-w-150 overflow-hidden rounded-2xl'
+        className={clsx(
+          isEnlarged ? '' : 'max-w-150',
+          'flex h-full w-full gap-0.5 overflow-hidden rounded-2xl',
+          'bg-empty2 relative grid overflow-hidden rounded-2xl group-hover:brightness-[.85]',
+          totalAssetCount === 1 && 'grid-cols-1 grid-rows-1',
+          totalAssetCount !== 1 && 'grid-cols-2 grid-rows-2'
+        )}
       >
-        <GridImages
-          showSeparator
-          urls={assetUrls}
-          className='group-hover:brightness-100!'
-        />
+        {sortedAssets.map((postAsset, index) => (
+          <PostPreviewCardAsset
+            key={postAsset.id}
+            postAsset={postAsset}
+            index={index}
+            totalAssetCount={totalAssetCount}
+          />
+        ))}
       </div>
     </div>
   )

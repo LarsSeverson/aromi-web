@@ -6,7 +6,7 @@ import { FaRegSquarePlus } from 'react-icons/fa6'
 const NewPostButton = () => {
   return (
     <Link
-      to='/posts/new'
+      to='/community/posts/new'
       className={clsx(
         'group hover:shadow-symmetrical flex cursor-pointer overflow-hidden rounded-3xl px-6 py-2 text-white',
         'bg-sinopia transition-opacity duration-150 hover:brightness-110',

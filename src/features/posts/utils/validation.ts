@@ -21,15 +21,12 @@ export const VALID_POST_VIDEO_TYPES = VALID_VIDEO_TYPES
 export const VALID_POST_COMMENT_IMAGE_TYPES = VALID_IMAGE_TYPES
 export const VALID_POST_COMMENT_VIDEO_TYPES = VALID_VIDEO_TYPES
 
-export const MAX_POST_ASSET_SIZE = 50 * 1024 * 1024 // 50 MB
+export const MAX_POST_ASSET_SIZE = 20 * 1024 * 1024 // 20 MB
 export const MAX_POST_COMMENT_ASSET_SIZE = 20 * 1024 * 1024 // 20 MB
 
 export const MAX_POST_COMMENT_DEPTH = 2
 
-export const ValidPostType = z.preprocess(
-  (val) => (typeof val === 'string' ? val.toUpperCase() : val),
-  z.enum(Object.values(PostType))
-)
+export const ValidPostType = z.enum(Object.values(PostType))
 
 export const ValidPostTitle = z
   .string()
@@ -46,6 +43,8 @@ export const ValidPostContent = z
   .any()
   .transform((value, ctx) => {
     if (value == null) return null
+    if (value === '') return null
+    if (value === 'null') return null
 
     const processContent = Result.fromThrowable(() => {
       const jsond = JSON.parse(value as string) as JSON
@@ -89,10 +88,10 @@ export const ValidPostCommentPostId = z.string()
 export const ValidPostCommentParentId = z.string().nullish()
 
 export const ValidPostAssetType = z
-  .enum([...VALID_POST_IMAGE_TYPES])
+  .enum([...VALID_POST_IMAGE_TYPES, ...VALID_POST_VIDEO_TYPES])
 
 export const ValidPostCommentAssetType = z
-  .enum([...VALID_POST_COMMENT_IMAGE_TYPES])
+  .enum([...VALID_POST_COMMENT_IMAGE_TYPES, ...VALID_POST_COMMENT_VIDEO_TYPES])
 
 export const ValidPostAssetSize = z
   .number()
@@ -158,32 +157,6 @@ export const CreatePostCommentSchemaAssets = z
     `Cannot attach more than ${MAX_POST_COMMENT_ASSETS} assets to a post comment`
   )
 
-export const UpdatePostSchemaAsset = CreatePostSchemaAsset
-  .extend({
-    id: z.string().nullish()
-  })
-  .strip()
-
-export const UpdatePostCommentSchemaAsset = CreatePostCommentSchemaAsset
-  .extend({
-    id: z.string().nullish()
-  })
-  .strip()
-
-export const UpdatePostSchemaAssets = z
-  .array(UpdatePostSchemaAsset)
-  .max(
-    MAX_POST_ASSETS,
-    `Cannot attach more than ${MAX_POST_ASSETS} assets to a post`
-  )
-
-export const UpdatePostCommentSchemaAssets = z
-  .array(UpdatePostCommentSchemaAsset)
-  .max(
-    MAX_POST_COMMENT_ASSETS,
-    `Cannot attach more than ${MAX_POST_COMMENT_ASSETS} assets to a post comment`
-  )
-
 export const CreatePostSchema = z
   .object({
     type: ValidPostType,
@@ -193,22 +166,21 @@ export const CreatePostSchema = z
     assets: CreatePostSchemaAssets.nullish()
   })
   .strip()
-  .superRefine((data, ctx) => {
-    if (data.type === PostType.Fragrance && data.fragranceId == null) {
-      ctx.addIssue({
-        code: 'custom',
-        message: 'Fragrance posts must have a fragrance selected',
-        path: ['fragranceId']
-      })
+  .refine(data => {
+    const { type } = data
+    const isFragrance = type === PostType.Fragrance
+    const isMedia = type === PostType.Media
+
+    if (isFragrance && data.fragranceId == null) {
+      return false
     }
 
-    if (data.type === PostType.Media && (data.assets == null || data.assets.length === 0)) {
-      ctx.addIssue({
-        code: 'custom',
-        message: 'Media posts must have at least one asset attached',
-        path: ['assets']
-      })
+    const assets = data.assets ?? []
+    if (isMedia && assets.length === 0) {
+      return false
     }
+
+    return true
   })
 
 export const CreatePostCommentSchema = z
@@ -223,37 +195,14 @@ export const CreatePostCommentSchema = z
 export const UpdatePostSchema = z
   .object({
     id: z.string(),
-    type: ValidPostType,
-    title: ValidPostTitle.nullish(),
-    content: ValidPostContent.nullish(),
-    fragranceId: ValidPostFragranceId.nullish(),
-    assets: UpdatePostSchemaAssets.nullish()
+    content: ValidPostContent.nullish()
   })
   .strip()
-  .superRefine((data, ctx) => {
-    if (data.type === PostType.Fragrance && data.fragranceId == null) {
-      ctx.addIssue({
-        code: 'custom',
-        message: 'Fragrance posts must have a fragrance selected'
-      })
-    }
-
-    if (data.type === PostType.Media) {
-      const assets = data.assets ?? []
-      if (assets.length === 0) {
-        ctx.addIssue({
-          code: 'custom',
-          message: 'Media posts must have at least one asset attached'
-        })
-      }
-    }
-  })
 
 export const UpdatePostCommentSchema = z
   .object({
     id: z.string(),
-    content: ValidPostCommentContent.nullish(),
-    assets: UpdatePostCommentSchemaAssets.nullish()
+    content: ValidPostCommentContent.nullish()
   })
   .strip()
 

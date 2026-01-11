@@ -27,7 +27,8 @@ export const NewPostProvider = (props: NewPostProviderProps) => {
     tasks: uploadTasks,
     uploadFile,
     deleteTask,
-    moveTask
+    moveTask,
+    reset: resetTasks
   } = useAssetUploadManager({ maxUploads: MAX_POST_ASSETS, deleteAfterError: true })
 
   const tasksRef = React.useRef(uploadTasks)
@@ -42,6 +43,19 @@ export const NewPostProvider = (props: NewPostProviderProps) => {
   const [formErrors, setFormErrors] = React.useState({})
 
   const isUploading = uploadTasks.length > 0 && uploadTasks.some(task => task.status === 'uploading')
+
+  const reset = () => {
+    content.current = null
+    resetTasks()
+
+    setType(PostType.Text)
+    setFragranceId(null)
+    setUploadErrors([])
+    setFormErrors({})
+    setIsLoading(false)
+
+    hasSubmitted.current = false
+  }
 
   const handleOnTypeChange = (newType: PostType) => {
     setType(newType)
@@ -82,9 +96,15 @@ export const NewPostProvider = (props: NewPostProviderProps) => {
       setIsLoading(false)
 
       result.match(
-        _data => {
+        data => {
           hasSubmitted.current = true
-          navigate({ to: '/community/posts', resetScroll: true })
+
+          reset()
+
+          navigate({
+            to: '/community/posts/$id',
+            params: { id: data.createPost.id }
+          })
         },
         _error => {
           toastError('')
@@ -127,12 +147,11 @@ export const NewPostProvider = (props: NewPostProviderProps) => {
   React.useEffect(() => {
     return () => {
       if (!hasSubmitted.current && tasksRef.current.length > 0) {
-        tasksRef.current.forEach(task => {
-          deleteTask(task.id)
-        })
+        resetTasks(true)
       }
     }
-  }, [deleteTask])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <NewPostContext.Provider

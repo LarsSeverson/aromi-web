@@ -6,6 +6,7 @@ import { DocumentTitleBuilder } from '@/utils/DocumentTitleBuilder'
 import { FlatList } from '@/components/FlatList'
 import PostPageListItemCard from '../components/PostListItemCard'
 import PostPreviewCardSkeleton from '../components/PostPreviewCardSkeleton'
+import { useMeasurementsCache } from '@/hooks/useMeasurementsCache'
 
 const SKELETON_COUNT = 4
 const ESTIMATE_HEIGHT = 165
@@ -14,6 +15,8 @@ const END_SCROLL_THRESHOLD = 1000
 
 const PostsPage = () => {
   const { posts, isLoading, isLoadingMore, loadMore } = usePosts()
+
+  const { save, initialMeasurementsCache } = useMeasurementsCache('posts-page')
 
   const scrollEntry = useElementScrollRestoration({
     getElement: () => window
@@ -62,10 +65,10 @@ const PostsPage = () => {
       >
         <FlatList
           items={posts}
-          useWindow
           estimateSize={ESTIMATE_HEIGHT}
           isLoading={isLoading || isLoadingMore}
           initialScrollOffset={scrollEntry?.scrollY}
+          initialMeasurementsCache={initialMeasurementsCache}
           skeletonCount={SKELETON_COUNT}
           overscan={OVERSCAN}
           gap={15}
@@ -73,6 +76,7 @@ const PostsPage = () => {
           onEndReached={handleOnEndReached}
           onRenderItem={onRenderPost}
           onRenderSkeleton={onRenderPostSkeleton}
+          onSaveMeasurements={save}
         />
       </div>
     </div>

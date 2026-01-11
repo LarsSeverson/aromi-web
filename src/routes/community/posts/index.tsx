@@ -6,5 +6,7 @@ export const Route = createFileRoute('/community/posts/')({
 })
 
 function RouteComponent () {
-  return <PostsPage />
+  return (
+    <PostsPage />
+  )
 }

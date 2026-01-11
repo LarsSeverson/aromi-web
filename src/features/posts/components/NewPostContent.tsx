@@ -28,6 +28,10 @@ const NewPostContent = (_props: NewPostContentProps) => {
       <TipTapEditor
         onUpdate={handleContentUpdate}
       />
+
+      <Field.Error
+        className='mt-1 ml-2 text-sm font-medium text-red-700'
+      />
     </Field.Root>
   )
 }

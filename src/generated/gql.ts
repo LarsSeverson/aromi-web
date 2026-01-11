@@ -97,7 +97,7 @@ type Documents = {
     "\n  query Notes(\n    $input: NotePaginationInput\n  ) {\n    notes(input: $input) {\n      edges {\n        node {\n          ...NotePreview\n        }\n      }\n      pageInfo {\n        ...AllPageInfo\n      }\n    }\n  }\n": typeof types.NotesDocument,
     "\n  query SearchNotes(\n    $input: SearchInput\n  ) {\n    searchNotes(input: $input) {\n      edges {\n        node {\n          ...NotePreview\n        }\n        offset\n      }\n      pageInfo {\n        ...AllSearchPageInfo\n      }\n    }\n  }\n": typeof types.SearchNotesDocument,
     "\n  fragment PostPreview on Post { \n    id\n    type\n\n    title\n    content\n\n    user {\n      ...UserPreview\n    }\n\n    fragrance {\n      ...FragrancePreview\n    }\n\n    assets {\n      ...AllPostAsset\n    }\n\n    commentCount\n\n    votes {\n      ...AllVoteInfo\n    }\n\n    createdAt\n  }\n": typeof types.PostPreviewFragmentDoc,
-    "\n  fragment AllPostAsset on PostAsset { \n    id\n    displayOrder\n    asset {\n      ...AllAsset\n    }\n  }\n": typeof types.AllPostAssetFragmentDoc,
+    "\n  fragment AllPostAsset on PostAsset { \n    id\n    displayOrder\n    asset {\n      ...AllAsset\n    }\n    post {\n      id\n    }\n  }\n": typeof types.AllPostAssetFragmentDoc,
     "\n  fragment PostCommentShell on PostComment { \n    id\n    depth\n    content\n\n    user {\n      ...UserPreview\n    }\n  }\n": typeof types.PostCommentShellFragmentDoc,
     "\n  fragment PostCommentPreview on PostComment { \n    id\n\n    depth\n    content\n\n    parent {\n      ...PostCommentShell\n    }\n\n    user {\n      ...UserPreview\n    }\n\n    assets {\n      ...AllPostCommentAsset\n    }\n\n    createdAt\n  }\n": typeof types.PostCommentPreviewFragmentDoc,
     "\n  fragment AllPostCommentAsset on PostCommentAsset { \n    id\n    displayOrder\n    asset {\n      ...AllAsset\n    }\n  }\n": typeof types.AllPostCommentAssetFragmentDoc,
@@ -227,7 +227,7 @@ const documents: Documents = {
     "\n  query Notes(\n    $input: NotePaginationInput\n  ) {\n    notes(input: $input) {\n      edges {\n        node {\n          ...NotePreview\n        }\n      }\n      pageInfo {\n        ...AllPageInfo\n      }\n    }\n  }\n": types.NotesDocument,
     "\n  query SearchNotes(\n    $input: SearchInput\n  ) {\n    searchNotes(input: $input) {\n      edges {\n        node {\n          ...NotePreview\n        }\n        offset\n      }\n      pageInfo {\n        ...AllSearchPageInfo\n      }\n    }\n  }\n": types.SearchNotesDocument,
     "\n  fragment PostPreview on Post { \n    id\n    type\n\n    title\n    content\n\n    user {\n      ...UserPreview\n    }\n\n    fragrance {\n      ...FragrancePreview\n    }\n\n    assets {\n      ...AllPostAsset\n    }\n\n    commentCount\n\n    votes {\n      ...AllVoteInfo\n    }\n\n    createdAt\n  }\n": types.PostPreviewFragmentDoc,
-    "\n  fragment AllPostAsset on PostAsset { \n    id\n    displayOrder\n    asset {\n      ...AllAsset\n    }\n  }\n": types.AllPostAssetFragmentDoc,
+    "\n  fragment AllPostAsset on PostAsset { \n    id\n    displayOrder\n    asset {\n      ...AllAsset\n    }\n    post {\n      id\n    }\n  }\n": types.AllPostAssetFragmentDoc,
     "\n  fragment PostCommentShell on PostComment { \n    id\n    depth\n    content\n\n    user {\n      ...UserPreview\n    }\n  }\n": types.PostCommentShellFragmentDoc,
     "\n  fragment PostCommentPreview on PostComment { \n    id\n\n    depth\n    content\n\n    parent {\n      ...PostCommentShell\n    }\n\n    user {\n      ...UserPreview\n    }\n\n    assets {\n      ...AllPostCommentAsset\n    }\n\n    createdAt\n  }\n": types.PostCommentPreviewFragmentDoc,
     "\n  fragment AllPostCommentAsset on PostCommentAsset { \n    id\n    displayOrder\n    asset {\n      ...AllAsset\n    }\n  }\n": types.AllPostCommentAssetFragmentDoc,
@@ -623,7 +623,7 @@ export function gql(source: "\n  fragment PostPreview on Post { \n    id\n    ty
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\n  fragment AllPostAsset on PostAsset { \n    id\n    displayOrder\n    asset {\n      ...AllAsset\n    }\n  }\n"): (typeof documents)["\n  fragment AllPostAsset on PostAsset { \n    id\n    displayOrder\n    asset {\n      ...AllAsset\n    }\n  }\n"];
+export function gql(source: "\n  fragment AllPostAsset on PostAsset { \n    id\n    displayOrder\n    asset {\n      ...AllAsset\n    }\n    post {\n      id\n    }\n  }\n"): (typeof documents)["\n  fragment AllPostAsset on PostAsset { \n    id\n    displayOrder\n    asset {\n      ...AllAsset\n    }\n    post {\n      id\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

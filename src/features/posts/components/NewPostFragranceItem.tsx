@@ -3,23 +3,21 @@ import ProgressiveImage from '@/components/ProgressiveImage'
 import type { FragrancePreviewFragment } from '@/generated/graphql'
 import clsx from 'clsx'
 import React from 'react'
-import { useNewPostContext } from '../contexts/NewPostContext'
 
 export interface NewPostFragranceItemProps {
   fragrance: FragrancePreviewFragment
   index: number
+  onFragranceIdChange?: (id: string | null) => void
 }
 
 const NewPostFragranceItem = (props: NewPostFragranceItemProps) => {
-  const { fragrance, index } = props
+  const { fragrance, index, onFragranceIdChange } = props
   const { name, brand, thumbnail } = fragrance
-
-  const { onFragranceIdChange } = useNewPostContext()
 
   const [isActive, setIsActive] = React.useState(false)
 
   const handleOnClick = () => {
-    onFragranceIdChange(fragrance.id)
+    onFragranceIdChange?.(fragrance.id)
   }
 
   return (

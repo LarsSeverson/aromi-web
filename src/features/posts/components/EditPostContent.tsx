@@ -17,15 +17,13 @@ const EditPostContent = () => {
       name='content'
       className='flex flex-col'
     >
-      <Field.Label
-        className='text-md mb-2 font-semibold'
-      >
-        Content
-      </Field.Label>
-
       <TipTapEditor
         defaultContent={post.content as JSONContent}
         onUpdate={handleContentUpdate}
+      />
+
+      <Field.Error
+        className='mt-1 ml-2 text-sm font-medium text-red-700'
       />
     </Field.Root>
   )

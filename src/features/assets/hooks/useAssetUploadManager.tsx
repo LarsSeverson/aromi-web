@@ -179,10 +179,24 @@ export const useAssetUploadManager = (options?: AssetUploadManagerOptions) => {
     []
   )
 
+  const reset = React.useCallback(
+    (hardReset = false) => {
+      if (hardReset) {
+        tasks.forEach(task => {
+          handleDelete(task)
+        })
+      }
+
+      setTasks([])
+    },
+    [handleDelete, tasks]
+  )
+
   return {
     tasks,
     uploadFile,
     deleteTask,
-    moveTask
+    moveTask,
+    reset
   }
 }

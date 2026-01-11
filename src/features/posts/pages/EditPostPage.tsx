@@ -1,50 +1,77 @@
 import { Form } from '@base-ui/react'
 import React from 'react'
-import EditPostType from '../components/EditPostType'
-import EditPostTitle from '../components/EditPostTitle'
 import EditPostContent from '../components/EditPostContent'
 import { useEditPostContext } from '../contexts/EditPostContext'
 import { PostType } from '@/generated/graphql'
-import EditPostMedia from '../components/EditPostMedia'
-import EditPostFragrance from '../components/EditPostFragrance'
 import EditPostSubmit from '../components/EditPostSubmit'
+import EditPostErrors from '../components/EditPostErrors'
+import PostPreviewCardTitle from '../components/PostPreviewCardTitle'
+import PostPreviewCardAssets from '../components/PostPreviewCardAssets'
+import PostPreviewCardFragrance from '../components/PostPreviewCardFragrance'
+import PostPreviewCardAvatar from '../components/PostPreviewCardAvatar'
+import PostPreviewCardHeading from '../components/PostPreviewCardHeading'
 
 const EditPostPage = () => {
-  const { post } = useEditPostContext()
+  const {
+    post,
 
-  const showMedia = post.type === PostType.Media
-  const showFragrance = post.type === PostType.Fragrance
+    formErrors,
+
+    onSubmit
+  } = useEditPostContext()
+
+  const { id, title, type, user } = post
+  const showMedia = type === PostType.Media
+  const showFragrance = type === PostType.Fragrance
 
   return (
     <div
-      key={post.id}
+      key={id}
       className='flex w-full flex-col items-center px-4'
     >
       <div
-        className='mb-10 w-full max-w-3xl'
+        className='flex w-full max-w-3xl gap-2'
       >
-        <h2
-          className='text-2xl font-medium text-black/80'
+        <PostPreviewCardAvatar
+          user={user}
+        />
+
+        <Form
+          validationMode='onChange'
+          errors={formErrors}
+          className='flex w-full min-w-0 flex-col gap-1'
+          onFormSubmit={onSubmit}
         >
-          Edit post
-        </h2>
+          <PostPreviewCardHeading
+            post={post}
+            showOptions={false}
+          />
+
+          <PostPreviewCardTitle
+            title={title}
+            isDense={false}
+          />
+
+          {showMedia && (
+            <PostPreviewCardAssets
+              postAssets={post.assets}
+              isEnlarged
+            />
+          )}
+
+          {showFragrance && (
+            <PostPreviewCardFragrance
+              fragrance={post.fragrance}
+            />
+          )}
+
+          <EditPostContent />
+
+          <EditPostErrors />
+
+          <EditPostSubmit />
+        </Form>
       </div>
-
-      <Form
-        className='flex w-full max-w-3xl flex-col gap-6'
-      >
-        <EditPostType />
-
-        <EditPostTitle />
-
-        {showMedia && <EditPostMedia />}
-
-        {showFragrance && <EditPostFragrance />}
-
-        <EditPostContent />
-
-        <EditPostSubmit />
-      </Form>
     </div>
   )
 }
