@@ -6,13 +6,28 @@ import { EditorContent, useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import clsx from 'clsx'
 import React from 'react'
+import { MAX_POST_COMMENT_ASSET_SIZE, MAX_POST_COMMENT_ASSETS, ValidPostCommentAssetType } from '../../utils/validation'
+import { useNewPostCommentContext } from '../../contexts/NewPostCommentContext'
+import PostCommentInputAsset from './PostCommentInputAsset'
+import PostCommentInputDropZone from './PostCommentInputDropZone'
+import PostCommentInputErrors from './PostCommentInputErrors'
+import type { FileRejection } from '@/features/assets'
+import { truncate } from 'lodash'
 
-const NewPostCommentInput = () => {
-  const [content, setContent] = React.useState('')
-  const [isWriting, setIsWriting] = React.useState(false)
+const PostCommentInput = () => {
+  const {
+    isActive,
+    uploadTasks,
+
+    onIsActiveChange,
+    onUpdateContent,
+    onUploadAsset
+  } = useNewPostCommentContext()
+
   const [isLoading] = React.useState(false)
   const [hasContent, setHasContent] = React.useState(false)
   const [isFocused, setIsFocused] = React.useState(false)
+  const [dropZoneErrors, setDropZoneErrors] = React.useState<string[]>([])
 
   const editor = useEditor({
     extensions: [
@@ -23,7 +38,7 @@ const NewPostCommentInput = () => {
       })
     ],
 
-    content,
+    content: '',
 
     editorProps: {
       attributes: {
@@ -45,12 +60,12 @@ const NewPostCommentInput = () => {
       const json = editor.getJSON()
       const val = JSON.stringify(json ?? {})
 
-      setContent(val)
+      onUpdateContent(val)
       setHasContent(editor.getText().trim().length > 0)
     },
 
     onFocus: () => {
-      setIsWriting(true)
+      onIsActiveChange(true)
       setIsFocused(true)
     },
 
@@ -63,9 +78,35 @@ const NewPostCommentInput = () => {
     editor?.commands.focus('end')
   }
 
+  const handleOnDropZoneErrors = (errors: string[]) => {
+    setDropZoneErrors(errors)
+
+    setTimeout(() => {
+      setDropZoneErrors([])
+    }, 10000)
+  }
+
+  const handleOnFilePicked = (files: File[]) => {
+    const first = files[0]
+    if (first == null) return
+    onUploadAsset(first)
+  }
+
+  const handleOnFilesRejected = (errors: FileRejection[]) => {
+    const errorMessages = errors.map(error =>
+      `Failed to upload ${truncate(error.file.name, { length: 20 })}: ${error.errors.at(0)}`
+    )
+
+    setDropZoneErrors(errorMessages)
+
+    setTimeout(() => {
+      setDropZoneErrors([])
+    }, 10000)
+  }
+
   return (
     <Form
-      className='overflow-hidden rounded-xl'
+      className='relative rounded-xl'
     >
       <Field.Root
         name='content'
@@ -75,10 +116,25 @@ const NewPostCommentInput = () => {
           className={clsx(
             'w-full resize-none overflow-auto rounded-4xl border-2 p-3 text-sm',
             isFocused && 'border-sinopia',
+            isActive && 'pb-1.5',
             'hover:border-sinopia transition-colors duration-150 ease-in-out focus:outline-none'
           )}
           onClick={handleOnForceFocus}
         >
+          <div
+            className={clsx(
+              'mb-2 ml-2 flex flex-wrap gap-3',
+              uploadTasks.length === 0 && 'hidden'
+            )}
+          >
+            {uploadTasks.map(task => (
+              <PostCommentInputAsset
+                key={task.id}
+                task={task}
+              />
+            ))}
+          </div>
+
           <div
             className='px-3'
           >
@@ -87,11 +143,18 @@ const NewPostCommentInput = () => {
             />
           </div>
 
-          {isWriting && (
+          {isActive && (
             <div
               className='mt-2 flex'
             >
-              <FilePickerButton />
+              <FilePickerButton
+                acceptedFileTypes={ValidPostCommentAssetType.options}
+                allowMultiple={false}
+                maxFiles={MAX_POST_COMMENT_ASSETS}
+                maxFileSizeInBytes={MAX_POST_COMMENT_ASSET_SIZE}
+                onFilesSelected={handleOnFilePicked}
+                onFilesRejected={handleOnFilesRejected}
+              />
 
               <button
                 type='submit'
@@ -123,12 +186,16 @@ const NewPostCommentInput = () => {
           )}
         </div>
 
-        <Field.Error
-          className='mt-1 ml-2 text-sm font-medium text-red-700'
+        <PostCommentInputDropZone
+          onDropZoneErrors={handleOnDropZoneErrors}
+        />
+
+        <PostCommentInputErrors
+          dropZoneErrors={dropZoneErrors}
         />
       </Field.Root>
     </Form>
   )
 }
 
-export default NewPostCommentInput
+export default PostCommentInput

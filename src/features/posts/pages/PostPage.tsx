@@ -10,7 +10,8 @@ import { TipTapRenderer } from '@/components/tiptap/TipTapRenderer'
 import type { JSONContent } from '@tiptap/core'
 import PostPreviewCardFooter from '../components/PostPreviewCardFooter'
 import Divider from '@/components/Divider'
-import NewPostCommentInput from '../components/NewPostCommentInput'
+import PostCommentInput from '../components/post-comment/PostCommentInput'
+import { NewPostCommentProvider } from '../contexts/providers/NewPostCommentProvider'
 
 export interface PostPageProps {
   post: PostPreviewFragment
@@ -79,7 +80,11 @@ const PostPage = (props: PostPageProps) => {
             horizontal
           />
 
-          <NewPostCommentInput />
+          <NewPostCommentProvider
+            post={post}
+          >
+            <PostCommentInput />
+          </NewPostCommentProvider>
         </div>
       </div>
     </div>

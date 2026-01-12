@@ -1,44 +1,43 @@
-import React from 'react'
-import { NewPostContext } from '../NewPostContext'
-import { AssetKey, type CreatePostInput, PostType } from '@/generated/graphql'
+import { AssetKey, type CreatePostCommentInput, type PostCommentPreviewFragment, type PostPreviewFragment } from '@/generated/graphql'
+import { useToastMessage } from '@/hooks/useToastMessage'
+import type { Nullable } from '@/utils/util'
+import { useCreatePostComment } from '../../hooks/useCreatePostComment'
 import { useAssetUploadManager } from '@/features/assets'
+import { CreatePostCommentSchema, MAX_POST_COMMENT_ASSETS } from '../../utils/validation'
+import React from 'react'
 import { truncate } from 'lodash'
-import { CreatePostSchema, MAX_POST_ASSETS } from '../../utils/validation'
 import { useDebounce } from '@/hooks/useDebounce'
 import type { Form } from '@base-ui/react'
 import { parseSchema } from '@/utils/validation'
-import { useCreatePost } from '../../hooks/useCreatePost'
-import { useToastMessage } from '@/hooks/useToastMessage'
-import { useNavigate } from '@tanstack/react-router'
-import type { Nullable } from '@/utils/util'
+import { NewPostCommentContext } from '../NewPostCommentContext'
 
-export interface NewPostProviderProps {
-  children: React.ReactNode
+export interface NewPostCommentProviderProps {
+  post: PostPreviewFragment
+  parent?: Nullable<PostCommentPreviewFragment>
+  children?: React.ReactNode
 }
 
-export const NewPostProvider = (props: NewPostProviderProps) => {
-  const { children } = props
+export const NewPostCommentProvider = (props: NewPostCommentProviderProps) => {
+  const { post, parent, children } = props
 
-  const navigate = useNavigate()
   const { toastError } = useToastMessage()
-  const { createPost } = useCreatePost()
+  const { createPostComment } = useCreatePostComment()
 
   const {
     tasks: uploadTasks,
     uploadFile,
     deleteTask,
-    moveTask,
     reset: resetTasks
-  } = useAssetUploadManager({ maxUploads: MAX_POST_ASSETS, deleteAfterError: true })
+  } = useAssetUploadManager({ maxUploads: MAX_POST_COMMENT_ASSETS, deleteAfterError: true })
 
   const tasksRef = React.useRef(uploadTasks)
   const hasSubmitted = React.useRef(false)
   const content = React.useRef<Nullable<string>>(undefined)
 
-  const [type, setType] = React.useState<PostType>(PostType.Text)
-  const [fragranceId, setFragranceId] = React.useState<string | null>(null)
+  const [fragranceId, setFragranceId] = React.useState<Nullable<string>>(null)
   const [uploadErrors, setUploadErrors] = React.useState<string[]>([])
 
+  const [isActive, setIsActive] = React.useState(false)
   const [isLoading, setIsLoading] = React.useState(false)
   const [formErrors, setFormErrors] = React.useState({})
 
@@ -48,7 +47,6 @@ export const NewPostProvider = (props: NewPostProviderProps) => {
     content.current = null
     resetTasks()
 
-    setType(PostType.Text)
     setFragranceId(null)
     setUploadErrors([])
     setFormErrors({})
@@ -57,26 +55,28 @@ export const NewPostProvider = (props: NewPostProviderProps) => {
     hasSubmitted.current = false
   }
 
-  const handleOnTypeChange = (newType: PostType) => {
-    setType(newType)
-  }
-
-  const handleOnFragranceIdChange = (id: string | null) => {
-    setFragranceId(id)
+  const handleOnIsActiveChange = (isActive: boolean) => {
+    setIsActive(isActive)
   }
 
   const handleOnUpdateContent = (newContent: Nullable<string>) => {
-    content.current = newContent
+    content.current = newContent ?? undefined
+  }
+
+  const handleOnFragranceIdChange = (newFragranceId: Nullable<string>) => {
+    setFragranceId(newFragranceId)
   }
 
   const handleOnUploadAsset = (file: File) => {
-    return uploadFile(file, AssetKey.PostAssets)
+    setIsActive(true)
+
+    return uploadFile(file, AssetKey.PostCommentAssets)
       .orTee(errorInfo => {
         const errStr = `Failed to upload ${truncate(file.name, { length: 20 })}: ${errorInfo.message}`
         setUploadErrors(prev => [...prev, errStr])
 
         setTimeout(() => {
-          setUploadErrors(prev => prev.filter(e => e !== errStr))
+          setUploadErrors(prev => prev.filter(err => err !== errStr))
         }, 10000)
       })
   }
@@ -85,31 +85,19 @@ export const NewPostProvider = (props: NewPostProviderProps) => {
     deleteTask(id)
   }
 
-  const handleOnMoveAsset = (fromIndex: number, toIndex: number) => {
-    moveTask(fromIndex, toIndex)
-  }
-
-  const handleOnCreatePost = useDebounce(
-    async (input: CreatePostInput) => {
-      const result = await createPost(input)
+  const handleOnCreatePostComment = useDebounce(
+    async (input: CreatePostCommentInput) => {
+      const result = await createPostComment(input)
 
       setIsLoading(false)
 
-      result.match(
-        data => {
-          hasSubmitted.current = true
+      if (result.isErr()) {
+        toastError('')
+        return
+      }
 
-          resetState()
-
-          navigate({
-            to: '/community/posts/$id',
-            params: { id: data.createPost.id }
-          })
-        },
-        _error => {
-          toastError('')
-        }
-      )
+      hasSubmitted.current = true
+      resetState()
     }
   )
 
@@ -122,19 +110,17 @@ export const NewPostProvider = (props: NewPostProviderProps) => {
 
     const input = {
       ...formData,
-      content: content.current,
-      assets: inputAssets
+      assets: inputAssets,
+      content: content.current
     }
 
-    const parsed = parseSchema(CreatePostSchema, input)
+    const parsed = parseSchema(CreatePostCommentSchema, input)
     setFormErrors(parsed.fieldErrors)
 
-    if (!parsed.success) {
-      return
-    }
+    if (!parsed.success) return
 
     setIsLoading(true)
-    handleOnCreatePost(parsed.data)
+    handleOnCreatePostComment(parsed.data)
   }
 
   React.useEffect(
@@ -154,32 +140,32 @@ export const NewPostProvider = (props: NewPostProviderProps) => {
   }, [])
 
   return (
-    <NewPostContext.Provider
+    <NewPostCommentContext.Provider
       value={{
-        type,
+        post,
+        parent,
+
         fragranceId,
 
         uploadTasks,
         uploadErrors,
         formErrors,
 
+        isActive,
         isLoading,
         isUploading,
 
-        onTypeChange: handleOnTypeChange,
-
+        onIsActiveChange: handleOnIsActiveChange,
         onFragranceIdChange: handleOnFragranceIdChange,
+        onUpdateContent: handleOnUpdateContent,
 
         onUploadAsset: handleOnUploadAsset,
         onDeleteAsset: handleOnDeleteAsset,
-        onMoveAsset: handleOnMoveAsset,
-
-        onUpdateContent: handleOnUpdateContent,
 
         onSubmit: handleOnSubmit
       }}
     >
       {children}
-    </NewPostContext.Provider>
+    </NewPostCommentContext.Provider>
   )
 }

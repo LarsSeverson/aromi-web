@@ -2,6 +2,7 @@ import React from 'react'
 
 export interface DropZoneContextValue {
   isDragging?: boolean
+  isDraggingWindow?: boolean
   isDisabled?: boolean
   allowMultiple?: boolean
   acceptedFileTypes?: string[]

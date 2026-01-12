@@ -3,6 +3,7 @@ import { DropZoneContext } from '../DropZoneContext'
 
 export interface DropZoneProviderProps {
   isDragging?: boolean
+  isDraggingWindow?: boolean
   isDisabled?: boolean
   allowMultiple?: boolean
   acceptedFileTypes?: string[]
@@ -16,6 +17,7 @@ export interface DropZoneProviderProps {
 export const DropZoneProvider = (props: DropZoneProviderProps) => {
   const {
     isDragging = false,
+    isDraggingWindow = false,
     isDisabled = false,
     allowMultiple = true,
     acceptedFileTypes = [],
@@ -29,10 +31,11 @@ export const DropZoneProvider = (props: DropZoneProviderProps) => {
   return (
     <DropZoneContext.Provider
       value={{
+        isDragging,
+        isDraggingWindow,
         isDisabled,
         allowMultiple,
         acceptedFileTypes,
-        isDragging,
 
         onOpen,
         onFilesDropped

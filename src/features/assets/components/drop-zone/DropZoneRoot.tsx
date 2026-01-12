@@ -1,9 +1,12 @@
 import React from 'react'
 import { DropZoneProvider } from '../../contexts/providers/DropZoneProvider'
-import type { DropZoneFileRejection } from './types'
+import type { FileRejection } from './types'
+import { useWindowDrag } from '@/hooks/useWindowDrag'
+import { getDisplayFileSize } from '../../utils/helpers'
 
 export interface DropZoneState {
   isDragging: boolean
+  isDraggingWindow: boolean
   isDisabled: boolean
 }
 
@@ -19,7 +22,7 @@ export interface DropZoneRootProps extends Omit<React.HTMLAttributes<HTMLDivElem
   className?: string | ((state: DropZoneState) => string)
 
   onFilesDropped?: (files: File[]) => void
-  onFilesRejected?: (rejected: DropZoneFileRejection[]) => void
+  onFilesRejected?: (rejected: FileRejection[]) => void
 }
 
 const DropZoneRoot = (props: DropZoneRootProps) => {
@@ -41,6 +44,8 @@ const DropZoneRoot = (props: DropZoneRootProps) => {
     ...rest
   } = props
 
+  const { isDraggingWindow } = useWindowDrag()
+
   const inputRef = React.useRef<HTMLInputElement | null>(null)
   const dragCounter = React.useRef(0)
 
@@ -48,6 +53,7 @@ const DropZoneRoot = (props: DropZoneRootProps) => {
 
   const state: DropZoneState = {
     isDragging,
+    isDraggingWindow,
     isDisabled
   }
 
@@ -57,7 +63,7 @@ const DropZoneRoot = (props: DropZoneRootProps) => {
 
   const validateFiles = (fileList: File[]) => {
     const accepted: File[] = []
-    const rejected: DropZoneFileRejection[] = []
+    const rejected: FileRejection[] = []
 
     fileList.forEach((file) => {
       const errors: string[] = []
@@ -67,7 +73,7 @@ const DropZoneRoot = (props: DropZoneRootProps) => {
       }
 
       if (file.size > maxFileSizeInBytes) {
-        errors.push('File size exceeds the maximum limit')
+        errors.push(`File size exceeds the maximum limit of ${getDisplayFileSize(maxFileSizeInBytes)}`)
       }
 
       if (errors.length > 0) {
@@ -160,6 +166,7 @@ const DropZoneRoot = (props: DropZoneRootProps) => {
   return (
     <DropZoneProvider
       isDragging={isDragging}
+      isDraggingWindow={isDraggingWindow}
       isDisabled={isDisabled}
       allowMultiple={allowMultiple}
       acceptedFileTypes={acceptedFileTypes}

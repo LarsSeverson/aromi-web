@@ -4,7 +4,7 @@ import clsx from 'clsx'
 import React from 'react'
 import { useNewPostContext } from '../contexts/NewPostContext'
 import { MdOutlineCloudUpload } from 'react-icons/md'
-import type { DropZoneFileRejection } from '@/features/assets'
+import type { FileRejection } from '@/features/assets'
 import { MAX_POST_ASSET_SIZE, MAX_POST_ASSETS, ValidPostAssetType } from '../utils/validation'
 import { truncate } from 'lodash'
 import NewPostMediaUploads from './NewPostMediaUploads'
@@ -13,7 +13,7 @@ const NewPostMedia = () => {
   const { uploadTasks, uploadErrors, onUploadAsset } = useNewPostContext()
   const hasNoTasks = uploadTasks.length === 0
 
-  const [dropZoneRejections, setDropZoneRejections] = React.useState<DropZoneFileRejection[]>([])
+  const [dropZoneRejections, setDropZoneRejections] = React.useState<FileRejection[]>([])
   const shouldShowErrors = dropZoneRejections.length > 0 || uploadErrors.length > 0
 
   const uploadAssets = async (files: File[]) => {
@@ -25,7 +25,7 @@ const NewPostMedia = () => {
     uploadAssets(files)
   }
 
-  const handleOnFilesRejected = (rejections: DropZoneFileRejection[]) => {
+  const handleOnFilesRejected = (rejections: FileRejection[]) => {
     setDropZoneRejections(rejections)
 
     setTimeout(() => {
