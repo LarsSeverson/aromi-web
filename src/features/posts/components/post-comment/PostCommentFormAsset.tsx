@@ -3,11 +3,11 @@ import ImageUploadCard from '@/features/assets/components/ImageUploadCard'
 import React from 'react'
 import { useNewPostCommentContext } from '../../contexts/NewPostCommentContext'
 
-export interface PostCommentInputAssetProps {
+export interface PostCommentFormAssetProps {
   task: UploadTask
 }
 
-const PostCommentInputAsset = (props: PostCommentInputAssetProps) => {
+const PostCommentFormAsset = (props: PostCommentFormAssetProps) => {
   const { task } = props
   const { file, progress } = task
 
@@ -39,4 +39,4 @@ const PostCommentInputAsset = (props: PostCommentInputAssetProps) => {
   )
 }
 
-export default PostCommentInputAsset
+export default PostCommentFormAsset

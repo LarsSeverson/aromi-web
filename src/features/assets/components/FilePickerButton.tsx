@@ -27,7 +27,8 @@ const FilePickerButton = (props: FilePickerButtonProps) => {
     onFilesSelected,
     onFilesRejected,
 
-    children
+    children,
+    ...restProps
   } = props
 
   const buttonRef = React.useRef<HTMLButtonElement>(null)
@@ -91,7 +92,7 @@ const FilePickerButton = (props: FilePickerButtonProps) => {
     <button
       ref={buttonRef}
       onClick={handleButtonClick}
-      {...props}
+      {...restProps}
       type='button'
       disabled={isDisabled}
       className={clsx(
@@ -105,8 +106,7 @@ const FilePickerButton = (props: FilePickerButtonProps) => {
         <FiImage
           size='16'
         />
-      )
-      }
+      )}
 
       <input
         ref={inputRef}

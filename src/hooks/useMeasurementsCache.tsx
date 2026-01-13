@@ -1,11 +1,13 @@
 import type { VirtualItem } from '@tanstack/react-virtual'
+import { Result } from 'neverthrow'
 import React from 'react'
 
 export type MeasurementsCache = VirtualItem[]
 
 const loadCache = (key: string): MeasurementsCache | null => {
   const raw = sessionStorage.getItem(key)
-  const parsed = JSON.parse(raw ?? '') as MeasurementsCache
+  const safeParse = Result.fromThrowable(JSON.parse)
+  const parsed = safeParse(raw ?? '').unwrapOr('') as MeasurementsCache
   const sanitized = Array.isArray(parsed) ? parsed : null
 
   return sanitized

@@ -5,7 +5,8 @@ const NewPostErrors = () => {
   const { formErrors } = useNewPostContext()
 
   const fieldPaths = ['type', 'title', 'content', 'fragranceId', 'assets']
-  const catchAllErrors = Object.entries(formErrors)
+  const catchAllErrors = Object
+    .entries(formErrors)
     .filter(([key]) => !fieldPaths.includes(key))
     .map(([_, error]) => error as string)
     .filter(Boolean)

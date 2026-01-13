@@ -5,13 +5,17 @@ import { generateHTML, generateJSON } from '@tiptap/html'
 
 export const extensions = [StarterKit]
 
-export const getSanitizedTiptapContent = (value: unknown, maxLength: number) => {
+export const getSanitizedTiptapContent = (value: unknown, minLength: number, maxLength: number) => {
   const content = value as JSONContent
 
   const text = generateText(
     content,
     extensions
   )
+
+  if (text.length < minLength) {
+    throw new Error('CONTENT_TOO_SHORT')
+  }
 
   if (text.length > maxLength) {
     throw new Error('CONTENT_TOO_LONG')

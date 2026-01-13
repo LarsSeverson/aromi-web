@@ -55,6 +55,7 @@ export const ValidPostContent = z
 
       return getSanitizedTiptapContent(
         jsond,
+        MIN_POST_CONTENT_LENGTH,
         MAX_POST_CONTENT_LENGTH
       )
     }
@@ -73,15 +74,38 @@ export const ValidPostContent = z
   })
 
 export const ValidPostCommentContent = z
-  .string()
-  .min(
-    MIN_POST_COMMENT_CONTENT_LENGTH,
-    `Post comment content must be at least ${MIN_POST_COMMENT_CONTENT_LENGTH} characters long`
-  )
-  .max(
-    MAX_POST_COMMENT_CONTENT_LENGTH,
-    `Post comment content must be at most ${MAX_POST_COMMENT_CONTENT_LENGTH} characters long`
-  )
+  .any()
+  .transform((value, ctx) => {
+    if (value == null) return null
+    if (value === '') return null
+    if (value === 'null') return null
+
+    const processContent = Result.fromThrowable(() => {
+      const jsond = JSON.parse(value as string) as JSON
+
+      if (Object.keys(jsond).length === 0) {
+        return null
+      }
+
+      return getSanitizedTiptapContent(
+        jsond,
+        MIN_POST_COMMENT_CONTENT_LENGTH,
+        MAX_POST_COMMENT_CONTENT_LENGTH
+      )
+    }
+    )()
+
+    if (processContent.isErr()) {
+      ctx.addIssue({
+        code: 'custom',
+        message: 'Invalid content'
+      })
+
+      return z.NEVER
+    }
+
+    return processContent.value
+  })
 
 export const ValidPostFragranceId = z.string().nullish()
 export const ValidPostCommentPostId = z.string()

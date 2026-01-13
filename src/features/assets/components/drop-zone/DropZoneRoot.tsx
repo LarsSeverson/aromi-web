@@ -41,7 +41,7 @@ const DropZoneRoot = (props: DropZoneRootProps) => {
     onFilesRejected,
 
     children,
-    ...rest
+    ...restProps
   } = props
 
   const { isDraggingWindow } = useWindowDrag()
@@ -181,7 +181,7 @@ const DropZoneRoot = (props: DropZoneRootProps) => {
         onDrop={handleDrop}
         onClick={isTrigger ? handleOnOpen : undefined}
         className={resolvedClassName}
-        {...rest}
+        {...restProps}
       >
         <input
           type="file"

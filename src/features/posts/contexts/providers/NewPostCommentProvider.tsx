@@ -2,7 +2,7 @@ import { AssetKey, type CreatePostCommentInput, type PostCommentPreviewFragment,
 import { useToastMessage } from '@/hooks/useToastMessage'
 import type { Nullable } from '@/utils/util'
 import { useCreatePostComment } from '../../hooks/useCreatePostComment'
-import { useAssetUploadManager } from '@/features/assets'
+import { type FileRejection, useAssetUploadManager } from '@/features/assets'
 import { CreatePostCommentSchema, MAX_POST_COMMENT_ASSETS } from '../../utils/validation'
 import React from 'react'
 import { truncate } from 'lodash'
@@ -32,25 +32,34 @@ export const NewPostCommentProvider = (props: NewPostCommentProviderProps) => {
 
   const tasksRef = React.useRef(uploadTasks)
   const hasSubmitted = React.useRef(false)
-  const content = React.useRef<Nullable<string>>(undefined)
 
-  const [fragranceId, setFragranceId] = React.useState<Nullable<string>>(null)
+  const [formKey, setFormKey] = React.useState(0)
+  const [isActive, setIsActive] = React.useState(false)
+  const [isFocused, setIsFocused] = React.useState(false)
+  const [isLoading, setIsLoading] = React.useState(false)
+
+  const [formErrors, setFormErrors] = React.useState({})
   const [uploadErrors, setUploadErrors] = React.useState<string[]>([])
 
-  const [isActive, setIsActive] = React.useState(false)
-  const [isLoading, setIsLoading] = React.useState(false)
-  const [formErrors, setFormErrors] = React.useState({})
+  const isUploading = React.useMemo(
+    () => uploadTasks.length > 0 && uploadTasks.some(task => task.status === 'uploading'),
+    [uploadTasks]
+  )
 
-  const isUploading = uploadTasks.length > 0 && uploadTasks.some(task => task.status === 'uploading')
+  const isSubmittable = React.useMemo(
+    () => !isUploading && !isLoading,
+    [isUploading, isLoading]
+  )
 
   const resetState = () => {
-    content.current = null
     resetTasks()
 
-    setFragranceId(null)
     setUploadErrors([])
     setFormErrors({})
     setIsLoading(false)
+    setIsActive(false)
+    setIsFocused(false)
+    setFormKey(prev => prev + 1)
 
     hasSubmitted.current = false
   }
@@ -59,12 +68,8 @@ export const NewPostCommentProvider = (props: NewPostCommentProviderProps) => {
     setIsActive(isActive)
   }
 
-  const handleOnUpdateContent = (newContent: Nullable<string>) => {
-    content.current = newContent ?? undefined
-  }
-
-  const handleOnFragranceIdChange = (newFragranceId: Nullable<string>) => {
-    setFragranceId(newFragranceId)
+  const handleOnIsFocusedChange = (isFocused: boolean) => {
+    setIsFocused(isFocused)
   }
 
   const handleOnUploadAsset = (file: File) => {
@@ -72,17 +77,25 @@ export const NewPostCommentProvider = (props: NewPostCommentProviderProps) => {
 
     return uploadFile(file, AssetKey.PostCommentAssets)
       .orTee(errorInfo => {
-        const errStr = `Failed to upload ${truncate(file.name, { length: 20 })}: ${errorInfo.message}`
-        setUploadErrors(prev => [...prev, errStr])
-
-        setTimeout(() => {
-          setUploadErrors(prev => prev.filter(err => err !== errStr))
-        }, 10000)
+        const { message } = errorInfo
+        handleOnAssetsRejected([{ file, errors: [message] }])
       })
   }
 
   const handleOnDeleteAsset = (id: string) => {
     deleteTask(id)
+  }
+
+  const handleOnAssetsRejected = (errors: FileRejection[]) => {
+    const errorMessages = errors.map(error =>
+      `Failed to upload ${truncate(error.file.name, { length: 20 })}: ${error.errors.at(0)}`
+    )
+
+    setUploadErrors(prev => [...prev, ...errorMessages])
+
+    setTimeout(() => {
+      setUploadErrors([])
+    }, 10000)
   }
 
   const handleOnCreatePostComment = useDebounce(
@@ -110,8 +123,8 @@ export const NewPostCommentProvider = (props: NewPostCommentProviderProps) => {
 
     const input = {
       ...formData,
-      assets: inputAssets,
-      content: content.current
+      postId: post.id,
+      assets: inputAssets
     }
 
     const parsed = parseSchema(CreatePostCommentSchema, input)
@@ -145,27 +158,31 @@ export const NewPostCommentProvider = (props: NewPostCommentProviderProps) => {
         post,
         parent,
 
-        fragranceId,
-
         uploadTasks,
         uploadErrors,
         formErrors,
 
         isActive,
+        isFocused,
         isLoading,
         isUploading,
+        isSubmittable,
 
         onIsActiveChange: handleOnIsActiveChange,
-        onFragranceIdChange: handleOnFragranceIdChange,
-        onUpdateContent: handleOnUpdateContent,
+        onIsFocusedChange: handleOnIsFocusedChange,
 
         onUploadAsset: handleOnUploadAsset,
         onDeleteAsset: handleOnDeleteAsset,
+        onAssetsRejected: handleOnAssetsRejected,
 
         onSubmit: handleOnSubmit
       }}
     >
-      {children}
+      <React.Fragment
+        key={formKey}
+      >
+        {children}
+      </React.Fragment>
     </NewPostCommentContext.Provider>
   )
 }

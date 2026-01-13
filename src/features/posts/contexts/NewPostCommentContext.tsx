@@ -1,4 +1,4 @@
-import type { UploadTask } from '@/features/assets'
+import type { FileRejection, UploadTask } from '@/features/assets'
 import type { PostCommentPreviewFragment, PostPreviewFragment, PresignedUpload } from '@/generated/graphql'
 import type { ServerErrorInfo } from '@/utils/error'
 import type { Nullable } from '@/utils/util'
@@ -9,22 +9,22 @@ export interface NewPostCommentContextValue {
   post: PostPreviewFragment
   parent?: Nullable<PostCommentPreviewFragment>
 
-  fragranceId?: Nullable<string>
-
   uploadTasks: UploadTask[]
   uploadErrors: string[]
   formErrors: {}
 
   isActive: boolean
+  isFocused: boolean
   isLoading: boolean
   isUploading: boolean
+  isSubmittable: boolean
 
   onIsActiveChange: (isActive: boolean) => void
-  onFragranceIdChange: (id: Nullable<string>) => void
-  onUpdateContent: (newContent: Nullable<string>) => void
+  onIsFocusedChange: (isFocused: boolean) => void
 
   onUploadAsset: (file: File) => ResultAsync<{ data: PresignedUpload, task: UploadTask }, ServerErrorInfo>
   onDeleteAsset: (id: string) => void
+  onAssetsRejected: (errors: FileRejection[]) => void
 
   onSubmit: (event: React.FormEvent) => void
 }

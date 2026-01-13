@@ -25,7 +25,7 @@ export const InputPopoverContext = React.createContext<InputPopoverContextValue<
 export const useInputPopoverContext = <T, >() => {
   const context = React.useContext(InputPopoverContext)
   if (context == null) {
-    throw new Error('useInputPopoverContext must be used within a InputPopoverProvider')
+    throw new Error('useInputPopoverContext must be used within a InputPopoverRoot')
   }
 
   return context as InputPopoverContextValue<T>

@@ -1,34 +1,18 @@
-import { DropZone, type FileRejection } from '@/features/assets'
+import { DropZone } from '@/features/assets'
 import React from 'react'
 import { MAX_POST_COMMENT_ASSET_SIZE, ValidPostCommentAssetType } from '../../utils/validation'
 import clsx from 'clsx'
 import { MdOutlineCloudUpload } from 'react-icons/md'
-import { truncate } from 'lodash'
 import { useNewPostCommentContext } from '../../contexts/NewPostCommentContext'
 
-export interface PostCommentInputDropZoneProps {
-  isVisible?: boolean
-  onDropZoneErrors?: (errorMessages: string[]) => void
-}
-
-const PostCommentInputDropZone = (props: PostCommentInputDropZoneProps) => {
-  const { onDropZoneErrors } = props
-
-  const { onUploadAsset } = useNewPostCommentContext()
+const PostCommentFormDropZone = () => {
+  const { onUploadAsset, onAssetsRejected } = useNewPostCommentContext()
 
   const handleOnFilesDropped = (files: File[]) => {
     const first = files[0]
     if (first == null) return
 
     onUploadAsset(first)
-  }
-
-  const handleOnFilesRejected = (errors: FileRejection[]) => {
-    const errorMessages = errors.map(error =>
-      `Failed to upload ${truncate(error.file.name, { length: 20 })}: ${error.errors.at(0)}`
-    )
-
-    onDropZoneErrors?.(errorMessages)
   }
 
   return (
@@ -44,7 +28,7 @@ const PostCommentInputDropZone = (props: PostCommentInputDropZoneProps) => {
           : 'border-blue-500 bg-blue-400/50'
       )}
       onFilesDropped={handleOnFilesDropped}
-      onFilesRejected={handleOnFilesRejected}
+      onFilesRejected={onAssetsRejected}
     >
       <div
         className={clsx(
@@ -65,4 +49,4 @@ const PostCommentInputDropZone = (props: PostCommentInputDropZoneProps) => {
   )
 }
 
-export default PostCommentInputDropZone
+export default PostCommentFormDropZone
