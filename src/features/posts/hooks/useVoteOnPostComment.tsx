@@ -1,28 +1,28 @@
 import { useMutation } from '@apollo/client/react'
-import { VOTE_ON_POST_MUTATION } from '../graphql/mutations'
-import type { AllVoteInfoFragment, PostVoteInfoFragment, VoteOnPostInput, VoteOnPostMutation } from '@/generated/graphql'
+import { VOTE_ON_POST_COMMENT_MUTATION } from '../graphql/mutations'
+import type { AllVoteInfoFragment, PostCommentVoteInfoFragment, VoteOnPostCommentInput, VoteOnPostCommentMutation } from '@/generated/graphql'
 import { type Nullable, wrapQuery } from '@/utils/util'
 import type { ApolloCache } from '@apollo/client'
 import { client } from '@/common/client'
-import { POST_VOTE_INFO_FRAGMENT } from '../graphql/fragments'
+import { POST_COMMENT_VOTE_INFO_FRAGMENT } from '../graphql/fragments'
 
-export const useVoteOnPost = () => {
-  const [mutation] = useMutation(VOTE_ON_POST_MUTATION)
+export const useVoteOnPostComment = () => {
+  const [mutation] = useMutation(VOTE_ON_POST_COMMENT_MUTATION)
 
   const handleUpdateCache = (
     cache: ApolloCache,
-    input: VoteOnPostInput,
-    data: Nullable<VoteOnPostMutation>,
+    input: VoteOnPostCommentInput,
+    data: Nullable<VoteOnPostCommentMutation>,
     prevVote: Nullable<number>
   ) => {
-    const voteResult = data?.voteOnPost
+    const voteResult = data?.voteOnPostComment
     if (voteResult == null) return
 
-    const { vote, postId } = input
-    const postCacheId = cache.identify({ __typename: 'Post', id: postId })
+    const { vote, commentId } = input
+    const commentCacheId = cache.identify({ __typename: 'PostComment', id: commentId })
 
     cache.modify({
-      id: postCacheId,
+      id: commentCacheId,
       fields: {
         votes: (existing) => {
           const typed = existing as AllVoteInfoFragment
@@ -54,12 +54,12 @@ export const useVoteOnPost = () => {
     })
   }
 
-  const voteOnPost = (input: VoteOnPostInput) => {
-    const cachedPostId = client.cache.identify({ __typename: 'Post', id: input.postId })
-    const existingVotes = client.cache.readFragment<PostVoteInfoFragment>({
-      id: cachedPostId,
-      fragment: POST_VOTE_INFO_FRAGMENT,
-      fragmentName: 'PostVoteInfo'
+  const voteOnPostComment = (input: VoteOnPostCommentInput) => {
+    const cachedCommentId = client.cache.identify({ __typename: 'PostComment', id: input.commentId })
+    const existingVotes = client.cache.readFragment<PostCommentVoteInfoFragment>({
+      id: cachedCommentId,
+      fragment: POST_COMMENT_VOTE_INFO_FRAGMENT,
+      fragmentName: 'PostCommentVoteInfo'
     })
 
     const prevVote = existingVotes?.votes.myVote ?? null
@@ -74,5 +74,5 @@ export const useVoteOnPost = () => {
     )
   }
 
-  return { voteOnPost }
+  return { voteOnPostComment }
 }

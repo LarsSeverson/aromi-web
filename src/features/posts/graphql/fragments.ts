@@ -74,6 +74,12 @@ export const POST_COMMENT_PREVIEW_FRAGMENT = gql(/* GraphQL */ `
       ...AllPostCommentAsset
     }
 
+    commentCount
+
+    votes {
+      ...AllVoteInfo
+    }
+
     createdAt
   }
 `)
@@ -90,6 +96,15 @@ export const ALL_POST_COMMENT_ASSET_FRAGMENT = gql(/* GraphQL */ `
 
 export const POST_VOTE_INFO_FRAGMENT = gql(/* GraphQL */ `
   fragment PostVoteInfo on Post {
+    id
+    votes {
+      ...AllVoteInfo
+    }
+  } 
+`)
+
+export const POST_COMMENT_VOTE_INFO_FRAGMENT = gql(/* GraphQL */ `
+  fragment PostCommentVoteInfo on PostComment {
     id
     votes {
       ...AllVoteInfo

@@ -97,6 +97,18 @@ export const client = new ApolloClient({
           },
           items: customRelayPagination()
         }
+      },
+
+      Post: {
+        fields: {
+          comments: customRelayPagination()
+        }
+      },
+
+      PostComment: {
+        fields: {
+          comments: customRelayPagination()
+        }
       }
     }
   })

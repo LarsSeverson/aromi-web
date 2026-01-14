@@ -48,6 +48,7 @@ export const POST_COMMENTS_QUERY = gql(/* GraphQL */ `
     $input: PostCommentPaginationInput
   ) {
     post(id: $postId) {
+      id
       comments(input: $input) {
         edges {
           node {
@@ -86,12 +87,13 @@ export const SEARCH_POST_COMMENTS_QUERY = gql(/* GraphQL */ `
   }
 `)
 
-export const POST_COMMENT_REPLIES_QUERY = gql(/* GraphQL */ `
+export const POST_COMMENT_COMMENTS_QUERY = gql(/* GraphQL */ `
   query PostCommentReplies(
     $parentId: ID!
     $input: PostCommentPaginationInput
   ) {
     postComment(id: $parentId) { 
+      id
       comments(input: $input) {
         edges {
           node {

@@ -55,3 +55,11 @@ export const DELETE_POST_COMMENT_MUTATION = gql(/* GraphQL */ `
     }
   }
 `)
+
+export const VOTE_ON_POST_COMMENT_MUTATION = gql(/* GraphQL */ `
+  mutation VoteOnPostComment($input: VoteOnPostCommentInput!) {
+    voteOnPostComment(input: $input) {
+      ...PostCommentPreview
+    }
+  }
+`)

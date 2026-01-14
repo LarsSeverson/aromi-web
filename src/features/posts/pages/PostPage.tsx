@@ -12,6 +12,8 @@ import PostPreviewCardFooter from '../components/PostPreviewCardFooter'
 import Divider from '@/components/Divider'
 import PostCommentForm from '../components/post-comment/PostCommentForm'
 import { NewPostCommentProvider } from '../contexts/providers/NewPostCommentProvider'
+import { PostCommentCard } from '../components/post-comment/PostCommentCard'
+import { PostComments } from '../components/post-comment/PostComments'
 
 export interface PostPageProps {
   post: PostPreviewFragment
@@ -85,6 +87,10 @@ const PostPage = (props: PostPageProps) => {
           >
             <PostCommentForm />
           </NewPostCommentProvider>
+
+          <PostComments
+            post={post}
+          />
         </div>
       </div>
     </div>

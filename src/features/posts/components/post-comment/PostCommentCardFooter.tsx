@@ -1,29 +1,25 @@
-import VoteButtonGroup from '@/components/VoteButtonGroup'
-import type { PostPreviewFragment } from '@/generated/graphql'
+import type { PostCommentPreviewFragment } from '@/generated/graphql'
 import { useToastMessage } from '@/hooks/useToastMessage'
 import React from 'react'
-import { useVoteOnPost } from '../hooks/useVoteOnPost'
+import { useVoteOnPostComment } from '../../hooks/useVoteOnPostComment'
 import { useDebounce } from '@/hooks/useDebounce'
-import { Link } from '@tanstack/react-router'
-import { FaRegComment } from 'react-icons/fa'
-import { formatNumber } from '@/utils/string-utils'
-import SharePostPopover from './SharePostPopover'
+import VoteButtonGroup from '@/components/VoteButtonGroup'
 
-export interface PostPreviewCardFooterProps {
-  post: PostPreviewFragment
+export interface PostCommentCardFooterProps {
+  comment: PostCommentPreviewFragment
 }
 
-const PostPreviewCardFooter = (props: PostPreviewCardFooterProps) => {
-  const { post } = props
-  const { commentCount, votes } = post
+export const PostCommentCardFooter = (props: PostCommentCardFooterProps) => {
+  const { comment } = props
+  const { commentCount, votes } = comment
 
   const { toastError } = useToastMessage()
 
-  const { voteOnPost } = useVoteOnPost()
+  const { voteOnPostComment } = useVoteOnPostComment()
 
-  const handleVoteOnPost = useDebounce(
+  const handleVoteOnPostComment = useDebounce(
     async (userVote: number) => {
-      const res = await voteOnPost({ postId: post.id, vote: userVote })
+      const res = await voteOnPostComment({ commentId: comment.id, vote: userVote })
 
       res.match(
         () => {
@@ -35,11 +31,11 @@ const PostPreviewCardFooter = (props: PostPreviewCardFooterProps) => {
       )
     },
     150,
-    [post.id]
+    [comment.id]
   )
 
   const handleOnVote = (vote: number) => {
-    handleVoteOnPost(vote)
+    handleVoteOnPostComment(vote)
   }
 
   return (
@@ -53,7 +49,7 @@ const PostPreviewCardFooter = (props: PostPreviewCardFooterProps) => {
         onVote={handleOnVote}
       />
 
-      <Link
+      {/* <Link
         to='/community/posts/$id'
         params={{ id: post.id }}
         className='bg-empty flex items-center gap-2 rounded-full p-2 px-4 text-sm hover:bg-gray-200'
@@ -63,13 +59,11 @@ const PostPreviewCardFooter = (props: PostPreviewCardFooterProps) => {
         />
 
         {formatNumber(commentCount)}
-      </Link>
+      </Link> */}
 
-      <SharePostPopover
+      {/* <SharePostPopover
         post={post}
-      />
+      /> */}
     </div>
   )
 }
-
-export default PostPreviewCardFooter
