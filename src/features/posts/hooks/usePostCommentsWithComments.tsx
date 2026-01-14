@@ -1,16 +1,16 @@
 import type { PostCommentPaginationInput } from '@/generated/graphql'
-import { useQuery } from '@apollo/client/react'
-import { POST_COMMENTS_QUERY } from '../graphql/queries'
 import { noRes } from '@/utils/error'
-import { flattenConnections, validatePagination } from '@/utils/pagination'
+import { validatePagination, flattenConnections, flattenTopLevelConnection } from '@/utils/pagination'
+import { POST_COMMENTS_WITH_COMMENTS_QUERY } from '../graphql/queries'
+import { useQuery } from '@apollo/client/react'
 import { hasNextPage, isStatusLoadingMore, wrapQuery } from '@/utils/util'
 import { useMemo } from 'react'
 
-export const usePostComments = (postId: string, input?: PostCommentPaginationInput) => {
+export const usePostCommentsWithComments = (postId: string, input?: PostCommentPaginationInput) => {
   const {
     data, loading: isLoading, error, networkStatus,
     fetchMore
-  } = useQuery(POST_COMMENTS_QUERY, { variables: { postId, input } })
+  } = useQuery(POST_COMMENTS_WITH_COMMENTS_QUERY, { variables: { postId, input } })
 
   const loadMore = () => {
     const endCursor = validatePagination(data?.post.comments.pageInfo, networkStatus)
@@ -29,7 +29,7 @@ export const usePostComments = (postId: string, input?: PostCommentPaginationInp
   }
 
   const comments = useMemo(
-    () => flattenConnections(data?.post.comments ?? []),
+    () => flattenTopLevelConnection(data?.post.comments ?? []),
     [data?.post.comments]
   )
 

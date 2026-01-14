@@ -219,6 +219,11 @@ export type FlattenedConnection<T> =
         T extends object ? { [K in keyof T]: FlattenedConnection<T[K]> } :
           T
 
+export type FlattenedTopLevelConnection<T> =
+  T extends NodeWithEdges<infer N>
+    ? N[]
+    : T
+
 export const isEdgeNodeObject = <T>(value: unknown): value is NodeWithEdges<T> => {
   return (
     value !== null &&
@@ -254,6 +259,14 @@ export const flattenConnections = <T>(input: T): FlattenedConnection<T> => {
   }
 
   return input as FlattenedConnection<T>
+}
+
+export const flattenTopLevelConnection = <T>(input: T): FlattenedTopLevelConnection<T> => {
+  if (isEdgeNodeObject<unknown>(input)) {
+    return input.edges.map((edge) => edge.node) as FlattenedTopLevelConnection<T>
+  }
+
+  return input as FlattenedTopLevelConnection<T>
 }
 
 export const validatePagination = (

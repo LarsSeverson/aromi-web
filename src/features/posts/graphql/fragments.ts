@@ -84,6 +84,25 @@ export const POST_COMMENT_PREVIEW_FRAGMENT = gql(/* GraphQL */ `
   }
 `)
 
+export const POST_COMMENT_WITH_COMMENTS_FRAGMENT = gql(/* GraphQL */ `
+  fragment PostCommentWithComments on PostComment {
+    ...PostCommentPreview
+
+    comments(input: { first: 3 }) {
+      edges {
+        node {
+          ...PostCommentPreview
+        }
+        cursor
+      }
+
+      pageInfo {
+        ...AllPageInfo
+      }
+    }
+  }
+`)
+
 export const ALL_POST_COMMENT_ASSET_FRAGMENT = gql(/* GraphQL */ `
   fragment AllPostCommentAsset on PostCommentAsset { 
     id

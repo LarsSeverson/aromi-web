@@ -1,46 +1,102 @@
-import type { PostCommentPreviewFragment } from '@/generated/graphql'
+import type { PostCommentWithCommentsFragment } from '@/generated/graphql'
 import React from 'react'
 import { PostCommentCardAvatar } from './PostCommentCardAvatar'
 import { PostCommentCardHeading } from './PostCommentCardHeading'
 import { PostCommentCardContent } from './PostCommentCardContent'
 import { PostCommentCardFooter } from './PostCommentCardFooter'
-import { usePostCommentComments } from '../../hooks/usePostCommentComments'
+import { usePostCommentCommentsLazy } from '../../hooks/usePostCommentCommentsLazy'
+import clsx from 'clsx'
 
 export interface PostCommentCardProps {
-  comment: PostCommentPreviewFragment
+  comment: PostCommentWithCommentsFragment
 }
 
 export const PostCommentCard = (props: PostCommentCardProps) => {
-  const { comment } = props
+  const {
+    comment
+  } = props
+  
   const { user } = comment
 
-  const { comments } = usePostCommentComments(comment.id)
+  const {
+    comments,
+
+    hasMore,
+
+    loadMore
+  } = usePostCommentCommentsLazy({
+    parentId: comment.id,
+    input: { first: 5 },
+    parentData: comment
+  })
+
+  const hasComments = comments.length > 0
+
+  const handleOnLoadMore = React.useCallback(
+    () => {
+      loadMore()
+    },
+    [loadMore]
+  )
 
   return (
     <div
-      className='group flex w-full flex-col overflow-hidden rounded-lg p-3 pb-1'
+      className="group/thread relative"
     >
       <div
-        className='flex gap-2'
+        className="grid grid-cols-[32px_minmax(0,1fr)]"
       >
         <PostCommentCardAvatar
           user={user}
         />
 
+        <PostCommentCardHeading
+          comment={comment}
+        />
+      </div>
+
+      <div
+        className='relative grid grid-cols-[32px_minmax(0,1fr)]'
+      >
         <div
-          className='flex w-full min-w-0 flex-col gap-1'
+          className={clsx(
+            'group absolute start-0 top-0 bottom-0 flex w-8 cursor-pointer items-center justify-center',
+            'z-0'
+          )}
         >
-          <PostCommentCardHeading
-            comment={comment}
+          <div
+            className={clsx(
+              'h-full w-px bg-gray-200',
+              !hasComments && 'hidden'
+            )}
           />
+        </div>
+
+        <div
+          className='contents'
+        >
+          <div />
 
           <PostCommentCardContent
             comment={comment}
           />
+        </div>
 
-          <PostCommentCardFooter
-            comment={comment}
-          />
+        <div
+          className='contents'
+        >
+          <div />
+
+          {hasComments && (
+            <>
+              {comments.map(reply => (
+                <PostCommentCard
+                  key={reply.id}
+                  comment={reply as PostCommentWithCommentsFragment}
+                />
+              ))}
+            </>
+          )}
         </div>
       </div>
     </div>

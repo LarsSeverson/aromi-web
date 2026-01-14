@@ -40,14 +40,14 @@ export const PostCommentCardFooter = (props: PostCommentCardFooterProps) => {
 
   return (
     <div
-      className='mt-2 flex items-center gap-3'
+      className='flex items-center gap-3'
     >
-      <VoteButtonGroup
+      {/* <VoteButtonGroup
         className='bg-empty border-none'
         noSeparator
         votes={votes}
         onVote={handleOnVote}
-      />
+      /> */}
 
       {/* <Link
         to='/community/posts/$id'

@@ -23,7 +23,7 @@ export const PostCommentCardHeading = (props: PostCommentCardHeadingProps) => {
       <Link
         to='/users/$id'
         params={{ id: user.id }}
-        className='truncate text-sm font-medium hover:underline'
+        className='truncate text-xs font-medium hover:underline'
         onClick={handleOnChildClick}
       >
         {user.username}

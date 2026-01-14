@@ -17,6 +17,7 @@ export interface FlatListProps<T extends Identifiable> extends React.HTMLAttribu
   gap?: number
   overscan?: number
   initialScrollOffset?: number
+  scrollMargin?: number
   onEndReachedThreshold?: number
   initialMeasurementsCache?: MeasurementsCache
   onRenderItem: (item: T, index: number) => React.ReactNode
@@ -37,6 +38,7 @@ export const FlatList = <T extends Identifiable, >(props: FlatListProps<T>) => {
     gap = 0,
     overscan = 5,
     initialScrollOffset = 0,
+    scrollMargin = 0,
     onEndReachedThreshold = 500,
     initialMeasurementsCache,
     onRenderItem,
@@ -60,6 +62,7 @@ export const FlatList = <T extends Identifiable, >(props: FlatListProps<T>) => {
     gap,
     initialOffset: initialScrollOffset,
     initialMeasurementsCache,
+    scrollMargin,
     horizontal: !isVertical,
     measureElement: (el: HTMLElement) => {
       return isVertical
@@ -145,8 +148,8 @@ export const FlatList = <T extends Identifiable, >(props: FlatListProps<T>) => {
               )}
               style={{
                 transform: isVertical
-                  ? `translateY(${virtualItem.start}px)`
-                  : `translateX(${virtualItem.start}px)`
+                  ? `translateY(${virtualItem.start - virtualizer.options.scrollMargin}px)`
+                  : `translateX(${virtualItem.start - virtualizer.options.scrollMargin}px)`
               }}
             >
               {isSkeleton

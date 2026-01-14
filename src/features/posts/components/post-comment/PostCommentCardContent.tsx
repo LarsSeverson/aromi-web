@@ -16,7 +16,7 @@ export const PostCommentCardContent = (props: PostCommentCardContentProps) => {
     >
       <TipTapRenderer
         content={comment.content as JSONContent}
-        className='text-sm text-black/90'
+        className='text-sm text-black/80'
       />
     </div>
   )

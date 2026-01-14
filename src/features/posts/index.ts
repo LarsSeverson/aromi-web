@@ -10,6 +10,8 @@ export * from './hooks/useSearchPosts'
 
 export * from './hooks/usePostComments'
 export * from './hooks/usePostCommentComments'
+export * from './hooks/usePostCommentsWithComments'
+export * from './hooks/usePostCommentCommentsLazy'
 export * from './hooks/useSearchPostComments'
 
 export * from './hooks/useCreatePost'
