@@ -46,29 +46,16 @@ export const usePostCommentCommentsLazy = (options: UsePostCommentCommentsLazyOp
 
     if (!called) {
       return wrapQuery(query({ variables }))
-        .map(res => flattenTopLevelConnection(res.postComment.comments))
+        .map(data => flattenTopLevelConnection(data.postComment.comments))
     }
 
     return wrapQuery(fetchMore({ variables }))
       .map(data => flattenTopLevelConnection(data.postComment.comments))
   }
 
-  const initialComments = React.useMemo(
-    () => flattenTopLevelConnection(parentData?.comments),
+  const comments = React.useMemo(
+    () => flattenTopLevelConnection(parentData?.comments ?? []),
     [parentData?.comments]
-  )
-
-  const additionalComments = React.useMemo(
-    () => flattenTopLevelConnection(data?.postComment.comments),
-    [data?.postComment.comments]
-  )
-
-  const allComments = React.useMemo(
-    () => [
-      ...(Array.isArray(initialComments) ? initialComments : []),
-      ...(Array.isArray(additionalComments) ? additionalComments : [])
-    ],
-    [initialComments, additionalComments]
   )
 
   const isLoadingMore = isStatusLoadingMore(networkStatus)
@@ -77,7 +64,7 @@ export const usePostCommentCommentsLazy = (options: UsePostCommentCommentsLazyOp
     : hasNextPage(parentData?.comments?.pageInfo)
 
   return {
-    comments: allComments,
+    comments,
 
     isLoading,
     isLoadingMore,

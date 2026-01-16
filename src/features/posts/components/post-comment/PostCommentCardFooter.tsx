@@ -1,69 +1,59 @@
-import type { PostCommentPreviewFragment } from '@/generated/graphql'
-import { useToastMessage } from '@/hooks/useToastMessage'
+import type { PostCommentWithCommentsFragment } from '@/generated/graphql'
+import clsx from 'clsx'
 import React from 'react'
-import { useVoteOnPostComment } from '../../hooks/useVoteOnPostComment'
-import { useDebounce } from '@/hooks/useDebounce'
-import VoteButtonGroup from '@/components/VoteButtonGroup'
+import { PostCommentCardMoreRepliesButton } from './PostCommentCardMoreRepliesButton'
 
 export interface PostCommentCardFooterProps {
-  comment: PostCommentPreviewFragment
+  comment: PostCommentWithCommentsFragment
+  commentsLoadedLength?: number
+  isExpanded?: boolean
+  hasMore?: boolean
+
+  onLoadMore?: () => void
 }
 
 export const PostCommentCardFooter = (props: PostCommentCardFooterProps) => {
-  const { comment } = props
-  const { commentCount, votes } = comment
+  const {
+    comment,
+    commentsLoadedLength = 0,
+    isExpanded = false,
+    hasMore = false,
 
-  const { toastError } = useToastMessage()
+    onLoadMore
+  } = props
 
-  const { voteOnPostComment } = useVoteOnPostComment()
+  const { commentCount } = comment
 
-  const handleVoteOnPostComment = useDebounce(
-    async (userVote: number) => {
-      const res = await voteOnPostComment({ commentId: comment.id, vote: userVote })
-
-      res.match(
-        () => {
-          //
-        },
-        () => {
-          toastError('', 'Something went wrong')
-        }
-      )
-    },
-    150,
-    [comment.id]
-  )
-
-  const handleOnVote = (vote: number) => {
-    handleVoteOnPostComment(vote)
-  }
+  if (!hasMore) return null
 
   return (
     <div
-      className='flex items-center gap-3'
+      className={clsx(
+        'contents',
+        hasMore ? 'block' : 'hidden'
+      )}
     >
-      {/* <VoteButtonGroup
-        className='bg-empty border-none'
-        noSeparator
-        votes={votes}
-        onVote={handleOnVote}
-      /> */}
-
-      {/* <Link
-        to='/community/posts/$id'
-        params={{ id: post.id }}
-        className='bg-empty flex items-center gap-2 rounded-full p-2 px-4 text-sm hover:bg-gray-200'
+      <div
+        className={clsx(
+          'relative flex items-start justify-end',
+          'bg-white'
+        )}
       >
-        <FaRegComment
-          className='size-4.5'
+        <div
+          className={clsx(
+            'relative box-border h-4 w-[calc(50%+0.5px)] cursor-pointer',
+            'border-0 border-s border-solid border-gray-200',
+            'after:absolute after:bottom-0 after:left-0 after:h-px after:bg-gray-200',
+            'after:w-[calc(100%-4px)]'
+          )}
         />
+      </div>
 
-        {formatNumber(commentCount)}
-      </Link> */}
-
-      {/* <SharePostPopover
-        post={post}
-      /> */}
+      <PostCommentCardMoreRepliesButton
+        replyCount={commentCount}
+        repliesShown={isExpanded ? commentsLoadedLength : 0}
+        onClick={onLoadMore}
+      />
     </div>
   )
 }

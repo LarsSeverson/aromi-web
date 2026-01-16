@@ -18,7 +18,7 @@ export const PostCommentCardHeading = (props: PostCommentCardHeadingProps) => {
 
   return (
     <div
-      className='flex items-center'
+      className='ml-2 flex items-center'
     >
       <Link
         to='/users/$id'

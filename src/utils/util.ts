@@ -30,7 +30,7 @@ export const isStatusLoadingMore = (status: NetworkStatus) => {
 }
 
 export const hasNextPage = (pageInfo?: PageInfo | SearchPageInfo) => {
-  return pageInfo?.hasNextPage ?? true
+  return pageInfo?.hasNextPage ?? false
 }
 
 export const upperFirstLetter = (str: string) => {

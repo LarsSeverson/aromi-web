@@ -12,6 +12,11 @@ export const pluralizer = (count: number, str: string) => {
   return `${str}s`
 }
 
+export const pluralizer2 = (count: number, singular: string, plural: string) => {
+  if (count === 1) return singular
+  return plural
+}
+
 export const allCapsToFirstCap = (word: string) => {
   return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
 }
