@@ -43,6 +43,12 @@ export const ALL_POST_ASSET_FRAGMENT = gql(/* GraphQL */ `
   }
 `)
 
+export const POST_SHELL_FRAGMENT = gql(/* GraphQL */ `
+  fragment PostShell on Post { 
+    id
+  }
+`)
+
 export const POST_COMMENT_SHELL_FRAGMENT = gql(/* GraphQL */ `
   fragment PostCommentShell on PostComment { 
     id
@@ -61,6 +67,10 @@ export const POST_COMMENT_PREVIEW_FRAGMENT = gql(/* GraphQL */ `
 
     depth
     content
+
+    post {
+      ...PostShell
+    }
 
     parent {
       ...PostCommentShell

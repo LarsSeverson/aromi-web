@@ -1,12 +1,12 @@
 import type { FileRejection, UploadTask } from '@/features/assets'
-import type { PostCommentPreviewFragment, PostPreviewFragment, PresignedUpload } from '@/generated/graphql'
+import type { PostCommentPreviewFragment, PostShellFragment, PresignedUpload } from '@/generated/graphql'
 import type { ServerErrorInfo } from '@/utils/error'
 import type { Nullable } from '@/utils/util'
 import type { ResultAsync } from 'neverthrow'
 import React from 'react'
 
 export interface NewPostCommentContextValue {
-  post: PostPreviewFragment
+  post: PostShellFragment
   parent?: Nullable<PostCommentPreviewFragment>
 
   uploadTasks: UploadTask[]

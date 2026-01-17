@@ -61,7 +61,9 @@ const TopBar = (props: TopBarProps) => {
       <div
         className='flex h-full flex-1 flex-row items-center justify-end gap-3'
       >
-        <NewPostButton />
+        {isAuthenticated && (
+          <NewPostButton />
+        )}
 
         {isAuthenticated && me != null
           ? (

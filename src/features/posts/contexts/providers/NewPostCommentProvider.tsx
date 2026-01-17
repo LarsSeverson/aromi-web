@@ -1,4 +1,4 @@
-import { AssetKey, type CreatePostCommentInput, type PostCommentPreviewFragment, type PostPreviewFragment } from '@/generated/graphql'
+import { AssetKey, type PostShellFragment, type CreatePostCommentInput, type PostCommentPreviewFragment } from '@/generated/graphql'
 import { useToastMessage } from '@/hooks/useToastMessage'
 import type { Nullable } from '@/utils/util'
 import { useCreatePostComment } from '../../hooks/useCreatePostComment'
@@ -12,7 +12,7 @@ import { parseSchema } from '@/utils/validation'
 import { NewPostCommentContext } from '../NewPostCommentContext'
 
 export interface NewPostCommentProviderProps {
-  post: PostPreviewFragment
+  post: PostShellFragment
   parent?: Nullable<PostCommentPreviewFragment>
   children?: React.ReactNode
 }
@@ -123,6 +123,7 @@ export const NewPostCommentProvider = (props: NewPostCommentProviderProps) => {
 
     const input = {
       ...formData,
+      parentId: parent?.id,
       postId: post.id,
       assets: inputAssets
     }

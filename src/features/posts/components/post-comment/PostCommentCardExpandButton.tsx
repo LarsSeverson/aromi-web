@@ -22,8 +22,7 @@ export const PostCommentCardExpandButton = (props: PostCommentCardExpandButtonPr
       className={clsx(
         'z-2 mt-1 flex items-center justify-center self-start bg-white p-2 text-gray-500',
         'rounded-full hover:bg-gray-200',
-        isExpandable ? 'visible cursor-pointer hover:text-black/80' : 'invisible',
-        'ml-px'
+        isExpandable ? 'visible cursor-pointer hover:text-black/80' : 'invisible'
       )}
       onClick={onToggleExpanded}
     >

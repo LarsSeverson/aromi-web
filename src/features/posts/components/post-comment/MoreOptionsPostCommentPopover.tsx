@@ -1,18 +1,18 @@
+import { useMyContext } from '@/features/users'
+import type { PostCommentPreviewFragment } from '@/generated/graphql'
 import { Popover } from '@base-ui/react'
+import clsx from 'clsx'
 import React from 'react'
 import { HiDotsHorizontal } from 'react-icons/hi'
-import clsx from 'clsx'
-import type { PostPreviewFragment } from '@/generated/graphql'
-import { useMyContext } from '@/features/users'
-import MyPostOptions from './MyPostOptions'
+import { MyPostCommentOptions } from './MyPostCommentOptions'
 
-export interface MoreOptionsPostPopoverProps extends Popover.Trigger.Props {
-  post: PostPreviewFragment
+export interface MoreOptionsPostCommentPopoverProps extends Popover.Trigger.Props {
+  comment: PostCommentPreviewFragment
 }
 
-const MoreOptionsPostPopover = (props: MoreOptionsPostPopoverProps) => {
-  const { post, ...rest } = props
-  const { user } = post
+export const MoreOptionsPostCommentPopover = (props: MoreOptionsPostCommentPopoverProps) => {
+  const { comment, ...rest } = props
+  const { user } = comment
   const { id } = user
 
   const { me } = useMyContext()
@@ -41,7 +41,7 @@ const MoreOptionsPostPopover = (props: MoreOptionsPostPopoverProps) => {
         onClick={handleOnTriggerClick}
       >
         <HiDotsHorizontal
-          size={20}
+          size={18}
         />
       </Popover.Trigger>
 
@@ -51,13 +51,13 @@ const MoreOptionsPostPopover = (props: MoreOptionsPostPopoverProps) => {
         >
           <Popover.Popup
             className={clsx(
-              'shadow-symmetrical gap-2 overflow-hidden rounded-xl bg-white p-3',
+              'shadow-symmetrical gap-2 overflow-hidden rounded-xl bg-white p-2',
               'flex max-h-128 w-[20rem] flex-col items-center justify-center'
             )}
             onClick={handleOnPopoverClick}
           >
-            <MyPostOptions
-              post={post}
+            <MyPostCommentOptions
+              comment={comment}
             />
           </Popover.Popup>
         </Popover.Positioner>
@@ -65,5 +65,3 @@ const MoreOptionsPostPopover = (props: MoreOptionsPostPopoverProps) => {
     </Popover.Root>
   )
 }
-
-export default MoreOptionsPostPopover

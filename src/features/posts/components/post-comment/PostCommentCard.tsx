@@ -8,6 +8,8 @@ import { usePostCommentCommentsLazy } from '../../hooks/usePostCommentCommentsLa
 import clsx from 'clsx'
 import { PostCommentCardReply } from './PostCommentCardReply'
 import { PostCommentCardFooter } from './PostCommentCardFooter'
+import { PostCommentCardInput } from './PostCommentCardInput'
+import { NewPostCommentProvider } from '../../contexts/providers/NewPostCommentProvider'
 
 export interface PostCommentCardProps {
   comment: PostCommentWithCommentsFragment
@@ -18,12 +20,12 @@ export const PostCommentCard = (props: PostCommentCardProps) => {
     comment
   } = props
 
-  const { user, commentCount } = comment
+  const { post, user, commentCount } = comment
 
   const {
     comments,
 
-    hasMore,
+    hasMore: queryHasMore,
 
     loadMore
   } = usePostCommentCommentsLazy({
@@ -32,13 +34,15 @@ export const PostCommentCard = (props: PostCommentCardProps) => {
     parentData: comment
   })
 
-  const hasComments = comments.length > 0
+  const hasMore = queryHasMore || commentCount > comments.length
+  const hasComments = commentCount > 0 || comments.length > 0
   const isExpandable = commentCount > 0
   const [isExpanded, setIsExpanded] = React.useState(hasComments)
 
   const handleOnLoadMore = React.useCallback(
     () => {
       loadMore()
+      setIsExpanded(true)
     },
     [loadMore]
   )
@@ -106,12 +110,19 @@ export const PostCommentCard = (props: PostCommentCardProps) => {
           />
         </div>
 
-        <PostCommentCardActions
-          comment={comment}
-          isExpanded={isExpanded}
-          isExpandable={isExpandable}
-          onToggleExpanded={handleOnToggleExpanded}
-        />
+        <NewPostCommentProvider
+          post={post}
+          parent={comment}
+        >
+          <PostCommentCardActions
+            comment={comment}
+            isExpanded={isExpanded}
+            isExpandable={isExpandable}
+            onToggleExpanded={handleOnToggleExpanded}
+          />
+
+          <PostCommentCardInput />
+        </NewPostCommentProvider>
 
         <div
           className={clsx('contents', !isExpanded && 'hidden')}

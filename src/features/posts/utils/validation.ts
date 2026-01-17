@@ -24,7 +24,7 @@ export const VALID_POST_COMMENT_VIDEO_TYPES = VALID_VIDEO_TYPES
 export const MAX_POST_ASSET_SIZE = 20 * 1024 * 1024 // 20 MB
 export const MAX_POST_COMMENT_ASSET_SIZE = 20 * 1024 * 1024 // 20 MB
 
-export const MAX_POST_COMMENT_DEPTH = 2
+export const MAX_POST_COMMENT_DEPTH = 3
 
 export const ValidPostType = z.enum(Object.values(PostType))
 

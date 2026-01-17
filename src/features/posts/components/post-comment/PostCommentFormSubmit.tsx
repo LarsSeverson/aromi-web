@@ -3,32 +3,49 @@ import clsx from 'clsx'
 import React from 'react'
 import { useNewPostCommentContext } from '../../contexts/NewPostCommentContext'
 
-const PostCommentFormSubmit = () => {
+export interface PostCommentFormSubmitProps {
+  showCancel?: boolean
+}
+
+const PostCommentFormSubmit = (props: PostCommentFormSubmitProps) => {
+  const {
+    showCancel = false
+  } = props
+
   const {
     isLoading,
-    isSubmittable
+    isSubmittable,
+    onIsActiveChange
   } = useNewPostCommentContext()
+
+  const handleOnCancel = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation()
+    event.preventDefault()
+    onIsActiveChange(false)
+  }
 
   return (
     <div
       className='ml-auto flex gap-2'
     >
-      {/* <button
-        type='submit'
-        disabled={isLoading}
-        className={clsx(
-          isLoading ? 'opacity-50' : 'group cursor-pointer hover:bg-gray-300',
-          'flex overflow-hidden rounded-3xl px-4 py-2 text-sm',
-          'bg-gray-200 transition-opacity duration-150',
-          'items-center gap-1.5',
-          'relative'
-        )}
-        onClick={onIsActiveChange.bind(null, false)}
-      >
-        <span>
-          Cancel
-        </span>
-      </button> */}
+      {showCancel && (
+        <button
+          type='button'
+          disabled={isLoading}
+          className={clsx(
+            isLoading ? 'opacity-50' : 'group cursor-pointer hover:bg-gray-300',
+            'flex overflow-hidden rounded-3xl px-4 py-2 text-sm',
+            'bg-gray-200 transition-opacity duration-150',
+            'items-center gap-1.5',
+            'relative'
+          )}
+          onClick={handleOnCancel}
+        >
+          <span>
+            Cancel
+          </span>
+        </button>
+      )}
 
       <button
         type='submit'

@@ -9,7 +9,17 @@ import PostCommentFormAssets from './PostCommentFormAssets'
 import PostCommentFormUtilities from './PostCommentFormUtilities'
 import PostCommentFormDropZone from './PostCommentFormDropZone'
 
-const PostCommentForm = () => {
+export interface PostCommentFormProps extends React.HTMLAttributes<HTMLFormElement> {
+  showCancel?: boolean
+}
+
+const PostCommentForm = (props: PostCommentFormProps) => {
+  const {
+    className,
+    showCancel,
+    ...rest
+  } = props
+
   const {
     isActive,
     isFocused,
@@ -20,16 +30,20 @@ const PostCommentForm = () => {
 
   return (
     <Form
-      className='relative rounded-xl'
+      className={clsx(
+        className,
+        'relative rounded-xl'
+      )}
       onFormSubmit={onSubmit}
       onClick={onIsActiveChange.bind(null, true)}
+      {...rest}
     >
       <div
         className='flex flex-col'
       >
         <div
           className={clsx(
-            'w-full resize-none overflow-auto rounded-4xl border-2 p-3 text-sm',
+            'w-full resize-none overflow-auto rounded-4xl border-2 p-3',
             isFocused && 'border-sinopia',
             isActive && 'pb-1.5',
             'hover:border-sinopia transition-colors duration-150 ease-in-out focus:outline-none'
@@ -44,7 +58,9 @@ const PostCommentForm = () => {
               className='mt-2 flex'
             >
               <PostCommentFormUtilities />
-              <PostCommentFormSubmit />
+              <PostCommentFormSubmit
+                showCancel={showCancel}
+              />
             </div>
           )}
         </div>

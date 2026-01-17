@@ -2,6 +2,7 @@ import type { PostCommentPreviewFragment } from '@/generated/graphql'
 import { formatDateRelative } from '@/utils/string-utils'
 import { Link } from '@tanstack/react-router'
 import React from 'react'
+import { MoreOptionsPostCommentPopover } from './MoreOptionsPostCommentPopover'
 
 export interface PostCommentCardHeadingProps {
   comment: PostCommentPreviewFragment
@@ -41,12 +42,12 @@ export const PostCommentCardHeading = (props: PostCommentCardHeadingProps) => {
         {formatDateRelative(createdAt)}
       </span>
 
-      {/* {showOptions && (
-        <MoreOptionsPostPopover
-          post={comment}
+      {showOptions && (
+        <MoreOptionsPostCommentPopover
+          comment={comment}
           className='ml-auto'
         />
-      )} */}
+      )}
     </div>
   )
 }

@@ -3,7 +3,6 @@ import { POST_COMMENT_COMMENTS_QUERY } from '../graphql/queries'
 import type { PostCommentPaginationInput, PostCommentWithCommentsFragment } from '@/generated/graphql'
 import { hasNextPage, isStatusLoadingMore, wrapQuery } from '@/utils/util'
 import { flattenConnections, flattenTopLevelConnection, validatePagination } from '@/utils/pagination'
-import { noRes } from '@/utils/error'
 import React from 'react'
 
 export interface UsePostCommentCommentsLazyOptions {
@@ -34,13 +33,12 @@ export const usePostCommentCommentsLazy = (options: UsePostCommentCommentsLazyOp
   const loadMore = () => {
     const pageInfo = data?.postComment.comments.pageInfo ?? parentData?.comments?.pageInfo
     const endCursor = validatePagination(pageInfo, networkStatus)
-    if (endCursor == null) return noRes
 
     const variables = {
       parentId,
       input: {
         ...(input ?? {}),
-        after: endCursor
+        ...(endCursor == null ? {} : { after: endCursor })
       }
     }
 
@@ -53,10 +51,17 @@ export const usePostCommentCommentsLazy = (options: UsePostCommentCommentsLazyOp
       .map(data => flattenTopLevelConnection(data.postComment.comments))
   }
 
-  const comments = React.useMemo(
-    () => flattenTopLevelConnection(parentData?.comments ?? []),
-    [parentData?.comments]
-  )
+  const comments = React.useMemo(() => {
+    const initial = parentData?.comments == null ? [] : flattenTopLevelConnection(parentData.comments)
+    const fetched = data?.postComment.comments == null ? [] : flattenTopLevelConnection(data.postComment.comments)
+
+    const seen = new Set()
+    return [...initial, ...fetched].filter((comment) => {
+      if (seen.has(comment.id)) return false
+      seen.add(comment.id)
+      return true
+    })
+  }, [data, parentData])
 
   const isLoadingMore = isStatusLoadingMore(networkStatus)
   const hasMore = called
@@ -66,6 +71,7 @@ export const usePostCommentCommentsLazy = (options: UsePostCommentCommentsLazyOp
   return {
     comments,
 
+    hasCalled: called,
     isLoading,
     isLoadingMore,
     hasMore,

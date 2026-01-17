@@ -29,8 +29,7 @@ export const PostCommentCardFooter = (props: PostCommentCardFooterProps) => {
   return (
     <div
       className={clsx(
-        'contents',
-        hasMore ? 'block' : 'hidden'
+        'contents'
       )}
     >
       <div

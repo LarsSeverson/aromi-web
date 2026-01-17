@@ -6,6 +6,8 @@ import { useDebounce } from '@/hooks/useDebounce'
 import { LikeButton } from '@/components/LikeButton'
 import { ReplyButton } from '@/components/ReplyButton'
 import { PostCommentCardExpandButton } from './PostCommentCardExpandButton'
+import { useNewPostCommentContext } from '../../contexts/NewPostCommentContext'
+import { MAX_POST_COMMENT_DEPTH } from '../../utils/validation'
 
 export interface PostCommentCardActionsProps {
   comment: PostCommentPreviewFragment
@@ -26,7 +28,9 @@ export const PostCommentCardActions = (props: PostCommentCardActionsProps) => {
     onToggleExpanded
   } = props
 
-  const { votes } = comment
+  const { depth, votes } = comment
+
+  const { onIsActiveChange } = useNewPostCommentContext()
 
   const { toastError } = useToastMessage()
 
@@ -53,6 +57,10 @@ export const PostCommentCardActions = (props: PostCommentCardActionsProps) => {
     handleVoteOnPostComment(vote)
   }
 
+  const handleOnReply = () => {
+    onIsActiveChange(true)
+  }
+
   return (
     <div
       className='contents'
@@ -75,9 +83,12 @@ export const PostCommentCardActions = (props: PostCommentCardActionsProps) => {
           onVote={handleOnVote}
         />
 
-        <ReplyButton />
+        {depth < MAX_POST_COMMENT_DEPTH && (
+          <ReplyButton
+            onClick={handleOnReply}
+          />
+        )}
       </div>
-
     </div>
   )
 }
