@@ -88,6 +88,7 @@ export const client = new ApolloClient({
           previewItems: {
             merge: false
           },
+
           hasFragrance: {
             keyArgs: ['fragranceId'],
             read (existing) {
@@ -95,6 +96,7 @@ export const client = new ApolloClient({
             },
             merge: false
           },
+
           items: customRelayPagination()
         }
       },

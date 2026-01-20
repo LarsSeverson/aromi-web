@@ -1,4 +1,4 @@
-import type { PostCommentPreviewFragment, PostCommentWithCommentsFragment } from '@/generated/graphql'
+import type { PostCommentPreviewFragment } from '@/generated/graphql'
 import React from 'react'
 import { PostCommentCardAvatar } from './PostCommentCardAvatar'
 import { PostCommentCardHeading } from './PostCommentCardHeading'
@@ -12,7 +12,7 @@ import { PostCommentCardInput } from './PostCommentCardInput'
 import { NewPostCommentProvider } from '../../contexts/providers/NewPostCommentProvider'
 
 export interface PostCommentCardProps {
-  comment: PostCommentWithCommentsFragment
+  comment: PostCommentPreviewFragment
 }
 
 export const PostCommentCard = (props: PostCommentCardProps) => {
@@ -20,28 +20,27 @@ export const PostCommentCard = (props: PostCommentCardProps) => {
     comment
   } = props
 
-  const { post, user, commentCount } = comment
+  const { post, user, commentCount = 0 } = comment ?? {}
 
   const {
     comments,
 
-    hasMore: queryHasMore,
+    hasMore,
 
     loadMore
   } = usePostCommentCommentsLazy({
     parentId: comment.id,
-    input: { first: 5 },
-    parentData: comment
+    input: { first: 5 }
   })
 
-  const hasMore = queryHasMore || commentCount > comments.length
-  const hasComments = commentCount > 0 || comments.length > 0
-  const isExpandable = commentCount > 0
-  const [isExpanded, setIsExpanded] = React.useState(hasComments)
+  const hasComments = commentCount > 0
+  const hasCommentsToDisplay = comments.length > 0
+
+  const [isExpanded, setIsExpanded] = React.useState(false)
 
   const handleOnLoadMore = React.useCallback(
-    () => {
-      loadMore()
+    async () => {
+      await loadMore()
       setIsExpanded(true)
     },
     [loadMore]
@@ -49,19 +48,36 @@ export const PostCommentCard = (props: PostCommentCardProps) => {
 
   const handleOnToggleExpanded = React.useCallback(
     () => {
+      if (!hasCommentsToDisplay) {
+        loadMore()
+      }
+
       setIsExpanded((prev) => !prev)
     },
-    []
+    [hasCommentsToDisplay, loadMore]
+  )
+
+  const handleOnNewComment = React.useCallback(
+    (_newComment: PostCommentPreviewFragment) => {
+      if (!hasCommentsToDisplay) {
+        loadMore()
+      }
+
+      setIsExpanded(true)
+    },
+    [hasCommentsToDisplay, loadMore]
   )
 
   const onRenderReply = React.useCallback(
-    (reply: PostCommentPreviewFragment, index: number) => (
-      <PostCommentCardReply
-        key={reply.id}
-        reply={reply as PostCommentWithCommentsFragment}
-        shouldCutOff={(index === comments.length - 1 && !hasMore)}
-      />
-    ),
+    (reply: PostCommentPreviewFragment, index: number) => {
+      return (
+        <PostCommentCardReply
+          key={reply.id}
+          reply={reply}
+          shouldCutOff={(index === comments.length - 1 && !hasMore)}
+        />
+      )
+    },
     [comments.length, hasMore]
   )
 
@@ -113,11 +129,11 @@ export const PostCommentCard = (props: PostCommentCardProps) => {
         <NewPostCommentProvider
           post={post}
           parent={comment}
+          onNewComment={handleOnNewComment}
         >
           <PostCommentCardActions
             comment={comment}
             isExpanded={isExpanded}
-            isExpandable={isExpandable}
             onToggleExpanded={handleOnToggleExpanded}
           />
 
@@ -131,10 +147,9 @@ export const PostCommentCard = (props: PostCommentCardProps) => {
         </div>
 
         <PostCommentCardFooter
-          comment={comment}
-          commentsLoadedLength={comments.length}
           isExpanded={isExpanded}
-          hasMore={hasMore}
+          commentCount={commentCount}
+          commentsDisplayedLength={comments.length}
           onLoadMore={handleOnLoadMore}
         />
       </div>

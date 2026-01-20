@@ -3,25 +3,17 @@ import { pluralizer2 } from '@/utils/util-functions'
 import clsx from 'clsx'
 import React from 'react'
 
-export interface PostCommentCardMoreRepliesButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
-  replyCount?: number
-  repliesShown?: number
+export interface PostCommentCardMoreRepliesButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  repliesRemaining?: number
 }
 
 export const PostCommentCardMoreRepliesButton = (props: PostCommentCardMoreRepliesButtonProps) => {
   const {
-    replyCount = 0,
-    repliesShown = 0,
+    repliesRemaining = 0,
 
     className,
     ...rest
   } = props
-
-  const numberDisplayed = replyCount - repliesShown
-
-  if (replyCount <= repliesShown) {
-    return null
-  }
 
   return (
     <button
@@ -36,7 +28,7 @@ export const PostCommentCardMoreRepliesButton = (props: PostCommentCardMoreRepli
       <span
         className='text-xs font-semibold text-gray-500! group-hover:text-black/80!'
       >
-        {`Show ${formatNumber(numberDisplayed)} ${pluralizer2(numberDisplayed, 'reply', 'replies')}`}
+        {`Show ${formatNumber(repliesRemaining)} ${pluralizer2(repliesRemaining, 'reply', 'replies')}`}
       </span>
     </button>
   )

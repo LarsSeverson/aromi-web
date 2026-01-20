@@ -18,7 +18,7 @@ export const PostCommentCardAvatar = (props: PostCommentCardAvatarProps) => {
     <Link
       to='/users/$id'
       params={{ id: user.id }}
-      className='h-full w-full'
+      className='aspect-square w-full'
       onClick={handleOnLinkClick}
     >
       <UserAvatar

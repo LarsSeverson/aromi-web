@@ -8,6 +8,7 @@ export * from './hooks/usePost'
 export * from './hooks/usePosts'
 export * from './hooks/useSearchPosts'
 
+export * from './hooks/usePostComment'
 export * from './hooks/usePostComments'
 export * from './hooks/usePostCommentComments'
 export * from './hooks/usePostCommentsWithComments'

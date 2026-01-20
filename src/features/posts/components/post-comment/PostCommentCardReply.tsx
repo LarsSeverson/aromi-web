@@ -1,10 +1,10 @@
-import type { PostCommentWithCommentsFragment } from '@/generated/graphql'
+import type { PostCommentPreviewFragment } from '@/generated/graphql'
 import clsx from 'clsx'
 import React from 'react'
 import { PostCommentCard } from './PostCommentCard'
 
 export interface PostCommentCardReplyProps {
-  reply: PostCommentWithCommentsFragment
+  reply: PostCommentPreviewFragment
   shouldCutOff?: boolean
 }
 

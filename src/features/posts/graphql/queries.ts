@@ -65,6 +65,14 @@ export const POST_COMMENTS_QUERY = gql(/* GraphQL */ `
   }
 `)
 
+export const POST_COMMENT_QUERY = gql(/* GraphQL */ `
+  query PostComment($id: ID!) {
+    postComment(id: $id) {
+      ...PostCommentPreview
+    }
+  }
+`)
+
 export const POST_COMMENTS_WITH_COMMENTS_QUERY = gql(/* GraphQL */ `
   query PostCommentsWithComments(
     $postId: ID!
@@ -75,7 +83,7 @@ export const POST_COMMENTS_WITH_COMMENTS_QUERY = gql(/* GraphQL */ `
       comments(input: $input) {
         edges {
           node {
-            ...PostCommentWithComments
+            ...PostCommentPreview
           }
           cursor
         }
@@ -120,7 +128,7 @@ export const POST_COMMENT_COMMENTS_QUERY = gql(/* GraphQL */ `
       comments(input: $input) {
         edges {
           node {
-            ...PostCommentWithComments
+            ...PostCommentPreview
           }
           cursor
         }

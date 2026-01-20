@@ -27,7 +27,7 @@ export const PostCommentCardHeading = (props: PostCommentCardHeadingProps) => {
         className='truncate text-xs font-medium hover:underline'
         onClick={handleOnChildClick}
       >
-        {user.username}
+        {user.username} {comment.id}
       </Link>
 
       <span

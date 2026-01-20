@@ -251,8 +251,8 @@ export interface FileRoutesByFullPath {
   '/collections/$id/': typeof CollectionsIdIndexRoute
   '/community/posts/': typeof CommunityPostsIndexRoute
   '/fragrances/$id/': typeof FragrancesIdIndexRoute
-  '/settings/account': typeof SettingsAccountIndexRoute
-  '/settings/profile': typeof SettingsProfileIndexRoute
+  '/settings/account/': typeof SettingsAccountIndexRoute
+  '/settings/profile/': typeof SettingsProfileIndexRoute
   '/users/$id/': typeof UsersIdIndexRoute
   '/community/posts/$id/edit': typeof CommunityPostsIdEditRouteRouteWithChildren
   '/community/posts/$id/': typeof CommunityPostsIdIndexRoute
@@ -352,8 +352,8 @@ export interface FileRouteTypes {
     | '/collections/$id/'
     | '/community/posts/'
     | '/fragrances/$id/'
-    | '/settings/account'
-    | '/settings/profile'
+    | '/settings/account/'
+    | '/settings/profile/'
     | '/users/$id/'
     | '/community/posts/$id/edit'
     | '/community/posts/$id/'
@@ -573,14 +573,14 @@ declare module '@tanstack/react-router' {
     '/settings/profile/': {
       id: '/settings/profile/'
       path: '/profile'
-      fullPath: '/settings/profile'
+      fullPath: '/settings/profile/'
       preLoaderRoute: typeof SettingsProfileIndexRouteImport
       parentRoute: typeof SettingsRouteRoute
     }
     '/settings/account/': {
       id: '/settings/account/'
       path: '/account'
-      fullPath: '/settings/account'
+      fullPath: '/settings/account/'
       preLoaderRoute: typeof SettingsAccountIndexRouteImport
       parentRoute: typeof SettingsRouteRoute
     }

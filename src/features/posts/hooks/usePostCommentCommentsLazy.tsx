@@ -1,18 +1,18 @@
 import { useLazyQuery } from '@apollo/client/react'
 import { POST_COMMENT_COMMENTS_QUERY } from '../graphql/queries'
-import type { PostCommentPaginationInput, PostCommentWithCommentsFragment } from '@/generated/graphql'
+import type { PostCommentPaginationInput } from '@/generated/graphql'
 import { hasNextPage, isStatusLoadingMore, wrapQuery } from '@/utils/util'
-import { flattenConnections, flattenTopLevelConnection, validatePagination } from '@/utils/pagination'
+import { flattenConnections, validatePagination } from '@/utils/pagination'
 import React from 'react'
+import { noRes } from '@/utils/error'
 
 export interface UsePostCommentCommentsLazyOptions {
   parentId: string
   input?: PostCommentPaginationInput
-  parentData?: PostCommentWithCommentsFragment
 }
 
 export const usePostCommentCommentsLazy = (options: UsePostCommentCommentsLazyOptions) => {
-  const { parentId, input, parentData } = options
+  const { parentId, input } = options
 
   const [
     query,
@@ -31,42 +31,38 @@ export const usePostCommentCommentsLazy = (options: UsePostCommentCommentsLazyOp
   }
 
   const loadMore = () => {
-    const pageInfo = data?.postComment.comments.pageInfo ?? parentData?.comments?.pageInfo
-    const endCursor = validatePagination(pageInfo, networkStatus)
+    const pageInfo = data?.postComment.comments.pageInfo
+
+    const validatedPagination = validatePagination(pageInfo, networkStatus)
+    if (pageInfo != null && validatedPagination == null) return noRes
+
+    const cursorInput = pageInfo == null
+      ? {}
+      : { after: validatedPagination }
+
+    if (cursorInput == null) return noRes
 
     const variables = {
       parentId,
       input: {
         ...(input ?? {}),
-        ...(endCursor == null ? {} : { after: endCursor })
+        ...cursorInput
       }
     }
 
     if (!called) {
       return wrapQuery(query({ variables }))
-        .map(data => flattenTopLevelConnection(data.postComment.comments))
     }
 
     return wrapQuery(fetchMore({ variables }))
-      .map(data => flattenTopLevelConnection(data.postComment.comments))
   }
 
   const comments = React.useMemo(() => {
-    const initial = parentData?.comments == null ? [] : flattenTopLevelConnection(parentData.comments)
-    const fetched = data?.postComment.comments == null ? [] : flattenTopLevelConnection(data.postComment.comments)
-
-    const seen = new Set()
-    return [...initial, ...fetched].filter((comment) => {
-      if (seen.has(comment.id)) return false
-      seen.add(comment.id)
-      return true
-    })
-  }, [data, parentData])
+    return flattenConnections(data?.postComment.comments ?? [])
+  }, [data?.postComment.comments])
 
   const isLoadingMore = isStatusLoadingMore(networkStatus)
-  const hasMore = called
-    ? hasNextPage(data?.postComment.comments?.pageInfo)
-    : hasNextPage(parentData?.comments?.pageInfo)
+  const hasMore = hasNextPage(data?.postComment.comments?.pageInfo)
 
   return {
     comments,

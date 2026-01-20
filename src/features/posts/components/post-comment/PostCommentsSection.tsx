@@ -1,4 +1,4 @@
-import type { PostCommentWithCommentsFragment, PostPreviewFragment } from '@/generated/graphql'
+import type { PostCommentPreviewFragment, PostPreviewFragment } from '@/generated/graphql'
 import React from 'react'
 import { PostCommentCard } from './PostCommentCard'
 import { useMeasurementsCache } from '@/hooks/useMeasurementsCache'
@@ -37,7 +37,7 @@ export const PostCommentsSection = (props: PostCommentsSectionProps) => {
   const [scrollMargin, setScrollMargin] = React.useState(0)
 
   const onRenderComment = React.useCallback(
-    (comment: PostCommentWithCommentsFragment) => (
+    (comment: PostCommentPreviewFragment) => (
       <PostCommentCard
         key={comment.id}
         comment={comment}

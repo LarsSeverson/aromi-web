@@ -1,30 +1,44 @@
-import type { PostCommentWithCommentsFragment } from '@/generated/graphql'
 import clsx from 'clsx'
 import React from 'react'
 import { PostCommentCardMoreRepliesButton } from './PostCommentCardMoreRepliesButton'
 
 export interface PostCommentCardFooterProps {
-  comment: PostCommentWithCommentsFragment
-  commentsLoadedLength?: number
   isExpanded?: boolean
-  hasMore?: boolean
+  commentCount?: number
+  commentsDisplayedLength?: number
 
-  onLoadMore?: () => void
+  onLoadMore?: () => void | Promise<void>
 }
 
 export const PostCommentCardFooter = (props: PostCommentCardFooterProps) => {
   const {
-    comment,
-    commentsLoadedLength = 0,
     isExpanded = false,
-    hasMore = false,
+    commentCount = 0,
+    commentsDisplayedLength = 0,
 
     onLoadMore
   } = props
 
-  const { commentCount } = comment
+  const hasComments = commentCount > 0
+  const repliesRemaining = isExpanded ? commentCount - commentsDisplayedLength : commentCount
 
-  if (!hasMore) return null
+  const [isLoading, setIsLoading] = React.useState(false)
+
+  const handleOnLoadMore = async () => {
+    setIsLoading(true)
+
+    await onLoadMore?.()
+
+    setIsLoading(false)
+  }
+
+  const handleOnClick = () => {
+    if (isLoading) return
+    handleOnLoadMore()
+  }
+
+  if (!hasComments) return null
+  if (isExpanded && repliesRemaining <= 0) return null
 
   return (
     <div
@@ -49,9 +63,9 @@ export const PostCommentCardFooter = (props: PostCommentCardFooterProps) => {
       </div>
 
       <PostCommentCardMoreRepliesButton
-        replyCount={commentCount}
-        repliesShown={isExpanded ? commentsLoadedLength : 0}
-        onClick={onLoadMore}
+        disabled={isLoading}
+        repliesRemaining={repliesRemaining}
+        onClick={handleOnClick}
       />
     </div>
   )

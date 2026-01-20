@@ -15,10 +15,16 @@ export interface NewPostCommentProviderProps {
   post: PostShellFragment
   parent?: Nullable<PostCommentPreviewFragment>
   children?: React.ReactNode
+  onNewComment?: (comment: PostCommentPreviewFragment) => void
 }
 
 export const NewPostCommentProvider = (props: NewPostCommentProviderProps) => {
-  const { post, parent, children } = props
+  const {
+    post,
+    parent,
+    children,
+    onNewComment
+  } = props
 
   const { toastError } = useToastMessage()
   const { createPostComment } = useCreatePostComment()
@@ -111,6 +117,8 @@ export const NewPostCommentProvider = (props: NewPostCommentProviderProps) => {
 
       hasSubmitted.current = true
       resetState()
+
+      onNewComment?.(result.value.createPostComment)
     }
   )
 

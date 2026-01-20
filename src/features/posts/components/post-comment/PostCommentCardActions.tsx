@@ -13,7 +13,6 @@ export interface PostCommentCardActionsProps {
   comment: PostCommentPreviewFragment
 
   isExpanded?: boolean
-  isExpandable?: boolean
 
   onToggleExpanded?: () => void
 }
@@ -23,12 +22,12 @@ export const PostCommentCardActions = (props: PostCommentCardActionsProps) => {
     comment,
 
     isExpanded = false,
-    isExpandable = false,
 
     onToggleExpanded
   } = props
 
-  const { depth, votes } = comment
+  const { commentCount, depth, votes } = comment
+  const isExpandable = commentCount > 0
 
   const { onIsActiveChange } = useNewPostCommentContext()
 
