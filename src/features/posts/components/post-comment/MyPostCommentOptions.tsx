@@ -32,7 +32,7 @@ export const MyPostCommentOptions = (props: MyPostCommentOptionsProps) => {
     )
   }
 
-  const handleEditReviewClick = (event: React.MouseEvent) => {
+  const handleEditCommentClick = (event: React.MouseEvent) => {
     event.stopPropagation()
 
     // const params = { id: commentId }
@@ -53,7 +53,7 @@ export const MyPostCommentOptions = (props: MyPostCommentOptionsProps) => {
     >
       <button
         className='flex w-full cursor-pointer items-center justify-start gap-2 rounded-xl bg-white p-3 hover:brightness-95'
-        onClick={handleEditReviewClick}
+        onClick={handleEditCommentClick}
       >
         <MdOutlineRateReview
           size={18}

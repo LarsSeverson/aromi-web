@@ -1,18 +1,22 @@
-import type { AllPostAssetFragment } from '@/generated/graphql'
+import AssetModal from '@/features/assets/components/AssetModal'
+import type { AllPostCommentAssetFragment } from '@/generated/graphql'
 import clsx from 'clsx'
 import React from 'react'
-import AssetModal from '../../assets/components/AssetModal'
 
-export interface PostPreviewCardAssetProps {
-  postAssets: AllPostAssetFragment[]
+export interface PostCommentCardAssetProps {
+  commentAssets: AllPostCommentAssetFragment[]
   index?: number
   totalAssetCount?: number
 }
 
-const PostPreviewCardAsset = (props: PostPreviewCardAssetProps) => {
-  const { postAssets, index = 0, totalAssetCount = 1 } = props
+export const PostCommentCardAsset = (props: PostCommentCardAssetProps) => {
+  const {
+    commentAssets,
+    index = 0,
+    totalAssetCount = 1
+  } = props
 
-  const assets = postAssets.map(pa => pa.asset)
+  const assets = commentAssets.map(ca => ca.asset)
   const asset = assets.at(index)
 
   const [isModalOpen, setIsModalOpen] = React.useState(false)
@@ -50,5 +54,3 @@ const PostPreviewCardAsset = (props: PostPreviewCardAssetProps) => {
     </>
   )
 }
-
-export default PostPreviewCardAsset

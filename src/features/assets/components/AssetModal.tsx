@@ -2,30 +2,30 @@ import DialogBackdrop from '@/components/DialogBackdrop'
 import DialogPopup from '@/components/DialogPopup'
 import { Dialog } from '@base-ui/react'
 import React from 'react'
-import { usePost } from '../hooks/usePost'
 import { IoClose } from 'react-icons/io5'
 import clsx from 'clsx'
+import type { AllAssetFragment } from '@/generated/graphql'
+import ProgressiveImage from '@/components/ProgressiveImage'
 
 /*
   This is a temporary solution until parallel routes are supported in tanstack/router
 */
 
-export interface PostAssetModalProps extends Dialog.Root.Props {
-  postId: string
+export interface AssetModalProps extends Dialog.Root.Props {
+  assets: AllAssetFragment[]
   assetIndex: number
 }
 
-export const PostAssetModal = (props: PostAssetModalProps) => {
-  const { postId, assetIndex } = props
+export const AssetModal = (props: AssetModalProps) => {
+  const { assets, assetIndex } = props
 
-  const { post } = usePost(postId)
-  const asset = post?.assets[assetIndex]
+  const asset = assets.at(assetIndex)
 
   const handleOnModalClick = (event: React.MouseEvent) => {
     event.stopPropagation()
   }
 
-  if (post == null || asset == null) return null
+  if (asset == null) return null
 
   return (
     <Dialog.Root
@@ -56,15 +56,18 @@ export const PostAssetModal = (props: PostAssetModalProps) => {
             />
           </Dialog.Close>
 
-          <img
-            src={asset.asset.url ?? ''}
-            alt="Post Asset"
+          <div
             className="h-full w-full object-contain"
-          />
+          >
+            <ProgressiveImage
+              src={asset.url ?? ''}
+              alt="Post Asset"
+            />
+          </div>
         </DialogPopup>
       </Dialog.Portal>
     </Dialog.Root>
   )
 }
 
-export default PostAssetModal
+export default AssetModal

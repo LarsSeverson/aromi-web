@@ -34,7 +34,7 @@ const MyPostOptions = (props: MyPostOptionsProps) => {
     )
   }
 
-  const handleEditReviewClick = (event: React.MouseEvent) => {
+  const handleEditPostClick = (event: React.MouseEvent) => {
     event.stopPropagation()
 
     const params = { id: postId }
@@ -55,7 +55,7 @@ const MyPostOptions = (props: MyPostOptionsProps) => {
     >
       <button
         className='flex w-full cursor-pointer items-center justify-start gap-2 rounded-xl bg-white p-3 hover:brightness-95'
-        onClick={handleEditReviewClick}
+        onClick={handleEditPostClick}
       >
         <MdOutlineRateReview
           size={20}

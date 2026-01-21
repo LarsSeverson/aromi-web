@@ -69,7 +69,7 @@ export const PostCommentsSection = (props: PostCommentsSectionProps) => {
 
       setScrollMargin(offset)
     },
-    []
+    [comments.length]
   )
 
   return (
