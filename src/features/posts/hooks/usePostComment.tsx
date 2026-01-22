@@ -10,8 +10,7 @@ export const usePostComment = (commentId: string) => {
   } = useQuery(
     POST_COMMENT_QUERY,
     {
-      variables: { id: commentId },
-      fetchPolicy: 'cache-only'
+      variables: { id: commentId }
     }
   )
 

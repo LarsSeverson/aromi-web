@@ -7,10 +7,17 @@ import { MoreOptionsPostCommentPopover } from './MoreOptionsPostCommentPopover'
 export interface PostCommentCardHeadingProps {
   comment: PostCommentPreviewFragment
   showOptions?: boolean
+  onEdit?: () => void
 }
 
 export const PostCommentCardHeading = (props: PostCommentCardHeadingProps) => {
-  const { comment, showOptions = true } = props
+  const {
+    comment,
+    showOptions = true,
+
+    onEdit
+  } = props
+
   const { user, createdAt } = comment
 
   const handleOnChildClick = (event: React.MouseEvent) => {
@@ -46,6 +53,7 @@ export const PostCommentCardHeading = (props: PostCommentCardHeadingProps) => {
         <MoreOptionsPostCommentPopover
           comment={comment}
           className='ml-auto'
+          onEdit={onEdit}
         />
       )}
     </div>

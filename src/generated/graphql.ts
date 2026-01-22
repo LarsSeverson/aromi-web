@@ -2290,7 +2290,7 @@ export type UpdatePostAssetInput = {
 };
 
 export type UpdatePostCommentInput = {
-  content: Scalars['JSON']['input'];
+  content?: InputMaybe<Scalars['JSON']['input']>;
   id: Scalars['ID']['input'];
 };
 

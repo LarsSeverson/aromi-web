@@ -49,7 +49,7 @@ export const PostCommentCardFooter = (props: PostCommentCardFooterProps) => {
       <div
         className={clsx(
           'relative flex items-start justify-end',
-          'bg-white'
+          'z-10 bg-white'
         )}
       >
         <div

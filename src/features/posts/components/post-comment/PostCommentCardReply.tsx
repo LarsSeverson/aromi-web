@@ -22,7 +22,7 @@ export const PostCommentCardReply = (props: PostCommentCardReplyProps) => {
       <div
         className={clsx(
           'relative flex items-start justify-end',
-          shouldCutOff && 'bg-white'
+          shouldCutOff && 'z-10 bg-white'
         )}
       >
         <div

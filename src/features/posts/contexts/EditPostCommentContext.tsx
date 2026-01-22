@@ -1,5 +1,4 @@
 import type { PostCommentPreviewFragment } from '@/generated/graphql'
-import type { Nullable } from '@/utils/util'
 import React from 'react'
 
 export interface EditPostCommentContextValue {
@@ -9,9 +8,12 @@ export interface EditPostCommentContextValue {
   formErrors: {}
 
   isLoading: boolean
+  isFocused: boolean
 
-  onUpdateContent: (newContent: Nullable<string>) => void
   onSubmit: (event: React.FormEvent) => void
+  onHasChangesChange: (hasChanges: boolean) => void
+  onIsFocusedChange: (isFocused: boolean) => void
+  onIsEditingChange?: (isEditing: boolean) => void
 }
 
 export const EditPostCommentContext = React.createContext<EditPostCommentContextValue | undefined>(undefined)

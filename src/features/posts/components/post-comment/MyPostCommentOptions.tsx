@@ -9,10 +9,11 @@ import { AiOutlineDelete } from 'react-icons/ai'
 
 export interface MyPostCommentOptionsProps {
   comment: PostCommentPreviewFragment
+  onEdit?: () => void
 }
 
 export const MyPostCommentOptions = (props: MyPostCommentOptionsProps) => {
-  const { comment } = props
+  const { comment, onEdit } = props
   const { id: commentId } = comment
 
   const { toastError, toastMessage } = useToastMessage()
@@ -35,8 +36,7 @@ export const MyPostCommentOptions = (props: MyPostCommentOptionsProps) => {
   const handleEditCommentClick = (event: React.MouseEvent) => {
     event.stopPropagation()
 
-    // const params = { id: commentId }
-    // navigate({ to: '/community/posts/$id/edit', params })
+    onEdit?.()
   }
 
   const handleOnConfirmDelete = () => {

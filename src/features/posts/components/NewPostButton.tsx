@@ -10,7 +10,7 @@ const NewPostButton = () => {
       className={clsx(
         'group hover:shadow-symmetrical flex cursor-pointer overflow-hidden rounded-3xl px-6 py-2 text-white',
         'bg-sinopia transition-opacity duration-150 hover:brightness-110',
-        'items-center gap-1.5 text-sm'
+        'min-w-0 items-center gap-1.5 truncate text-sm text-nowrap'
       )}
     >
       <FaRegSquarePlus

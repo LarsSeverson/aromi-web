@@ -25,8 +25,6 @@ export const PostCommentCard = (props: PostCommentCardProps) => {
   const {
     comments,
 
-    hasMore,
-
     loadMore
   } = usePostCommentCommentsLazy({
     parentId: comment.id,
@@ -36,6 +34,7 @@ export const PostCommentCard = (props: PostCommentCardProps) => {
   const hasComments = commentCount > 0
   const hasCommentsToDisplay = comments.length > 0
 
+  const [isEditing, setIsEditing] = React.useState(false)
   const [isExpanded, setIsExpanded] = React.useState(false)
 
   const handleOnLoadMore = React.useCallback(
@@ -74,11 +73,11 @@ export const PostCommentCard = (props: PostCommentCardProps) => {
         <PostCommentCardReply
           key={reply.id}
           reply={reply}
-          shouldCutOff={(index === comments.length - 1 && !hasMore)}
+          shouldCutOff={(index === commentCount - 1)}
         />
       )
     },
-    [comments.length, hasMore]
+    [commentCount]
   )
 
   return (
@@ -94,6 +93,7 @@ export const PostCommentCard = (props: PostCommentCardProps) => {
 
         <PostCommentCardHeading
           comment={comment}
+          onEdit={setIsEditing.bind(null, true)}
         />
       </div>
 
@@ -104,8 +104,8 @@ export const PostCommentCard = (props: PostCommentCardProps) => {
       >
         <div
           className={clsx(
-            'group absolute start-0 top-0 bottom-0 flex w-8 cursor-pointer items-center justify-center',
-            'z-0 mb-2 pt-1'
+            'group absolute start-0 top-0 bottom-0 flex w-8 items-center justify-center',
+            'z-1 mb-2 pt-1'
           )}
         >
           <div
@@ -123,6 +123,8 @@ export const PostCommentCard = (props: PostCommentCardProps) => {
 
           <PostCommentCardContent
             comment={comment}
+            isEditing={isEditing}
+            onIsEditingChange={setIsEditing}
           />
         </div>
 

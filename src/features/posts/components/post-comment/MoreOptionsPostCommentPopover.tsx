@@ -8,15 +8,18 @@ import { MyPostCommentOptions } from './MyPostCommentOptions'
 
 export interface MoreOptionsPostCommentPopoverProps extends Popover.Trigger.Props {
   comment: PostCommentPreviewFragment
+  onEdit?: () => void
 }
 
 export const MoreOptionsPostCommentPopover = (props: MoreOptionsPostCommentPopoverProps) => {
-  const { comment, ...rest } = props
+  const { comment, onEdit, ...rest } = props
   const { user } = comment
   const { id } = user
 
   const { me } = useMyContext()
   const showMyPostOptions = me?.id === id
+
+  const [isOpen, setIsOpen] = React.useState(false)
 
   const handleOnTriggerClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     rest.onClick?.(event as Parameters<NonNullable<Popover.Trigger.Props['onClick']>>[0])
@@ -28,10 +31,18 @@ export const MoreOptionsPostCommentPopover = (props: MoreOptionsPostCommentPopov
     event.stopPropagation()
   }
 
+  const handleOnEdit = () => {
+    setIsOpen(false)
+    onEdit?.()
+  }
+
   if (!showMyPostOptions) return null
 
   return (
-    <Popover.Root>
+    <Popover.Root
+      open={isOpen}
+      onOpenChange={setIsOpen}
+    >
       <Popover.Trigger
         {...rest}
         className={clsx(
@@ -58,6 +69,7 @@ export const MoreOptionsPostCommentPopover = (props: MoreOptionsPostCommentPopov
           >
             <MyPostCommentOptions
               comment={comment}
+              onEdit={handleOnEdit}
             />
           </Popover.Popup>
         </Popover.Positioner>

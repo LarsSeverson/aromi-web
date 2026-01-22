@@ -5,7 +5,6 @@ import React from 'react'
 import { IoClose } from 'react-icons/io5'
 import clsx from 'clsx'
 import type { AllAssetFragment } from '@/generated/graphql'
-import ProgressiveImage from '@/components/ProgressiveImage'
 
 /*
   This is a temporary solution until parallel routes are supported in tanstack/router
@@ -56,14 +55,10 @@ export const AssetModal = (props: AssetModalProps) => {
             />
           </Dialog.Close>
 
-          <div
+          <img
+            src={asset.url ?? ''}
             className="h-full w-full object-contain"
-          >
-            <ProgressiveImage
-              src={asset.url ?? ''}
-              alt="Post Asset"
-            />
-          </div>
+          />
         </DialogPopup>
       </Dialog.Portal>
     </Dialog.Root>
