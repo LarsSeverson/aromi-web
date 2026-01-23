@@ -1,5 +1,6 @@
 import { client } from '@/common/client'
 import FragranceSearchPage from '@/features/fragrances/pages/FragranceSearchPage'
+import { PostSearchPage } from '@/features/posts/pages/PostSearchPage'
 import UserSearchPage from '@/features/users/pages/UserSearchPage'
 import { DocumentTitleBuilder } from '@/utils/DocumentTitleBuilder'
 import { wrapQuery } from '@/utils/util'
@@ -45,6 +46,14 @@ function RouteComponent () {
   if (filter === 'users') {
     return (
       <UserSearchPage
+        term={term}
+      />
+    )
+  }
+
+  if (filter === 'posts') {
+    return (
+      <PostSearchPage
         term={term}
       />
     )

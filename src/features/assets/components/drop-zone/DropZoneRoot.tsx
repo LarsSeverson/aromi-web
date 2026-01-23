@@ -44,7 +44,7 @@ const DropZoneRoot = (props: DropZoneRootProps) => {
     ...restProps
   } = props
 
-  const { isDraggingWindow } = useWindowDrag()
+  const { isDraggingWindow } = useWindowDrag({ allowedFileTypes: acceptedFileTypes })
 
   const inputRef = React.useRef<HTMLInputElement | null>(null)
   const dragCounter = React.useRef(0)

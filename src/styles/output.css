@@ -1388,9 +1388,6 @@
   .h-\[var\(--height\)\] {
     height: var(--height);
   }
-  .h-auto {
-    height: auto;
-  }
   .h-full {
     height: 100%;
   }
@@ -1447,6 +1444,9 @@
   }
   .min-h-\[50\%\] {
     min-height: 50%;
+  }
+  .min-h-\[200px\] {
+    min-height: 200px;
   }
   .min-h-screen {
     min-height: 100vh;
@@ -1570,9 +1570,6 @@
   }
   .w-\[calc\(100vw-10px\)\] {
     width: calc(100vw - 10px);
-  }
-  .w-auto {
-    width: auto;
   }
   .w-fit {
     width: fit-content;
@@ -2927,20 +2924,6 @@
     &:is(:where(.group):hover *) {
       @media (hover: hover) {
         background-color: var(--color-gray-300);
-      }
-    }
-  }
-  .group-hover\:bg-gray-400 {
-    &:is(:where(.group):hover *) {
-      @media (hover: hover) {
-        background-color: var(--color-gray-400);
-      }
-    }
-  }
-  .group-hover\:bg-gray-500 {
-    &:is(:where(.group):hover *) {
-      @media (hover: hover) {
-        background-color: var(--color-gray-500);
       }
     }
   }

@@ -54,7 +54,10 @@ export const client = new ApolloClient({
           searchAccords: customSearchPagination(),
           searchNotes: customSearchPagination(),
 
-          searchPosts: customSearchPagination()
+          searchPosts: customSearchPagination((_, { variables }) => {
+            const { term = '' } = (variables?.input as SearchInput) ?? {}
+            return `term:${term}`
+          })
         }
       },
 

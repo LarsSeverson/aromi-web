@@ -1,6 +1,14 @@
 import { useEffect, useRef, useState, useCallback } from 'react'
 
-export const useWindowDrag = () => {
+export interface UseWindowDragOptions {
+  allowedFileTypes?: string[]
+}
+
+export const useWindowDrag = (options?: UseWindowDragOptions) => {
+  const {
+    allowedFileTypes = []
+  } = options ?? {}
+
   const [isDraggingWindow, setIsDraggingWindow] = useState(false)
   const windowDragCounter = useRef(0)
 
@@ -8,10 +16,14 @@ export const useWindowDrag = () => {
     e.preventDefault()
     windowDragCounter.current += 1
 
-    if ((e.dataTransfer?.items ?? []).length > 0) {
-      setIsDraggingWindow(true)
+    const items = e.dataTransfer?.items ?? []
+
+    if (items.length > 0) {
+      const hasAllowedFileType = allowedFileTypes.length === 0 || Array.from(items).some(item => allowedFileTypes.includes(item.type))
+
+      setIsDraggingWindow(hasAllowedFileType)
     }
-  }, [])
+  }, [allowedFileTypes])
 
   const handleDragLeave = useCallback((e: DragEvent) => {
     e.preventDefault()

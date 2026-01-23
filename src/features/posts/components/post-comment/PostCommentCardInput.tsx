@@ -23,8 +23,8 @@ export const PostCommentCardInput = () => {
         <PostCommentForm
           showCancel
           className={clsx(
-            'w-full overflow-hidden',
-            !isActive && 'h-0'
+            'w-full',
+            !isActive && 'hidden'
           )}
         />
       </div>

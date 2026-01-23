@@ -1,9 +1,11 @@
 import { SEARCH_FRAGRANCES_QUERY } from '@/features/fragrances'
 import type { SEARCH_FILTER_OPTIONS } from './constants'
 import { SEARCH_USERS_QUERY } from '@/features/users'
+import { SEARCH_POSTS_QUERY } from '@/features/posts'
 
 export const getSearchQuery = (filter?: typeof SEARCH_FILTER_OPTIONS[number]['value']) => {
   if (filter === 'users') return SEARCH_USERS_QUERY
+  if (filter === 'posts') return SEARCH_POSTS_QUERY
   return SEARCH_FRAGRANCES_QUERY
 }
 

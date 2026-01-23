@@ -1,4 +1,5 @@
 import { z, type ZodType } from 'zod'
+import { SEARCH_FILTER_OPTIONS } from './constants'
 
 export const getFieldErrors = <T>(
   schema: ZodType<T>,
@@ -82,3 +83,17 @@ export const ValidVoteBinary = z
     ],
     'Vote must be 0 or 1'
   )
+
+export const SearchPageSearchSchema = z
+  .object({
+    term: z
+      .string()
+      .optional()
+      .default(''),
+
+    filter: z
+      .enum(SEARCH_FILTER_OPTIONS.map(option => option.value))
+      .optional()
+      .transform(val => val === 'fragrances' ? undefined : val)
+  })
+  .strip()

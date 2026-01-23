@@ -6,8 +6,11 @@ import { useDebounce } from '@/hooks/useDebounce'
 import { useNavigate, useSearch } from '@tanstack/react-router'
 import TopBarSearchFilter from './TopBarSearchFilter'
 import type { SearchItem } from '@/utils/util'
+import { useRouteState } from '@/hooks/useRouteState'
 
 const TopBarSearch = () => {
+  const { isPosts } = useRouteState()
+
   const { term, ...restSearch } = useSearch({ strict: false }) ?? {}
   const navigate = useNavigate()
 
@@ -15,13 +18,15 @@ const TopBarSearch = () => {
   const { fragrances, refresh } = useSearchFragrances({ term, pagination: { first: 10 } })
 
   const suggestionItems = React.useMemo<SearchItem[]>(
-    () => fragrances.map(fragrance => ({
-      id: fragrance.id,
-      term: fragrance.name,
-      subtext: fragrance.brand.name,
-      type: 'suggestion'
-    })),
-    [fragrances]
+    () => isPosts
+      ? []
+      : fragrances.map(fragrance => ({
+        id: fragrance.id,
+        term: fragrance.name,
+        subtext: fragrance.brand.name,
+        type: 'suggestion'
+      })),
+    [fragrances, isPosts]
   )
 
   const allItems = React.useMemo<SearchItem[]>(
@@ -43,7 +48,10 @@ const TopBarSearch = () => {
   const handleOnSearch = (item: SearchItem) => {
     addTerm(item)
 
-    const newSearch = { ...restSearch, term: item.term }
+    const newSearch: Record<string, unknown> = {
+      ...restSearch,
+      term: item.term
+    }
 
     if (item.type !== 'custom' && item.id != null) {
       navigate({
@@ -53,6 +61,10 @@ const TopBarSearch = () => {
       })
 
       return
+    }
+
+    if (isPosts) {
+      newSearch.filter = 'posts'
     }
 
     navigate({ to: '/search', search: newSearch })
