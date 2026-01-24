@@ -45,6 +45,10 @@ const CollectionItemOptionsPopover = (props: CollectionItemOptionsPopoverProps) 
     moveItemRight(item.id)
   }
 
+  const handleOnPopoverClick = (event: React.SyntheticEvent) => {
+    event.stopPropagation()
+  }
+
   if (!isMyCollection) return null
 
   return (
@@ -52,11 +56,15 @@ const CollectionItemOptionsPopover = (props: CollectionItemOptionsPopoverProps) 
       {...props}
     >
       <Popover.Trigger
-        className='flex aspect-square h-9 cursor-pointer items-center justify-center rounded-full bg-white p-2 hover:brightness-95'
+        onClick={handleOnPopoverClick}
       >
-        <HiDotsHorizontal
-          size={18}
-        />
+        <div
+          className='flex aspect-square h-9 cursor-pointer items-center justify-center rounded-full bg-white p-2 hover:brightness-95'
+        >
+          <HiDotsHorizontal
+            size={18}
+          />
+        </div>
       </Popover.Trigger>
 
       <Popover.Portal>
@@ -66,6 +74,7 @@ const CollectionItemOptionsPopover = (props: CollectionItemOptionsPopoverProps) 
               'shadow-symmetrical gap-2 overflow-hidden rounded-xl bg-white p-3',
               'flex max-h-128 w-[20rem] flex-col items-center justify-center'
             )}
+            onClick={handleOnPopoverClick}
           >
             <div
               className='w-full'

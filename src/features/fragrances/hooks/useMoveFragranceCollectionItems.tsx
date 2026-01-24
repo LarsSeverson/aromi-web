@@ -14,7 +14,7 @@ export const useMoveFragranceCollectionItems = () => {
     data: Nullable<MoveFragranceCollectionItemsMutation>,
     input: MoveFragranceCollectionItemsInput
   ) => {
-    const { insertBefore = null } = input
+    const { insertBefore } = input
     const updatedItems = data?.moveFragranceCollectionItems
 
     if (updatedItems == null) return

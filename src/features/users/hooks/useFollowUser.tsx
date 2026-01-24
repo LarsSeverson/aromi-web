@@ -24,9 +24,9 @@ export const useFollowUser = () => {
     cache.modify({
       id: cachedUserId,
       fields: {
-        followerCount (existing = 0) {
-          return (existing as number) + 1
-        },
+        // followerCount (existing = 0) {
+        //   return (existing as number) + 1
+        // },
 
         followers (existing = { edges: [] }, { readField }) {
           const fragments = existing as NodeWithEdges<UserFollow>

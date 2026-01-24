@@ -1,6 +1,6 @@
-import type { AllFragranceCollectionItemFragment } from '@/generated/graphql'
+import type { Identifiable } from '@/utils/util'
 
-export const mergeItems = (current: AllFragranceCollectionItemFragment[], incoming: AllFragranceCollectionItemFragment[]) => {
+export const mergeItems = <T extends Identifiable>(current: T[], incoming: T[]) => {
   const existingIds = new Set(current.map(i => i.id))
   const merged = [...current]
 

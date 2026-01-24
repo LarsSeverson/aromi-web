@@ -4,7 +4,7 @@ import Skeleton from 'react-loading-skeleton'
 const UserPreviewCardMiniSkeleton = () => {
   return (
     <div
-      className='h-full w-full overflow-hidden rounded-lg'
+      className='h-full w-full overflow-hidden rounded-lg py-1'
     >
       <Skeleton
         height='100%'

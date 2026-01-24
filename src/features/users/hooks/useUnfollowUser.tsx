@@ -22,9 +22,9 @@ export const useUnfollowUser = () => {
     cache.modify({
       id: cache.identify({ __typename: 'User', id: input.userId }),
       fields: {
-        followerCount (existing = 0) {
-          return (existing as number) + 1
-        },
+        // followerCount (existing = 0) {
+        //   return (existing as number) + 1
+        // },
 
         followers (existing = { edges: [] }, { readField }) {
           const fragments = existing as NodeWithEdges<UserFollow>

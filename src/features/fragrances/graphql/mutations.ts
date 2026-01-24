@@ -65,6 +65,16 @@ export const CREATE_FRAGRANCE_COLLECTION_ITEM_MUTATION = gql(/* GraphQL */ `
   }
 `)
 
+export const MOVE_FRAGRANCE_COLLECTIONS_MUTATION = gql(/* GraphQL */ `
+  mutation MoveFragranceCollections(
+    $input: MoveFragranceCollectionsInput!
+  ) {
+    moveFragranceCollections(input: $input) {
+      ...AllFragranceCollection
+    }
+  }
+`)
+
 export const MOVE_FRAGRANCE_COLLECTION_ITEMS_MUTATION = gql(/* GraphQL */ `
   mutation MoveFragranceCollectionItems(
     $input: MoveFragranceCollectionItemsInput!

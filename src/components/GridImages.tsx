@@ -26,7 +26,7 @@ const GridImages = (props: GridImagesProps) => {
     <div
       className={clsx(
         className,
-        'bg-empty2 relative grid overflow-hidden rounded-2xl group-hover:brightness-[.85]',
+        'bg-empty2 relative grid overflow-hidden rounded-2xl',
         showSeparator && 'gap-0.5',
         itemsShown.length === 1 && 'grid-cols-1 grid-rows-1',
         itemsShown.length !== 1 && 'grid-cols-2 grid-rows-2'
@@ -37,7 +37,7 @@ const GridImages = (props: GridImagesProps) => {
         <img
           key={index}
           className={clsx(
-            'h-full w-full object-cover hover:brightness-95',
+            'h-full w-full object-cover',
             itemsShown.length === 2 && 'row-span-2',
             (itemsShown.length === 3 && index === 0) && 'row-span-2'
           )}
