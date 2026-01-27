@@ -2,16 +2,14 @@ import type { JSONContent } from '@tiptap/react'
 import TipTapEditor from '@/components/tiptap/TipTapEditor'
 import { Field } from '@base-ui/react'
 import React from 'react'
-import { useNewPostContext } from '../contexts/NewPostContext'
 
 export interface NewPostContentProps {}
 
 const NewPostContent = (_props: NewPostContentProps) => {
-  const { onUpdateContent } = useNewPostContext()
+  const [content, setContent] = React.useState('')
 
-  const handleContentUpdate = (json: JSONContent) => {
-    const val = JSON.stringify(json ?? {})
-    onUpdateContent(val)
+  const handleOnUpdate = (json: JSONContent) => {
+    setContent(JSON.stringify(json ?? {}))
   }
 
   return (
@@ -25,8 +23,21 @@ const NewPostContent = (_props: NewPostContentProps) => {
         Content
       </Field.Label>
 
-      <TipTapEditor
-        onUpdate={handleContentUpdate}
+      <Field.Control
+        value={content}
+        onValueChange={setContent}
+        render={props => (
+          <>
+            <TipTapEditor
+              onUpdate={handleOnUpdate}
+            />
+
+            <input
+              {...props}
+              className='sr-only'
+            />
+          </>
+        )}
       />
 
       <Field.Error

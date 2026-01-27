@@ -10,7 +10,6 @@ import { parseSchema } from '@/utils/validation'
 import { useCreatePost } from '../../hooks/useCreatePost'
 import { useToastMessage } from '@/hooks/useToastMessage'
 import { useNavigate } from '@tanstack/react-router'
-import type { Nullable } from '@/utils/util'
 
 export interface NewPostProviderProps {
   children: React.ReactNode
@@ -33,7 +32,6 @@ export const NewPostProvider = (props: NewPostProviderProps) => {
 
   const tasksRef = React.useRef(uploadTasks)
   const hasSubmitted = React.useRef(false)
-  const content = React.useRef<Nullable<string>>(undefined)
 
   const [type, setType] = React.useState<PostType>(PostType.Text)
   const [fragranceId, setFragranceId] = React.useState<string | null>(null)
@@ -45,7 +43,6 @@ export const NewPostProvider = (props: NewPostProviderProps) => {
   const isUploading = uploadTasks.length > 0 && uploadTasks.some(task => task.status === 'uploading')
 
   const resetState = () => {
-    content.current = null
     resetTasks()
 
     setType(PostType.Text)
@@ -63,10 +60,6 @@ export const NewPostProvider = (props: NewPostProviderProps) => {
 
   const handleOnFragranceIdChange = (id: string | null) => {
     setFragranceId(id)
-  }
-
-  const handleOnUpdateContent = (newContent: Nullable<string>) => {
-    content.current = newContent
   }
 
   const handleOnUploadAsset = (file: File) => {
@@ -122,7 +115,6 @@ export const NewPostProvider = (props: NewPostProviderProps) => {
 
     const input = {
       ...formData,
-      content: content.current,
       assets: inputAssets
     }
 
@@ -173,8 +165,6 @@ export const NewPostProvider = (props: NewPostProviderProps) => {
         onUploadAsset: handleOnUploadAsset,
         onDeleteAsset: handleOnDeleteAsset,
         onMoveAsset: handleOnMoveAsset,
-
-        onUpdateContent: handleOnUpdateContent,
 
         onSubmit: handleOnSubmit
       }}

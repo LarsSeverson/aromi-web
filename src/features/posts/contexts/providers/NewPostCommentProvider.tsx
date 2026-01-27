@@ -10,6 +10,7 @@ import { useDebounce } from '@/hooks/useDebounce'
 import type { Form } from '@base-ui/react'
 import { parseSchema } from '@/utils/validation'
 import { NewPostCommentContext } from '../NewPostCommentContext'
+import { useAuthHelpers } from '@/features/auth'
 
 export interface NewPostCommentProviderProps {
   post: PostShellFragment
@@ -26,6 +27,7 @@ export const NewPostCommentProvider = (props: NewPostCommentProviderProps) => {
     onNewComment
   } = props
 
+  const { checkAuthenticated } = useAuthHelpers()
   const { toastError } = useToastMessage()
   const { createPostComment } = useCreatePostComment()
 
@@ -71,6 +73,10 @@ export const NewPostCommentProvider = (props: NewPostCommentProviderProps) => {
   }
 
   const handleOnIsActiveChange = (isActive: boolean) => {
+    if (!checkAuthenticated()) {
+      return
+    }
+
     setIsActive(isActive)
   }
 

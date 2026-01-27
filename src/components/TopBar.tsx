@@ -2,12 +2,10 @@
 
 import React from 'react'
 import clsx from 'clsx'
-import LogInDialog from '../features/auth/components/LogInDialog'
-import SignUpDialog from '../features/auth/components/SignUpDialog'
 import { useAuthContext } from '@/features/auth'
-import AccountMenu from '@/features/users/components/AccountMenu'
 import TopBarSearch from './TopBarSearch'
 import NewPostButton from '@/features/posts/components/NewPostButton'
+import { AuthMenu } from '@/features/auth/components/AuthMenu'
 
 export interface TopBarProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -18,8 +16,7 @@ const TopBar = (props: TopBarProps) => {
   } = props
 
   const {
-    isAuthenticated,
-    me
+    isAuthenticated
   } = useAuthContext()
 
   const [isScrolled, setIsScrolled] = React.useState(false)
@@ -65,26 +62,7 @@ const TopBar = (props: TopBarProps) => {
           <NewPostButton />
         )}
 
-        {isAuthenticated && me != null
-          ? (
-            <div
-              className='h-full'
-            >
-              <AccountMenu
-                user={me}
-              />
-            </div>
-          )
-          : (
-            <div
-              className='flex flex-row gap-2'
-            >
-              <LogInDialog />
-
-              <SignUpDialog />
-            </div>
-          )
-        }
+        <AuthMenu />
       </div>
     </header>
   )

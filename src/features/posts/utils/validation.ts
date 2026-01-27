@@ -190,21 +190,27 @@ export const CreatePostSchema = z
     assets: CreatePostSchemaAssets.nullish()
   })
   .strip()
-  .refine(data => {
+  .superRefine((data, ctx) => {
     const { type } = data
     const isFragrance = type === PostType.Fragrance
     const isMedia = type === PostType.Media
 
     if (isFragrance && data.fragranceId == null) {
-      return false
+      ctx.addIssue({
+        code: 'custom',
+        message: 'Fragrance is required for fragrance posts',
+        path: ['fragranceId']
+      })
     }
 
     const assets = data.assets ?? []
     if (isMedia && assets.length === 0) {
-      return false
+      ctx.addIssue({
+        code: 'custom',
+        message: 'Media posts must have at least one asset',
+        path: ['assets']
+      })
     }
-
-    return true
   })
 
 export const CreatePostCommentSchema = z

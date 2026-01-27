@@ -94,6 +94,15 @@ export const SearchPageSearchSchema = z
     filter: z
       .enum(SEARCH_FILTER_OPTIONS.map(option => option.value))
       .optional()
-      .transform(val => val === 'fragrances' ? undefined : val)
   })
   .strip()
+  .transform((data) => {
+    if (data.term !== '' && data.filter == null) {
+
+      return {
+        ...data,
+        filter: SEARCH_FILTER_OPTIONS[0].value
+      }
+    }
+    return data
+  })

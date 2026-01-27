@@ -36,7 +36,6 @@ const PostPreviewCardAsset = (props: PostPreviewCardAssetProps) => {
       >
         <img
           src={asset?.url ?? ''}
-          alt={'Post Asset'}
           className='h-full w-full object-cover'
         />
       </button>

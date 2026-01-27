@@ -1,23 +1,23 @@
 import MobileNavBar from '@/components/MobileNavBar'
-import TopBar from '@/components/TopBar'
+import TopBarMobile from '@/components/TopBarMobile'
 import { Outlet } from '@tanstack/react-router'
 import React from 'react'
 
 const MainLayoutMobile = () => {
   return (
     <div
-      className='flex min-h-screen flex-col'
+      className='h-screen'
     >
-      <TopBar />
+      <TopBarMobile />
 
       <main
-        className='flex-1 pb-20'
+        className='h-full pb-16'
       >
         <Outlet />
       </main>
 
       <div
-        className='fixed bottom-0 left-0 z-50 h-16 w-full bg-white'
+        className='fixed bottom-0 z-50 h-16 w-full shrink-0 bg-white'
       >
         <MobileNavBar />
       </div>

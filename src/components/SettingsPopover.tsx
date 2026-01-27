@@ -9,6 +9,7 @@ import { FaCog, FaDiscord, FaGithub } from 'react-icons/fa'
 import { HiOutlineLogout } from 'react-icons/hi'
 import Spinner from './Spinner'
 import { DISCORD_INVITE_URL, GITHUB_REPO_URL } from '@/utils/constants'
+import { isMobile } from 'react-device-detect'
 
 export interface SettingsPopoverProps {
   isActive?: boolean
@@ -66,11 +67,15 @@ const SettingsPopover = (props: SettingsPopoverProps) => {
         <Popover.Positioner
           side='right'
           sideOffset={18}
+          arrowPadding={0}
+          collisionPadding={isMobile ? 0 : undefined}
+          className=''
         >
           <Popover.Popup
             className={clsx(
-              'flex w-104 flex-col items-center justify-center overflow-hidden rounded-xl bg-white p-3',
-              'shadow-symmetrical'
+              'flex w-screen flex-col items-center justify-center overflow-hidden rounded-xl bg-white p-3 md:w-104',
+              'shadow-symmetrical',
+              'z-40'
             )}
           >
             <Popover.Title

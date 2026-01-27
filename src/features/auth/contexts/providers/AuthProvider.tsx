@@ -17,7 +17,7 @@ export const AuthProvider = (props: AuthProviderProps) => {
     auth.initialize()
   }, [auth])
 
-  if (!auth.hasInitialized) return null
+  // if (!auth.hasInitialized) return null
 
   return (
     <AuthContext.Provider

@@ -2,6 +2,7 @@ import { client } from '@/common/client'
 import FragranceSearchPage from '@/features/fragrances/pages/FragranceSearchPage'
 import { PostSearchPage } from '@/features/posts/pages/PostSearchPage'
 import UserSearchPage from '@/features/users/pages/UserSearchPage'
+import { SearchPage } from '@/pages/SearchPage'
 import { DocumentTitleBuilder } from '@/utils/DocumentTitleBuilder'
 import { wrapQuery } from '@/utils/util'
 import { getSearchQuery } from '@/utils/util-functions'
@@ -59,9 +60,15 @@ function RouteComponent () {
     )
   }
 
+  if (filter === 'fragrances') {
+    return (
+      <FragranceSearchPage
+        term={term}
+      />
+    )
+  }
+
   return (
-    <FragranceSearchPage
-      term={term}
-    />
+    <SearchPage />
   )
 }

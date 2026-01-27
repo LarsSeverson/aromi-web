@@ -20,11 +20,8 @@ const NewPostTitle = () => {
       />
 
       <Field.Error
-        match='valueMissing'
         className='mt-1 ml-2 text-sm font-medium text-red-700'
-      >
-        A title is required
-      </Field.Error>
+      />
     </Field.Root>
   )
 }

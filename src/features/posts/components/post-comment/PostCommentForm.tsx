@@ -28,6 +28,10 @@ const PostCommentForm = (props: PostCommentFormProps) => {
     onSubmit
   } = useNewPostCommentContext()
 
+  const handleOnFormClick = () => {
+    onIsActiveChange(true)
+  }
+
   return (
     <Form
       className={clsx(
@@ -35,7 +39,7 @@ const PostCommentForm = (props: PostCommentFormProps) => {
         'relative rounded-xl'
       )}
       onFormSubmit={onSubmit}
-      onClick={onIsActiveChange.bind(null, true)}
+      onClick={handleOnFormClick}
       {...rest}
     >
       <div

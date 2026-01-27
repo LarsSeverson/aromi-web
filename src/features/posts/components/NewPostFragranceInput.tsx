@@ -65,9 +65,10 @@ const NewPostFragranceInput = (props: NewPostFragranceInputProps) => {
         />
 
         <Field.Error
+          match='valueMissing'
           className='mt-1 ml-2 text-sm font-medium text-red-700'
         >
-          This is required
+          A fragrance is required
         </Field.Error>
 
         <InputPopover.PopoverRoot>
