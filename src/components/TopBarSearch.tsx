@@ -8,7 +8,13 @@ import TopBarSearchFilter from './TopBarSearchFilter'
 import type { SearchItem } from '@/utils/util'
 import { useRouteState } from '@/hooks/useRouteState'
 
-const TopBarSearch = () => {
+export interface TopBarSearchProps {
+  isMinimal?: boolean
+}
+
+const TopBarSearch = (props: TopBarSearchProps) => {
+  const { isMinimal = false } = props
+
   const { isPosts } = useRouteState()
 
   const { term, ...restSearch } = useSearch({ strict: false }) ?? {}
@@ -16,6 +22,8 @@ const TopBarSearch = () => {
 
   const { history, addTerm, deleteTerm } = useSearchHistory()
   const { fragrances, refresh } = useSearchFragrances({ term, pagination: { first: 10 } })
+
+  const showFilter = term != null && !isMinimal
 
   const suggestionItems = React.useMemo<SearchItem[]>(
     () => isPosts
@@ -84,9 +92,10 @@ const TopBarSearch = () => {
         onValueChange={handleOnValueChange}
         onSearch={handleOnSearch}
         onClearOneHistory={handleClearOneHistory}
+        showSearchButton={!isMinimal}
       />
 
-      {term != null && (
+      {showFilter && (
         <TopBarSearchFilter />
       )}
     </div>

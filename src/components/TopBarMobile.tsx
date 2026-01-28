@@ -1,23 +1,16 @@
 'use no memo'
 
 import React from 'react'
-import { useChildMatches } from '@tanstack/react-router'
-import { useAuthContext } from '@/features/auth'
 import SettingsPopover from './SettingsPopover'
 import clsx from 'clsx'
+import { useRouteState } from '@/hooks/useRouteState'
+import { MinimalSearchPopover } from './MinimalSearchPopover'
+import TopBarSearchFilter from './TopBarSearchFilter'
 
 const TopBarMobile = () => {
-  const {
-    me
-  } = useAuthContext()
+  const { isOnMyProfile, isSearch, isSearchHome } = useRouteState()
 
-  const matches = useChildMatches()
-
-  const profileMatch = matches.find((m) => m.routeId === '/users/$id')
-  const matchedUserId = profileMatch?.params?.id
-  const isOnMyProfile = matchedUserId != null && matchedUserId === me?.id
-
-  const [isScrolled, setIsScrolled] = React.useState(false)
+  const [, setIsScrolled] = React.useState(false)
 
   React.useEffect(() => {
     const handleScroll = () => {
@@ -32,24 +25,40 @@ const TopBarMobile = () => {
     }
   }, [])
 
-  if (!isOnMyProfile) return null
-
-  return (
-    <div
-      className={clsx(
-        'flex flex-row gap-3 p-3 px-3.5',
-        'sticky top-0 z-40 overflow-hidden bg-white',
-        'items-center justify-end',
-        isScrolled && 'shadow-[0_2px_4px_rgba(0,0,0,0.04)]'
-      )}
-    >
+  if (isOnMyProfile) {
+    return (
       <div
-        className='ml-auto'
+        className={clsx(
+          'flex w-full flex-row gap-3 px-3.5 py-3',
+          'sticky top-0 z-40 self-start bg-white',
+          'items-center justify-end'
+        )}
       >
-        <SettingsPopover />
+        <div
+          className='ml-auto'
+        >
+          <SettingsPopover />
+        </div>
       </div>
-    </div>
-  )
+    )
+  }
+
+  if (isSearch && !isSearchHome) {
+    return (
+      <div
+        className={clsx(
+          'sticky top-0 z-40 flex flex-row bg-white py-3',
+          'mx-4'
+        )}
+      >
+        <MinimalSearchPopover />
+
+        <TopBarSearchFilter />
+      </div>
+    )
+  }
+
+  return null
 }
 
 export default TopBarMobile

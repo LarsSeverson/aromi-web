@@ -13,6 +13,8 @@ export interface SearchInputProps extends Input.Props {
   items?: SearchItem[]
   onSearch?: (item: SearchItem) => void
   onClearOneHistory?: (item: SearchItem) => void
+
+  showSearchButton?: boolean
 }
 
 const SearchInput = (props: SearchInputProps) => {
@@ -21,6 +23,8 @@ const SearchInput = (props: SearchInputProps) => {
 
     onSearch,
     onClearOneHistory,
+
+    showSearchButton = true,
 
     ...inputProps
   } = props
@@ -200,7 +204,8 @@ const SearchInput = (props: SearchInputProps) => {
             className,
             'bg-empty! z-10 h-full w-full rounded-l-3xl border p-2 px-4',
             'tracking-normal text-ellipsis whitespace-nowrap',
-            showClearButton && 'pe-10'
+            showClearButton && 'pe-10',
+            !showSearchButton && 'rounded-r-3xl'
           )}
           onFocus={handleOnFocus}
           onBlur={handleOnBlur}
@@ -224,18 +229,20 @@ const SearchInput = (props: SearchInputProps) => {
         )}
       </ResizeContainer>
 
-      <button
-        className={clsx(
-          'bg-empty flex h-full items-center justify-center overflow-hidden rounded-r-3xl p-2 px-5',
-          'cursor-pointer hover:bg-gray-200',
-          showClearButton && 'border-l border-gray-200'
-        )}
-        onClick={handleOnSearchButtonClick}
-      >
-        <FiSearch
-          size={25}
-        />
-      </button>
+      {showSearchButton && (
+        <button
+          className={clsx(
+            'bg-empty flex h-full items-center justify-center overflow-hidden rounded-r-3xl p-2 px-5',
+            'cursor-pointer hover:bg-gray-200',
+            showClearButton && 'border-l border-gray-200'
+          )}
+          onClick={handleOnSearchButtonClick}
+        >
+          <FiSearch
+            size={25}
+          />
+        </button>
+      )}
 
       <Popover.Root
         open={isPopoverOpen}

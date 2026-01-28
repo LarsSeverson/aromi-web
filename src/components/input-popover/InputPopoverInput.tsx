@@ -35,7 +35,7 @@ export const InputPopoverInput = <T, >(props: InputPopoverInputProps<T>) => {
   const { rect } = useResizeable({ ref: inputRef })
 
   const handleKeyDown = (event: Parameters<NonNullable<Input.Props['onKeyDown']>>[0]) => {
-    const item = (items?.at(activeIndex) ?? null) as T | null
+    const item = activeIndex === -1 ? null : (items?.at(activeIndex) ?? null) as T | null
     const customEvent: InputPopoverKeyDownEvent<T> = Object.assign(event, { item })
 
     onKeyDown?.(customEvent)

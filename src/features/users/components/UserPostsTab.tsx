@@ -73,7 +73,7 @@ export const UserPostsTab = (props: UserPostsTabProps) => {
 
   return (
     <div
-      className="flex w-full flex-col items-center"
+      className="flex w-full flex-col items-center pb-4"
     >
       <div
         className="w-full max-w-4xl"

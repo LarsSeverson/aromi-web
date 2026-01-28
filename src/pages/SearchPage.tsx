@@ -1,3 +1,4 @@
+import { MinimalSearchPopover } from '@/components/MinimalSearchPopover'
 import { useFragrances } from '@/features/fragrances'
 import { Colors } from '@/styles/Colors'
 import { Link } from '@tanstack/react-router'
@@ -116,7 +117,7 @@ export const SearchPage = () => {
 
   return (
     <div
-      className='relative h-full w-full overflow-hidden md:h-105'
+      className='relative h-[calc(100vh-4rem)] w-full overflow-hidden md:h-105'
       onTouchStart={handleOnTouchStart}
       onTouchMove={handleOnTouchMove}
       onTouchEnd={handleOnTouchEnd}
@@ -202,6 +203,12 @@ export const SearchPage = () => {
             )
           }
         )}
+      </div>
+
+      <div
+        className='absolute top-5 right-0 left-0 z-50 mx-4'
+      >
+        <MinimalSearchPopover />
       </div>
     </div>
   )
