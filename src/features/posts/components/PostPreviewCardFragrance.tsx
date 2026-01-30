@@ -37,7 +37,7 @@ const PostPreviewCardFragrance = (props: PostPreviewCardFragranceProps) => {
         />
 
         <div
-          className='flex h-130 w-90 flex-col py-3'
+          className='flex h-90 w-full max-w-60 flex-col py-3 md:h-130 md:max-w-90'
         >
           <div
             className='relative flex h-full w-full flex-col overflow-hidden rounded-4xl'

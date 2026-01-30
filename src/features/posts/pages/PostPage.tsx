@@ -29,22 +29,26 @@ const PostPage = (props: PostPageProps) => {
 
   return (
     <div
-      className='flex w-full flex-col items-center px-4'
+      className='mt-5 flex w-full flex-col items-center px-4 md:mt-0'
     >
       <div
-        className='flex w-full max-w-3xl gap-2'
+        className='flex w-full max-w-3xl flex-col gap-2'
       >
-        <PostPreviewCardAvatar
-          user={user}
-        />
+        <div
+          className='flex w-full min-w-0 gap-2'
+        >
+          <PostPreviewCardAvatar
+            user={user}
+          />
+
+          <PostPreviewCardHeading
+            post={post}
+          />
+        </div>
 
         <div
           className='flex w-full min-w-0 flex-col gap-1'
         >
-          <PostPreviewCardHeading
-            post={post}
-          />
-
           <PostPreviewCardTitle
             title={title}
             isDense={false}
@@ -76,21 +80,27 @@ const PostPage = (props: PostPageProps) => {
             />
           </div>
 
-          <Divider
-            className='my-3'
-            horizontal
-          />
-
-          <NewPostCommentProvider
-            post={post}
-          >
-            <PostCommentForm />
-          </NewPostCommentProvider>
-
-          <PostCommentsSection
-            post={post}
-          />
         </div>
+
+      </div>
+
+      <div
+        className='w-full max-w-3xl'
+      >
+        <Divider
+          className='my-3'
+          horizontal
+        />
+
+        <NewPostCommentProvider
+          post={post}
+        >
+          <PostCommentForm />
+        </NewPostCommentProvider>
+
+        <PostCommentsSection
+          post={post}
+        />
       </div>
     </div>
   )

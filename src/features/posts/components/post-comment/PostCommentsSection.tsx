@@ -75,7 +75,7 @@ export const PostCommentsSection = (props: PostCommentsSectionProps) => {
   return (
     <div
       ref={containerRef}
-      className='flex w-full flex-col gap-2 pt-4'
+      className='flex w-full flex-col gap-2 py-4'
     >
       <FlatList
         items={comments}

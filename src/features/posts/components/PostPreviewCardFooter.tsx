@@ -44,7 +44,7 @@ const PostPreviewCardFooter = (props: PostPreviewCardFooterProps) => {
 
   return (
     <div
-      className='mt-2 flex items-center gap-3'
+      className='mt-1 flex items-center gap-3 md:mt-2'
     >
       <VoteButtonGroup
         className='bg-empty border-none'
@@ -56,13 +56,17 @@ const PostPreviewCardFooter = (props: PostPreviewCardFooterProps) => {
       <Link
         to='/community/posts/$id'
         params={{ id: post.id }}
-        className='bg-empty flex items-center gap-2 rounded-full p-2 px-4 text-sm hover:bg-gray-200'
+        className='bg-empty flex items-center gap-2 rounded-full p-1.5 px-4! hover:bg-gray-200 md:p-1.75'
       >
         <FaRegComment
-          className='size-4.5'
+          className='size-4'
         />
 
-        {formatNumber(commentCount)}
+        <span
+          className='text-xs font-semibold md:text-sm'
+        >
+          {formatNumber(commentCount)}
+        </span>
       </Link>
 
       <SharePostPopover

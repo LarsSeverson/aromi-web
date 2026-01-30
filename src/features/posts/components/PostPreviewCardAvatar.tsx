@@ -18,7 +18,7 @@ const PostPreviewCardAvatar = (props: PostPreviewCardAvatarProps) => {
     <Link
       to='/users/$id'
       params={{ id: user.id }}
-      className='flex h-10.5 w-10.5'
+      className='flex h-8 w-8 md:h-10.5 md:w-10.5'
       onClick={handleOnLinkClick}
     >
       <UserAvatar

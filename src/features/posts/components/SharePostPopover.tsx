@@ -65,7 +65,7 @@ const SharePostPopover = (props: SharePostPopoverProps) => {
   return (
     <Popover.Root>
       <Popover.Trigger
-        className='bg-empty group/trigger flex cursor-pointer items-center gap-2 rounded-full p-2 px-4 text-sm hover:bg-gray-200'
+        className='bg-empty group/trigger flex cursor-pointer items-center gap-2 rounded-full p-1.5 px-4! text-xs font-semibold hover:bg-gray-200 md:p-1.75 md:text-sm'
         disabled={showLinkFeedback}
         onClick={handlePopoverTriggerClick}
       >

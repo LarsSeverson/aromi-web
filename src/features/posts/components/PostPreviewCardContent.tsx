@@ -20,7 +20,7 @@ const PostPreviewCardContent = (props: PostPreviewCardContentProps) => {
       {type === PostType.Text && (
         <TipTapRenderer
           content={post.content as JSONContent}
-          className='line-clamp-6 text-sm text-black/70 select-none'
+          className='line-clamp-4 text-sm text-black/70 select-none md:line-clamp-6'
         />
       )}
 

@@ -41,7 +41,7 @@ const MoreOptionsPostPopover = (props: MoreOptionsPostPopoverProps) => {
         onClick={handleOnTriggerClick}
       >
         <HiDotsHorizontal
-          size={20}
+          className='size-4 md:size-5'
         />
       </Popover.Trigger>
 

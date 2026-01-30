@@ -19,25 +19,25 @@ const PostPreviewCardHeading = (props: PostPreviewCardHeadingProps) => {
 
   return (
     <div
-      className='flex items-center'
+      className='flex w-full items-center'
     >
       <Link
         to='/users/$id'
         params={{ id: user.id }}
-        className='truncate text-sm font-medium hover:underline'
+        className='truncate text-xs font-medium hover:underline md:text-sm'
         onClick={handleOnChildClick}
       >
         {user.username}
       </Link>
 
       <span
-        className='mx-1.5 text-xs text-black/50'
+        className='mx-1.5 text-[10px] text-black/50 md:text-xs'
       >
         •
       </span>
 
       <span
-        className='text-xs text-nowrap text-black/50'
+        className='text-[11px] text-nowrap text-black/50 md:text-xs'
       >
         {formatDateRelative(createdAt)}
       </span>
