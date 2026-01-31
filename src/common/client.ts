@@ -3,10 +3,34 @@ import { customRelayPagination, customSearchPagination } from '@/utils/paginatio
 import { ApolloClient, ApolloLink, HttpLink, InMemoryCache, makeVar } from '@apollo/client'
 import { SetContextLink } from '@apollo/client/link/context'
 
-export const accessToken = makeVar<string | null>(null)
+export const accessToken = makeVar<string | null | undefined>(undefined)
 
-const authLink = new SetContextLink(() => {
-  const token = accessToken()
+const waitForToken = async () => {
+  return await new Promise<string | null>(resolve => {
+    const current = accessToken()
+
+    if (current !== undefined) {
+      resolve(current)
+      return
+    }
+
+    const unsubscribe = accessToken.onNextChange(value => {
+      unsubscribe()
+      resolve(value ?? null)
+    })
+  })
+}
+
+const authLink = new SetContextLink(async (_, operation) => {
+  const publicOperations = ['Refresh']
+  const isPublic = publicOperations.includes(operation.operationName ?? '')
+
+  if (isPublic) {
+    return {}
+  }
+
+  const token = await waitForToken()
+
   return {
     headers: {
       ...(token == null ? {} : { authorization: `Bearer ${token}` })

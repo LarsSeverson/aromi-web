@@ -47,7 +47,7 @@ const PostPage = (props: PostPageProps) => {
         </div>
 
         <div
-          className='flex w-full min-w-0 flex-col gap-1'
+          className='mx-1.5 flex w-full min-w-0 flex-col gap-1'
         >
           <PostPreviewCardTitle
             title={title}

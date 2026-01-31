@@ -45,7 +45,7 @@ const useAuth = () => {
   const applyNewPayload = (newPayload?: AuthTokenPayload | null) => {
     payload.current = newPayload
 
-    setClientAcessToken(newPayload?.accessToken)
+    setClientAcessToken(newPayload?.accessToken ?? null)
   }
 
   const refresh = () => {

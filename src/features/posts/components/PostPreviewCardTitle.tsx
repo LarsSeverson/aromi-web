@@ -12,7 +12,7 @@ const PostPreviewCardTitle = (props: PostPreviewCardTitleProps) => {
   return (
     <h2
       className={clsx(
-        isDense ? 'text-md md:text-[1.125rem]' : 'text-md mb-2 md:text-2xl',
+        isDense ? 'text-md md:text-[1.125rem]' : 'text-md mb-2 md:text-xl',
         'font-medium text-black/90',
         'leading-tight wrap-break-word'
       )}

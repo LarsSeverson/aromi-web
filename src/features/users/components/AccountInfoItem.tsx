@@ -17,7 +17,7 @@ const AccountInfoItem = (props: AccountInfoItemProps) => {
       <Link
         to='/users/$id'
         params={{ id }}
-        className='flex'
+        className='flex min-w-65'
       >
         <div
           className='h-16'
