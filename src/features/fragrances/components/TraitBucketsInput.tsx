@@ -1,57 +1,36 @@
 import clsx from 'clsx'
-import type { AllFragranceTraitFragment, AllFragranceTraitVoteFragment } from '@/generated/graphql'
+import type { AllFragranceTraitFragment } from '@/generated/graphql'
 import { getTraitIcon } from '../utils/icons'
-import type { Nullable } from '@/utils/util'
 import TraitBucketInput from './TraitBucketInput'
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import { Tooltip } from '@base-ui/react'
 import { useAuthHelpers } from '@/features/auth'
 
 export interface TraitBucketsInputProps {
   trait: AllFragranceTraitFragment
-  myTraitVote?: Nullable<AllFragranceTraitVoteFragment>
   showLabel?: boolean
   onBucketVote?: (typeId: string, optionId?: string) => void
 }
 
 const TraitBucketsInput = (props: TraitBucketsInputProps) => {
-  const { trait, showLabel = true, myTraitVote, onBucketVote } = props
-  const { name, type, stats } = trait
+  const { trait, showLabel = true, onBucketVote } = props
+  const { name, type, stats, myVote } = trait
   const { distribution } = stats
 
   const { checkAuthenticated } = useAuthHelpers()
 
-  const [selectedBucket, setSelectedBucket] = useState(myTraitVote?.option?.id)
+  const selectedBucket = myVote?.option?.id
+  const [optimisticSelected, setOptimisticSelected] = useState<string | undefined>(selectedBucket)
 
-  const adjustedDistribution = useMemo(
-    () => {
-      const initialVoteId = myTraitVote?.option?.id
-
-      return distribution.map(bucket => {
-        const shouldAddOne = selectedBucket === bucket.option.id && initialVoteId !== bucket.option.id
-        const shouldRemoveOne = selectedBucket !== bucket.option.id && initialVoteId === bucket.option.id
-        const adjustedVotes = Math.max(0, bucket.votes + (shouldAddOne ? 1 : 0) - (shouldRemoveOne ? 1 : 0))
-
-        return {
-          ...bucket,
-          votes: adjustedVotes
-        }
-      })
-    },
-    [distribution, selectedBucket, myTraitVote]
-  )
-
-  const maxScore = Math.max(...adjustedDistribution.map(d => d.votes), 1)
+  const maxScore = Math.max(...distribution.map(d => d.votes), 1)
 
   const handleOnBucketClick = (typeId: string, optionId: string) => {
     const isAuthenticated = checkAuthenticated('You need to log in before voting on traits')
     if (!isAuthenticated) return
 
-    setSelectedBucket(prev => {
-      const newSelection = prev === optionId ? undefined : optionId
-      onBucketVote?.(typeId, newSelection)
-      return newSelection
-    })
+    const newSelection = optimisticSelected === optionId ? undefined : optionId
+    setOptimisticSelected(newSelection)
+    onBucketVote?.(typeId, newSelection)
   }
 
   return (
@@ -75,7 +54,7 @@ const TraitBucketsInput = (props: TraitBucketsInputProps) => {
           <div
             className='flex w-full'
           >
-            {adjustedDistribution.map((bucket, index) => (
+            {distribution.map((bucket, index) => (
               <div
                 key={bucket.option.id}
                 className='flex w-full flex-col'
@@ -83,14 +62,14 @@ const TraitBucketsInput = (props: TraitBucketsInputProps) => {
                 <TraitBucketInput
                   bucket={bucket}
                   maxScore={maxScore}
-                  isSelected={selectedBucket === bucket.option.id}
+                  isSelected={optimisticSelected === bucket.option.id}
                   // eslint-disable-next-line tailwindcss/no-custom-classname
                   className={clsx(
                     index === 0 && 'rounded-l-md',
                     index === distribution.length - 1 && 'rounded-r-md',
                     index !== 0 && 'border-sinopia/15 border-l'
                   )}
-                  onBucketClick={handleOnBucketClick.bind(null, trait.id)}
+                  onBucketClick={handleOnBucketClick.bind(null, trait.typeId)}
                 />
               </div>
             ))}

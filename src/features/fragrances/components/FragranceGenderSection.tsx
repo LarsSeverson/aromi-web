@@ -4,7 +4,6 @@ import { TraitTypeEnum } from '@/generated/graphql'
 import { useFragranceTraits } from '../hooks/useFragranceTraits'
 import clsx from 'clsx'
 import TraitBucketsInput from './TraitBucketsInput'
-import { useMyFragranceTraits } from '../hooks/useMyFragranceTraits'
 import { useToastMessage } from '@/hooks/useToastMessage'
 import { useDebounces } from '@/hooks/useDebounces'
 import { useVoteOnFragranceTrait } from '../hooks/useVoteOnFragranceTrait'
@@ -20,16 +19,10 @@ const FragranceGenderSection = (_: FragranceGenderSectionProps) => {
 
   const { vote } = useVoteOnFragranceTrait()
   const { traits, isLoading: isLoadingTraits } = useFragranceTraits(fragrance.id)
-  const { myTraits, isLoading: isLoadingMyTraits } = useMyFragranceTraits(fragrance.id)
 
   const traitMap = useMemo(
     () => new Map(traits.map(trait => [trait.type, trait])),
     [traits]
-  )
-
-  const myTraitMap = useMemo(
-    () => new Map(myTraits.map(trait => [trait.type, trait])),
-    [myTraits]
   )
 
   const handleVoteOnTraitOption = async (traitTypeId: string, traitOptionId?: string) => {
@@ -47,7 +40,7 @@ const FragranceGenderSection = (_: FragranceGenderSectionProps) => {
     })
   }
 
-  if (isLoadingTraits || isLoadingMyTraits) return null
+  if (isLoadingTraits) return null
 
   return (
     <PageCategory
@@ -62,7 +55,6 @@ const FragranceGenderSection = (_: FragranceGenderSectionProps) => {
       >
         <TraitBucketsInput
           trait={traitMap.get(TraitTypeEnum.Gender)!}
-          myTraitVote={myTraitMap.get(TraitTypeEnum.Gender)}
           showLabel={false}
           onBucketVote={handleOnBucketVote}
         />

@@ -49,7 +49,7 @@ const VoteOnNotesPopover = () => {
           value={searchTerm}
           placeholder='Search notes'
           className={clsx(
-            'h-8 w-full rounded-lg border-2 px-2 py-1.5 text-sm outline-none',
+            'h-8 w-full rounded-lg border-2 px-2 py-1.5 text-sm outline-none md:h-auto',
             'md:w-64 md:rounded-xl md:px-3 md:py-2',
             'focus:border-sinopia'
           )}

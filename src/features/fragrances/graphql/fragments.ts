@@ -85,6 +85,7 @@ export const ALL_FRAGRANCE_TRAIT_VOTE_FRAGMENT = gql(/* GraphQL */`
 export const ALL_FRAGRANCE_TRAIT_FRAGMENT = gql(/* GraphQL */`
   fragment AllFragranceTrait on FragranceTrait { 
     id
+    typeId
     type
     name
     options {
@@ -95,6 +96,10 @@ export const ALL_FRAGRANCE_TRAIT_FRAGMENT = gql(/* GraphQL */`
     }
     myVote {
       ...AllFragranceTraitVote
+    }
+
+    fragrance {
+      id
     }
   }
 `)

@@ -47,7 +47,7 @@ type Documents = {
     "\n  fragment AllFragranceAccord on FragranceAccord {\n    id\n    accord {\n      ...AllAccord\n    }\n    votes {\n      ...AllVoteInfo\n    }\n  }\n": typeof types.AllFragranceAccordFragmentDoc,
     "\n  fragment AllFragranceNote on FragranceNote { \n    id\n    layer\n    note {\n      ...AllNote\n    }\n    votes {\n      ...AllVoteInfo\n    }\n  }\n": typeof types.AllFragranceNoteFragmentDoc,
     "\n  fragment AllFragranceTraitVote on FragranceTraitVote { \n    id\n    type\n    option {\n      ...AllTraitOption\n    }\n  }\n": typeof types.AllFragranceTraitVoteFragmentDoc,
-    "\n  fragment AllFragranceTrait on FragranceTrait { \n    id\n    type\n    name\n    options {\n      ...AllTraitOption\n    } \n    stats {\n      ...AllTraitStats\n    }\n    myVote {\n      ...AllFragranceTraitVote\n    }\n  }\n": typeof types.AllFragranceTraitFragmentDoc,
+    "\n  fragment AllFragranceTrait on FragranceTrait { \n    id\n    typeId\n    type\n    name\n    options {\n      ...AllTraitOption\n    } \n    stats {\n      ...AllTraitStats\n    }\n    myVote {\n      ...AllFragranceTraitVote\n    }\n\n    fragrance {\n      id\n    }\n  }\n": typeof types.AllFragranceTraitFragmentDoc,
     "\n  fragment AllFragranceReview on FragranceReview { \n    id\n    rating\n    body\n\n    author {\n      ...UserPreview\n    }\n\n    fragrance {\n      ...FragrancePreview\n    }\n\n    votes {\n      ...AllVoteInfo\n    }\n    \n    createdAt\n  }\n": typeof types.AllFragranceReviewFragmentDoc,
     "\n  fragment AllFragranceReviewInfo on FragranceReviewInfo { \n    count\n    averageRating\n    distribution {\n      rating\n      count\n    }\n  }\n": typeof types.AllFragranceReviewInfoFragmentDoc,
     "\n  fragment AllFragranceCollection on FragranceCollection { \n    ...FragranceCollectionPreview\n    info {\n      itemCount\n    } \n  }\n": typeof types.AllFragranceCollectionFragmentDoc,
@@ -183,7 +183,7 @@ const documents: Documents = {
     "\n  fragment AllFragranceAccord on FragranceAccord {\n    id\n    accord {\n      ...AllAccord\n    }\n    votes {\n      ...AllVoteInfo\n    }\n  }\n": types.AllFragranceAccordFragmentDoc,
     "\n  fragment AllFragranceNote on FragranceNote { \n    id\n    layer\n    note {\n      ...AllNote\n    }\n    votes {\n      ...AllVoteInfo\n    }\n  }\n": types.AllFragranceNoteFragmentDoc,
     "\n  fragment AllFragranceTraitVote on FragranceTraitVote { \n    id\n    type\n    option {\n      ...AllTraitOption\n    }\n  }\n": types.AllFragranceTraitVoteFragmentDoc,
-    "\n  fragment AllFragranceTrait on FragranceTrait { \n    id\n    type\n    name\n    options {\n      ...AllTraitOption\n    } \n    stats {\n      ...AllTraitStats\n    }\n    myVote {\n      ...AllFragranceTraitVote\n    }\n  }\n": types.AllFragranceTraitFragmentDoc,
+    "\n  fragment AllFragranceTrait on FragranceTrait { \n    id\n    typeId\n    type\n    name\n    options {\n      ...AllTraitOption\n    } \n    stats {\n      ...AllTraitStats\n    }\n    myVote {\n      ...AllFragranceTraitVote\n    }\n\n    fragrance {\n      id\n    }\n  }\n": types.AllFragranceTraitFragmentDoc,
     "\n  fragment AllFragranceReview on FragranceReview { \n    id\n    rating\n    body\n\n    author {\n      ...UserPreview\n    }\n\n    fragrance {\n      ...FragrancePreview\n    }\n\n    votes {\n      ...AllVoteInfo\n    }\n    \n    createdAt\n  }\n": types.AllFragranceReviewFragmentDoc,
     "\n  fragment AllFragranceReviewInfo on FragranceReviewInfo { \n    count\n    averageRating\n    distribution {\n      rating\n      count\n    }\n  }\n": types.AllFragranceReviewInfoFragmentDoc,
     "\n  fragment AllFragranceCollection on FragranceCollection { \n    ...FragranceCollectionPreview\n    info {\n      itemCount\n    } \n  }\n": types.AllFragranceCollectionFragmentDoc,
@@ -435,7 +435,7 @@ export function gql(source: "\n  fragment AllFragranceTraitVote on FragranceTrai
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\n  fragment AllFragranceTrait on FragranceTrait { \n    id\n    type\n    name\n    options {\n      ...AllTraitOption\n    } \n    stats {\n      ...AllTraitStats\n    }\n    myVote {\n      ...AllFragranceTraitVote\n    }\n  }\n"): (typeof documents)["\n  fragment AllFragranceTrait on FragranceTrait { \n    id\n    type\n    name\n    options {\n      ...AllTraitOption\n    } \n    stats {\n      ...AllTraitStats\n    }\n    myVote {\n      ...AllFragranceTraitVote\n    }\n  }\n"];
+export function gql(source: "\n  fragment AllFragranceTrait on FragranceTrait { \n    id\n    typeId\n    type\n    name\n    options {\n      ...AllTraitOption\n    } \n    stats {\n      ...AllTraitStats\n    }\n    myVote {\n      ...AllFragranceTraitVote\n    }\n\n    fragrance {\n      id\n    }\n  }\n"): (typeof documents)["\n  fragment AllFragranceTrait on FragranceTrait { \n    id\n    typeId\n    type\n    name\n    options {\n      ...AllTraitOption\n    } \n    stats {\n      ...AllTraitStats\n    }\n    myVote {\n      ...AllFragranceTraitVote\n    }\n\n    fragrance {\n      id\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

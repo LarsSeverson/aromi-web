@@ -2,7 +2,6 @@ import React, { useMemo } from 'react'
 import PageCategory from '@/components/PageCategory'
 import { TraitTypeEnum } from '@/generated/graphql'
 import { useFragranceTraits } from '../hooks/useFragranceTraits'
-import { useMyFragranceTraits } from '../hooks/useMyFragranceTraits'
 import { useVoteOnFragranceTrait } from '../hooks/useVoteOnFragranceTrait'
 import { useDebounces } from '@/hooks/useDebounces'
 import { useToastMessage } from '@/hooks/useToastMessage'
@@ -20,16 +19,10 @@ const FragranceTraitsSection = (_: FragranceTraitsSectionProps) => {
 
   const { vote } = useVoteOnFragranceTrait()
   const { traits, isLoading: isLoadingTraits } = useFragranceTraits(fragrance.id)
-  const { myTraits, isLoading: isLoadingMyTraits } = useMyFragranceTraits(fragrance.id)
 
   const traitMap = useMemo(
     () => new Map(traits.map(trait => [trait.type, trait])),
     [traits]
-  )
-
-  const myTraitMap = useMemo(
-    () => new Map(myTraits.map(trait => [trait.type, trait])),
-    [myTraits]
   )
 
   const handleVoteOnTraitOption = async (traitTypeId: string, traitOptionId?: string) => {
@@ -47,7 +40,7 @@ const FragranceTraitsSection = (_: FragranceTraitsSectionProps) => {
     })
   }
 
-  if (isLoadingTraits || isLoadingMyTraits) return null
+  if (isLoadingTraits) return null
 
   const traitTypes = [
     TraitTypeEnum.Time,
@@ -78,7 +71,6 @@ const FragranceTraitsSection = (_: FragranceTraitsSectionProps) => {
             <TraitBucketsInput
               key={type}
               trait={trait}
-              myTraitVote={myTraitMap.get(type)}
               onBucketVote={handleOnBucketVote}
             />
           )
