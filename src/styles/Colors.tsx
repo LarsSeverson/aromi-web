@@ -40,5 +40,6 @@ export const Colors = {
   heart: '#e20020',
 
   empty: '#f0f0f0',
-  empty2: '#e5e7eb'
+  empty2: '#e5e7eb',
+  black: '#000000'
 }

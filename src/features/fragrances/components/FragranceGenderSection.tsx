@@ -1,13 +1,13 @@
 import React, { useMemo } from 'react'
 import PageCategory from '@/components/PageCategory'
-import { TraitTypeEnum } from '@/generated/graphql'
 import { useFragranceTraits } from '../hooks/useFragranceTraits'
 import clsx from 'clsx'
-import TraitBucketsInput from './TraitBucketsInput'
 import { useToastMessage } from '@/hooks/useToastMessage'
 import { useDebounces } from '@/hooks/useDebounces'
 import { useVoteOnFragranceTrait } from '../hooks/useVoteOnFragranceTrait'
 import { useFragranceContext } from '../contexts/FragranceContext'
+import { FragranceTraitTypeEnum } from '@/generated/graphql'
+import { TraitOptions } from './TraitOptions'
 
 export interface FragranceGenderSectionProps {}
 
@@ -25,8 +25,8 @@ const FragranceGenderSection = (_: FragranceGenderSectionProps) => {
     [traits]
   )
 
-  const handleVoteOnTraitOption = async (traitTypeId: string, traitOptionId?: string) => {
-    const voteRes = await vote({ fragranceId: fragrance.id, traitTypeId, traitOptionId })
+  const handleVoteOnTraitOption = async (traitId: string, traitOptionId?: string) => {
+    const voteRes = await vote({ fragranceId: fragrance.id, traitId, traitOptionId })
 
     if (voteRes.isErr()) {
       const error = voteRes.error
@@ -53,10 +53,10 @@ const FragranceGenderSection = (_: FragranceGenderSectionProps) => {
           'mt-4 md:mt-6'
         )}
       >
-        <TraitBucketsInput
-          trait={traitMap.get(TraitTypeEnum.Gender)!}
+        <TraitOptions
+          trait={traitMap.get(FragranceTraitTypeEnum.Gender)!}
           showLabel={false}
-          onBucketVote={handleOnBucketVote}
+          onOptionSelect={handleOnBucketVote}
         />
       </div>
     </PageCategory>

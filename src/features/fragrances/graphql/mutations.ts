@@ -163,7 +163,7 @@ export const VOTE_ON_FRAGRANCE_TRAIT_MUTATION = gql(/* GraphQL */ `
     $input: VoteOnFragranceTraitInput!
   ) {
     voteOnFragranceTrait(input: $input) {
-      ...AllFragranceTraitVote
+      id
     }
   }
 `)

@@ -121,7 +121,8 @@ const ShareFragrancePopover = (props: ShareFragrancePopoverProps) => {
                   <BouncyButton
                     className='bg-empty hover:brightness-95'
                     disabled={isLinkLoading || showLinkFeedback}
-                    onClick={() => { void handleShareLink() }}
+                    // eslint-disable-next-line @typescript-eslint/no-misused-promises
+                    onClick={handleShareLink}
                   >
                     <HiOutlineLink
                       size={20}

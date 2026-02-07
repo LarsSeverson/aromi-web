@@ -34,6 +34,7 @@
     "clsx": "^2.1.1",
     "graphql": "^16.10.0",
     "happy-dom": "^20.3.1",
+    "html-to-image": "^1.11.13",
     "lodash": "^4.17.21",
     "nanoid": "^5.1.6",
     "neverthrow": "^8.2.0",

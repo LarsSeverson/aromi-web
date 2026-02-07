@@ -1,46 +1,62 @@
-/* eslint-disable tailwindcss/no-custom-classname */
 import ArrowSvg from '@/components/ArrowSvg'
-import type { AllTraitVoteDistributionFragment } from '@/generated/graphql'
+import type { AllFragranceTraitOptionFragment } from '@/generated/graphql'
 import { formatNumber } from '@/utils/string-utils'
 import { pluralizer } from '@/utils/util-functions'
 import { Tooltip } from '@base-ui/react'
 import clsx from 'clsx'
 import React from 'react'
 
-const MIN_OPACITY = 0.08
-const MAX_OPACITY = 1.0
+export interface TraitOptionProps {
+  option: AllFragranceTraitOptionFragment
 
-export interface TraitBucketInputProps {
-  bucket: AllTraitVoteDistributionFragment
+  index: number
+  totalOptions?: number
   maxScore?: number
-  className?: string
+
   isSelected?: boolean
-  onBucketClick?: (optionId: string) => void
+  originalOptionId?: string
+
+  onOptionClick?: (optionId: string) => void
 }
 
-const TraitBucketInput = (props: TraitBucketInputProps) => {
-  const { bucket, maxScore = 1, className, isSelected = false, onBucketClick } = props
-  const { votes } = bucket
+export const TraitOption = (props: TraitOptionProps) => {
+  const {
+    option,
 
-  const opacity = Math.max(MIN_OPACITY, Math.min(MAX_OPACITY, votes / maxScore))
+    index,
+    totalOptions = 1,
+    maxScore = 1,
+
+    isSelected = false,
+    originalOptionId,
+
+    onOptionClick
+  } = props
+
+  const wasOriginallySelected = originalOptionId === option.id
+  const initialScore = wasOriginallySelected ? option.votes.score - 1 : option.votes.score
+  const displayScore = initialScore + (isSelected ? 1 : 0)
+
+  const opacity = Math.max(0.08, Math.min(1.0, displayScore / maxScore))
 
   return (
     <Tooltip.Root>
       <div
-        className={clsx(
-          'group relative flex w-full min-w-0 flex-col'
-        )}
+        className={clsx('group relative flex w-full min-w-0 flex-col')}
       >
         <Tooltip.Trigger
+          // eslint-disable-next-line tailwindcss/no-custom-classname
           className={clsx(
-            className,
+            index === 0 && 'rounded-l-md',
+            index === totalOptions - 1 && 'rounded-r-md',
+            index !== 0 && 'border-sinopia/15 border-l',
             'group relative w-full min-w-0',
             'h-6 cursor-pointer outline-none md:h-8',
             'overflow-hidden transition-all',
             'before:pointer-events-none before:absolute before:inset-0 before:z-10 before:rounded-[inherit] before:content-[""]',
             'hover:before:ring-sinopia hover:z-20 hover:before:ring-2 hover:before:brightness-85 hover:before:ring-inset'
           )}
-          onClick={onBucketClick?.bind(null, bucket.option.id)}
+          onClick={onOptionClick?.bind(null, option.id)}
         >
           <div
             className='bg-sinopia h-full w-full transition-opacity duration-300 ease-in-out'
@@ -67,7 +83,7 @@ const TraitBucketInput = (props: TraitBucketInputProps) => {
               </Tooltip.Arrow>
 
               <span>
-                {formatNumber(votes)} {pluralizer(votes, 'vote')}
+                {formatNumber(displayScore)} {pluralizer(displayScore, 'vote')}
               </span>
 
               {isSelected && (
@@ -94,20 +110,20 @@ const TraitBucketInput = (props: TraitBucketInputProps) => {
             'text-[10px] md:text-sm'
           )}
         >
-          {bucket.option.label}
+          {option.label}
         </span>
 
         <div
           className='flex flex-col items-center'
         >
-          {votes > 0 && (
+          {displayScore > 0 && (
             <span
               className={clsx(
                 'min-w-0 truncate text-center text-black/50',
                 'text-[9px] md:text-xs'
               )}
             >
-              {formatNumber(votes)}
+              {formatNumber(displayScore)}
             </span>
           )}
 
@@ -123,5 +139,3 @@ const TraitBucketInput = (props: TraitBucketInputProps) => {
     </Tooltip.Root>
   )
 }
-
-export default TraitBucketInput

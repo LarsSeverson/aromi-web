@@ -1,4 +1,4 @@
-import { TraitTypeEnum } from '@/generated/graphql'
+import { FragranceTraitTypeEnum } from '@/generated/graphql'
 import GenderSvg from '../components/GenderSvg'
 import LongevitySvg from '../components/LongevitySvg'
 import ProjectionSvg from '../components/ProjectionSvg'
@@ -8,27 +8,27 @@ import AppealSvg from '../components/AppealSvg'
 import TimeSvg from '../components/TimeSvg'
 import SeasonSvg from '../components/SeasonSvg'
 
-export const getTraitIcon = (traitType: TraitTypeEnum) => {
+export const getTraitIcon = (traitType: FragranceTraitTypeEnum) => {
   const iconProps = {
     className: 'size-6 md:size-auto'
   }
 
   switch (traitType) {
-    case TraitTypeEnum.Gender:
+    case FragranceTraitTypeEnum.Gender:
       return (
         <GenderSvg
           {...iconProps}
         />
       )
 
-    case TraitTypeEnum.Time:
+    case FragranceTraitTypeEnum.Time:
       return (
         <TimeSvg
           {...iconProps}
         />
       )
 
-    case TraitTypeEnum.Season:
+    case FragranceTraitTypeEnum.Season:
       return (
         <SeasonSvg
           {...iconProps}
@@ -36,7 +36,7 @@ export const getTraitIcon = (traitType: TraitTypeEnum) => {
         />
       )
 
-    case TraitTypeEnum.Longevity:
+    case FragranceTraitTypeEnum.Longevity:
       return (
         <LongevitySvg
           {...iconProps}
@@ -44,14 +44,14 @@ export const getTraitIcon = (traitType: TraitTypeEnum) => {
         />
       )
 
-    case TraitTypeEnum.Projection:
+    case FragranceTraitTypeEnum.Projection:
       return (
         <ProjectionSvg
           {...iconProps}
         />
       )
 
-    case TraitTypeEnum.Balance:
+    case FragranceTraitTypeEnum.Balance:
       return (
         <BalanceSvg
           {...iconProps}
@@ -59,7 +59,7 @@ export const getTraitIcon = (traitType: TraitTypeEnum) => {
         />
       )
 
-    case TraitTypeEnum.Complexity:
+    case FragranceTraitTypeEnum.Complexity:
       return (
         <ComplexitySvg
           {...iconProps}
@@ -67,7 +67,7 @@ export const getTraitIcon = (traitType: TraitTypeEnum) => {
         />
       )
 
-    case TraitTypeEnum.Appeal:
+    case FragranceTraitTypeEnum.Appeal:
       return (
         <AppealSvg
           {...iconProps}

@@ -1,13 +1,13 @@
 import React, { useMemo } from 'react'
 import PageCategory from '@/components/PageCategory'
-import { TraitTypeEnum } from '@/generated/graphql'
+import { FragranceTraitTypeEnum } from '@/generated/graphql'
 import { useFragranceTraits } from '../hooks/useFragranceTraits'
 import { useVoteOnFragranceTrait } from '../hooks/useVoteOnFragranceTrait'
 import { useDebounces } from '@/hooks/useDebounces'
 import { useToastMessage } from '@/hooks/useToastMessage'
-import TraitBucketsInput from './TraitBucketsInput'
 import clsx from 'clsx'
 import { useFragranceContext } from '../contexts/FragranceContext'
+import { TraitOptions } from './TraitOptions'
 
 export interface FragranceTraitsSectionProps {}
 
@@ -25,8 +25,8 @@ const FragranceTraitsSection = (_: FragranceTraitsSectionProps) => {
     [traits]
   )
 
-  const handleVoteOnTraitOption = async (traitTypeId: string, traitOptionId?: string) => {
-    const voteRes = await vote({ fragranceId: fragrance.id, traitTypeId, traitOptionId })
+  const handleVoteOnTraitOption = async (traitId: string, traitOptionId?: string) => {
+    const voteRes = await vote({ fragranceId: fragrance.id, traitId, traitOptionId })
 
     if (voteRes.isErr()) {
       const error = voteRes.error
@@ -34,7 +34,7 @@ const FragranceTraitsSection = (_: FragranceTraitsSectionProps) => {
     }
   }
 
-  const handleOnBucketVote = (traitTypeId: string, traitOptionId?: string) => {
+  const handleOnTraitVote = (traitTypeId: string, traitOptionId?: string) => {
     run(`${traitTypeId}.${traitOptionId}`, () => {
       handleVoteOnTraitOption(traitTypeId, traitOptionId)
     })
@@ -43,13 +43,13 @@ const FragranceTraitsSection = (_: FragranceTraitsSectionProps) => {
   if (isLoadingTraits) return null
 
   const traitTypes = [
-    TraitTypeEnum.Time,
-    TraitTypeEnum.Season,
-    TraitTypeEnum.Longevity,
-    TraitTypeEnum.Projection,
-    TraitTypeEnum.Balance,
-    TraitTypeEnum.Complexity,
-    TraitTypeEnum.Appeal
+    FragranceTraitTypeEnum.Time,
+    FragranceTraitTypeEnum.Season,
+    FragranceTraitTypeEnum.Longevity,
+    FragranceTraitTypeEnum.Projection,
+    FragranceTraitTypeEnum.Balance,
+    FragranceTraitTypeEnum.Complexity,
+    FragranceTraitTypeEnum.Appeal
   ]
 
   return (
@@ -68,10 +68,10 @@ const FragranceTraitsSection = (_: FragranceTraitsSectionProps) => {
           if (trait == null) return null
 
           return (
-            <TraitBucketsInput
+            <TraitOptions
               key={type}
               trait={trait}
-              onBucketVote={handleOnBucketVote}
+              onOptionSelect={handleOnTraitVote}
             />
           )
         })}

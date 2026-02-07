@@ -110,6 +110,22 @@ export const client = new ApolloClient({
         }
       },
 
+      FragranceAccord: {
+        keyFields: false
+      },
+
+      FragranceNote: {
+        keyFields: false
+      },
+
+      FragranceTrait: {
+        keyFields: false
+      },
+
+      FragranceTraitOption: {
+        keyFields: false
+      },
+
       FragranceCollection: {
         fields: {
           previewItems: {

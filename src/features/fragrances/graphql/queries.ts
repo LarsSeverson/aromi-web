@@ -130,19 +130,6 @@ export const FRAGRANCE_NOTES_QUERY = gql(/* GraphQL */ `
   }
 `)
 
-export const MY_FRAGRANCE_TRAITS_QUERY = gql(/* GraphQL */ `
-  query MyFragranceTraits(
-    $fragranceId: ID!
-  ) { 
-    fragrance(id: $fragranceId) {
-      id
-      myTraits {
-        ...AllFragranceTraitVote
-      }
-    }
-  }
-`)
-
 export const FRAGRANCE_TRAITS_QUERY = gql(/* GraphQL */ `
   query FragranceTraits(
     $fragranceId: ID!

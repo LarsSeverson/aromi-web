@@ -72,34 +72,31 @@ export const ALL_FRAGRANCE_NOTE_FRAGMENT = gql(/* GraphQL */ `
   }
 `)
 
-export const ALL_FRAGRANCE_TRAIT_VOTE_FRAGMENT = gql(/* GraphQL */`
-  fragment AllFragranceTraitVote on FragranceTraitVote { 
-    id
+export const ALL_FRAGRANCE_TRAIT_FRAGMENT = gql(/* GraphQL */`
+  fragment AllFragranceTrait on FragranceTrait { 
+    id 
+
     type
-    option {
-      ...AllTraitOption
+    name
+
+    fragrance {
+      id
+    }
+
+    options {
+      ...AllFragranceTraitOption
     }
   }
 `)
 
-export const ALL_FRAGRANCE_TRAIT_FRAGMENT = gql(/* GraphQL */`
-  fragment AllFragranceTrait on FragranceTrait { 
+export const ALL_FRAGRANCE_TRAIT_OPTION_FRAGMENT = gql(/* GraphQL */`
+  fragment AllFragranceTraitOption on FragranceTraitOption { 
     id
-    typeId
-    type
-    name
-    options {
-      ...AllTraitOption
-    } 
-    stats {
-      ...AllTraitStats
-    }
-    myVote {
-      ...AllFragranceTraitVote
-    }
+    label
+    value
 
-    fragrance {
-      id
+    votes {
+      ...AllVoteInfo
     }
   }
 `)
@@ -219,15 +216,6 @@ export const ALL_FRAGRANCE_VOTE_FRAGMENT = gql(/* GraphQL */ `
 
     user {
       ...UserPreview
-    }
-  }
-`)
-
-export const CURRENT_TRAIT_VOTE_FRAGMENT = gql(/* GraphQL */ `
-  fragment CurrentTraitVote on FragranceTrait { 
-    id
-    myVote {
-      ...AllFragranceTraitVote
     }
   }
 `)
